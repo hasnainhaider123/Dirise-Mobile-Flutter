@@ -183,27 +183,27 @@ class _OptionalScreenState extends State<OptionalScreen> {
                   controller: metaTitleController,
                   obSecure: false,
                   hintText: 'Meta Title'.tr,
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return 'Meta Title is required'.tr;
-                    }
-                    return null; // Return null if validation passes
-                  },
+                  // validator: (value) {
+                  //   if (value!.trim().isEmpty) {
+                  //     return 'Meta Title is required'.tr;
+                  //   }
+                  //   return null; // Return null if validation passes
+                  // },
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
                   maxLines: 2,
                   controller: metaDescriptionController,
                   minLines: 2,
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return 'Meta description is required'.tr;
-                    }
-                    if (value.trim().length < 15) {
-                      return 'Meta description must be at least 15 characters long'.tr;
-                    }
-                    return null;
-                  },
+                  // validator: (value) {
+                  //   if (value!.trim().isEmpty) {
+                  //     return 'Meta description is required'.tr;
+                  //   }
+                  //   if (value.trim().length < 15) {
+                  //     return 'Meta description must be at least 15 characters long'.tr;
+                  //   }
+                  //   return null;
+                  // },
                   decoration: InputDecoration(
                     counterStyle: GoogleFonts.poppins(
                       color: AppTheme.primaryColor,
@@ -243,24 +243,24 @@ class _OptionalScreenState extends State<OptionalScreen> {
                   controller: serialNumberController,
                   obSecure: false,
                   hintText: 'Serial Number'.tr,
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return 'Serial Number is required'.tr;
-                    }
-                    return null; // Return null if validation passes
-                  },
+                  // validator: (value) {
+                  //   if (value!.trim().isEmpty) {
+                  //     return 'Serial Number is required'.tr;
+                  //   }
+                  //   return null; // Return null if validation passes
+                  // },
                 ),
                 const SizedBox(height: 10),
                 CommonTextField(
                   controller: productNumberController,
                   obSecure: false,
                   hintText: 'Product number'.tr,
-                  validator: (value) {
-                    if (value!.trim().isEmpty) {
-                      return 'Product number is required'.tr;
-                    }
-                    return null; // Return null if validation passes
-                  },
+                  // validator: (value) {
+                  //   if (value!.trim().isEmpty) {
+                  //     return 'Product number is required'.tr;
+                  //   }
+                  //   return null; // Return null if validation passes
+                  // },
                 ),
                 const SizedBox(height: 20),
                 CustomOutlineButton(
