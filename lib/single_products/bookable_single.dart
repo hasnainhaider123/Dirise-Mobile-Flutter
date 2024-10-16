@@ -1710,6 +1710,13 @@ class _BookableProductScreenState extends State<BookableProductScreen> {
                                                   '${'QTY'.tr}: ${item.inStock} ${'piece'.tr}',
                                                   style: normalStyle,
                                                 ),
+                                                 const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(item.shortDescription),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 crossAxisAlignment: CrossAxisAlignment.start,
