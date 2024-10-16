@@ -378,7 +378,9 @@ class _ProductUIState extends State<ProductUI> {
   Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
-          print(widget.productElement.id);
+          debugPrint(widget.productElement.itemType);
+           debugPrint(widget.productElement.productType);
+          
           if (widget.productElement.itemType == 'giveaway') {
             Get.to(() => const GiveAwayProduct(), arguments: widget.productElement.id.toString());
           }
