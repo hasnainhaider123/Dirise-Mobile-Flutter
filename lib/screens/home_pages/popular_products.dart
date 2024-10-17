@@ -71,7 +71,7 @@ class _PopularProductsState extends State<PopularProducts> {
                const SizedBox(height: 20,),
                 if (homeController.popularProdModal.value.product != null)
                   Container(
-                    height: Platform.isAndroid ? 580 : 580,
+                    height: Platform.isAndroid ? 590 : 590,
                     margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
                     child: ListView.builder(
                         itemCount: homeController.popularProdModal.value.product!.product!.length,
