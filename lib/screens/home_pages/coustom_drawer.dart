@@ -91,11 +91,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
           await launchUrl(Uri.parse(androidUrl));
         }
       }
-    } catch(e) {
+    } catch (e) {
       print('object');
       await launchUrl(Uri.parse(webUrl), mode: LaunchMode.externalApplication);
     }
   }
+
   ModelStateList? modelStateList;
   CountryState? selectedState;
   City? selectedCity;
@@ -121,7 +122,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   final RxBool _isValue = false.obs;
   var vendor = [
     'Dashboard',
-    'fulfilled orders',
+    'Fulfilled Orders',
     'Pending Products',
     'Approved Products',
     'Operating Hours',
@@ -129,7 +130,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
     'Bank Details',
     'Earnings'
   ];
-  var vendorArab = ['لوحة القيادة', 'طلب', 'المنتجات المعلقة', 'المنتجات المعتمدة','ساعات العمل','وسائل التواصل الاجتماعي','التفاصيل المصرفية', 'الأرباح'];
+  var vendorArab = [
+    'لوحة القيادة',
+    'طلب',
+    'المنتجات المعلقة',
+    'المنتجات المعتمدة',
+    'ساعات العمل',
+    'وسائل التواصل الاجتماعي',
+    'التفاصيل المصرفية',
+    'الأرباح'
+  ];
   var vendor1 = [
     'Become a vendor',
     'Pending Products',
@@ -160,7 +170,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
     }
     stateRefresh.value = -5;
     final map = {'country_id': countryId};
-    await repositories.postApi(url: ApiUrls.allStatesUrl, mapData: map).then((value) {
+    await repositories
+        .postApi(url: ApiUrls.allStatesUrl, mapData: map)
+        .then((value) {
       modelStateList = ModelStateList.fromJson(jsonDecode(value));
       setState(() {});
       stateRefresh.value = DateTime.now().millisecondsSinceEpoch;
@@ -178,7 +190,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
     }
     cityRefresh.value = -5;
     final map = {'state_id': stateId};
-    await repositories.postApi(url: ApiUrls.allCityUrl, mapData: map).then((value) {
+    await repositories
+        .postApi(url: ApiUrls.allCityUrl, mapData: map)
+        .then((value) {
       modelCityList = ModelCityList.fromJson(jsonDecode(value));
       setState(() {});
       cityRefresh.value = DateTime.now().millisecondsSinceEpoch;
@@ -199,8 +213,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
   defaultAddressApi() async {
     Map<String, dynamic> map = {};
     map['address_id'] = cartController.selectedAddress.id.toString();
-    repositories.postApi(url: ApiUrls.defaultAddressStatus, context: context, mapData: map).then((value) async {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(
+            url: ApiUrls.defaultAddressStatus, context: context, mapData: map)
+        .then((value) async {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       if (response.status == true) {
         showToast(response.message.toString());
         Get.back();
@@ -250,78 +268,111 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               children: [
                                 Text(
                                   profileController.userLoggedIn
-                                      ? profileController.apiLoaded && profileController.model.user != null
-                                          ? profileController.model.user!.name ?? ""
+                                      ? profileController.apiLoaded &&
+                                              profileController.model.user !=
+                                                  null
+                                          ? profileController
+                                                  .model.user!.name ??
+                                              ""
                                           : ""
                                       : AppStrings.guestUser.tr,
                                   maxLines: 1,
                                   style: GoogleFonts.poppins(
-                                      color: AppTheme.buttonColor, fontSize: 24, fontWeight: FontWeight.w600),
+                                      color: AppTheme.buttonColor,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w600),
                                 ),
                                 4.spaceY,
                                 Container(
                                   decoration: const BoxDecoration(
                                       shape: BoxShape.circle),
                                   child: SizedBox(
-                                      height: 65,
-                                      width: 65,
-                                      child: profileController.userLoggedIn
-                                          ? ClipRRect(
-                                              borderRadius: BorderRadius.circular(1000),
-                                              child: SizedBox(
-                                                height: 65,
-                                                width: 65,
-                                                child: profileController.userLoggedIn
-                                                    ? Image.network(
-                                                  profileController.apiLoaded
-                                                      ? profileController.model.user!.profileImage.toString() : "",
+                                    height: 65,
+                                    width: 65,
+                                    child: profileController.userLoggedIn
+                                        ? ClipRRect(
+                                            borderRadius:
+                                                BorderRadius.circular(1000),
+                                            child: SizedBox(
+                                              height: 65,
+                                              width: 65,
+                                              child: profileController
+                                                      .userLoggedIn
+                                                  ? Image.network(
+                                                      profileController
+                                                              .apiLoaded
+                                                          ? profileController
+                                                              .model
+                                                              .user!
+                                                              .profileImage
+                                                              .toString()
+                                                          : "",
+                                                      fit: BoxFit.cover,
+                                                      height: 65,
+                                                      width: 65,
+                                                      // errorBuilder: (_, __, ___) => Image.asset(
+                                                      //   'assets/images/myaccount.png',
+                                                      //   height: 65,
+                                                      //   width: 65,
+                                                      // ),
+                                                      errorBuilder:
+                                                          (_, __, ___) =>
+                                                              Image.asset(
+                                                        'assets/images/profile-icon.png',
                                                         fit: BoxFit.cover,
                                                         height: 65,
                                                         width: 65,
-                                                        // errorBuilder: (_, __, ___) => Image.asset(
-                                                        //   'assets/images/myaccount.png',
-                                                        //   height: 65,
-                                                        //   width: 65,
-                                                        // ),
-                                                      errorBuilder: (_, __, ___) => Image.asset('assets/images/profile-icon.png',  fit: BoxFit.cover,
-                                                          height: 65,
-                                                          width: 65,),
-                                                      )
-                                                    // : Image.asset(
-                                                    //     'assets/images/myaccount.png',
-                                                    //     height: 65,
-                                                    //     width: 65,
-                                                    //   ),
-                                                    : Container(
-                                                        decoration: BoxDecoration(
-                                                            shape: BoxShape.circle,
-                                                            color: Colors.white,
-                                                            border: Border.all(color: Colors.white)),
-                                                        child: const SizedBox(
-                                                            height: 65,
-                                                            width: 65,
-                                                            child: Icon(
-                                                              Icons.person,
-                                                              color: AppTheme.buttonColor,
-                                                              size: 45,
-                                                            )),
                                                       ),
-                                              ),
-                                            )
-                                          :  Image.asset('assets/images/profile-icon.png',  fit: BoxFit.cover,
-                                        color: AppTheme.buttonColor,
-                                        height: 65,
-                                        width: 65,),),
+                                                    )
+                                                  // : Image.asset(
+                                                  //     'assets/images/myaccount.png',
+                                                  //     height: 65,
+                                                  //     width: 65,
+                                                  //   ),
+                                                  : Container(
+                                                      decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: Colors.white,
+                                                          border: Border.all(
+                                                              color: Colors
+                                                                  .white)),
+                                                      child: const SizedBox(
+                                                          height: 65,
+                                                          width: 65,
+                                                          child: Icon(
+                                                            Icons.person,
+                                                            color: AppTheme
+                                                                .buttonColor,
+                                                            size: 45,
+                                                          )),
+                                                    ),
+                                            ),
+                                          )
+                                        : Image.asset(
+                                            'assets/images/profile-icon.png',
+                                            fit: BoxFit.cover,
+                                            color: AppTheme.buttonColor,
+                                            height: 65,
+                                            width: 65,
+                                          ),
+                                  ),
                                 ),
                                 5.spaceY,
                                 Text(
                                   profileController.userLoggedIn
-                                      ? profileController.apiLoaded && profileController.model.user != null
-                                          ? profileController.model.user!.email ?? ""
+                                      ? profileController.apiLoaded &&
+                                              profileController.model.user !=
+                                                  null
+                                          ? profileController
+                                                  .model.user!.email ??
+                                              ""
                                           : ""
                                       : "",
                                   style: GoogleFonts.poppins(
-                                      color: AppTheme.buttonColor, fontSize: 16, fontWeight: FontWeight.w400),
+                                      color: AppTheme.buttonColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
                                 ),
                                 5.spaceY,
                               ],
@@ -358,10 +409,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         minLeadingWidth: 0,
                         contentPadding: EdgeInsets.zero,
                         minVerticalPadding: 0,
-                        visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
+                        visualDensity:
+                            const VisualDensity(vertical: -4, horizontal: -4),
                         title: Row(
                           children: [
-                            Image.asset(height: 25, 'assets/icons/drawerprofile.png'),
+                            Image.asset(
+                                height: 25, 'assets/icons/drawerprofile.png'),
                             const SizedBox(
                               width: 20,
                             ),
@@ -369,20 +422,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               child: Text(
                                 AppStrings.myProfile.tr,
                                 style: GoogleFonts.poppins(
-                                    color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                    color: const Color(0xFF2A3032),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       )
@@ -398,253 +454,264 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         height: 5,
                       )
                     : const SizedBox.shrink(),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    if (profileController.userLoggedIn) {
-                      Get.toNamed(VirtualAssetsScreen.route);
-                    } else {
-                      Get.toNamed(LoginScreen.route);
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      Image.asset(height: 25, 'assets/icons/ebook.png'),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        AppStrings.eBooks.tr,
-                        style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Divider(
-                  thickness: 1,
-                  color: Color(0x1A000000),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                InkWell(
-                  onTap: () {
-                    if (profileController.userLoggedIn) {
-                      Get.toNamed(MyOrdersScreen.route);
-                    } else {
-                      Get.toNamed(LoginScreen.route);
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      Image.asset(height: 25, 'assets/icons/order.png'),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        AppStrings.orders.tr,
-                        style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Divider(
-                  thickness: 1,
-                  color: Color(0x1A000000),
-                ),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     if (profileController.userLoggedIn) {
+                //       Get.toNamed(VirtualAssetsScreen.route);
+                //     } else {
+                //       Get.toNamed(LoginScreen.route);
+                //     }
+                //   },
+                //   child: Row(
+                //     children: [
+                //       Image.asset(height: 25, 'assets/icons/ebook.png'),
+                //       const SizedBox(
+                //         width: 20,
+                //       ),
+                //       Text(
+                //         AppStrings.eBooks.tr,
+                //         style: GoogleFonts.poppins(
+                //             color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                //       ),
+                //       const Spacer(),
+                //       profileController.selectedLAnguage.value == 'English' ?
+                //       Image.asset(
+                //         'assets/images/forward_icon.png',
+                //         height: 17,
+                //         width: 17,
+                //       ) :
+                //       Image.asset(
+                //         'assets/images/back_icon_new.png',
+                //         height: 17,
+                //         width: 17,
+                //       ),
+                //     ],
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // const Divider(
+                //   thickness: 1,
+                //   color: Color(0x1A000000),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // InkWell(
+                //   onTap: () {
+                //     if (profileController.userLoggedIn) {
+                //       Get.toNamed(MyOrdersScreen.route);
+                //     } else {
+                //       Get.toNamed(LoginScreen.route);
+                //     }
+                //   },
+                //   child: Row(
+                //     children: [
+                //       Image.asset(height: 25, 'assets/icons/order.png'),
+                //       const SizedBox(
+                //         width: 20,
+                //       ),
+                //       Text(
+                //         AppStrings.orders.tr,
+                //         style: GoogleFonts.poppins(
+                //             color: const Color(0xFF2A3032),
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w500),
+                //       ),
+                //       const Spacer(),
+                //       profileController.selectedLAnguage.value == 'English'
+                //           ? Image.asset(
+                //               'assets/images/forward_icon.png',
+                //               height: 17,
+                //               width: 17,
+                //             )
+                //           : Image.asset(
+                //               'assets/images/back_icon_new.png',
+                //               height: 17,
+                //               width: 17,
+                //             ),
+                //     ],
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // const Divider(
+                //   thickness: 1,
+                //   color: Color(0x1A000000),
+                // ),
 
-                const SizedBox(
-                  height: 5,
-                ),
-                InkWell(
-                  onTap: () {
-                    if (profileController.userLoggedIn) {
-                      whatsapp();
-                    } else {
-                      whatsapp();
-                    }
-                  },
-                  child: Row(
-                    children: [
-                      Image.asset(height: 25, 'assets/images/whatsapp_icon.png'),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        "WhatsApp Support".tr,
-                        style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Divider(
-                  thickness: 1,
-                  color: Color(0x1A000000),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Get.to(()=>const GetJobTypeScreen());
-                  },
-                  child: Row(
-                    children: [
-                      Image.asset(height: 24, 'assets/images/job_icon.png'),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        'Jobs'.tr,
-                        style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Divider(
-                  thickness: 1,
-                  color: Color(0x1A000000),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Get.toNamed(PublishPostScreen.route);
-                  },
-                  child: Row(
-                    children: [
-                      Image.asset(height: 24, 'assets/icons/send_icon.png'),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        'News Feed'.tr,
-                        style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Divider(
-                  thickness: 1,
-                  color: Color(0x1A000000),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.translucent,
-                  onTap: () {
-                    Get.toNamed(FrequentlyAskedQuestionsScreen.route);
-                  },
-                  child: Row(
-                    children: [
-                      Image.asset(height: 25, 'assets/icons/faq.png'),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        AppStrings.faq.tr,
-                        style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
-                      ),
-                      const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
-                    ],
-                  ),
-                ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // InkWell(
+                //   onTap: () {
+                //     if (profileController.userLoggedIn) {
+                //       whatsapp();
+                //     } else {
+                //       whatsapp();
+                //     }
+                //   },
+                //   child: Row(
+                //     children: [
+                //       Image.asset(
+                //           height: 25, 'assets/images/whatsapp_icon.png'),
+                //       const SizedBox(
+                //         width: 20,
+                //       ),
+                //       Text(
+                //         "WhatsApp Support".tr,
+                //         style: GoogleFonts.poppins(
+                //             color: const Color(0xFF2A3032),
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w500),
+                //       ),
+                //       const Spacer(),
+                //       profileController.selectedLAnguage.value == 'English'
+                //           ? Image.asset(
+                //               'assets/images/forward_icon.png',
+                //               height: 17,
+                //               width: 17,
+                //             )
+                //           : Image.asset(
+                //               'assets/images/back_icon_new.png',
+                //               height: 17,
+                //               width: 17,
+                //             ),
+                //     ],
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // const Divider(
+                //   thickness: 1,
+                //   color: Color(0x1A000000),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     Get.to(() => const GetJobTypeScreen());
+                //   },
+                //   child: Row(
+                //     children: [
+                //       Image.asset(height: 24, 'assets/images/job_icon.png'),
+                //       const SizedBox(
+                //         width: 20,
+                //       ),
+                //       Text(
+                //         'Jobs'.tr,
+                //         style: GoogleFonts.poppins(
+                //             color: const Color(0xFF2A3032),
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w500),
+                //       ),
+                //       const Spacer(),
+                //       profileController.selectedLAnguage.value == 'English'
+                //           ? Image.asset(
+                //               'assets/images/forward_icon.png',
+                //               height: 17,
+                //               width: 17,
+                //             )
+                //           : Image.asset(
+                //               'assets/images/back_icon_new.png',
+                //               height: 17,
+                //               width: 17,
+                //             ),
+                //     ],
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // const Divider(
+                //   thickness: 1,
+                //   color: Color(0x1A000000),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     Get.toNamed(PublishPostScreen.route);
+                //   },
+                //   child: Row(
+                //     children: [
+                //       Image.asset(height: 24, 'assets/icons/send_icon.png'),
+                //       const SizedBox(
+                //         width: 20,
+                //       ),
+                //       Text(
+                //         'News Feed'.tr,
+                //         style: GoogleFonts.poppins(
+                //             color: const Color(0xFF2A3032),
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w500),
+                //       ),
+                //       const Spacer(),
+                //       profileController.selectedLAnguage.value == 'English'
+                //           ? Image.asset(
+                //               'assets/images/forward_icon.png',
+                //               height: 17,
+                //               width: 17,
+                //             )
+                //           : Image.asset(
+                //               'assets/images/back_icon_new.png',
+                //               height: 17,
+                //               width: 17,
+                //             ),
+                //     ],
+                //   ),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // const Divider(
+                //   thickness: 1,
+                //   color: Color(0x1A000000),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // GestureDetector(
+                //   behavior: HitTestBehavior.translucent,
+                //   onTap: () {
+                //     Get.toNamed(FrequentlyAskedQuestionsScreen.route);
+                //   },
+                //   child: Row(
+                //     children: [
+                //       Image.asset(height: 25, 'assets/icons/faq.png'),
+                //       const SizedBox(
+                //         width: 20,
+                //       ),
+                //       Text(
+                //         AppStrings.faq.tr,
+                //         style: GoogleFonts.poppins(
+                //             color: const Color(0xFF2A3032),
+                //             fontSize: 16,
+                //             fontWeight: FontWeight.w500),
+                //       ),
+                //       const Spacer(),
+                //       profileController.selectedLAnguage.value == 'English'
+                //           ? Image.asset(
+                //               'assets/images/forward_icon.png',
+                //               height: 17,
+                //               width: 17,
+                //             )
+                //           : Image.asset(
+                //               'assets/images/back_icon_new.png',
+                //               height: 17,
+                //               width: 17,
+                //             ),
+                //     ],
+                //   ),
+                // ),
                 // const SizedBox(
                 //   height: 5,
                 // ),
@@ -677,13 +744,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 //     ],
                 //   ),
                 // ),
-                const SizedBox(
-                  height: 5,
-                ),
-                const Divider(
-                  thickness: 1,
-                  color: Color(0x1A000000),
-                ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // const Divider(
+                //   thickness: 1,
+                //   color: Color(0x1A000000),
+                // ),
                 ...vendorPartner(),
                 const Divider(
                   thickness: 1,
@@ -720,20 +787,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Text(
                         AppStrings.address.tr,
                         style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                            color: const Color(0xFF2A3032),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
+                      profileController.selectedLAnguage.value == 'English'
+                          ? Image.asset(
+                              'assets/images/forward_icon.png',
+                              height: 17,
+                              width: 17,
+                            )
+                          : Image.asset(
+                              'assets/images/back_icon_new.png',
+                              height: 17,
+                              width: 17,
+                            ),
                     ],
                   ),
                 ),
@@ -758,27 +827,35 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           return Container(
                               decoration: const BoxDecoration(
                                   color: Colors.white,
-                                  borderRadius:
-                                      BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20))),
                               child: Obx(() {
                                 return Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20, top: 20),
                                       child: Container(
                                           decoration: BoxDecoration(
-                                              border: Border.all(color: const Color(0xffDCDCDC)),
-                                              borderRadius: BorderRadius.circular(15)),
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xffDCDCDC)),
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
                                           child: RadioListTile(
                                             title: Text('English'.tr),
-                                            activeColor: const Color(0xff014E70),
+                                            activeColor:
+                                                const Color(0xff014E70),
                                             value: "English",
-                                            groupValue: profileController.selectedLAnguage.value,
+                                            groupValue: profileController
+                                                .selectedLAnguage.value,
                                             onChanged: (value) {
                                               locale = const Locale('en', 'US');
-                                              profileController.selectedLAnguage.value = value!;
+                                              profileController.selectedLAnguage
+                                                  .value = value!;
                                               updateLanguage("English");
                                               setState(() {});
                                             },
@@ -788,19 +865,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       height: 10,
                                     ),
                                     Padding(
-                                      padding: const EdgeInsets.only(left: 20, right: 20),
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20),
                                       child: Container(
                                           decoration: BoxDecoration(
-                                              border: Border.all(color: const Color(0xffDCDCDC)),
-                                              borderRadius: BorderRadius.circular(15)),
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xffDCDCDC)),
+                                              borderRadius:
+                                                  BorderRadius.circular(15)),
                                           child: RadioListTile(
                                             title: Text('Arabic'.tr),
-                                            activeColor: const Color(0xff014E70),
+                                            activeColor:
+                                                const Color(0xff014E70),
                                             value: "عربي",
-                                            groupValue: profileController.selectedLAnguage.value,
+                                            groupValue: profileController
+                                                .selectedLAnguage.value,
                                             onChanged: (value) {
                                               locale = const Locale('ar', 'AR');
-                                              profileController.selectedLAnguage.value = value!;
+                                              profileController.selectedLAnguage
+                                                  .value = value!;
                                               updateLanguage("عربي");
                                               setState(() {});
                                             },
@@ -838,16 +922,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       },
                                       child: Center(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                                          padding: const EdgeInsets.only(
+                                              left: 20, right: 20, bottom: 20),
                                           child: Container(
                                             height: 56,
-                                            width: MediaQuery.sizeOf(context).width,
+                                            width: MediaQuery.sizeOf(context)
+                                                .width,
                                             color: const Color(0xff014E70),
                                             child: Center(
                                               child: Text(
                                                 'Apply'.tr,
                                                 style: GoogleFonts.poppins(
-                                                    fontSize: 18, fontWeight: FontWeight.w500, color: Colors.white),
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: Colors.white),
                                               ),
                                             ),
                                           ),
@@ -868,20 +956,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Text(
                         AppStrings.language.tr,
                         style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                            color: const Color(0xFF2A3032),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
+                      profileController.selectedLAnguage.value == 'English'
+                          ? Image.asset(
+                              'assets/images/forward_icon.png',
+                              height: 17,
+                              width: 17,
+                            )
+                          : Image.asset(
+                              'assets/images/back_icon_new.png',
+                              height: 17,
+                              width: 17,
+                            ),
                     ],
                   ),
                 ),
@@ -909,20 +999,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Text(
                         AppStrings.aboutUs.tr,
                         style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                            color: const Color(0xFF2A3032),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
+                      profileController.selectedLAnguage.value == 'English'
+                          ? Image.asset(
+                              'assets/images/forward_icon.png',
+                              height: 17,
+                              width: 17,
+                            )
+                          : Image.asset(
+                              'assets/images/back_icon_new.png',
+                              height: 17,
+                              width: 17,
+                            ),
                     ],
                   ),
                 ),
@@ -956,20 +1048,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Text(
                         AppStrings.contactUs.tr,
                         style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                            color: const Color(0xFF2A3032),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
+                      profileController.selectedLAnguage.value == 'English'
+                          ? Image.asset(
+                              'assets/images/forward_icon.png',
+                              height: 17,
+                              width: 17,
+                            )
+                          : Image.asset(
+                              'assets/images/back_icon_new.png',
+                              height: 17,
+                              width: 17,
+                            ),
                     ],
                   ),
                 ),
@@ -990,27 +1084,30 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   },
                   child: Row(
                     children: [
-                      Image.asset(height: 25, 'assets/icons/termscondition.png'),
+                      Image.asset(
+                          height: 25, 'assets/icons/termscondition.png'),
                       const SizedBox(
                         width: 20,
                       ),
                       Text(
                         AppStrings.termsCondition.tr,
                         style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                            color: const Color(0xFF2A3032),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
+                      profileController.selectedLAnguage.value == 'English'
+                          ? Image.asset(
+                              'assets/images/forward_icon.png',
+                              height: 17,
+                              width: 17,
+                            )
+                          : Image.asset(
+                              'assets/images/back_icon_new.png',
+                              height: 17,
+                              width: 17,
+                            ),
                     ],
                   ),
                 ),
@@ -1038,20 +1135,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Text(
                         AppStrings.returnPolicy.tr,
                         style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                            color: const Color(0xFF2A3032),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
+                      profileController.selectedLAnguage.value == 'English'
+                          ? Image.asset(
+                              'assets/images/forward_icon.png',
+                              height: 17,
+                              width: 17,
+                            )
+                          : Image.asset(
+                              'assets/images/back_icon_new.png',
+                              height: 17,
+                              width: 17,
+                            ),
                     ],
                   ),
                 ),
@@ -1069,7 +1168,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
                               title: Text('Delete Account'.tr),
-                              content: Text('Do you want to delete your account'.tr),
+                              content:
+                                  Text('Do you want to delete your account'.tr),
                               actions: <Widget>[
                                 TextButton(
                                   onPressed: () => Get.back(),
@@ -1079,16 +1179,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   onPressed: () {
                                     if (profileController.userLoggedIn) {
                                       repositories
-                                          .postApi(url: ApiUrls.deleteUser, context: context)
+                                          .postApi(
+                                              url: ApiUrls.deleteUser,
+                                              context: context)
                                           .then((value) async {
-                                        deleteModal.value = UserDeleteModel.fromJson(jsonDecode(value));
+                                        deleteModal.value =
+                                            UserDeleteModel.fromJson(
+                                                jsonDecode(value));
                                         if (deleteModal.value.status == true) {
-                                          SharedPreferences shared = await SharedPreferences.getInstance();
+                                          SharedPreferences shared =
+                                              await SharedPreferences
+                                                  .getInstance();
                                           await shared.clear();
                                           Get.back();
                                           setState(() {});
                                           Get.toNamed(LoginScreen.route);
-                                          profileController.userLoggedIn = false;
+                                          profileController.userLoggedIn =
+                                              false;
                                           profileController.updateUI();
                                           profileController.getDataProfile();
                                           cartController.getCart();
@@ -1110,10 +1217,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         minLeadingWidth: 0,
                         contentPadding: EdgeInsets.zero,
                         minVerticalPadding: 0,
-                        visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
+                        visualDensity:
+                            const VisualDensity(vertical: -4, horizontal: -4),
                         title: Row(
                           children: [
-                            Image.asset(height: 25, 'assets/icons/drawerprofile.png'),
+                            Image.asset(
+                                height: 25, 'assets/icons/drawerprofile.png'),
                             const SizedBox(
                               width: 20,
                             ),
@@ -1121,20 +1230,23 @@ class _CustomDrawerState extends State<CustomDrawer> {
                               child: Text(
                                 AppStrings.deleteAccount.tr,
                                 style: GoogleFonts.poppins(
-                                    color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                    color: const Color(0xFF2A3032),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       )
@@ -1161,7 +1273,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
                           title: Text('Logout Account'.tr),
-                          content: Text('Do you want to logout your account'.tr),
+                          content:
+                              Text('Do you want to logout your account'.tr),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () => Get.back(),
@@ -1170,7 +1283,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             TextButton(
                               onPressed: () async {
                                 if (profileController.userLoggedIn) {
-                                  SharedPreferences shared = await SharedPreferences.getInstance();
+                                  SharedPreferences shared =
+                                      await SharedPreferences.getInstance();
                                   await shared.clear();
                                   setState(() {});
                                   Get.back();
@@ -1201,22 +1315,26 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         width: 20,
                       ),
                       Text(
-                        profileController.userLoggedIn ? AppStrings.signOut.tr : AppStrings.login.tr,
+                        profileController.userLoggedIn
+                            ? AppStrings.signOut.tr
+                            : AppStrings.login.tr,
                         style: GoogleFonts.poppins(
-                            color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                            color: const Color(0xFF2A3032),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500),
                       ),
                       const Spacer(),
-                      profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/forward_icon.png',
-                        height: 17,
-                        width: 17,
-                      ) :
-                      Image.asset(
-                        'assets/images/back_icon_new.png',
-                        height: 17,
-                        width: 17,
-                      ),
+                      profileController.selectedLAnguage.value == 'English'
+                          ? Image.asset(
+                              'assets/images/forward_icon.png',
+                              height: 17,
+                              width: 17,
+                            )
+                          : Image.asset(
+                              'assets/images/back_icon_new.png',
+                              height: 17,
+                              width: 17,
+                            ),
                     ],
                   ),
                 ),
@@ -1254,8 +1372,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         Container(
                           width: 100,
                           height: 6,
-                          decoration:
-                              BoxDecoration(color: Colors.grey.shade400, borderRadius: BorderRadius.circular(100)),
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade400,
+                              borderRadius: BorderRadius.circular(100)),
                         )
                       ],
                     ),
@@ -1272,7 +1391,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     Expanded(
                       child: Obx(() {
                         if (cartController.refreshInt11.value > 0) {}
-                        List<AddressData> shippingAddress = cartController.addressListModel.address!.shipping ?? [];
+                        List<AddressData> shippingAddress =
+                            cartController.addressListModel.address!.shipping ??
+                                [];
                         return CustomScrollView(
                           shrinkWrap: true,
                           slivers: [
@@ -1282,26 +1403,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                   Expanded(
                                     child: Text(
                                       "Shipping Address",
-                                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16),
+                                      style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
                                     ),
                                   ),
                                   TextButton.icon(
                                       onPressed: () {
                                         bottomSheet(addressData: AddressData());
                                       },
-                                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                                      style: TextButton.styleFrom(
+                                          padding: EdgeInsets.zero),
                                       icon: const Icon(
                                         Icons.add,
                                         size: 20,
                                       ),
                                       label: Text(
                                         "Add New",
-                                        style: GoogleFonts.poppins(fontSize: 15),
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 15),
                                       ))
                                 ],
                               ),
                             ),
-                            const SliverPadding(padding: EdgeInsets.only(top: 4)),
+                            const SliverPadding(
+                                padding: EdgeInsets.only(top: 4)),
                             shippingAddress.isNotEmpty
                                 ? SliverList(
                                     delegate: SliverChildBuilderDelegate(
@@ -1311,32 +1437,42 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       return GestureDetector(
                                         behavior: HitTestBehavior.translucent,
                                         onTap: () {
-                                          cartController.selectedAddress = address;
+                                          cartController.selectedAddress =
+                                              address;
                                           Get.back();
                                           setState(() {});
                                         },
                                         child: Container(
                                           width: size.width,
-                                          margin: const EdgeInsets.only(bottom: 15),
+                                          margin:
+                                              const EdgeInsets.only(bottom: 15),
                                           padding: const EdgeInsets.all(15),
                                           decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              border: Border.all(color: const Color(0xffDCDCDC))),
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xffDCDCDC))),
                                           child: IntrinsicHeight(
                                             child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
                                               children: [
-                                                const Icon(Icons.location_on_rounded),
+                                                const Icon(
+                                                    Icons.location_on_rounded),
                                                 const SizedBox(
                                                   width: 10,
                                                 ),
                                                 Expanded(
                                                   child: Text(
-                                                    address.getCompleteAddressInFormat,
+                                                    address
+                                                        .getCompleteAddressInFormat,
                                                     style: GoogleFonts.poppins(
-                                                        fontWeight: FontWeight.w500,
+                                                        fontWeight:
+                                                            FontWeight.w500,
                                                         fontSize: 15,
-                                                        color: const Color(0xff585858)),
+                                                        color: const Color(
+                                                            0xff585858)),
                                                   ),
                                                 ),
                                                 Column(
@@ -1348,80 +1484,150 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                           Icons.more_vert,
                                                           color: Colors.black,
                                                         ),
-                                                        padding: EdgeInsets.zero,
+                                                        padding:
+                                                            EdgeInsets.zero,
                                                         onSelected: (value) {
                                                           setState(() {});
-                                                          Navigator.pushNamed(context, value.toString());
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              value.toString());
                                                         },
                                                         itemBuilder: (ac) {
                                                           return [
                                                             PopupMenuItem(
                                                               onTap: () {
-                                                                bottomSheet(addressData: address);
+                                                                bottomSheet(
+                                                                    addressData:
+                                                                        address);
                                                               },
                                                               // value: '/Edit',
-                                                              child: Text("Edit".tr),
+                                                              child: Text(
+                                                                  "Edit".tr),
                                                             ),
                                                             PopupMenuItem(
                                                               onTap: () {
-                                                                cartController.selectedAddress = address;
-                                                                cartController.countryName.value =
-                                                                    address.country.toString();
-                                                                cartController.countryId =
-                                                                    address.getCountryId.toString();
-                                                                cartController.getCart();
+                                                                cartController
+                                                                        .selectedAddress =
+                                                                    address;
+                                                                cartController
+                                                                        .countryName
+                                                                        .value =
+                                                                    address
+                                                                        .country
+                                                                        .toString();
+                                                                cartController
+                                                                        .countryId =
+                                                                    address
+                                                                        .getCountryId
+                                                                        .toString();
+                                                                cartController
+                                                                    .getCart();
                                                                 print(
                                                                     'onTap is....${cartController.countryName.value}');
                                                                 print(
                                                                     'onTap is....${cartController.selectedAddress.id.toString()}');
-                                                                if (cartController.isDelivery.value == true) {
-                                                                  cartController.addressDeliFirstName.text =
-                                                                      cartController.selectedAddress.getFirstName;
-                                                                  cartController.addressDeliLastName.text =
-                                                                      cartController.selectedAddress.getLastName;
-                                                                  cartController.addressDeliEmail.text =
-                                                                      cartController.selectedAddress.getEmail;
-                                                                  cartController.addressDeliPhone.text =
-                                                                      cartController.selectedAddress.getPhone;
-                                                                  cartController.addressDeliAlternate.text =
-                                                                      cartController.selectedAddress.getAlternate;
-                                                                  cartController.addressDeliAddress.text =
-                                                                      cartController.selectedAddress.getAddress;
-                                                                  cartController.addressDeliZipCode.text =
-                                                                      cartController.selectedAddress.getZipCode;
-                                                                  cartController.addressCountryController.text =
-                                                                      cartController.selectedAddress.getCountry;
-                                                                  cartController.addressStateController.text =
-                                                                      cartController.selectedAddress.getState;
-                                                                  cartController.addressCityController.text =
-                                                                      cartController.selectedAddress.getCity;
+                                                                if (cartController
+                                                                        .isDelivery
+                                                                        .value ==
+                                                                    true) {
+                                                                  cartController
+                                                                          .addressDeliFirstName
+                                                                          .text =
+                                                                      cartController
+                                                                          .selectedAddress
+                                                                          .getFirstName;
+                                                                  cartController
+                                                                          .addressDeliLastName
+                                                                          .text =
+                                                                      cartController
+                                                                          .selectedAddress
+                                                                          .getLastName;
+                                                                  cartController
+                                                                          .addressDeliEmail
+                                                                          .text =
+                                                                      cartController
+                                                                          .selectedAddress
+                                                                          .getEmail;
+                                                                  cartController
+                                                                          .addressDeliPhone
+                                                                          .text =
+                                                                      cartController
+                                                                          .selectedAddress
+                                                                          .getPhone;
+                                                                  cartController
+                                                                          .addressDeliAlternate
+                                                                          .text =
+                                                                      cartController
+                                                                          .selectedAddress
+                                                                          .getAlternate;
+                                                                  cartController
+                                                                          .addressDeliAddress
+                                                                          .text =
+                                                                      cartController
+                                                                          .selectedAddress
+                                                                          .getAddress;
+                                                                  cartController
+                                                                          .addressDeliZipCode
+                                                                          .text =
+                                                                      cartController
+                                                                          .selectedAddress
+                                                                          .getZipCode;
+                                                                  cartController
+                                                                          .addressCountryController
+                                                                          .text =
+                                                                      cartController
+                                                                          .selectedAddress
+                                                                          .getCountry;
+                                                                  cartController
+                                                                          .addressStateController
+                                                                          .text =
+                                                                      cartController
+                                                                          .selectedAddress
+                                                                          .getState;
+                                                                  cartController
+                                                                          .addressCityController
+                                                                          .text =
+                                                                      cartController
+                                                                          .selectedAddress
+                                                                          .getCity;
                                                                 }
 
                                                                 defaultAddressApi();
                                                                 setState(() {});
                                                               },
                                                               // value: '/slotViewScreen',
-                                                              child: Text("Default Address".tr),
+                                                              child: Text(
+                                                                  "Default Address"
+                                                                      .tr),
                                                             ),
                                                             PopupMenuItem(
                                                               onTap: () {
                                                                 cartController
                                                                     .deleteAddress(
-                                                                  context: context,
-                                                                  id: address.id.toString(),
+                                                                  context:
+                                                                      context,
+                                                                  id: address.id
+                                                                      .toString(),
                                                                 )
-                                                                    .then((value) {
-                                                                  if (value == true) {
-                                                                    cartController.addressListModel.address!.shipping!
+                                                                    .then(
+                                                                        (value) {
+                                                                  if (value ==
+                                                                      true) {
+                                                                    cartController
+                                                                        .addressListModel
+                                                                        .address!
+                                                                        .shipping!
                                                                         .removeWhere((element) =>
                                                                             element.id.toString() ==
                                                                             address.id.toString());
-                                                                    cartController.updateUI();
+                                                                    cartController
+                                                                        .updateUI();
                                                                   }
                                                                 });
                                                               },
                                                               // value: '/deactivate',
-                                                              child: Text("Delete".tr),
+                                                              child: Text(
+                                                                  "Delete".tr),
                                                             )
                                                           ];
                                                         }),
@@ -1429,9 +1635,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                         ? Text(
                                                             "Default",
                                                             style: GoogleFonts.poppins(
-                                                                fontWeight: FontWeight.w500,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
                                                                 fontSize: 15,
-                                                                color: const Color(0xff585858)),
+                                                                color: const Color(
+                                                                    0xff585858)),
                                                           )
                                                         : const SizedBox(),
                                                   ],
@@ -1488,12 +1697,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                     child: Text(
                                       "No Shipping Address Added!",
                                       textAlign: TextAlign.center,
-                                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16),
+                                      style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
                                     ),
                                   ),
                             SliverToBoxAdapter(
                               child: SizedBox(
-                                height: MediaQuery.of(context).viewInsets.bottom,
+                                height:
+                                    MediaQuery.of(context).viewInsets.bottom,
                               ),
                             ),
                           ],
@@ -1522,20 +1734,32 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   Future addAddressWithoutLogin({required AddressData addressData}) {
     Size size = MediaQuery.of(context).size;
-    final TextEditingController firstNameController = TextEditingController(text: addressData.firstName ?? "");
-    final TextEditingController emailController = TextEditingController(text: addressData.email ?? "");
-    final TextEditingController lastNameController = TextEditingController(text: addressData.lastName ?? "");
-    final TextEditingController phoneController = TextEditingController(text: addressData.phone ?? "");
+    final TextEditingController firstNameController =
+        TextEditingController(text: addressData.firstName ?? "");
+    final TextEditingController emailController =
+        TextEditingController(text: addressData.email ?? "");
+    final TextEditingController lastNameController =
+        TextEditingController(text: addressData.lastName ?? "");
+    final TextEditingController phoneController =
+        TextEditingController(text: addressData.phone ?? "");
     final TextEditingController alternatePhoneController =
         TextEditingController(text: addressData.alternatePhone ?? "");
-    final TextEditingController addressController = TextEditingController(text: addressData.address ?? "");
-    final TextEditingController address2Controller = TextEditingController(text: addressData.address2 ?? "");
-    final TextEditingController cityController = TextEditingController(text: addressData.city ?? "");
-    final TextEditingController countryController = TextEditingController(text: addressData.country ?? "");
-    final TextEditingController stateController = TextEditingController(text: addressData.state ?? "");
-    final TextEditingController zipCodeController = TextEditingController(text: addressData.zipCode ?? "");
-    final TextEditingController landmarkController = TextEditingController(text: addressData.landmark ?? "");
-    final TextEditingController titleController = TextEditingController(text: addressData.type ?? "");
+    final TextEditingController addressController =
+        TextEditingController(text: addressData.address ?? "");
+    final TextEditingController address2Controller =
+        TextEditingController(text: addressData.address2 ?? "");
+    final TextEditingController cityController =
+        TextEditingController(text: addressData.city ?? "");
+    final TextEditingController countryController =
+        TextEditingController(text: addressData.country ?? "");
+    final TextEditingController stateController =
+        TextEditingController(text: addressData.state ?? "");
+    final TextEditingController zipCodeController =
+        TextEditingController(text: addressData.zipCode ?? "");
+    final TextEditingController landmarkController =
+        TextEditingController(text: addressData.landmark ?? "");
+    final TextEditingController titleController =
+        TextEditingController(text: addressData.type ?? "");
 
     final formKey = GlobalKey<FormState>();
     String code = 'KW';
@@ -1608,13 +1832,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Text(
                         'Phone *'.tr,
                         style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w500, fontSize: 16, color: const Color(0xff585858)),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: const Color(0xff585858)),
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       IntlPhoneField(
-                        textAlign: profileController.selectedLAnguage.value == 'English' ? TextAlign.left  : TextAlign.right,
+                        textAlign: profileController.selectedLAnguage.value ==
+                                'English'
+                            ? TextAlign.left
+                            : TextAlign.right,
                         // key: ValueKey(profileController.code),
                         flagsButtonPadding: const EdgeInsets.all(8),
                         dropdownIconPosition: IconPosition.trailing,
@@ -1632,17 +1861,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             border: OutlineInputBorder(
                               borderSide: BorderSide(),
                             ),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor)),
-                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor))),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.shadowColor)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.shadowColor))),
                         initialCountryCode: profileController.code.toString(),
-                        languageCode:  profileController.code,
+                        languageCode: profileController.code,
                         onCountryChanged: (phone) {
                           profileController.code = phone.code;
                           print(phone.code);
                           print(profileController.code.toString());
                         },
                         onChanged: (phone) {
-                          profileController.code = phone.countryISOCode.toString();
+                          profileController.code =
+                              phone.countryISOCode.toString();
                           print(phone.countryCode);
                           print(profileController.code.toString());
                         },
@@ -1670,13 +1904,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       Text(
                         'Alternate Phone*'.tr,
                         style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w500, fontSize: 16, color: const Color(0xff585858)),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: const Color(0xff585858)),
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       IntlPhoneField(
-                        textAlign: profileController.selectedLAnguage.value == 'English' ? TextAlign.left  : TextAlign.right,
+                        textAlign: profileController.selectedLAnguage.value ==
+                                'English'
+                            ? TextAlign.left
+                            : TextAlign.right,
                         // key: ValueKey(profileController.code),
                         flagsButtonPadding: const EdgeInsets.all(8),
                         dropdownIconPosition: IconPosition.trailing,
@@ -1695,10 +1934,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             border: OutlineInputBorder(
                               borderSide: BorderSide(),
                             ),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor)),
-                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor))),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.shadowColor)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.shadowColor))),
                         initialCountryCode: code.toString(),
-                        languageCode:  profileController.code,
+                        languageCode: profileController.code,
                         onCountryChanged: (phone) {
                           code = phone.code;
                           print(phone.code);
@@ -1758,28 +2001,43 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           showAddressSelectorDialog(
                               addressList: modelCountryList!.country!
                                   .map((e) => CommonAddressRelatedClass(
-                                      title: e.name.toString(), addressId: e.id.toString(), flagUrl: e.icon.toString()))
+                                      title: e.name.toString(),
+                                      addressId: e.id.toString(),
+                                      flagUrl: e.icon.toString()))
                                   .toList(),
                               selectedAddressIdPicked: (String gg) {
-                                String previous = ((selectedCountry ?? Country()).id ?? "").toString();
-                                selectedCountry =
-                                    modelCountryList!.country!.firstWhere((element) => element.id.toString() == gg);
+                                String previous =
+                                    ((selectedCountry ?? Country()).id ?? "")
+                                        .toString();
+                                selectedCountry = modelCountryList!.country!
+                                    .firstWhere((element) =>
+                                        element.id.toString() == gg);
                                 cartController.countryCode = gg.toString();
-                                cartController.countryName.value = selectedCountry!.name.toString();
-                                print('countrrtr ${cartController.countryName.toString()}');
-                                print('countrrtr ${cartController.countryCode.toString()}');
-                                if (previous != selectedCountry!.id.toString()) {
+                                cartController.countryName.value =
+                                    selectedCountry!.name.toString();
+                                print(
+                                    'countrrtr ${cartController.countryName.toString()}');
+                                print(
+                                    'countrrtr ${cartController.countryCode.toString()}');
+                                if (previous !=
+                                    selectedCountry!.id.toString()) {
                                   countryIddd = gg.toString();
-                                  getStateList(countryId: countryIddd.toString(), reset: true).then((value) {
+                                  getStateList(
+                                          countryId: countryIddd.toString(),
+                                          reset: true)
+                                      .then((value) {
                                     setState(() {});
                                   });
                                   setState(() {});
                                 }
                               },
-                              selectedAddressId: ((selectedCountry ?? Country()).id ?? "").toString());
+                              selectedAddressId:
+                                  ((selectedCountry ?? Country()).id ?? "")
+                                      .toString());
                         },
-                        controller:
-                            TextEditingController(text: (selectedCountry ?? Country()).name ?? countryController.text),
+                        controller: TextEditingController(
+                            text: (selectedCountry ?? Country()).name ??
+                                countryController.text),
                         validator: (v) {
                           if (v!.trim().isEmpty) {
                             return "Please select country";
@@ -1791,14 +2049,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         title: 'State',
                         hintText: 'Select State',
                         controller: TextEditingController(
-                            text: (selectedState ?? CountryState()).stateName ?? stateController.text),
+                            text: (selectedState ?? CountryState()).stateName ??
+                                stateController.text),
                         readOnly: true,
                         onTap: () {
                           if (countryIddd == 'null') {
                             showToast("Select Country First");
                             return;
                           }
-                          if (modelStateList == null && stateRefresh.value > 0) {
+                          if (modelStateList == null &&
+                              stateRefresh.value > 0) {
                             showToast("Select Country First");
                             return;
                           }
@@ -1807,36 +2067,56 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           }
                           if (modelStateList!.state!.isEmpty) return;
                           showAddressSelectorDialog(
-                              addressList: profileController.selectedLAnguage.value == 'English'
-                                  ? modelStateList!.state!
-                                      .map((e) => CommonAddressRelatedClass(
-                                          title: e.stateName.toString(), addressId: e.stateId.toString()))
-                                      .toList()
-                                  : modelStateList!.state!
-                                      .map((e) => CommonAddressRelatedClass(
-                                          title: e.arabStateName.toString(), addressId: e.stateId.toString()))
-                                      .toList(),
+                              addressList:
+                                  profileController.selectedLAnguage.value ==
+                                          'English'
+                                      ? modelStateList!.state!
+                                          .map((e) => CommonAddressRelatedClass(
+                                              title: e.stateName.toString(),
+                                              addressId: e.stateId.toString()))
+                                          .toList()
+                                      : modelStateList!.state!
+                                          .map((e) => CommonAddressRelatedClass(
+                                              title: e.arabStateName.toString(),
+                                              addressId: e.stateId.toString()))
+                                          .toList(),
                               selectedAddressIdPicked: (String gg) {
-                                String previous = ((selectedState ?? CountryState()).stateId ?? "").toString();
-                                selectedState =
-                                    modelStateList!.state!.firstWhere((element) => element.stateId.toString() == gg);
+                                String previous =
+                                    ((selectedState ?? CountryState())
+                                                .stateId ??
+                                            "")
+                                        .toString();
+                                selectedState = modelStateList!.state!
+                                    .firstWhere((element) =>
+                                        element.stateId.toString() == gg);
                                 cartController.stateCode = gg.toString();
-                                cartController.stateName.value = selectedState!.stateName.toString();
-                                print('state ${cartController.stateCode.toString()}');
-                                print('stateNameee ${cartController.stateName.toString()}');
-                                if (previous != selectedState!.stateId.toString()) {
+                                cartController.stateName.value =
+                                    selectedState!.stateName.toString();
+                                print(
+                                    'state ${cartController.stateCode.toString()}');
+                                print(
+                                    'stateNameee ${cartController.stateName.toString()}');
+                                if (previous !=
+                                    selectedState!.stateId.toString()) {
                                   stateIddd = gg.toString();
-                                  getCityList(stateId: stateIddd.toString(), reset: true).then((value) {
+                                  getCityList(
+                                          stateId: stateIddd.toString(),
+                                          reset: true)
+                                      .then((value) {
                                     setState(() {});
                                   });
                                   setState(() {});
                                 }
                               },
-                              selectedAddressId: ((selectedState ?? CountryState()).stateId ?? "").toString());
+                              selectedAddressId:
+                                  ((selectedState ?? CountryState()).stateId ??
+                                          "")
+                                      .toString());
                         },
                         suffixIcon: Obx(() {
                           if (stateRefresh.value > 0) {
-                            return const Icon(Icons.keyboard_arrow_down_rounded);
+                            return const Icon(
+                                Icons.keyboard_arrow_down_rounded);
                           }
                           return const CupertinoActivityIndicator();
                         }),
@@ -1852,8 +2132,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         readOnly: true,
                         title: 'City',
                         hintText: 'Select City',
-                        controller:
-                            TextEditingController(text: (selectedCity ?? City()).cityName ?? cityController.text),
+                        controller: TextEditingController(
+                            text: (selectedCity ?? City()).cityName ??
+                                cityController.text),
                         onTap: () {
                           if (modelCityList == null && cityRefresh.value > 0) {
                             showToast("Select State First");
@@ -1864,29 +2145,40 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           }
                           if (modelCityList!.city!.isEmpty) return;
                           showAddressSelectorDialog(
-                              addressList: profileController.selectedLAnguage.value == 'English'
-                                  ? modelCityList!.city!
-                                      .map((e) => CommonAddressRelatedClass(
-                                          title: e.cityName.toString(), addressId: e.cityId.toString()))
-                                      .toList()
-                                  : modelCityList!.city!
-                                      .map((e) => CommonAddressRelatedClass(
-                                          title: e.arabCityName.toString(), addressId: e.cityId.toString()))
-                                      .toList(),
+                              addressList:
+                                  profileController.selectedLAnguage.value ==
+                                          'English'
+                                      ? modelCityList!.city!
+                                          .map((e) => CommonAddressRelatedClass(
+                                              title: e.cityName.toString(),
+                                              addressId: e.cityId.toString()))
+                                          .toList()
+                                      : modelCityList!.city!
+                                          .map((e) => CommonAddressRelatedClass(
+                                              title: e.arabCityName.toString(),
+                                              addressId: e.cityId.toString()))
+                                          .toList(),
                               selectedAddressIdPicked: (String gg) {
-                                selectedCity =
-                                    modelCityList!.city!.firstWhere((element) => element.cityId.toString() == gg);
+                                selectedCity = modelCityList!.city!.firstWhere(
+                                    (element) =>
+                                        element.cityId.toString() == gg);
                                 cartController.cityCode = gg.toString();
-                                cartController.cityName.value = selectedCity!.cityName.toString();
-                                print('state ${cartController.cityName.toString()}');
-                                print('state Nameee ${cartController.cityCode.toString()}');
+                                cartController.cityName.value =
+                                    selectedCity!.cityName.toString();
+                                print(
+                                    'state ${cartController.cityName.toString()}');
+                                print(
+                                    'state Nameee ${cartController.cityCode.toString()}');
                                 setState(() {});
                               },
-                              selectedAddressId: ((selectedCity ?? City()).cityId ?? "").toString());
+                              selectedAddressId:
+                                  ((selectedCity ?? City()).cityId ?? "")
+                                      .toString());
                         },
                         suffixIcon: Obx(() {
                           if (cityRefresh.value > 0) {
-                            return const Icon(Icons.keyboard_arrow_down_rounded);
+                            return const Icon(
+                                Icons.keyboard_arrow_down_rounded);
                           }
                           return const CupertinoActivityIndicator();
                         }),
@@ -1938,12 +2230,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 city: cityController.text.trim(),
                                 address2: address2Controller.text.trim(),
                                 address: addressController.text.trim(),
-                                alternatePhone: alternatePhoneController.text.trim(),
+                                alternatePhone:
+                                    alternatePhoneController.text.trim(),
                                 landmark: landmarkController.text.trim(),
                                 phone: phoneController.text.trim(),
                                 zipCode: zipCodeController.text.trim(),
                                 email: emailController.text.trim(),
-                                phoneCountryCode: profileController.code.toString());
+                                phoneCountryCode:
+                                    profileController.code.toString());
                             setState(() {});
                             Get.back();
                             // cartController.updateAddressApi(
@@ -1964,17 +2258,21 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           }
                         },
                         child: Container(
-                          decoration: const BoxDecoration(color: Color(0xff014E70)),
+                          decoration:
+                              const BoxDecoration(color: Color(0xff014E70)),
                           height: 56,
                           alignment: Alignment.bottomCenter,
                           child: Align(
                               alignment: Alignment.center,
                               child: Text("Save",
                                   style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500, fontSize: 19, color: Colors.white))),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 19,
+                                      color: Colors.white))),
                         ),
                       ),
-                      SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+                      SizedBox(
+                          height: MediaQuery.of(context).viewInsets.bottom),
                     ],
                   ),
                 ),
@@ -2000,8 +2298,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
               padding: const EdgeInsets.all(18.0),
               child: StatefulBuilder(builder: (context, newState) {
                 String gg = searchController.text.trim().toLowerCase();
-                List<CommonAddressRelatedClass> filteredList =
-                    addressList.where((element) => element.title.toString().toLowerCase().contains(gg)).toList();
+                List<CommonAddressRelatedClass> filteredList = addressList
+                    .where((element) =>
+                        element.title.toString().toLowerCase().contains(gg))
+                    .toList();
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -2014,13 +2314,16 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.buttonColor, width: 1.2)),
+                              borderSide: const BorderSide(
+                                  color: AppTheme.buttonColor, width: 1.2)),
                           enabled: true,
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.buttonColor, width: 1.2)),
+                              borderSide: const BorderSide(
+                                  color: AppTheme.buttonColor, width: 1.2)),
                           suffixIcon: const Icon(Icons.search),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12)),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 12)),
                     ),
                     Flexible(
                         child: ListView.builder(
@@ -2028,38 +2331,48 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                // dense: true,
-                                onTap: () {
-                                  selectedAddressIdPicked(filteredList[index].addressId);
-                                  FocusManager.instance.primaryFocus!.unfocus();
-                                  Get.back();
-                                },
-                                leading: filteredList[index].flagUrl != null
-                                    ? SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: filteredList[index].flagUrl.toString().contains("svg")
-                                            ? SvgPicture.network(
-                                                filteredList[index].flagUrl.toString(),
-                                              )
-                                            : Image.network(
-                                                filteredList[index].flagUrl.toString(),
-                                                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                                              ))
-                                    : null,
-                                visualDensity: VisualDensity.compact,
-                                title: Text(filteredList[index].title),
-                                trailing: selectedAddressId == filteredList[index].addressId
-                                    ? const Icon(
-                                        Icons.check,
-                                        color: Colors.purple,
-                                      )
-                                    :  Image.asset(
-                                  'assets/images/forward_icon.png',
-                                  height: 17,
-                                  width: 17,
-                                )
-                              );
+                                  // dense: true,
+                                  onTap: () {
+                                    selectedAddressIdPicked(
+                                        filteredList[index].addressId);
+                                    FocusManager.instance.primaryFocus!
+                                        .unfocus();
+                                    Get.back();
+                                  },
+                                  leading: filteredList[index].flagUrl != null
+                                      ? SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: filteredList[index]
+                                                  .flagUrl
+                                                  .toString()
+                                                  .contains("svg")
+                                              ? SvgPicture.network(
+                                                  filteredList[index]
+                                                      .flagUrl
+                                                      .toString(),
+                                                )
+                                              : Image.network(
+                                                  filteredList[index]
+                                                      .flagUrl
+                                                      .toString(),
+                                                  errorBuilder: (_, __, ___) =>
+                                                      const SizedBox.shrink(),
+                                                ))
+                                      : null,
+                                  visualDensity: VisualDensity.compact,
+                                  title: Text(filteredList[index].title),
+                                  trailing: selectedAddressId ==
+                                          filteredList[index].addressId
+                                      ? const Icon(
+                                          Icons.check,
+                                          color: Colors.purple,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/forward_icon.png',
+                                          height: 17,
+                                          width: 17,
+                                        ));
                             }))
                   ],
                 );
@@ -2100,32 +2413,36 @@ class _CustomDrawerState extends State<CustomDrawer> {
             Expanded(
               child: Text(
                 AppStrings.vendorPartner.tr,
-                style: GoogleFonts.poppins(color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(
+                    color: const Color(0xFF2A3032),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
               ),
             ),
-            if( profileController.selectedLAnguage.value == 'English')
-              !_isValue.value == true ?   Image.asset(
-                'assets/images/forward_icon.png',
-                height: 17,
-                width: 17,
-              ) :
-              Image.asset(
-                'assets/images/drop_icon.png',
-                height: 17,
-                width: 17,
-              ),
-            if( profileController.selectedLAnguage.value != 'English')
-              !_isValue.value == true ?
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 17,
-                width: 17,
-              ) :
-              Image.asset(
-                'assets/images/drop_icon.png',
-                height: 17,
-                width: 17,
-              ),
+            if (profileController.selectedLAnguage.value == 'English')
+              !_isValue.value == true
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 17,
+                      width: 17,
+                    )
+                  : Image.asset(
+                      'assets/images/drop_icon.png',
+                      height: 17,
+                      width: 17,
+                    ),
+            if (profileController.selectedLAnguage.value != 'English')
+              !_isValue.value == true
+                  ? Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 17,
+                      width: 17,
+                    )
+                  : Image.asset(
+                      'assets/images/drop_icon.png',
+                      height: 17,
+                      width: 17,
+                    ),
           ],
         ),
       ),
@@ -2148,70 +2465,104 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                         child: TextButton(
                                           onPressed: () {
                                             print("Index---:${vendor[index]}");
-                                            if (vendor[index] == 'Dashboard' && vendorArab[index] == 'لوحة القيادة') {
-                                              Get.toNamed( VendorDashBoardScreen.route);
-                                            }
-                                            else if(vendor[index] == 'Order' && vendorArab[index] == 'طلب'){
+                                            if (vendor[index] == 'Dashboard' &&
+                                                vendorArab[index] ==
+                                                    'لوحة القيادة') {
+                                              Get.toNamed(
+                                                  VendorDashBoardScreen.route);
+                                            } else if (vendor[index] ==
+                                                    'Order' &&
+                                                vendorArab[index] == 'طلب') {
                                               Get.to(const VendorOrderList());
-                                            }
-                                            else if(vendor[index] == 'Pending Products' && vendorArab[index] == 'المنتجات المعلقة'){
-                                              Get.to(const VendorProductScreen());
-                                            }
-                                            else if(vendor[index] == 'Approved Products' && vendorArab[index] == 'المنتجات المعتمدة'){
-                                              Get.to(const ApproveProductScreen());
-                                            }
-                                            else if(vendor[index] == 'Operating Hours' && vendorArab[index] == 'ساعات العمل'){
+                                            } else if (vendor[index] ==
+                                                    'Pending Products' &&
+                                                vendorArab[index] ==
+                                                    'المنتجات المعلقة') {
+                                              Get.to(
+                                                  const VendorProductScreen());
+                                            } else if (vendor[index] ==
+                                                    'Approved Products' &&
+                                                vendorArab[index] ==
+                                                    'المنتجات المعتمدة') {
+                                              Get.to(
+                                                  const ApproveProductScreen());
+                                            } else if (vendor[index] ==
+                                                    'Operating Hours' &&
+                                                vendorArab[index] ==
+                                                    'ساعات العمل') {
                                               Get.to(const SetTimeScreen());
-                                            }
-                                            else if(vendor[index] == 'Bank Details' && vendorArab[index] == 'التفاصيل المصرفية'){
+                                            } else if (vendor[index] ==
+                                                    'Bank Details' &&
+                                                vendorArab[index] ==
+                                                    'التفاصيل المصرفية') {
                                               Get.to(const BankDetailsScreen());
-                                            }
-                                            else if(vendor[index] == 'Earnings' && vendorArab[index] == 'الأرباح'){
+                                            } else if (vendor[index] ==
+                                                    'Earnings' &&
+                                                vendorArab[index] ==
+                                                    'الأرباح') {
                                               Get.to(const WithdrawMoney());
-                                            }
-                                            else if(vendor[index] == 'Social Media' && vendorArab[index] == 'وسائل التواصل الاجتماعي'){
-                                              Get.to(const SocialMediaStoreAccount());
-                                            }
-                                            else {
-                                              showToast('Your payment is not successfull'.tr);
+                                            } else if (vendor[index] ==
+                                                    'Social Media' &&
+                                                vendorArab[index] ==
+                                                    'وسائل التواصل الاجتماعي') {
+                                              Get.to(
+                                                  const SocialMediaStoreAccount());
+                                            } else {
+                                              showToast(
+                                                  'Your payment is not successfull'
+                                                      .tr);
                                             }
                                           },
                                           style: TextButton.styleFrom(
-                                              visualDensity: const VisualDensity(vertical: -3, horizontal: -3),
-                                              padding: EdgeInsets.zero.copyWith(left: 16)),
+                                              visualDensity:
+                                                  const VisualDensity(
+                                                      vertical: -3,
+                                                      horizontal: -3),
+                                              padding: EdgeInsets.zero
+                                                  .copyWith(left: 16)),
                                           child: Row(
                                             children: [
-                                              if( profileController.selectedLAnguage.value == 'English')
-                                              Expanded(
-                                                child: Text(
-                                                  vendor[index],
-                                                  style: GoogleFonts.poppins(
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.w400,
-                                                      color: Colors.grey.shade500),
+                                              if (profileController
+                                                      .selectedLAnguage.value ==
+                                                  'English')
+                                                Expanded(
+                                                  child: Text(
+                                                    vendor[index],
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors
+                                                            .grey.shade500),
+                                                  ),
                                                 ),
-                                              ),
-                                              if( profileController.selectedLAnguage.value != 'English')
+                                              if (profileController
+                                                      .selectedLAnguage.value !=
+                                                  'English')
                                                 Expanded(
                                                   child: Text(
                                                     vendorArab[index],
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 16,
-                                                        fontWeight: FontWeight.w400,
-                                                        color: Colors.grey.shade500),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors
+                                                            .grey.shade500),
                                                   ),
                                                 ),
-                                              profileController.selectedLAnguage.value == 'English' ?
-                                              Image.asset(
-                                                'assets/images/forward_icon.png',
-                                                height: 17,
-                                                width: 17,
-                                              ) :
-                                              Image.asset(
-                                                'assets/images/back_icon_new.png',
-                                                height: 17,
-                                                width: 17,
-                                              ),
+                                              profileController.selectedLAnguage
+                                                          .value ==
+                                                      'English'
+                                                  ? Image.asset(
+                                                      'assets/images/forward_icon.png',
+                                                      height: 17,
+                                                      width: 17,
+                                                    )
+                                                  : Image.asset(
+                                                      'assets/images/back_icon_new.png',
+                                                      height: 17,
+                                                      width: 17,
+                                                    ),
                                             ],
                                           ),
                                         ),
@@ -2228,44 +2579,67 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       Expanded(
                                         child: TextButton(
                                           onPressed: () {
-                                            if (vendor1[index] == 'Become a vendor' &&  vendor1Arab[index] == 'كن بائعًا') {
-                                              Get.to(()=> const WhichplantypedescribeyouScreen());
-                                            }
-                                            else if(vendor1[index] == 'Pending Products' && vendor1Arab[index] == 'المنتجات المعلقة'){
-                                              Get.to(const VendorProductScreen());
-                                            }
-                                            else if(vendor1[index] == 'Approved Products' && vendor1Arab[index] == 'المنتجات المعتمدة'){
-                                              Get.to(const ApproveProductScreen());
-                                            }
-                                            else {
-                                              showToast('Your payment is not successfull'.tr);
+                                            if (vendor1[index] ==
+                                                    'Become a vendor' &&
+                                                vendor1Arab[index] ==
+                                                    'كن بائعًا') {
+                                              Get.to(() =>
+                                                  const WhichplantypedescribeyouScreen());
+                                            } else if (vendor1[index] ==
+                                                    'Pending Products' &&
+                                                vendor1Arab[index] ==
+                                                    'المنتجات المعلقة') {
+                                              Get.to(
+                                                  const VendorProductScreen());
+                                            } else if (vendor1[index] ==
+                                                    'Approved Products' &&
+                                                vendor1Arab[index] ==
+                                                    'المنتجات المعتمدة') {
+                                              Get.to(
+                                                  const ApproveProductScreen());
+                                            } else {
+                                              showToast(
+                                                  'Your payment is not successfull'
+                                                      .tr);
                                             }
                                           },
                                           style: TextButton.styleFrom(
-                                              visualDensity: const VisualDensity(vertical: -3, horizontal: -3),
-                                              padding: EdgeInsets.zero.copyWith(left: 16)),
+                                              visualDensity:
+                                                  const VisualDensity(
+                                                      vertical: -3,
+                                                      horizontal: -3),
+                                              padding: EdgeInsets.zero
+                                                  .copyWith(left: 16)),
                                           child: Row(
                                             children: [
-                                              if( profileController.selectedLAnguage.value != 'English')
+                                              if (profileController
+                                                      .selectedLAnguage.value !=
+                                                  'English')
                                                 Expanded(
                                                   child: Text(
                                                     vendor1Arab[index],
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 16,
-                                                        fontWeight: FontWeight.w400,
-                                                        color: Colors.grey.shade500),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors
+                                                            .grey.shade500),
                                                   ),
                                                 ),
-                                              if( profileController.selectedLAnguage.value == 'English')
-                                              Expanded(
-                                                child: Text(
-                                                  vendor1[index],
-                                                  style: GoogleFonts.poppins(
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.w400,
-                                                      color: Colors.grey.shade500),
+                                              if (profileController
+                                                      .selectedLAnguage.value ==
+                                                  'English')
+                                                Expanded(
+                                                  child: Text(
+                                                    vendor1[index],
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors
+                                                            .grey.shade500),
+                                                  ),
                                                 ),
-                                              ),
                                               const Icon(
                                                 Icons.arrow_forward_ios_rounded,
                                                 size: 14,

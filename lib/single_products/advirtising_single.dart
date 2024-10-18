@@ -397,7 +397,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
 
   // CarouselController carouselController = CarouselController();
 
-  CarouselControllerImpl carouselControllerImpl = CarouselControllerImpl();
+  CarouselSliderController carouselController = CarouselSliderController();
 
   final wishListController = Get.put(WishListController());
 
@@ -600,7 +600,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                               currentIndex.value = index;
                             },
                           ),
-                          carouselController: carouselControllerImpl,
+                          carouselController: carouselController,
                           items: imagesList.map((i) {
                             return Builder(
                               builder: (BuildContext context) {
@@ -1148,9 +1148,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                               width: 7,
                             ),
                             Text(
-                              modelSingleProduct
-                                      .value.advertisingProduct!.serialNumber ??
-                                  '',
+                              "${modelSingleProduct.value.advertisingProduct!.serialNumber ?? ''}",
                               style: GoogleFonts.poppins(
                                   color: Colors.grey,
                                   fontSize: 14,
@@ -1239,7 +1237,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                                   fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(
-                              width: 20,
+                              width: 7,
                             ),
                             // const Icon(
                             //   Icons.circle,
@@ -1249,13 +1247,30 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                             const SizedBox(
                               width: 7,
                             ),
-                            Text(
-                              locationController.city.toString(),
-                              style: GoogleFonts.poppins(
+                            Obx(() {
+                              return Text(
+                                "${locationController.addressListModel.value.defaultAddress!.city ?? ''},"
+                                " ${locationController.addressListModel.value.defaultAddress!.state ?? ''},"
+                                " ${locationController.addressListModel.value.defaultAddress!.country ?? ''}",
+                                overflow: TextOverflow.ellipsis,
+                                softWrap: true,
+                                // locationController.addressListModel.value
+                                //         .defaultAddress!.city ??
+                                //     '',
+                                style: GoogleFonts.poppins(
                                   color: const Color(0xFF014E70),
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w500),
-                            ),
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              );
+                            })
+                            // Text(
+                            //   locationController.city.toString(),
+                            //   style: GoogleFonts.poppins(
+                            //       color: const Color(0xFF014E70),
+                            //       fontSize: 14,
+                            //       fontWeight: FontWeight.w500),
+                            // ),
                           ],
                         ),
                         const SizedBox(
@@ -1388,6 +1403,148 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                           ],
                         ),
 
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Row(
+                          children: [
+                            // Image.asset("assets/svgs/pak.png"),
+
+                            Text(
+                              modelSingleProduct.value.advertisingProduct!
+                                  .storemeta!.storeLocation
+                                  .toString(),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(
+                              width: 16,
+                            ),
+                            Text(
+                              modelSingleProduct.value.advertisingProduct!
+                                  .storemeta!.storeCategory
+                                  .toString(),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 13,
+                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Column(
+                        //       mainAxisAlignment: MainAxisAlignment.start,
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //
+                        //         Text(
+                        //           'Store rating',
+                        //           style: GoogleFonts.poppins(
+                        //
+                        //               color: Colors.grey,
+                        //               fontSize: 12,
+                        //               fontWeight: FontWeight.w400),
+                        //         ),
+                        //       ],
+                        //
+                        //     ),
+                        //
+                        //   ],
+                        // ),
+
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Divider(
+                          color: Colors.grey.withOpacity(.5),
+                          thickness: 1,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                          'Seller documents'.tr,
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+
+                        modelSingleProduct.value.advertisingProduct!.storemeta!
+                                    .commercialLicense !=
+                                ""
+                            ? Center(
+                                child: CachedNetworkImage(
+                                  imageUrl: modelSingleProduct
+                                      .value
+                                      .advertisingProduct!
+                                      .storemeta!
+                                      .commercialLicense
+                                      .toString(),
+                                  height: 180,
+                                  fit: BoxFit.cover,
+                                  // errorWidget: (_, __, ___) => Image.asset('assets/images/new_logo.png')
+                                ),
+                              )
+                            : Center(
+                                child: Text(
+                                  'No documents were uploaded by vendor '.tr,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                        // Center(child: Image.asset("assets/svgs/licence.png")),
+
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        Text(
+                          'Seller translated documents'.tr,
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        modelSingleProduct.value.advertisingProduct!.storemeta!
+                                    .document2 !=
+                                ""
+                            ? Center(
+                                child: CachedNetworkImage(
+                                  imageUrl: modelSingleProduct.value
+                                      .advertisingProduct!.storemeta!.document2
+                                      .toString(),
+                                  height: 180,
+                                  fit: BoxFit.cover,
+                                  // errorWidget: (_, __, ___) => Image.asset('assets/images/new_logo.png')
+                                ),
+                              )
+                            : Center(
+                                child: Text(
+                                  'No documents were uploaded by vendor '.tr,
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ),
+                      const  SizedBox(
+                          height: 10,
+                        ),
                         const SizedBox(
                           height: 15,
                         ),
@@ -2047,7 +2204,6 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                                                   '${'QTY'.tr}: ${item.inStock} ${'piece'.tr}',
                                                   style: normalStyle,
                                                 ),
-                                         
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment

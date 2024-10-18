@@ -420,7 +420,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
 
   // bool get checkLoaded => modelSingleProduct.singleGiveawayProduct!.pname != null;
 
-  CarouselControllerImpl carouselController = CarouselControllerImpl();
+  CarouselSliderController carouselController = CarouselSliderController();
 
   final wishListController = Get.put(WishListController());
 
@@ -1153,46 +1153,61 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                 ],
                               )
                             : Text('No reviews'.tr),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                          height: 28,
-                          child: ListView.builder(
-                            itemCount: modelSingleProduct
-                                .value.simpleProduct!.catId!.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 7, horizontal: 37),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF014E70)
-                                          .withOpacity(.07),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Text(
-                                      modelSingleProduct.value.simpleProduct!
-                                          .catId![index].title
-                                          .toString(),
-                                      style: GoogleFonts.poppins(
-                                          color: const Color(0xFF014E70),
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  )
-                                ],
-                              );
-                            },
+                        if (modelSingleProduct
+                            .value.simpleProduct!.catId!.isNotEmpty)
+                          Column(
+                            children: [
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                height: 28,
+                                child: ListView.builder(
+                                  itemCount: modelSingleProduct
+                                      .value.simpleProduct!.catId!.length,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 7, horizontal: 37),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF014E70)
+                                                .withOpacity(.07),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: Text(
+                                            modelSingleProduct
+                                                .value
+                                                .simpleProduct!
+                                                .catId![index]
+                                                .title
+                                                .toString(),
+                                            style: GoogleFonts.poppins(
+                                                color: const Color(0xFF014E70),
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        )
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
                           ),
-                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -2798,7 +2813,6 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                               SizedBox(
                                                 height: 20,
                                               ),
-                                            
                                             ],
                                           ),
                                         ),

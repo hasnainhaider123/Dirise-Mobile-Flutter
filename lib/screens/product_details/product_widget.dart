@@ -377,7 +377,7 @@ class _ProductUIState extends State<ProductUI> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
+    onTap: () {
           debugPrint(widget.productElement.itemType);
            debugPrint(widget.productElement.productType);
           
@@ -402,7 +402,7 @@ class _ProductUIState extends State<ProductUI> {
           }
         },
       child:  widget.productElement.itemType != 'giveaway' &&   widget.productElement.isShowcase != true && widget.productElement.showcaseProduct != true
-          ? Padding(
+? Padding(
         padding: const EdgeInsets.all(5.0),
         child:
         Container(
