@@ -190,7 +190,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppTheme.buttonColor,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Padding(

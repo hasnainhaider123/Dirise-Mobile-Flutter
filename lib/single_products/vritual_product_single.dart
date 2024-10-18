@@ -395,7 +395,7 @@ class _VritualProductScreenState extends State<VritualProductScreen> {
 
   // bool get checkLoaded => modelSingleProduct.singleGiveawayProduct!.pname != null;
 
-  CarouselControllerImpl carouselController = CarouselControllerImpl();
+CarouselSliderController carouselController = CarouselSliderController();
 
   final wishListController = Get.put(WishListController());
 

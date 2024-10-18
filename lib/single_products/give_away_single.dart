@@ -412,7 +412,7 @@ class _GiveAwayProductState extends State<GiveAwayProduct> {
 
   // bool get checkLoaded => modelSingleProduct.singleGiveawayProduct!.pname != null;
 
-  CarouselControllerImpl carouselController = CarouselControllerImpl();
+CarouselSliderController carouselController = CarouselSliderController();
 
   final wishListController = Get.put(WishListController());
 
