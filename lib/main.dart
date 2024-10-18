@@ -13,18 +13,15 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 //this is edited by huzaifa
-
+//this is tested by faraz
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Color(0xFFEBF3F6),
-      statusBarIconBrightness: Brightness.dark
-
-    )
-  );
+      statusBarIconBrightness: Brightness.dark));
   NotificationService().initializeNotification();
   await Hive.initFlutter();
   runApp(const MyApp());
@@ -38,18 +35,16 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       title: 'DIRISE',
       translations: LocaleString(),
-      locale: const Locale('en','US'),
+      locale: const Locale('en', 'US'),
       builder: (c, child) => GestureDetector(
         onTap: () {
           FocusManager.instance.primaryFocus!.unfocus();
         },
-
         behavior: HitTestBehavior.translucent,
         child: child!,
       ),
@@ -61,7 +56,8 @@ class _MyAppState extends State<MyApp> {
             surfaceTint: Colors.white,
             background: Colors.white,
           ),
-          cardTheme: const CardTheme(color: Colors.white, surfaceTintColor: Colors.white)),
+          cardTheme: const CardTheme(
+              color: Colors.white, surfaceTintColor: Colors.white)),
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
