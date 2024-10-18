@@ -78,14 +78,17 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     }
     stateRefresh.value = -5;
     final map = {'country_id': countryId};
-    await repositories.postApi(url: ApiUrls.allStatesUrl, mapData: map).then((value) {
+    await repositories
+        .postApi(url: ApiUrls.allStatesUrl, mapData: map)
+        .then((value) {
       modelStateList = ModelStateList.fromJson(jsonDecode(value));
       stateRefresh.value = DateTime.now().millisecondsSinceEpoch;
     }).catchError((e) {
       stateRefresh.value = DateTime.now().millisecondsSinceEpoch;
     });
   }
-  RxString shippingType= "".obs;
+
+  RxString shippingType = "".obs;
   applyCouponCode() {
     if (couponController.text.trim().isEmpty) {
       showToast("Please enter coupon code".tr);
@@ -95,8 +98,11 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     Map<String, dynamic> map = {};
     map["coupon_code"] = couponController.text.trim();
     map["total_price"] = cartController.cartModel.subtotal.toString();
-    cartController.repositories.postApi(url: ApiUrls.applyCouponUrl, context: context, mapData: map).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    cartController.repositories
+        .postApi(url: ApiUrls.applyCouponUrl, context: context, mapData: map)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       showToast(response.message);
       if (response.status == true) {
         couponApplied = jsonDecode(value)["discount"].toString();
@@ -110,6 +116,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     });
   }
 
+  String? selectedShippingMethod;
   RxString paymentOption = "".obs;
   RxString shipmentProvider = "".obs;
 
@@ -128,9 +135,12 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     cartController.selectedAddress = AddressData();
     cartController.countryName.value = '';
     cartController.shippingId = '';
-    cartController.addressCountryController = TextEditingController(text: cartController.selectedAddress.getCountry ?? "");
-    cartController.addressStateController = TextEditingController(text: cartController.selectedAddress.getState ?? "");
-    cartController.addressCityController = TextEditingController(text: cartController.selectedAddress.getCity ?? "");
+    cartController.addressCountryController = TextEditingController(
+        text: cartController.selectedAddress.getCountry ?? "");
+    cartController.addressStateController = TextEditingController(
+        text: cartController.selectedAddress.getState ?? "");
+    cartController.addressCityController = TextEditingController(
+        text: cartController.selectedAddress.getCity ?? "");
     cartController.deliveryOption1.value = '';
     cartController.isDelivery.value = false;
     cartController.addressDeliFirstName.text = '';
@@ -141,14 +151,26 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     cartController.addressDeliAddress.text = '';
     cartController.addressDeliZipCode.text = '';
     cartController.myDefaultAddressData();
-    if(cartController.myDefaultAddressModel.value.defaultAddress != null){
-      if(cartController.myDefaultAddressModel.value.defaultAddress?.isDefault == true){
-        cartController.selectedAddress = AddressData(firstName: cartController.myDefaultAddressModel.value.defaultAddress!.firstName,
-            lastName:  cartController.myDefaultAddressModel.value.defaultAddress!.lastName,email:  cartController.myDefaultAddressModel.value.defaultAddress!.email,
-            id:  cartController.myDefaultAddressModel.value.defaultAddress!.id,zipCode:  cartController.myDefaultAddressModel.value.defaultAddress!.zipCode,
-            city:  cartController.myDefaultAddressModel.value.defaultAddress!.city,companyName:  cartController.myDefaultAddressModel.value.defaultAddress!.companyName,
-            state:  cartController.myDefaultAddressModel.value.defaultAddress!.state
-        );
+    if (cartController.myDefaultAddressModel.value.defaultAddress != null) {
+      if (cartController
+              .myDefaultAddressModel.value.defaultAddress?.isDefault ==
+          true) {
+        cartController.selectedAddress = AddressData(
+            firstName: cartController
+                .myDefaultAddressModel.value.defaultAddress!.firstName,
+            lastName: cartController
+                .myDefaultAddressModel.value.defaultAddress!.lastName,
+            email: cartController
+                .myDefaultAddressModel.value.defaultAddress!.email,
+            id: cartController.myDefaultAddressModel.value.defaultAddress!.id,
+            zipCode: cartController
+                .myDefaultAddressModel.value.defaultAddress!.zipCode,
+            city:
+                cartController.myDefaultAddressModel.value.defaultAddress!.city,
+            companyName: cartController
+                .myDefaultAddressModel.value.defaultAddress!.companyName,
+            state: cartController
+                .myDefaultAddressModel.value.defaultAddress!.state);
       }
     }
     profileController.checkUserLoggedIn().then((value) {
@@ -156,6 +178,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       cartController.getAddress();
     });
   }
+
   goBack() {
     // if(cartController.cartModel.cart!.getAllProducts.isEmpty){
     //   Future.delayed(Duration(seconds: 1)).then((value) {
@@ -167,7 +190,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   ModelCountryList? modelCountryList;
   Country? selectedCountry;
   RxInt cityRefresh = 2.obs;
-RxString shipId = "".obs;
+  RxString shipId = "".obs;
   Future getCityList({required String stateId, bool? reset}) async {
     if (reset == true) {
       modelCityList = null;
@@ -175,14 +198,17 @@ RxString shipId = "".obs;
     }
     cityRefresh.value = -5;
     final map = {'state_id': stateId};
-    await repositories.postApi(url: ApiUrls.allCityUrl, mapData: map).then((value) {
+    await repositories
+        .postApi(url: ApiUrls.allCityUrl, mapData: map)
+        .then((value) {
       modelCityList = ModelCityList.fromJson(jsonDecode(value));
       cityRefresh.value = DateTime.now().millisecondsSinceEpoch;
     }).catchError((e) {
       cityRefresh.value = DateTime.now().millisecondsSinceEpoch;
     });
   }
-  double shippingCommision=  0.0;
+
+  double shippingCommision = 0.0;
   double shippingTotal = 0;
   @override
   void dispose() {
@@ -193,10 +219,15 @@ RxString shipId = "".obs;
     cartController.countryName.value = '';
     cartController.cityName.value = '';
     cartController.countryId = '';
-    cartController.zipCode ==  cartController.myDefaultAddressModel.value.defaultAddress!.zipCode.toString();
+    cartController.zipCode ==
+        cartController.myDefaultAddressModel.value.defaultAddress!.zipCode
+            .toString();
     cartController.selectedAddress = AddressData();
-    cartController.city.value = cartController.myDefaultAddressModel.value.defaultAddress!.city.toString();
+    cartController.city.value = cartController
+        .myDefaultAddressModel.value.defaultAddress!.city
+        .toString();
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -207,24 +238,24 @@ RxString shipId = "".obs;
         surfaceTintColor: Colors.white,
         elevation: 0,
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.back();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileController.selectedLAnguage.value != 'English' ?
-              Image.asset(
-                'assets/images/forward_icon.png',
-                height: 19,
-                width: 19,
-              ) :
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 19,
-                width: 19,
-              ),
+              profileController.selectedLAnguage.value != 'English'
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 19,
+                      width: 19,
+                    )
+                  : Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 19,
+                      width: 19,
+                    ),
             ],
           ),
         ),
@@ -234,7 +265,10 @@ RxString shipId = "".obs;
           children: [
             Text(
               "Checkout".tr,
-              style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 22),
+              style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 22),
             ),
           ],
         ),
@@ -262,7 +296,8 @@ RxString shipId = "".obs;
       bottomNavigationBar: ElevatedButton(
         onPressed: () {
           if (cartController.selectedAddress.id != null ||
-              cartController.myDefaultAddressModel.value.defaultAddress != null) {
+              cartController.myDefaultAddressModel.value.defaultAddress !=
+                  null) {
             cartController.showValidation.value = true;
             showValidation.value = true;
 
@@ -271,15 +306,18 @@ RxString shipId = "".obs;
             if (cartController.deliveryOption1.value == 'delivery') {
               BuildContext? context1 = cartController.addressKey.currentContext;
               if (context1 != null) {
-                Scrollable.ensureVisible(context1, duration: const Duration(milliseconds: 650));
+                Scrollable.ensureVisible(context1,
+                    duration: const Duration(milliseconds: 650));
               }
               showToast("Please select delivery options".tr);
               return;
             }
-            if (cartController.deliveryOption1.value == "delivery" && cartController.selectedAddress.id == null) {
+            if (cartController.deliveryOption1.value == "delivery" &&
+                cartController.selectedAddress.id == null) {
               BuildContext? context1 = cartController.addressKey.currentContext;
               if (context1 != null) {
-                Scrollable.ensureVisible(context1, duration: const Duration(milliseconds: 650));
+                Scrollable.ensureVisible(context1,
+                    duration: const Duration(milliseconds: 650));
               }
               showToast("Select delivery address to complete order".tr);
               return;
@@ -292,17 +330,19 @@ RxString shipId = "".obs;
 
             // comment for testing
             // if (cartController.deliveryOption1.value == "delivery") {
-            for (var item in cartController.cartModel.cart!.carsShowroom!.entries) {
+            for (var item
+                in cartController.cartModel.cart!.carsShowroom!.entries) {
               var showroom = item.value;
-              if(showroom.products!.every((element) => element.itemType != 'service' && element.itemType != 'virtual_product' && element.productType != 'booking')) {
+              if (showroom.products!.every((element) =>
+                  element.itemType != 'service' &&
+                  element.itemType != 'virtual_product' &&
+                  element.productType != 'booking')) {
                 if (showroom.shippingOption.isEmpty) {
                   showToast("Please select shipping Method".tr);
                   return;
                 }
               }
             }
-
-
 
             // for (var item in cartController.cartModel.cart!.carsShowroom!.entries) {
             //   var showroom = item.value;
@@ -316,14 +356,16 @@ RxString shipId = "".obs;
             cartController.shippingVendorId.clear();
             cartController.shippingVendorName.clear();
             cartController.shippingPriceList.clear();
-            for (var item in cartController.cartModel.cart!.carsShowroom!.entries) {
+            for (var item
+                in cartController.cartModel.cart!.carsShowroom!.entries) {
               cartController.shippingList.add(item.value.shippingId.value);
               cartController.shippingVendorId.add(item.value.vendorId.value);
-              cartController.shippingVendorName.add(item.value.shippingVendorName.value);
-              cartController.shippingPriceList.add(item.value.vendorPrice.value.toString());
+              cartController.shippingVendorName
+                  .add(item.value.shippingVendorName.value);
+              cartController.shippingPriceList
+                  .add(item.value.vendorPrice.value.toString());
               // cartController.shippingTitle.add(item.value.vendorPrice.vale.toString());
             }
-
 
             //fedx shipping date
             // if (cartController.cartModel.cart != null && cartController.cartModel.cart!.carsShowroom != null) {
@@ -342,26 +384,27 @@ RxString shipId = "".obs;
             //   }
             // }
 
-
             cartController.placeOrder(
-
               context: context,
               currencyCode: "kwd",
               paymentMethod: paymentMethod1,
               title: cartController.shippingTitle.toString(),
-              shippingId:  shipId.value.toString(),
-                shipmentProvider: shipmentProvider.value.toString(),
+              shippingId: shipId.value.toString(),
+              shipmentProvider: shipmentProvider.value.toString(),
               // deliveryOption: cartController.deliveryOption1.value,
               deliveryOption: 'delivery'.tr,
               // purchaseType: PurchaseType.cart,
               purchaseType: PurchaseType.cart,
               subTotalPrice: cartController.cartModel.subtotal.toString(),
-              totalPrice: cartController.formattedTotal != '' ? cartController.formattedTotal.toString() : cartController.cartModel.total.toString(),
+              totalPrice: cartController.formattedTotal != ''
+                  ? cartController.formattedTotal.toString()
+                  : cartController.cartModel.total.toString(),
               couponCode: couponApplied.isNotEmpty ? appliedCode : null,
-              purchaseType1:   shippingType.value.toString(),
+              purchaseType1: shippingType.value.toString(),
               address: cartController.selectedAddress.id != null
                   ? cartController.selectedAddress.toJson()
-                  : cartController.myDefaultAddressModel.value.defaultAddress!.toJson(),
+                  : cartController.myDefaultAddressModel.value.defaultAddress!
+                      .toJson(),
               idd: cartController.shippingList.join(','),
             );
           } else {
@@ -380,7 +423,10 @@ RxString shipId = "".obs;
           child: Align(
               alignment: Alignment.center,
               child: Text("Complete Payment".tr,
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white))),
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      color: Colors.white))),
         ),
       ),
     );
@@ -393,7 +439,9 @@ RxString shipId = "".obs;
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Your Order".tr, style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18)),
+          Text("Your Order".tr,
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w500, fontSize: 18)),
           const SizedBox(
             height: 10,
           ),
@@ -403,7 +451,9 @@ RxString shipId = "".obs;
               // Text("Subtotal (${cartController.cartModel.totalQuantity} items)",
               //     style: GoogleFonts.poppins(fontWeight: FontWeight.w400, color: const Color(0xff949495))),
               Text("KWD ${cartController.cartModel.subtotal.toString()}",
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w400, color: const Color(0xff949495))),
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff949495))),
             ],
           ),
           const SizedBox(
@@ -419,7 +469,9 @@ RxString shipId = "".obs;
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("${'Coupon Applied'.tr}: $appliedCode",
-                              style: GoogleFonts.poppins(fontWeight: FontWeight.w400, color: CupertinoColors.activeGreen)),
+                              style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w400,
+                                  color: CupertinoColors.activeGreen)),
                           Text("KWD $couponApplied",
                               style: GoogleFonts.poppins(
                                   fontWeight: FontWeight.w400,
@@ -438,9 +490,14 @@ RxString shipId = "".obs;
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Sub Total".tr, style: GoogleFonts.poppins(fontWeight: FontWeight.w400, color: const Color(0xff949495))),
+              Text("Sub Total".tr,
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff949495))),
               Text("KWD ${cartController.cartModel.subtotal.toString()}",
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w400, color: const Color(0xff949495))),
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff949495))),
             ],
           ),
           10.spaceY,
@@ -448,9 +505,13 @@ RxString shipId = "".obs;
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text("Shipping Fees".tr,
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w400, color: const Color(0xff949495))),
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff949495))),
               Text("KWD ${commisionShipping.toStringAsFixed(3)}",
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w400, color: const Color(0xff949495))),
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xff949495))),
               // Text("KWD ${sPrice1.toString()}",
               //     style: GoogleFonts.poppins(fontWeight: FontWeight.w400, color: const Color(0xff949495))),
             ],
@@ -459,13 +520,16 @@ RxString shipId = "".obs;
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text("Total".tr, style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18)),
+              Text("Total".tr,
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500, fontSize: 18)),
               total == 0.0
-                  ?
-        Text("KWD ${cartController.cartModel.subtotal.toString()}",
-                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18))
+                  ? Text("KWD ${cartController.cartModel.subtotal.toString()}",
+                      style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w500, fontSize: 18))
                   : Text("KWD ${cartController.formattedTotal.toString()}",
-                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18)),
+                      style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w500, fontSize: 18)),
             ],
           ),
         ],
@@ -489,7 +553,9 @@ RxString shipId = "".obs;
                 const SizedBox(
                   height: 15,
                 ),
-                Text("Have a coupon code?".tr, style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18)),
+                Text("Have a coupon code?".tr,
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w500, fontSize: 18)),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -500,7 +566,8 @@ RxString shipId = "".obs;
                           controller: couponController,
                           decoration: InputDecoration.collapsed(
                             hintText: "Enter Code".tr,
-                            hintStyle: GoogleFonts.poppins(color: const Color(0xff949495), fontSize: 14),
+                            hintStyle: GoogleFonts.poppins(
+                                color: const Color(0xff949495), fontSize: 14),
                           )),
                     ),
                     Obx(() {
@@ -516,11 +583,16 @@ RxString shipId = "".obs;
                         applyCouponCode();
                       },
                       child: Container(
-                        decoration: BoxDecoration(color: const Color(0xff014E70), borderRadius: BorderRadius.circular(22)),
+                        decoration: BoxDecoration(
+                            color: const Color(0xff014E70),
+                            borderRadius: BorderRadius.circular(22)),
                         padding: const EdgeInsets.fromLTRB(22, 9, 22, 9),
                         child: Text(
                           "Apply".tr,
-                          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
+                          style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white),
                         ),
                       ),
                     )
@@ -543,685 +615,1097 @@ RxString shipId = "".obs;
         Obx(() {
           if (cartController.refreshInt.value > 0) {}
           return
-            // cartController.myDefaultAddressModel.value.defaultAddress!= null ?
-            cartController.cartModel.cart!=null ?
-          SingleChildScrollView(
-            child: Column(
-              children: cartController.cartModel.cart!.carsShowroom!.entries
-                  .map((e) =>
-                  Column(
-                    children: [
-                      ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: e.value.products!.length,
-                        itemBuilder: (context, ii) {
-                          Products product = e.value.products![ii];
-                          cartController.storeIdShipping = product.vendorId.toString();
-                          cartController.storeNameShipping = e.key;
-                          return Container(
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              //   border: ii != product.length - 1
-                              //       ? const Border(bottom: BorderSide(color: Color(0xffD9D9D9)))
-                              //       : null,
-                            ),
-                            margin: EdgeInsets.only(top: ii == 0 ? 16 : 0),
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                if (ii == 0)
-                                  Padding(
-                                    padding: const EdgeInsets.only(bottom: 16),
-                                    child: Text(
-                                      "${'Sold By'.tr} ${e.key}",
-                                      style: titleStyle,
-                                    ),
-                                  ),
-                                IntrinsicHeight(
-                                  child: Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        width: 75,
-                                        height: 75,
-                                        decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(12),
+              // cartController.myDefaultAddressModel.value.defaultAddress!= null ?
+              cartController.cartModel.cart != null
+                  ? SingleChildScrollView(
+                      child: Column(
+                        children:
+                            cartController.cartModel.cart!.carsShowroom!.entries
+                                .map((e) => Column(
+                                      children: [
+                                        ListView.builder(
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          shrinkWrap: true,
+                                          itemCount: e.value.products!.length,
+                                          itemBuilder: (context, ii) {
+                                            Products product =
+                                                e.value.products![ii];
+                                            cartController.storeIdShipping =
+                                                product.vendorId.toString();
+                                            cartController.storeNameShipping =
+                                                e.key;
+                                            return Container(
+                                              decoration: const BoxDecoration(
+                                                color: Colors.white,
+                                                //   border: ii != product.length - 1
+                                                //       ? const Border(bottom: BorderSide(color: Color(0xffD9D9D9)))
+                                                //       : null,
+                                              ),
+                                              margin: EdgeInsets.only(
+                                                  top: ii == 0 ? 16 : 0),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 24,
+                                                      vertical: 16),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  if (ii == 0)
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              bottom: 16),
+                                                      child: Text(
+                                                        "${'Sold By'.tr} ${e.key}",
+                                                        style: titleStyle,
+                                                      ),
+                                                    ),
+                                                  IntrinsicHeight(
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Container(
+                                                          width: 75,
+                                                          height: 75,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                          ),
+                                                          child: ClipRRect(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                            child: Image.network(
+                                                                product
+                                                                    .featuredImage
+                                                                    .toString(),
+                                                                fit: BoxFit
+                                                                    .contain,
+                                                                errorBuilder: (_,
+                                                                        __,
+                                                                        ___) =>
+                                                                    Image.asset(
+                                                                        'assets/images/new_logo.png')),
+                                                          ),
+                                                        ),
+                                                        const SizedBox(
+                                                          width: 16,
+                                                        ),
+                                                        Expanded(
+                                                          child: Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                            children: [
+                                                              Text(
+                                                                product.pname
+                                                                    .toString(),
+                                                                style: titleStyle.copyWith(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .start,
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 6,
+                                                              ),
+                                                              Text(
+                                                                product.productType ==
+                                                                        'variants'
+                                                                    ? 'KWD ${product.variantPrice}'
+                                                                    : 'KWD ${product.discountPrice}',
+                                                                style: GoogleFonts.poppins(
+                                                                    fontSize:
+                                                                        15,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400),
+                                                              ),
+                                                              const SizedBox(
+                                                                height: 4,
+                                                              ),
+                                                              // IntrinsicHeight(
+                                                              //   child: Row(
+                                                              //     children: [
+                                                              //       product.qty!= '1' ? IconButton(
+                                                              //           onPressed: () {
+                                                              //             if (product.qty
+                                                              //                 .toString()
+                                                              //                 .toNum > 1) {
+                                                              //               cartController.updateCartQuantity(
+                                                              //                   context: context,
+                                                              //                   productId: product.id.toString(),
+                                                              //                   quantity: (product.qty
+                                                              //                       .toString()
+                                                              //                       .toNum - 1).toString());
+                                                              //             } else {
+                                                              //               cartController.removeItemFromCart(
+                                                              //                   productId: product.id.toString(), context: context);
+                                                              //             }
+                                                              //           },
+                                                              //           style: IconButton.styleFrom(
+                                                              //             shape: RoundedRectangleBorder(
+                                                              //                 borderRadius: BorderRadius.circular(2)),
+                                                              //             backgroundColor: AppTheme.buttonColor,
+                                                              //           ),
+                                                              //           constraints: const BoxConstraints(minHeight: 0),
+                                                              //           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                                                              //           visualDensity: VisualDensity.compact,
+                                                              //           icon: const Icon(
+                                                              //             Icons.remove,
+                                                              //             color: Colors.white,
+                                                              //             size: 20,
+                                                              //           )) : IconButton(
+                                                              //           onPressed: () {},
+                                                              //           style: IconButton.styleFrom(
+                                                              //             shape: RoundedRectangleBorder(
+                                                              //                 borderRadius: BorderRadius.circular(2)),
+                                                              //             backgroundColor: AppTheme.primaryColor,
+                                                              //           ),
+                                                              //           constraints: const BoxConstraints(minHeight: 0),
+                                                              //           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                                                              //           visualDensity: VisualDensity.compact,
+                                                              //           icon: const Icon(
+                                                              //             Icons.remove,
+                                                              //             color: Colors.white,
+                                                              //             size: 20,
+                                                              //           )),
+                                                              //       5.spaceX,
+                                                              //       Container(
+                                                              //         decoration: BoxDecoration(
+                                                              //             borderRadius: BorderRadius.circular(2),
+                                                              //             // color: Colors.grey,
+                                                              //             border: Border.all(color: Colors.grey.shade800)),
+                                                              //         margin: const EdgeInsets.symmetric(vertical: 6),
+                                                              //         padding: const EdgeInsets.symmetric(horizontal: 15),
+                                                              //         alignment: Alignment.center,
+                                                              //         child: Text(
+                                                              //           product.qty.toString(),
+                                                              //           style: normalStyle,
+                                                              //         ),
+                                                              //       ),
+                                                              //       5.spaceX,
+                                                              //       IconButton(
+                                                              //           onPressed: () {
+                                                              //                 if (product.qty.toString().toNum <
+                                                              //                     product.inStock.toString().toNum) {
+                                                              //                   cartController.updateCartQuantity(
+                                                              //                       context: context,
+                                                              //                       productId: product.id.toString(),
+                                                              //                       quantity: (product.qty.toString().toNum + 1).toString());
+                                                              //                 }else{
+                                                              //                   showToastCenter("Out Of Stock".tr);
+                                                              //                 }
+                                                              //           },
+                                                              //           style: IconButton.styleFrom(
+                                                              //             shape: RoundedRectangleBorder(
+                                                              //                 borderRadius: BorderRadius.circular(2)),
+                                                              //             backgroundColor: AppTheme.buttonColor,
+                                                              //           ),
+                                                              //           constraints: const BoxConstraints(minHeight: 0),
+                                                              //           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                                                              //           visualDensity: VisualDensity.compact,
+                                                              //           icon: const Icon(
+                                                              //             Icons.add,
+                                                              //             color: Colors.white,
+                                                              //             size: 20,
+                                                              //           )),
+                                                              //     ],
+                                                              //   ),
+                                                              // )
+                                                            ],
+                                                          ),
+                                                        ),
+                                                        // IconButton(
+                                                        //     onPressed: () {
+                                                        //       cartController.removeItemFromCart(
+                                                        //           productId: product.id.toString(), context: context);
+                                                        //     },
+                                                        //     visualDensity: VisualDensity.compact,
+                                                        //     icon: SvgPicture.asset(
+                                                        //       "assets/svgs/delete.svg",
+                                                        //       height: 18,
+                                                        //       width: 18,
+                                                        //     ))
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            );
+                                          },
                                         ),
-                                        child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(12),
-                                          child: Image.network(
-                                              product.featuredImage.toString(),
-                                              fit: BoxFit.contain,
-                                              errorBuilder: (_, __, ___) =>  Image.asset(
-                                                  'assets/images/new_logo.png'
-                                              )
+                                        10.spaceY,
+                                        // if ( e.value.products!.any((e) =>
+                                        // e.vendorCountryId == '117' && e.isShipping == true) && cartController.countryName.value == 'Kuwait' ||  cartController.myDefaultAddressModel.value.defaultAddress!.country == 'Kuwait')
+                                        if (e.value.localShipping == true)
+                                          Container(
+                                            color: Colors.white,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 24,
+                                                      vertical: 16),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                      'assets/images/shipping_icon.png',
+                                                      height: 32,
+                                                      width: 32),
+                                                  20.spaceX,
+                                                  Text("Shipping Method".tr,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 18)),
+                                                ],
+                                              ),
+                                            ),
                                           ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        width: 16,
-                                      ),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            Text(
-                                              product.pname.toString(),
-                                              style: titleStyle.copyWith(fontWeight: FontWeight.w400),
-                                              textAlign: TextAlign.start,
-                                            ),
-                                            const SizedBox(
-                                              height: 6,
-                                            ),
-                                            Text(
-                                              product.productType == 'variants' ? 'KWD ${product.variantPrice}' :  'KWD ${product.discountPrice}',
-                                              style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w400),
-                                            ),
-                                            const SizedBox(
-                                              height: 4,
-                                            ),
-                                            // IntrinsicHeight(
-                                            //   child: Row(
-                                            //     children: [
-                                            //       product.qty!= '1' ? IconButton(
-                                            //           onPressed: () {
-                                            //             if (product.qty
-                                            //                 .toString()
-                                            //                 .toNum > 1) {
-                                            //               cartController.updateCartQuantity(
-                                            //                   context: context,
-                                            //                   productId: product.id.toString(),
-                                            //                   quantity: (product.qty
-                                            //                       .toString()
-                                            //                       .toNum - 1).toString());
-                                            //             } else {
-                                            //               cartController.removeItemFromCart(
-                                            //                   productId: product.id.toString(), context: context);
-                                            //             }
-                                            //           },
-                                            //           style: IconButton.styleFrom(
-                                            //             shape: RoundedRectangleBorder(
-                                            //                 borderRadius: BorderRadius.circular(2)),
-                                            //             backgroundColor: AppTheme.buttonColor,
-                                            //           ),
-                                            //           constraints: const BoxConstraints(minHeight: 0),
-                                            //           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                                            //           visualDensity: VisualDensity.compact,
-                                            //           icon: const Icon(
-                                            //             Icons.remove,
-                                            //             color: Colors.white,
-                                            //             size: 20,
-                                            //           )) : IconButton(
-                                            //           onPressed: () {},
-                                            //           style: IconButton.styleFrom(
-                                            //             shape: RoundedRectangleBorder(
-                                            //                 borderRadius: BorderRadius.circular(2)),
-                                            //             backgroundColor: AppTheme.primaryColor,
-                                            //           ),
-                                            //           constraints: const BoxConstraints(minHeight: 0),
-                                            //           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                                            //           visualDensity: VisualDensity.compact,
-                                            //           icon: const Icon(
-                                            //             Icons.remove,
-                                            //             color: Colors.white,
-                                            //             size: 20,
-                                            //           )),
-                                            //       5.spaceX,
-                                            //       Container(
-                                            //         decoration: BoxDecoration(
-                                            //             borderRadius: BorderRadius.circular(2),
-                                            //             // color: Colors.grey,
-                                            //             border: Border.all(color: Colors.grey.shade800)),
-                                            //         margin: const EdgeInsets.symmetric(vertical: 6),
-                                            //         padding: const EdgeInsets.symmetric(horizontal: 15),
-                                            //         alignment: Alignment.center,
-                                            //         child: Text(
-                                            //           product.qty.toString(),
-                                            //           style: normalStyle,
-                                            //         ),
-                                            //       ),
-                                            //       5.spaceX,
-                                            //       IconButton(
-                                            //           onPressed: () {
-                                            //                 if (product.qty.toString().toNum <
-                                            //                     product.inStock.toString().toNum) {
-                                            //                   cartController.updateCartQuantity(
-                                            //                       context: context,
-                                            //                       productId: product.id.toString(),
-                                            //                       quantity: (product.qty.toString().toNum + 1).toString());
-                                            //                 }else{
-                                            //                   showToastCenter("Out Of Stock".tr);
-                                            //                 }
-                                            //           },
-                                            //           style: IconButton.styleFrom(
-                                            //             shape: RoundedRectangleBorder(
-                                            //                 borderRadius: BorderRadius.circular(2)),
-                                            //             backgroundColor: AppTheme.buttonColor,
-                                            //           ),
-                                            //           constraints: const BoxConstraints(minHeight: 0),
-                                            //           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                                            //           visualDensity: VisualDensity.compact,
-                                            //           icon: const Icon(
-                                            //             Icons.add,
-                                            //             color: Colors.white,
-                                            //             size: 20,
-                                            //           )),
-                                            //     ],
-                                            //   ),
-                                            // )
-                                          ],
-                                        ),
-                                      ),
-                                      // IconButton(
-                                      //     onPressed: () {
-                                      //       cartController.removeItemFromCart(
-                                      //           productId: product.id.toString(), context: context);
-                                      //     },
-                                      //     visualDensity: VisualDensity.compact,
-                                      //     icon: SvgPicture.asset(
-                                      //       "assets/svgs/delete.svg",
-                                      //       height: 18,
-                                      //       width: 18,
-                                      //     ))
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        },
-                      ),
-                      10.spaceY,
-                      // if ( e.value.products!.any((e) =>
-                      // e.vendorCountryId == '117' && e.isShipping == true) && cartController.countryName.value == 'Kuwait' ||  cartController.myDefaultAddressModel.value.defaultAddress!.country == 'Kuwait')
-                      if(e.value.localShipping == true)
-                        Container(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/images/shipping_icon.png', height: 32, width: 32),
-                                20.spaceX,
-                                Text("Shipping Method".tr,
-                                    style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      // if ( e.value.products!.any((e) =>
-                      // e.vendorCountryId == '117' && e.isShipping == true) && cartController.countryName.value == 'Kuwait' ||   cartController.myDefaultAddressModel.value.defaultAddress!.country == 'Kuwait')
-                      if(e.value.localShipping == true)
-                        Container(
-                          height: 190,
-                          color: Colors.white,
-                          child: ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: e.value.shipping!.localShipping!.length,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15).copyWith(top: 0),
-                            itemBuilder: (context, ii) {
-                              LocalShipping product = e.value.shipping!.localShipping![ii];
-                              return Obx(() {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey),
-                                      borderRadius: BorderRadius.circular(6)
-                                  ),
-                                  width: MediaQuery.of(context).size.width * 0.5,
-                                  margin:EdgeInsets.only(right:12),
-                                  child: Column(
-                                    children: [
-                                      // 10.spaceY,
-                                      // ii == 0
-                                      //     ? 0.spaceY
-                                      //     : const Divider(
-                                      //   color: Color(0xFFD9D9D9),
-                                      //   thickness: 0.8,
-                                      // ),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 140),
-                                            child: Radio(
-                                              value: product.id.toString(),
-                                              groupValue: e.value.shippingOption.value,
-                                              visualDensity: const VisualDensity(horizontal: -4.0),
-                                              fillColor: e.value.shippingOption.value.isEmpty
-                                                  ? MaterialStateProperty.all(Colors.red)
-                                                  : null,
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  shippingType.value = 'local_shipping';
-                                                  e.value.shippingOption.value = value.toString();
-                                                  e.value.shippingId.value = e.value.shipping!.localShipping![ii].id.toString();
-                                                  e.value.vendorId.value = e.value.shipping!.localShipping![ii].vendorId!;
-                                                  e.value.shippingVendorName.value = e.value.shipping!.localShipping![ii].name.toString();
-                                                  e.value.vendorPrice.value = e.value.shipping!.localShipping![ii].value.toString();
-                                                  shippingPrice = e.value.shipping!.localShipping![ii].value.toString();
-                                                  cartController.shippingTitle = product.name.toString();
-                                                  cartController.shippingPrices1 = product.value.toString();
-                                                  cartController.shippingPrices = product.value.toString();
-                                                  cartController.shipping_new_api = product.value.toString();
-                                                  commisionShipping = double.tryParse(product.value.toString())!;
-                                                  print('fdfdff${cartController.shipping_new_api.toString()}');
-                                                  double shipping = double.parse(shippingPrice);
-                                                  double subtotal = double.parse(cartController.cartModel.subtotal.toString());
-                                                  total = subtotal + shipping;
-                                                  cartController.formattedTotal = total.toString();
-                                                  print('total isss${cartController.formattedTotal.toString()}');
+                                        // if ( e.value.products!.any((e) =>
+                                        // e.vendorCountryId == '117' && e.isShipping == true) && cartController.countryName.value == 'Kuwait' ||   cartController.myDefaultAddressModel.value.defaultAddress!.country == 'Kuwait')
+                                        if (e.value.localShipping == true)
+                                          Container(
+                                            height: 190,
+                                            color: Colors.white,
+                                            child: ListView.builder(
+                                              physics:
+                                                  const AlwaysScrollableScrollPhysics(),
+                                              scrollDirection: Axis.horizontal,
+                                              shrinkWrap: true,
+                                              itemCount: e.value.shipping!
+                                                  .localShipping!.length,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                          horizontal: 20,
+                                                          vertical: 15)
+                                                      .copyWith(top: 0),
+                                              itemBuilder: (context, ii) {
+                                                LocalShipping product = e
+                                                    .value
+                                                    .shipping!
+                                                    .localShipping![ii];
+                                                return Obx(() {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(6)),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.5,
+                                                    margin: EdgeInsets.only(
+                                                        right: 12),
+                                                    child: Column(
+                                                      children: [
+                                                        // 10.spaceY,
+                                                        // ii == 0
+                                                        //     ? 0.spaceY
+                                                        //     : const Divider(
+                                                        //   color: Color(0xFFD9D9D9),
+                                                        //   thickness: 0.8,
+                                                        // ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .only(
+                                                                      left:
+                                                                          140),
+                                                              child: Radio(
+                                                                value: product
+                                                                    .id
+                                                                    .toString(),
+                                                                groupValue:
+                                                                    selectedShippingMethod,
+                                                                visualDensity:
+                                                                    const VisualDensity(
+                                                                        horizontal:
+                                                                            -4.0),
+                                                                fillColor: e
+                                                                        .value
+                                                                        .shippingOption
+                                                                        .value
+                                                                        .isEmpty
+                                                                    ? WidgetStateProperty
+                                                                        .all(Colors
+                                                                            .red)
+                                                                    : null,
+                                                                onChanged:
+                                                                    (value) {
+                                                                  setState(() {
+                                                                    // selectedShippingMethod =
+                                                                    //     value
+                                                                    //         .toString();
+                                                                    selectedShippingMethod = value.toString();  
+                                                                    shippingType
+                                                                            .value =
+                                                                        'local_shipping';
+                                                                    e.value.shippingOption
+                                                                            .value =
+                                                                        value
+                                                                            .toString();
+                                                                    e.value.shippingId.value = e
+                                                                        .value
+                                                                        .shipping!
+                                                                        .localShipping![
+                                                                            ii]
+                                                                        .id
+                                                                        .toString();
+                                                                    e.value.vendorId.value = e
+                                                                        .value
+                                                                        .shipping!
+                                                                        .localShipping![
+                                                                            ii]
+                                                                        .vendorId!;
+                                                                    e.value.shippingVendorName.value = e
+                                                                        .value
+                                                                        .shipping!
+                                                                        .localShipping![
+                                                                            ii]
+                                                                        .name
+                                                                        .toString();
+                                                                    e.value.vendorPrice.value = e
+                                                                        .value
+                                                                        .shipping!
+                                                                        .localShipping![
+                                                                            ii]
+                                                                        .value
+                                                                        .toString();
+                                                                    shippingPrice = e
+                                                                        .value
+                                                                        .shipping!
+                                                                        .localShipping![
+                                                                            ii]
+                                                                        .value
+                                                                        .toString();
+                                                                    cartController
+                                                                            .shippingTitle =
+                                                                        product
+                                                                            .name
+                                                                            .toString();
+                                                                    cartController
+                                                                            .shippingPrices1 =
+                                                                        product
+                                                                            .value
+                                                                            .toString();
+                                                                    cartController
+                                                                            .shippingPrices =
+                                                                        product
+                                                                            .value
+                                                                            .toString();
+                                                                    cartController
+                                                                            .shipping_new_api =
+                                                                        product
+                                                                            .value
+                                                                            .toString();
+                                                                    commisionShipping =
+                                                                        double.tryParse(product
+                                                                            .value
+                                                                            .toString())!;
+                                                                    print(
+                                                                        'fdfdff${cartController.shipping_new_api.toString()}');
+                                                                    double
+                                                                        shipping =
+                                                                        double.parse(
+                                                                            shippingPrice);
+                                                                    double subtotal = double.parse(cartController
+                                                                        .cartModel
+                                                                        .subtotal
+                                                                        .toString());
+                                                                    total = subtotal +
+                                                                        shipping;
+                                                                    cartController
+                                                                            .formattedTotal =
+                                                                        total
+                                                                            .toString();
+                                                                    print(
+                                                                        'total is${cartController.formattedTotal.toString()}');
 
-                                                  // total = subtotal + shipping;
-                                                  cartController.formattedTotal = total.toStringAsFixed(3);
-                                                  e.value.sPrice = double.parse(product.value.toString());
-                                                  sPrice1 = 0.0;
-                                                  for (var item in cartController.cartModel.cart!.carsShowroom!.entries) {
-                                                    // sPrice1 = 0.0;
-                                                    if (item.value.shippingOption.value.isNotEmpty) {
-                                                      log("kiska price hai + ${item.value.sPrice}");
-                                                      sPrice1 = sPrice1 + item.value.sPrice;
-                                                      commisionShipping = sPrice1;
-                                                      // sPrice.toStringAsFixed(fractionDigits)
-                                                      // Update sPrice directly without reassigning
-                                                    }
-                                                    total = subtotal + sPrice1;
-                                                    cartController.formattedTotal = total.toStringAsFixed(3);
-                                                    print('total isss${total.toString()}');
-                                                    print('all total isss::::${cartController.formattedTotal.toString()}');
-                                                  }
+                                                                    // total = subtotal + shipping;
+                                                                    cartController
+                                                                            .formattedTotal =
+                                                                        total.toStringAsFixed(
+                                                                            3);
+                                                                    e.value.sPrice =
+                                                                        double.parse(product
+                                                                            .value
+                                                                            .toString());
+                                                                    sPrice1 =
+                                                                        0.0;
+                                                                    for (var item in cartController
+                                                                        .cartModel
+                                                                        .cart!
+                                                                        .carsShowroom!
+                                                                        .entries) {
+                                                                      // sPrice1 = 0.0;
+                                                                      if (item
+                                                                          .value
+                                                                          .shippingOption
+                                                                          .value
+                                                                          .isNotEmpty) {
+                                                                        log("kiska price hai + ${item.value.sPrice}");
+                                                                        sPrice1 =
+                                                                            sPrice1 +
+                                                                                item.value.sPrice;
+                                                                        commisionShipping =
+                                                                            sPrice1;
+                                                                        // sPrice.toStringAsFixed(fractionDigits)
+                                                                        // Update sPrice directly without reassigning
+                                                                      }
+                                                                      total = subtotal +
+                                                                          sPrice1;
+                                                                      cartController
+                                                                              .formattedTotal =
+                                                                          total.toStringAsFixed(
+                                                                              3);
+                                                                      print(
+                                                                          'total isss${total.toString()}');
+                                                                      print(
+                                                                          'all total isss::::${cartController.formattedTotal.toString()}');
+                                                                    }
+                                                                  });
+                                                                },
+                                                              ),
+                                                            ),
+                                                            Text(
+                                                                product.name
+                                                                    .toString()
+                                                                    .capitalize!
+                                                                    .replaceAll(
+                                                                        '_',
+                                                                        ' '),
+                                                                style: GoogleFonts.poppins(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        16)),
+                                                            3.spaceY,
+                                                            Text(
+                                                                '${product.value.toString()} KWD',
+                                                                style: GoogleFonts.poppins(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w400,
+                                                                    fontSize:
+                                                                        16,
+                                                                    color: const Color(
+                                                                        0xFF03a827))),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
                                                 });
+                                                // : 0.spaceY,;
                                               },
                                             ),
                                           ),
-                                          Text(product.name
-                                              .toString()
-                                              .capitalize!
-                                              .replaceAll('_', ' '),
-                                              style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16)),
-                                          3.spaceY,
-                                          Text('${product.value.toString()} KWD',
-                                              style: GoogleFonts.poppins(fontWeight: FontWeight.w400,
-                                                  fontSize: 16,
-                                                  color: const Color(0xFF03a827))),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              });
-                              // : 0.spaceY,;
-                            },
-                          ),
-                        ),
-                      // fedx
-                      // if (e.value.products!.any((e) =>
-                      // e.vendorCountryId != '117'  && e.isShipping == true) || cartController.countryName.value != 'Kuwait' && cartController.myDefaultAddressModel.value.defaultAddress!.country != 'Kuwait')
-                      //   cartController.selectedAddress.id != null ||
-                      //       cartController.myDefaultAddressModel.value.defaultAddress != null?
-                      if(e.value.shipping!.fedexShipping != null)
-                       Column(
-                         crossAxisAlignment: CrossAxisAlignment.start,
-                         mainAxisAlignment: MainAxisAlignment.start,
-                         children: [
-                           if(e.value.shipping!.fedexShipping!.output != null)
-                             Container(
-                               color: Colors.white,
-                               child: Padding(
-                                 padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                                 child: Row(
-                                   crossAxisAlignment: CrossAxisAlignment.center,
-                                   children: [
-                                     Image.asset('assets/images/shipping_icon.png', height: 32, width: 32),
-                                     20.spaceX,
-                                     Text("Fedex Shipping Method".tr,
-                                         style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18)),
-                                   ],
-                                 ),
-                               ),
-                             ),
-                           //       : const SizedBox(),
-
-                           // if (e.value.products!.any((e) =>
-                           // e.vendorCountryId != '117'  && e.isShipping == true) || cartController.countryName.value != 'Kuwait' &&  cartController.myDefaultAddressModel.value.defaultAddress!.country != 'Kuwait'
-                           // )
-                           //   if( e.value.localShipping != true && e.value.shipping!.fedexShipping!.output == null)
-                           //     Padding(
-                           //       padding: const EdgeInsets.all(8.0),
-                           //       child: Text('FedEx service is not currently available to this origin / destination combination. Enter new information or contact FedEx Customer Service.'.tr,style: const TextStyle(
-                           //         fontSize: 17
-                           //                               ),),
-                           //     ),
-                           //   cartController.selectedAddress.id != null || cartController.myDefaultAddressModel.value.defaultAddress != null ?
-                           //   e.value.fedexShipping!.output !=null ?
-                           if(e.value.shipping!.fedexShipping!.output != null)
-                             Container(
-                               height: 190,
-                               color: Colors.white,
-                               child: ListView.builder(
-                                 physics: const AlwaysScrollableScrollPhysics(),
-                                 scrollDirection: Axis.horizontal,
-                                 shrinkWrap: true,
-                                 itemCount: e.value.shipping!.fedexShipping!.output!.rateReplyDetails!.length,
-                                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15).copyWith(top: 0),
-                                 itemBuilder: (context, ii) {
-                                   return e.value.shipping!.fedexShipping!.output!= null ?
-                                   ListView.builder(
-                                     scrollDirection: Axis.horizontal,
-                                     shrinkWrap: true,
-                                     physics: const NeverScrollableScrollPhysics(),
-                                     itemCount: e.value.shipping!.fedexShipping!.output!.rateReplyDetails![ii].ratedShipmentDetails!.length,
-                                     itemBuilder: (context, index) {
-                                       RateReplyDetails product = e.value.shipping!.fedexShipping!.output!.rateReplyDetails![ii];
-                                       RatedShipmentDetails product1 = e.value.shipping!.fedexShipping!.output!.rateReplyDetails![ii].ratedShipmentDetails![index];
-                                       shippingCommision = double.parse(e.value.fedexCommision.toString());
-                                       double shipping = double.parse(product1.totalNetCharge.toString());
-                                       double fedxTotalIs = shipping + shippingCommision;
-                                       // double subtotal = double.parse(e.value.fedexCommision.toString());
-                                       // cartController.formattedTotal = fedxTotal.toStringAsFixed(3);
-                                       // print("icarryCommision"+ e.value.fedexCommision.toString());
-                                       // print("rate"+product1.totalNetCharge.toString());
-                                       // print('total isss${cartController.formattedTotal.toString()}');
-                                       // cartController.shippingPrices2 = cartController.formattedTotal.toString();
-                                       return Obx(() {
-                                         return Container(
-                                           decoration: BoxDecoration(
-                                               border: Border.all(color: Colors.grey),
-                                               borderRadius: BorderRadius.circular(6)
-                                           ),
-                                           width: MediaQuery.of(context).size.width * 0.5,
-                                           margin: EdgeInsets.only(right:12),
-                                           child: Column(
-                                             children: [
-                                               // 10.spaceY,
-                                               // index == 0
-                                               //     ? 0.spaceY
-                                               //     : const Divider(
-                                               //   color: Color(0xFFD9D9D9),
-                                               //   thickness: 0.8,
-                                               // ),
-                                               Expanded(
-                                                 child: Padding(
-                                                   padding: const EdgeInsets.only(left: 8),
-                                                   child: Column(
-                                                     crossAxisAlignment: CrossAxisAlignment.start,
-                                                     children: [
-                                                       Padding(
-                                                         padding: const EdgeInsets.only(left: 140),
-                                                         child: Radio(
-                                                           value: product.serviceType.toString(),
-                                                           groupValue:  e.value.shipping!.fedexShippingOption.value,
-                                                           visualDensity: const VisualDensity(horizontal: -4.0),
-                                                           fillColor:  e.value.shipping!.fedexShippingOption.value.isEmpty
-                                                               ? MaterialStateProperty.all(Colors.red)
-                                                               : null,
-                                                           onChanged: (value) {
-                                                             log("which is selected + $value");
-                                                             setState(() {
-                                                               shippingType.value = 'fedex_shipping';
-                                                               e.value.shippingOption.value = value.toString();
-                                                               e.value.shipping!.fedexShippingOption.value = value.toString();
-                                                               shipId.value = "";
-                                                               shipmentProvider.value = "";
-                                                               cartController.shipping_new_api = fedxTotalIs.toString();
-                                                               print('fdfdff${cartController.shipping_new_api.toString()}');
-                                                               // cartController.shippingDates = product.commit!.dateDetail!.dayFormat.toString();
-                                                               // e.value.shipping![ii].output!.rateReplyDetails![index].shippingDate = product.operationalDetail!.deliveryDate;
-                                                               cartController.shippingTitle = product.serviceName.toString();
-                                                               cartController.shippingPrices1 = fedxTotalIs.toString();
-                                                               log('dsdsdsdsd${cartController.shippingPrices1.toString()}');
-                                                               // cartController.shippingPrices = product.ratedShipmentDetails![index].totalNetCharge.toString();
-                                                               // e.value.shippingOption.value = value.toString();
-                                                               print( e.value.shipping!.fedexShippingOption.value.toString());
-                                                               print(cartController.shippingTitle.toString());
-                                                               print('select value${cartController.shippingPrices.toString()}');
-                                                               print(cartController. shippingPrices.toString());
-                                                               shippingPrice =  product.ratedShipmentDetails![index].totalNetCharge.toString();
-                                                               double subtotal = double.parse(cartController.cartModel.subtotal.toString());
-                                                               print('subtotal is $subtotal');
-                                                               double shipping = double.parse(product1.totalNetCharge.toString());
-                                                               double total123 = subtotal + shipping;
-                                                               total = total123 + shippingCommision;
-                                                               cartController.formattedTotal2 = total.toStringAsFixed(3);
-                                                               print("icarryCommision"+ e.value.fedexCommision.toString());
-                                                               print("rate"+product1.totalNetCharge.toString());
-                                                               print('total isss${cartController.formattedTotal2.toString()}');
-                                                               // cartController.shippingPrices1 = cartController.formattedTotal2.toString();
-                                                               // e.value.shippingId.value = product.id.toString();
-                                                               // e.value.vendorId.value = e.value.shipping![ii].vendorId!;
-                                                               e.value.shippingVendorName.value = product.serviceName.toString();
-                                                               e.value.vendorPrice.value = product.ratedShipmentDetails![index].totalNetCharge.toString();
-                                                               commisionShipping = fedxTotalIs.toDouble();
-                                                               print('commisionShipping ${commisionShipping.toString()}');
-                                                               e.value.sPrice = fedxTotalIs.toDouble();
-
-                                                               log("sPrices data:${e.value.sPrice}");
-                                                               log("Initial sPrice:$sPrice1");
-                                                               log("Initial sPrice:"+cartController.shippingTitle);
-                                                               log("Initial sPrice::::::::::::::::::::::"+  cartController.shippingDates);
-
-                                                               sPrice1 = 0.0;
-                                                               for (var item in cartController.cartModel.cart!.carsShowroom!.entries) {
-                                                                 // sPrice1 = 0.0;
-                                                                 if (item.value.shippingOption.value.isNotEmpty) {
-                                                                   log("kiska price hai + ${item.value.sPrice}");
-                                                                   sPrice1 = sPrice1 + item.value.sPrice;
-                                                                   commisionShipping = sPrice1;
-                                                                   // sPrice.toStringAsFixed(fractionDigits)
-                                                                   // Update sPrice directly without reassigning
-                                                                 }
-                                                                 total = subtotal + sPrice1;
-                                                                 cartController.formattedTotal = total.toStringAsFixed(3);
-                                                                 print('total isss${total.toString()}');
-                                                                 print('all total isss::::${cartController.formattedTotal.toString()}');
-                                                               }
-
-                                                             });
-                                                           },
-                                                         ),
-                                                       ),
-                                                       Text(product.serviceName.toString().capitalize!.replaceAll('_', ' '),
-                                                           style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16)),
-                                                       3.spaceY,
-                                                       Text('${ fedxTotalIs.toStringAsFixed(3)} KWD',
-                                                           style: GoogleFonts.poppins(fontWeight: FontWeight.w400,
-                                                               fontSize: 16,
-                                                               color: const Color(0xFF03a827))),
-                                                       3.spaceY,
-                                                       Text('${product.operationalDetail!.deliveryDay ?? ''}  ${product.operationalDetail!.deliveryDate ?? ''}',
-                                                           style: GoogleFonts.poppins(fontWeight: FontWeight.w400,
-                                                               fontSize: 15,
-                                                               fontStyle: FontStyle.italic,
-                                                               color: const Color(0xFF000000))),
-                                                     ],
-                                                   ),
-                                                 ),
-                                               ),
-                                             ],
-                                           ),
-                                         );
-                                       });
-                                     },
-                                   )
-                                       : const LoadingAnimation();
-                                   // : 0.spaceY,;
-                                 },
-                               ),
-                               //   )  : const LoadingAnimation() : const SizedBox(),
-                             ),
-                         ],
-                       ),
-
-                      if(e.value.shipping!.icarryShipping!.isNotEmpty )
-                        Container(
-                          color: Colors.white,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Image.asset('assets/images/shipping_icon.png', height: 32, width: 32),
-                                20.spaceX,
-                                Text("Icarry Shipping Method".tr,
-                                    style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      if(e.value.shipping!.icarryShipping!.isNotEmpty)
-                        Container(
-                          height: 190,
-                          color: Colors.white,
-                          child: ListView.builder(
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            shrinkWrap: true,
-                            itemCount: e.value.shipping!.icarryShipping!.length,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15).copyWith(top: 0),
-                            itemBuilder: (context, ii) {
-                              IcarryShipping product = e.value.shipping!.icarryShipping![ii];
-                              shippingCommision = double.parse(e.value.icarryCommision.toString());
-                              double shipping = double.parse(product.rate.toString());
-                              double icarryTotal = shipping + shippingCommision;
-                              // double subtotal = double.parse(e.value.icarryCommision.toString());
-                              // double shipping = double.parse(product.rate.toString());
-                              // total = subtotal + shipping;
-                              // cartController.formattedTotal = total.toStringAsFixed(3);
-                              // print("icarryCommision"+ e.value.icarryCommision.toString());
-                              // print("rate"+product.rate.toString());
-                              // print('total isss${cartController.formattedTotal.toString()}');
-                              // cartController.shippingPrices = cartController.formattedTotal.toString();
-                              return Obx(() {
-                                return Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey),
-                                      borderRadius: BorderRadius.circular(6)
-                                  ),
-                                  width: MediaQuery.of(context).size.width * 0.5,
-                                  margin: EdgeInsets.only(right:12),
-                                  child: Column(
-                                    children: [
-                                      // 10.spaceY,
-                                      // ii == 0
-                                      //     ? 0.spaceY
-                                      //     : const Divider(
-                                      //   color: Color(0xFFD9D9D9),
-                                      //   thickness: 0.8,
-                                      // ),
-                                      Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 8),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                        // fedx
+                                        // if (e.value.products!.any((e) =>
+                                        // e.vendorCountryId != '117'  && e.isShipping == true) || cartController.countryName.value != 'Kuwait' && cartController.myDefaultAddressModel.value.defaultAddress!.country != 'Kuwait')
+                                        //   cartController.selectedAddress.id != null ||
+                                        //       cartController.myDefaultAddressModel.value.defaultAddress != null?
+                                        if (e.value.shipping!.fedexShipping !=
+                                            null)
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
                                             children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(left: 140),
-                                                child: Radio(
-                                                  value: product.methodId.toString(),
-                                                  groupValue:  e.value.shipping!.fedexShippingOption.value,
-                                                  visualDensity: const VisualDensity(horizontal: -4.0),
-                                                  fillColor: e.value.shipping!.fedexShippingOption.value.isEmpty
-                                                      ? MaterialStateProperty.all(Colors.red)
-                                                      : null,
-                                                  onChanged: (value) {
-                                                    setState(() {
-                                                      e.value.shippingOption.value = value.toString();
-                                                      shippingType.value = "icarry_shipping";
-                                                      shipId.value = product.methodId.toString();
-                                                      shipmentProvider.value =product.carrierModel!.systemName.toString();
-                                                      cartController.shippingDates =product.methodName.toString();
-                                                      e.value.shipping!.fedexShippingOption.value = value.toString();
-                                                      cartController.shippingTitle =    product.name.toString();
-                                                      // cartController.shippingPrices1 = cartController.shippingPrices.toString();
-                                                      cartController.shipping_new_api = icarryTotal.toString();
-
-                                                      print('fdfdff${cartController.shipping_new_api.toString()}');
-                                                      // cartController.shippingPrices = product.price.toString();
-                                                      print( e.value.shipping!.fedexShippingOption.value.toString());
-                                                      print(cartController.shippingTitle.toString());
-                                                      print('select value${cartController.shippingPrices.toString()}');
-                                                      print("shipping price"+cartController.shippingPrices.toString());
-                                                      shippingPrice =   product.price.toString();
-                                                      // double subtotal = double.parse(cartController.cartModel.subtotal.toString());
-                                                      double subtotal = double.parse(cartController.cartModel.subtotal.toString());
-                                                      double shipping = double.parse(product.rate.toString());
-                                                      double total123 = subtotal + shipping;
-                                                      total = total123 + shippingCommision;
-                                                      cartController.formattedTotal2 = total.toStringAsFixed(3);
-                                                      commisionShipping = icarryTotal;
-                                                      cartController.shippingPrices1 = icarryTotal.toString();
-                                                      // double shipping = double.parse(shippingPrice.toString());
-                                                      // total = subtotal + shipping;
-                                                      // cartController.formattedTotal = total.toStringAsFixed(3);
-                                                      e.value.shippingId.value = product.methodId.toString();
-                                                      // e.value.vendorId.value = e.value.shipping![ii].vendorId!;
-                                                      // e.value.shippingVendorName.value = product.serviceName.toString();
-                                                      // e.value.vendorPrice.value = product.ratedShipmentDetails![index].totalNetCharge.toString();
-
-                                                      e.value.sPrice = icarryTotal.toDouble();
-
-                                                      log("Initial sPrice:$sPrice1");
-                                                      log("Initial sPrice:"+  cartController.shippingTitle.toString());
-                                                      log("Initial sPrice::::::::::::::::::::::"+  cartController.shippingDates);
-                                                      log("Initial sPrice:::::::::"+shipmentProvider.value.toString());
-                                                      sPrice1 = 0.0;
-                                                      for (var item in cartController
-                                                          .cartModel.cart!.carsShowroom!.entries) {
-                                                        // sPrice1 = 0.0;
-                                                        if (item.value.shippingOption.value.isNotEmpty) {
-                                                          log("kiska price hai + ${item.value.sPrice}");
-                                                          sPrice1 = sPrice1 + item.value.sPrice;
-                                                          commisionShipping = sPrice1;
-                                                          // sPrice.toStringAsFixed(fractionDigits)
-                                                          // Update sPrice directly without reassigning
-                                                        }
-                                                        total = subtotal + sPrice1;
-                                                        print('total isss gg${total.toString()}');
-                                                        cartController.formattedTotal = total.toStringAsFixed(3);
-                                                        print('total isss${total.toString()}');
-
-                                                      }
-
-                                                    });
-                                                  },
+                                              if (e.value.shipping!
+                                                      .fedexShipping!.output !=
+                                                  null)
+                                                Container(
+                                                  color: Colors.white,
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 24,
+                                                        vertical: 16),
+                                                    child: Row(
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .center,
+                                                      children: [
+                                                        Image.asset(
+                                                            'assets/images/shipping_icon.png',
+                                                            height: 32,
+                                                            width: 32),
+                                                        20.spaceX,
+                                                        Text(
+                                                            "Fedex Shipping Method"
+                                                                .tr,
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    fontSize:
+                                                                        18)),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
-                                              ),
-                                              Text(product.name
-                                                  .toString()
-                                                  .capitalize!
-                                                  .replaceAll('_', ' '),
-                                                  style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16)),
-                                              3.spaceY,
-                                              Text( '${icarryTotal.toStringAsFixed(3)} KWD',
-                                                  style: GoogleFonts.poppins(fontWeight: FontWeight.w400,
-                                                      fontSize: 16,
-                                                      color: const Color(0xFF03a827))),
-                                              3.spaceY,
-                                              Text(product.methodName.toString(),
-                                                  style: GoogleFonts.poppins(fontWeight: FontWeight.w400,
-                                                      fontSize: 16,
-                                                      color: Colors.black)),
+                                              //       : const SizedBox(),
+
+                                              // if (e.value.products!.any((e) =>
+                                              // e.vendorCountryId != '117'  && e.isShipping == true) || cartController.countryName.value != 'Kuwait' &&  cartController.myDefaultAddressModel.value.defaultAddress!.country != 'Kuwait'
+                                              // )
+                                              //   if( e.value.localShipping != true && e.value.shipping!.fedexShipping!.output == null)
+                                              //     Padding(
+                                              //       padding: const EdgeInsets.all(8.0),
+                                              //       child: Text('FedEx service is not currently available to this origin / destination combination. Enter new information or contact FedEx Customer Service.'.tr,style: const TextStyle(
+                                              //         fontSize: 17
+                                              //                               ),),
+                                              //     ),
+                                              //   cartController.selectedAddress.id != null || cartController.myDefaultAddressModel.value.defaultAddress != null ?
+                                              //   e.value.fedexShipping!.output !=null ?
+                                              if (e.value.shipping!
+                                                      .fedexShipping!.output !=
+                                                  null)
+                                                Container(
+                                                  height: 190,
+                                                  color: Colors.white,
+                                                  child: ListView.builder(
+                                                    physics:
+                                                        const AlwaysScrollableScrollPhysics(),
+                                                    scrollDirection:
+                                                        Axis.horizontal,
+                                                    shrinkWrap: true,
+                                                    itemCount: e
+                                                        .value
+                                                        .shipping!
+                                                        .fedexShipping!
+                                                        .output!
+                                                        .rateReplyDetails!
+                                                        .length,
+                                                    padding: const EdgeInsets
+                                                            .symmetric(
+                                                            horizontal: 20,
+                                                            vertical: 15)
+                                                        .copyWith(top: 0),
+                                                    itemBuilder: (context, ii) {
+                                                      return e
+                                                                  .value
+                                                                  .shipping!
+                                                                  .fedexShipping!
+                                                                  .output !=
+                                                              null
+                                                          ? ListView.builder(
+                                                              scrollDirection:
+                                                                  Axis.horizontal,
+                                                              shrinkWrap: true,
+                                                              physics:
+                                                                  const NeverScrollableScrollPhysics(),
+                                                              itemCount: e
+                                                                  .value
+                                                                  .shipping!
+                                                                  .fedexShipping!
+                                                                  .output!
+                                                                  .rateReplyDetails![
+                                                                      ii]
+                                                                  .ratedShipmentDetails!
+                                                                  .length,
+                                                              itemBuilder:
+                                                                  (context,
+                                                                      index) {
+                                                                RateReplyDetails
+                                                                    product = e
+                                                                        .value
+                                                                        .shipping!
+                                                                        .fedexShipping!
+                                                                        .output!
+                                                                        .rateReplyDetails![ii];
+                                                                RatedShipmentDetails product1 = e
+                                                                    .value
+                                                                    .shipping!
+                                                                    .fedexShipping!
+                                                                    .output!
+                                                                    .rateReplyDetails![
+                                                                        ii]
+                                                                    .ratedShipmentDetails![index];
+                                                                shippingCommision =
+                                                                    double.parse(e
+                                                                        .value
+                                                                        .fedexCommision
+                                                                        .toString());
+                                                                double
+                                                                    shipping =
+                                                                    double.parse(product1
+                                                                        .totalNetCharge
+                                                                        .toString());
+                                                                double
+                                                                    fedxTotalIs =
+                                                                    shipping +
+                                                                        shippingCommision;
+                                                                // double subtotal = double.parse(e.value.fedexCommision.toString());
+                                                                // cartController.formattedTotal = fedxTotal.toStringAsFixed(3);
+                                                                // print("icarryCommision"+ e.value.fedexCommision.toString());
+                                                                // print("rate"+product1.totalNetCharge.toString());
+                                                                // print('total isss${cartController.formattedTotal.toString()}');
+                                                                // cartController.shippingPrices2 = cartController.formattedTotal.toString();
+                                                                return Obx(() {
+                                                                  return Container(
+                                                                    decoration: BoxDecoration(
+                                                                        border: Border.all(
+                                                                            color: Colors
+                                                                                .grey),
+                                                                        borderRadius:
+                                                                            BorderRadius.circular(6)),
+                                                                    width: MediaQuery.of(context)
+                                                                            .size
+                                                                            .width *
+                                                                        0.5,
+                                                                    margin: EdgeInsets.only(
+                                                                        right:
+                                                                            12),
+                                                                    child:
+                                                                        Column(
+                                                                      children: [
+                                                                        // 10.spaceY,
+                                                                        // index == 0
+                                                                        //     ? 0.spaceY
+                                                                        //     : const Divider(
+                                                                        //   color: Color(0xFFD9D9D9),
+                                                                        //   thickness: 0.8,
+                                                                        // ),
+                                                                        Expanded(
+                                                                          child:
+                                                                              Padding(
+                                                                            padding:
+                                                                                const EdgeInsets.only(left: 8),
+                                                                            child:
+                                                                                Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: [
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.only(left: 140),
+                                                                                  child: Radio(
+                                                                                    value: product.serviceType.toString(),
+                                                                                    groupValue: selectedShippingMethod,
+                                                                                    visualDensity: const VisualDensity(horizontal: -4.0),
+                                                                                    fillColor: e.value.shipping!.fedexShippingOption.value.isEmpty ? MaterialStateProperty.all(Colors.red) : null,
+                                                                                    onChanged: (value) {
+                                                                                      log("which is selected + $value");
+                                                                                      setState(() {
+                                                                                           selectedShippingMethod = value.toString();  
+                                                                                        shippingType.value = 'fedex_shipping';
+                                                                                        e.value.shippingOption.value = value.toString();
+                                                                                        e.value.shipping!.fedexShippingOption.value = value.toString();
+                                                                                        shipId.value = "";
+                                                                                        shipmentProvider.value = "";
+                                                                                        cartController.shipping_new_api = fedxTotalIs.toString();
+                                                                                        print('fdfdff${cartController.shipping_new_api.toString()}');
+                                                                                        // cartController.shippingDates = product.commit!.dateDetail!.dayFormat.toString();
+                                                                                        // e.value.shipping![ii].output!.rateReplyDetails![index].shippingDate = product.operationalDetail!.deliveryDate;
+                                                                                        cartController.shippingTitle = product.serviceName.toString();
+                                                                                        cartController.shippingPrices1 = fedxTotalIs.toString();
+                                                                                        log('dsdsdsdsd${cartController.shippingPrices1.toString()}');
+                                                                                        // cartController.shippingPrices = product.ratedShipmentDetails![index].totalNetCharge.toString();
+                                                                                        // e.value.shippingOption.value = value.toString();
+                                                                                        print(e.value.shipping!.fedexShippingOption.value.toString());
+                                                                                        print(cartController.shippingTitle.toString());
+                                                                                        print('select value${cartController.shippingPrices.toString()}');
+                                                                                        print(cartController.shippingPrices.toString());
+                                                                                        shippingPrice = product.ratedShipmentDetails![index].totalNetCharge.toString();
+                                                                                        double subtotal = double.parse(cartController.cartModel.subtotal.toString());
+                                                                                        print('subtotal is $subtotal');
+                                                                                        double shipping = double.parse(product1.totalNetCharge.toString());
+                                                                                        double total123 = subtotal + shipping;
+                                                                                        total = total123 + shippingCommision;
+                                                                                        cartController.formattedTotal2 = total.toStringAsFixed(3);
+                                                                                        print("icarryCommision" + e.value.fedexCommision.toString());
+                                                                                        print("rate" + product1.totalNetCharge.toString());
+                                                                                        print('total isss${cartController.formattedTotal2.toString()}');
+                                                                                        // cartController.shippingPrices1 = cartController.formattedTotal2.toString();
+                                                                                        // e.value.shippingId.value = product.id.toString();
+                                                                                        // e.value.vendorId.value = e.value.shipping![ii].vendorId!;
+                                                                                        e.value.shippingVendorName.value = product.serviceName.toString();
+                                                                                        e.value.vendorPrice.value = product.ratedShipmentDetails![index].totalNetCharge.toString();
+                                                                                        commisionShipping = fedxTotalIs.toDouble();
+                                                                                        print('commisionShipping ${commisionShipping.toString()}');
+                                                                                        e.value.sPrice = fedxTotalIs.toDouble();
+
+                                                                                        log("sPrices data:${e.value.sPrice}");
+                                                                                        log("Initial sPrice:$sPrice1");
+                                                                                        log("Initial sPrice:" + cartController.shippingTitle);
+                                                                                        log("Initial sPrice::::::::::::::::::::::" + cartController.shippingDates);
+
+                                                                                        sPrice1 = 0.0;
+                                                                                        for (var item in cartController.cartModel.cart!.carsShowroom!.entries) {
+                                                                                          // sPrice1 = 0.0;
+                                                                                          if (item.value.shippingOption.value.isNotEmpty) {
+                                                                                            log("kiska price hai + ${item.value.sPrice}");
+                                                                                            sPrice1 = sPrice1 + item.value.sPrice;
+                                                                                            commisionShipping = sPrice1;
+                                                                                            // sPrice.toStringAsFixed(fractionDigits)
+                                                                                            // Update sPrice directly without reassigning
+                                                                                          }
+                                                                                          total = subtotal + sPrice1;
+                                                                                          cartController.formattedTotal = total.toStringAsFixed(3);
+                                                                                          print('total isss${total.toString()}');
+                                                                                          print('all total isss::::${cartController.formattedTotal.toString()}');
+                                                                                        }
+                                                                                      });
+                                                                                    },
+                                                                                  ),
+                                                                                ),
+                                                                                Text(product.serviceName.toString().capitalize!.replaceAll('_', ' '), style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16)),
+                                                                                3.spaceY,
+                                                                                Text('${fedxTotalIs.toStringAsFixed(3)} KWD', style: GoogleFonts.poppins(fontWeight: FontWeight.w400, fontSize: 16, color: const Color(0xFF03a827))),
+                                                                                3.spaceY,
+                                                                                Text('${product.operationalDetail!.deliveryDay ?? ''}  ${product.operationalDetail!.deliveryDate ?? ''}', style: GoogleFonts.poppins(fontWeight: FontWeight.w400, fontSize: 15, fontStyle: FontStyle.italic, color: const Color(0xFF000000))),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  );
+                                                                });
+                                                              },
+                                                            )
+                                                          : const LoadingAnimation();
+                                                      // : 0.spaceY,;
+                                                    },
+                                                  ),
+                                                  //   )  : const LoadingAnimation() : const SizedBox(),
+                                                ),
                                             ],
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              });
-                              // : 0.spaceY,;
-                            },
-                          ),
-                        ),
-                    ],
-                  )).toList(),
-            ),
-          ) : const SizedBox();
+
+                                        if (e.value.shipping!.icarryShipping!
+                                            .isNotEmpty)
+                                          Container(
+                                            color: Colors.white,
+                                            child: Padding(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 24,
+                                                      vertical: 16),
+                                              child: Row(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Image.asset(
+                                                      'assets/images/shipping_icon.png',
+                                                      height: 32,
+                                                      width: 32),
+                                                  20.spaceX,
+                                                  Text(
+                                                      "Icarry Shipping Method"
+                                                          .tr,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 18)),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        if (e.value.shipping!.icarryShipping!
+                                            .isNotEmpty)
+                                          Container(
+                                            height: 190,
+                                            color: Colors.white,
+                                            child: ListView.builder(
+                                              physics:
+                                                  const AlwaysScrollableScrollPhysics(),
+                                              scrollDirection: Axis.horizontal,
+                                              shrinkWrap: true,
+                                              itemCount: e.value.shipping!
+                                                  .icarryShipping!.length,
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                          horizontal: 20,
+                                                          vertical: 15)
+                                                      .copyWith(top: 0),
+                                              itemBuilder: (context, ii) {
+                                                IcarryShipping product = e
+                                                    .value
+                                                    .shipping!
+                                                    .icarryShipping![ii];
+                                                shippingCommision =
+                                                    double.parse(e
+                                                        .value.icarryCommision
+                                                        .toString());
+                                                double shipping = double.parse(
+                                                    product.rate.toString());
+                                                double icarryTotal = shipping +
+                                                    shippingCommision;
+                                                // double subtotal = double.parse(e.value.icarryCommision.toString());
+                                                // double shipping = double.parse(product.rate.toString());
+                                                // total = subtotal + shipping;
+                                                // cartController.formattedTotal = total.toStringAsFixed(3);
+                                                // print("icarryCommision"+ e.value.icarryCommision.toString());
+                                                // print("rate"+product.rate.toString());
+                                                // print('total isss${cartController.formattedTotal.toString()}');
+                                                // cartController.shippingPrices = cartController.formattedTotal.toString();
+                                                return Obx(() {
+                                                  return Container(
+                                                    decoration: BoxDecoration(
+                                                        border: Border.all(
+                                                            color: Colors.grey),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(6)),
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width *
+                                                            0.5,
+                                                    margin: EdgeInsets.only(
+                                                        right: 12),
+                                                    child: Column(
+                                                      children: [
+                                                        // 10.spaceY,
+                                                        // ii == 0
+                                                        //     ? 0.spaceY
+                                                        //     : const Divider(
+                                                        //   color: Color(0xFFD9D9D9),
+                                                        //   thickness: 0.8,
+                                                        // ),
+                                                        Expanded(
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .only(
+                                                                    left: 8),
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Padding(
+                                                                  padding:
+                                                                      const EdgeInsets
+                                                                          .only(
+                                                                          left:
+                                                                              140),
+                                                                  child: Radio(
+                                                                    value: product
+                                                                        .methodId
+                                                                        .toString(),
+                                                                    groupValue: selectedShippingMethod,
+                                                                    visualDensity:
+                                                                        const VisualDensity(
+                                                                            horizontal:
+                                                                                -4.0),
+                                                                    fillColor: e
+                                                                            .value
+                                                                            .shipping!
+                                                                            .fedexShippingOption
+                                                                            .value
+                                                                            .isEmpty
+                                                                        ? MaterialStateProperty.all(
+                                                                            Colors.red)
+                                                                        : null,
+                                                                    onChanged:
+                                                                        (value) {
+                                                                      setState(
+                                                                          () {
+                                                                            selectedShippingMethod = value.toString();  
+                                                                        e.value.shippingOption.value =
+                                                                            value.toString();
+                                                                        shippingType.value =
+                                                                            "icarry_shipping";
+                                                                        shipId.value = product
+                                                                            .methodId
+                                                                            .toString();
+                                                                        shipmentProvider.value = product
+                                                                            .carrierModel!
+                                                                            .systemName
+                                                                            .toString();
+                                                                        cartController.shippingDates = product
+                                                                            .methodName
+                                                                            .toString();
+                                                                        e
+                                                                            .value
+                                                                            .shipping!
+                                                                            .fedexShippingOption
+                                                                            .value = value.toString();
+                                                                        cartController.shippingTitle = product
+                                                                            .name
+                                                                            .toString();
+                                                                        // cartController.shippingPrices1 = cartController.shippingPrices.toString();
+                                                                        cartController.shipping_new_api =
+                                                                            icarryTotal.toString();
+
+                                                                        print(
+                                                                            'fdfdff${cartController.shipping_new_api.toString()}');
+                                                                        // cartController.shippingPrices = product.price.toString();
+                                                                        print(e
+                                                                            .value
+                                                                            .shipping!
+                                                                            .fedexShippingOption
+                                                                            .value
+                                                                            .toString());
+                                                                        print(cartController
+                                                                            .shippingTitle
+                                                                            .toString());
+                                                                        print(
+                                                                            'select value${cartController.shippingPrices.toString()}');
+                                                                        print("shipping price" +
+                                                                            cartController.shippingPrices.toString());
+                                                                        shippingPrice = product
+                                                                            .price
+                                                                            .toString();
+                                                                        // double subtotal = double.parse(cartController.cartModel.subtotal.toString());
+                                                                        double subtotal = double.parse(cartController
+                                                                            .cartModel
+                                                                            .subtotal
+                                                                            .toString());
+                                                                        double
+                                                                            shipping =
+                                                                            double.parse(product.rate.toString());
+                                                                        double
+                                                                            total123 =
+                                                                            subtotal +
+                                                                                shipping;
+                                                                        total = total123 +
+                                                                            shippingCommision;
+                                                                        cartController.formattedTotal2 =
+                                                                            total.toStringAsFixed(3);
+                                                                        commisionShipping =
+                                                                            icarryTotal;
+                                                                        cartController.shippingPrices1 =
+                                                                            icarryTotal.toString();
+                                                                        // double shipping = double.parse(shippingPrice.toString());
+                                                                        // total = subtotal + shipping;
+                                                                        // cartController.formattedTotal = total.toStringAsFixed(3);
+                                                                        e.value.shippingId.value = product
+                                                                            .methodId
+                                                                            .toString();
+                                                                        // e.value.vendorId.value = e.value.shipping![ii].vendorId!;
+                                                                        // e.value.shippingVendorName.value = product.serviceName.toString();
+                                                                        // e.value.vendorPrice.value = product.ratedShipmentDetails![index].totalNetCharge.toString();
+
+                                                                        e.value.sPrice =
+                                                                            icarryTotal.toDouble();
+
+                                                                        log("Initial sPrice:$sPrice1");
+                                                                        log("Initial sPrice:" +
+                                                                            cartController.shippingTitle.toString());
+                                                                        log("Initial sPrice::::::::::::::::::::::" +
+                                                                            cartController.shippingDates);
+                                                                        log("Initial sPrice:::::::::" +
+                                                                            shipmentProvider.value.toString());
+                                                                        sPrice1 =
+                                                                            0.0;
+                                                                        for (var item in cartController
+                                                                            .cartModel
+                                                                            .cart!
+                                                                            .carsShowroom!
+                                                                            .entries) {
+                                                                          // sPrice1 = 0.0;
+                                                                          if (item
+                                                                              .value
+                                                                              .shippingOption
+                                                                              .value
+                                                                              .isNotEmpty) {
+                                                                            log("kiska price hai + ${item.value.sPrice}");
+                                                                            sPrice1 =
+                                                                                sPrice1 + item.value.sPrice;
+                                                                            commisionShipping =
+                                                                                sPrice1;
+                                                                            // sPrice.toStringAsFixed(fractionDigits)
+                                                                            // Update sPrice directly without reassigning
+                                                                          }
+                                                                          total =
+                                                                              subtotal + sPrice1;
+                                                                          print(
+                                                                              'total isss gg${total.toString()}');
+                                                                          cartController.formattedTotal =
+                                                                              total.toStringAsFixed(3);
+                                                                          print(
+                                                                              'total isss${total.toString()}');
+                                                                        }
+                                                                      });
+                                                                    },
+                                                                  ),
+                                                                ),
+                                                                Text(
+                                                                    product.name
+                                                                        .toString()
+                                                                        .capitalize!
+                                                                        .replaceAll(
+                                                                            '_',
+                                                                            ' '),
+                                                                    style: GoogleFonts.poppins(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w500,
+                                                                        fontSize:
+                                                                            16)),
+                                                                3.spaceY,
+                                                                Text(
+                                                                    '${icarryTotal.toStringAsFixed(3)} KWD',
+                                                                    style: GoogleFonts.poppins(
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w400,
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: const Color(
+                                                                            0xFF03a827))),
+                                                                3.spaceY,
+                                                                Text(
+                                                                    product
+                                                                        .methodName
+                                                                        .toString(),
+                                                                    style: GoogleFonts.poppins(
+                                                                        fontWeight: FontWeight
+                                                                            .w400,
+                                                                        fontSize:
+                                                                            16,
+                                                                        color: Colors
+                                                                            .black)),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  );
+                                                });
+                                                // : 0.spaceY,;
+                                              },
+                                            ),
+                                          ),
+                                      ],
+                                    ))
+                                .toList(),
+                      ),
+                    )
+                  : const SizedBox();
 
           // : const SizedBox.shrink();
           // CustomScrollView(
@@ -1572,7 +2056,10 @@ RxString shipId = "".obs;
                   ),
                   Text(
                     'Billing Address'.tr,
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.black),
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                        color: Colors.black),
                   ),
                   const SizedBox(
                     height: 15,
@@ -1669,7 +2156,10 @@ RxString shipId = "".obs;
                   ),
                   Text(
                     'Billing Address'.tr,
-                    style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18, color: Colors.black),
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 18,
+                        color: Colors.black),
                   ),
                   const SizedBox(
                     height: 15,
@@ -1680,14 +2170,19 @@ RxString shipId = "".obs;
                     children: [
                       Text(
                         'Same As Shipping Address'.tr,
-                        style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16, color: Colors.black),
+                        style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: Colors.black),
                       ),
                       10.spaceX,
                       Transform.translate(
                         offset: const Offset(-6, 0),
                         child: Checkbox(
-                            visualDensity: const VisualDensity(horizontal: -1, vertical: -3),
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            visualDensity: const VisualDensity(
+                                horizontal: -1, vertical: -3),
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(4),
                             ),
@@ -1702,44 +2197,84 @@ RxString shipId = "".obs;
                               setState(() {
                                 cartController.isDelivery.value = value!;
                                 if (cartController.isDelivery.value == true &&
-                                    (cartController.selectedAddress.id != null ||
-                                        cartController.myDefaultAddressModel.value.defaultAddress != null)) {
-                                  if (cartController.selectedAddress.id != null) {
-                                    cartController.addressDeliFirstName.text = cartController.selectedAddress.getFirstName.toString();
-                                    cartController.addressDeliLastName.text = cartController.selectedAddress.getLastName;
-                                    cartController.addressDeliEmail.text = cartController.selectedAddress.getEmail;
-                                    cartController.addressDeliPhone.text = cartController.selectedAddress.getPhone;
-                                    cartController.addressDeliAlternate.text = cartController.selectedAddress.getAlternate;
-                                    cartController.addressDeliAddress.text = cartController.selectedAddress.getAddress;
-                                    cartController.addressCountryController.text = cartController.selectedAddress.getCountry;
-                                    cartController.addressStateController.text = cartController.selectedAddress.getState;
-                                    cartController.addressCityController.text = cartController.selectedAddress.getCity;
-                                    cartController.addressDeliZipCode.text = cartController.selectedAddress.getZipCode;
-                                  } else if (cartController.myDefaultAddressModel.value.defaultAddress != null) {
+                                    (cartController.selectedAddress.id !=
+                                            null ||
+                                        cartController.myDefaultAddressModel
+                                                .value.defaultAddress !=
+                                            null)) {
+                                  if (cartController.selectedAddress.id !=
+                                      null) {
                                     cartController.addressDeliFirstName.text =
-                                        cartController.myDefaultAddressModel.value.defaultAddress!.getFirstName;
+                                        cartController
+                                            .selectedAddress.getFirstName
+                                            .toString();
                                     cartController.addressDeliLastName.text =
-                                        cartController.myDefaultAddressModel.value.defaultAddress!.getLastName;
+                                        cartController
+                                            .selectedAddress.getLastName;
                                     cartController.addressDeliEmail.text =
-                                        cartController.myDefaultAddressModel.value.defaultAddress!.getEmail;
+                                        cartController.selectedAddress.getEmail;
                                     cartController.addressDeliPhone.text =
-                                        cartController.myDefaultAddressModel.value.defaultAddress!.getPhone;
+                                        cartController.selectedAddress.getPhone;
                                     cartController.addressDeliAlternate.text =
-                                        cartController.myDefaultAddressModel.value.defaultAddress!.getAlternate;
+                                        cartController
+                                            .selectedAddress.getAlternate;
                                     cartController.addressDeliAddress.text =
-                                        cartController.myDefaultAddressModel.value.defaultAddress!.getAddress;
-                                    cartController.addressCountryController.text =
-                                        cartController.myDefaultAddressModel.value.defaultAddress!.getCountry;
+                                        cartController
+                                            .selectedAddress.getAddress;
+                                    cartController
+                                            .addressCountryController.text =
+                                        cartController
+                                            .selectedAddress.getCountry;
                                     cartController.addressStateController.text =
-                                        cartController.myDefaultAddressModel.value.defaultAddress!.getState;
+                                        cartController.selectedAddress.getState;
                                     cartController.addressCityController.text =
-                                        cartController.myDefaultAddressModel.value.defaultAddress!.getCity;
+                                        cartController.selectedAddress.getCity;
                                     cartController.addressDeliZipCode.text =
-                                        cartController.myDefaultAddressModel.value.defaultAddress!.getZipCode;
+                                        cartController
+                                            .selectedAddress.getZipCode;
+                                  } else if (cartController
+                                          .myDefaultAddressModel
+                                          .value
+                                          .defaultAddress !=
+                                      null) {
+                                    cartController.addressDeliFirstName.text =
+                                        cartController.myDefaultAddressModel
+                                            .value.defaultAddress!.getFirstName;
+                                    cartController.addressDeliLastName.text =
+                                        cartController.myDefaultAddressModel
+                                            .value.defaultAddress!.getLastName;
+                                    cartController.addressDeliEmail.text =
+                                        cartController.myDefaultAddressModel
+                                            .value.defaultAddress!.getEmail;
+                                    cartController.addressDeliPhone.text =
+                                        cartController.myDefaultAddressModel
+                                            .value.defaultAddress!.getPhone;
+                                    cartController.addressDeliAlternate.text =
+                                        cartController.myDefaultAddressModel
+                                            .value.defaultAddress!.getAlternate;
+                                    cartController.addressDeliAddress.text =
+                                        cartController.myDefaultAddressModel
+                                            .value.defaultAddress!.getAddress;
+                                    cartController
+                                            .addressCountryController.text =
+                                        cartController.myDefaultAddressModel
+                                            .value.defaultAddress!.getCountry;
+                                    cartController.addressStateController.text =
+                                        cartController.myDefaultAddressModel
+                                            .value.defaultAddress!.getState;
+                                    cartController.addressCityController.text =
+                                        cartController.myDefaultAddressModel
+                                            .value.defaultAddress!.getCity;
+                                    cartController.addressDeliZipCode.text =
+                                        cartController.myDefaultAddressModel
+                                            .value.defaultAddress!.getZipCode;
                                   }
-                                } else if (cartController.isDelivery.value == true &&
+                                } else if (cartController.isDelivery.value ==
+                                        true &&
                                     cartController.selectedAddress.id == null &&
-                                    cartController.myDefaultAddressModel.value.defaultAddress == null) {
+                                    cartController.myDefaultAddressModel.value
+                                            .defaultAddress ==
+                                        null) {
                                   showToast("Please Select Address".tr);
                                   cartController.isDelivery.value = false;
                                 } else {
@@ -1750,9 +2285,12 @@ RxString shipId = "".obs;
                                   cartController.addressDeliAlternate.text = '';
                                   cartController.addressDeliAddress.text = '';
                                   cartController.addressDeliZipCode.text = '';
-                                  cartController.addressCountryController.text = '';
-                                  cartController.addressStateController.text = '';
-                                  cartController.addressCityController.text = '';
+                                  cartController.addressCountryController.text =
+                                      '';
+                                  cartController.addressStateController.text =
+                                      '';
+                                  cartController.addressCityController.text =
+                                      '';
                                 }
                               });
                             }),
@@ -1830,28 +2368,43 @@ RxString shipId = "".obs;
                       showAddressSelectorDialog(
                           addressList: modelCountryList!.country!
                               .map((e) => CommonAddressRelatedClass(
-                                  title: e.name.toString(), addressId: e.id.toString(), flagUrl: e.icon.toString())).toList(),
+                                  title: e.name.toString(),
+                                  addressId: e.id.toString(),
+                                  flagUrl: e.icon.toString()))
+                              .toList(),
                           selectedAddressIdPicked: (String gg) {
-                            String previous = ((selectedCountry ?? Country()).id ?? "").toString();
-                            selectedCountry = modelCountryList!.country!.firstWhere((element) => element.id.toString() == gg);
+                            String previous =
+                                ((selectedCountry ?? Country()).id ?? "")
+                                    .toString();
+                            selectedCountry = modelCountryList!.country!
+                                .firstWhere(
+                                    (element) => element.id.toString() == gg);
                             cartController.countryCode = gg.toString();
-                            cartController.countryName.value = selectedCountry!.name.toString();
-                            print('countrrtr ${cartController.countryName.toString()}');
-                            print('countrrtr ${cartController.countryCode.toString()}');
+                            cartController.countryName.value =
+                                selectedCountry!.name.toString();
+                            print(
+                                'countrrtr ${cartController.countryName.toString()}');
+                            print(
+                                'countrrtr ${cartController.countryCode.toString()}');
                             if (previous != selectedCountry!.id.toString()) {
-                              getStateList(countryId: gg, reset: true).then((value) {
+                              getStateList(countryId: gg, reset: true)
+                                  .then((value) {
                                 setState(() {});
                               });
                               setState(() {});
                             }
                           },
-                          selectedAddressId: ((selectedCountry ?? Country()).id ?? "").toString());
+                          selectedAddressId:
+                              ((selectedCountry ?? Country()).id ?? "")
+                                  .toString());
                     },
-                    controller:  profileController.userLoggedIn ?
-                    TextEditingController(
-                        text: (selectedCountry ?? Country()).name ?? cartController.addressCountryController.text) :
-                    TextEditingController(
-                        text: (selectedCountry ?? Country()).name ??    cartController.countryName.value),
+                    controller: profileController.userLoggedIn
+                        ? TextEditingController(
+                            text: (selectedCountry ?? Country()).name ??
+                                cartController.addressCountryController.text)
+                        : TextEditingController(
+                            text: (selectedCountry ?? Country()).name ??
+                                cartController.countryName.value),
                     validator: (v) {
                       if (v!.trim().isEmpty) {
                         return "Please select country".tr;
@@ -1862,11 +2415,13 @@ RxString shipId = "".obs;
                   ...fieldWithName(
                     title: 'State'.tr,
                     hintText: 'Select State'.tr,
-                    controller:  profileController.userLoggedIn ?
-                    TextEditingController(
-                        text: (selectedState ?? CountryState()).stateName ?? cartController.addressStateController.text) :
-                    TextEditingController(
-                        text: (selectedState ?? CountryState()).stateName ??  cartController.stateName.value),
+                    controller: profileController.userLoggedIn
+                        ? TextEditingController(
+                            text: (selectedState ?? CountryState()).stateName ??
+                                cartController.addressStateController.text)
+                        : TextEditingController(
+                            text: (selectedState ?? CountryState()).stateName ??
+                                cartController.stateName.value),
                     readOnly: true,
                     onTap: () {
                       if (modelStateList == null && stateRefresh.value > 0) {
@@ -1879,20 +2434,28 @@ RxString shipId = "".obs;
                       if (modelStateList!.state!.isEmpty) return;
                       showAddressSelectorDialog(
                           addressList: modelStateList!.state!
-                              .map((e) =>
-                                  CommonAddressRelatedClass(title: e.stateName.toString(), addressId: e.stateId.toString()))
+                              .map((e) => CommonAddressRelatedClass(
+                                  title: e.stateName.toString(),
+                                  addressId: e.stateId.toString()))
                               .toList(),
                           selectedAddressIdPicked: (String gg) {
-                            String previous = ((selectedState ?? CountryState()).stateId ?? "").toString();
-                            selectedState = modelStateList!.state!.firstWhere((element) => element.stateId.toString() == gg);
+                            String previous =
+                                ((selectedState ?? CountryState()).stateId ??
+                                        "")
+                                    .toString();
+                            selectedState = modelStateList!.state!.firstWhere(
+                                (element) => element.stateId.toString() == gg);
                             if (previous != selectedState!.stateId.toString()) {
-                              getCityList(stateId: gg, reset: true).then((value) {
+                              getCityList(stateId: gg, reset: true)
+                                  .then((value) {
                                 setState(() {});
                               });
                               setState(() {});
                             }
                           },
-                          selectedAddressId: ((selectedState ?? CountryState()).stateId ?? "").toString());
+                          selectedAddressId:
+                              ((selectedState ?? CountryState()).stateId ?? "")
+                                  .toString());
                     },
                     suffixIcon: Obx(() {
                       if (stateRefresh.value > 0) {
@@ -1922,10 +2485,13 @@ RxString shipId = "".obs;
                     title: 'City'.tr,
                     hintText: 'Select City'.tr,
                     readOnly: true,
-                    controller: profileController.userLoggedIn ?
-                    TextEditingController(
-                        text: (selectedCity ?? City()).cityName ?? cartController.addressCityController.text) : TextEditingController(
-                        text: (selectedCity ?? City()).cityName ?? cartController.cityName.value),
+                    controller: profileController.userLoggedIn
+                        ? TextEditingController(
+                            text: (selectedCity ?? City()).cityName ??
+                                cartController.addressCityController.text)
+                        : TextEditingController(
+                            text: (selectedCity ?? City()).cityName ??
+                                cartController.cityName.value),
                     onTap: () {
                       if (modelCityList == null && cityRefresh.value > 0) {
                         showToast("Select State First".tr);
@@ -1937,14 +2503,18 @@ RxString shipId = "".obs;
                       if (modelCityList!.city!.isEmpty) return;
                       showAddressSelectorDialog(
                           addressList: modelCityList!.city!
-                              .map((e) =>
-                                  CommonAddressRelatedClass(title: e.cityName.toString(), addressId: e.cityId.toString()))
+                              .map((e) => CommonAddressRelatedClass(
+                                  title: e.cityName.toString(),
+                                  addressId: e.cityId.toString()))
                               .toList(),
                           selectedAddressIdPicked: (String gg) {
-                            selectedCity = modelCityList!.city!.firstWhere((element) => element.cityId.toString() == gg);
+                            selectedCity = modelCityList!.city!.firstWhere(
+                                (element) => element.cityId.toString() == gg);
                             setState(() {});
                           },
-                          selectedAddressId: ((selectedCity ?? City()).cityId ?? "").toString());
+                          selectedAddressId:
+                              ((selectedCity ?? City()).cityId ?? "")
+                                  .toString());
                     },
                     suffixIcon: Obx(() {
                       if (cityRefresh.value > 0) {
@@ -2032,8 +2602,10 @@ RxString shipId = "".obs;
               padding: const EdgeInsets.all(18.0),
               child: StatefulBuilder(builder: (context, newState) {
                 String gg = searchController.text.trim().toLowerCase();
-                List<CommonAddressRelatedClass> filteredList =
-                    addressList.where((element) => element.title.toString().toLowerCase().contains(gg)).toList();
+                List<CommonAddressRelatedClass> filteredList = addressList
+                    .where((element) =>
+                        element.title.toString().toLowerCase().contains(gg))
+                    .toList();
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -2046,13 +2618,16 @@ RxString shipId = "".obs;
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.buttonColor, width: 1.2)),
+                              borderSide: const BorderSide(
+                                  color: AppTheme.buttonColor, width: 1.2)),
                           enabled: true,
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.buttonColor, width: 1.2)),
+                              borderSide: const BorderSide(
+                                  color: AppTheme.buttonColor, width: 1.2)),
                           suffixIcon: const Icon(Icons.search),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12)),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 12)),
                     ),
                     Flexible(
                         child: ListView.builder(
@@ -2060,38 +2635,48 @@ RxString shipId = "".obs;
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                // dense: true,
-                                onTap: () {
-                                  selectedAddressIdPicked(filteredList[index].addressId);
-                                  FocusManager.instance.primaryFocus!.unfocus();
-                                  Get.back();
-                                },
-                                leading: filteredList[index].flagUrl != null
-                                    ? SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: filteredList[index].flagUrl.toString().contains("svg")
-                                            ? SvgPicture.network(
-                                                filteredList[index].flagUrl.toString(),
-                                              )
-                                            : Image.network(
-                                                filteredList[index].flagUrl.toString(),
-                                                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                                              ))
-                                    : null,
-                                visualDensity: VisualDensity.compact,
-                                title: Text(filteredList[index].title),
-                                trailing: selectedAddressId == filteredList[index].addressId
-                                    ? const Icon(
-                                        Icons.check,
-                                        color: Colors.purple,
-                                      )
-                                    :  Image.asset(
-                                  'assets/images/forward_icon.png',
-                                  height: 17,
-                                  width: 17,
-                                )
-                              );
+                                  // dense: true,
+                                  onTap: () {
+                                    selectedAddressIdPicked(
+                                        filteredList[index].addressId);
+                                    FocusManager.instance.primaryFocus!
+                                        .unfocus();
+                                    Get.back();
+                                  },
+                                  leading: filteredList[index].flagUrl != null
+                                      ? SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: filteredList[index]
+                                                  .flagUrl
+                                                  .toString()
+                                                  .contains("svg")
+                                              ? SvgPicture.network(
+                                                  filteredList[index]
+                                                      .flagUrl
+                                                      .toString(),
+                                                )
+                                              : Image.network(
+                                                  filteredList[index]
+                                                      .flagUrl
+                                                      .toString(),
+                                                  errorBuilder: (_, __, ___) =>
+                                                      const SizedBox.shrink(),
+                                                ))
+                                      : null,
+                                  visualDensity: VisualDensity.compact,
+                                  title: Text(filteredList[index].title),
+                                  trailing: selectedAddressId ==
+                                          filteredList[index].addressId
+                                      ? const Icon(
+                                          Icons.check,
+                                          color: Colors.purple,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/forward_icon.png',
+                                          height: 17,
+                                          width: 17,
+                                        ));
                             }))
                   ],
                 );
@@ -2112,7 +2697,9 @@ RxString shipId = "".obs;
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 15),
-                Text("Payment".tr, style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18)),
+                Text("Payment".tr,
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w500, fontSize: 18)),
                 const SizedBox(
                   height: 15,
                 ),
@@ -2121,7 +2708,8 @@ RxString shipId = "".obs;
                       decoration: InputDecoration(
                         border: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(color: AppTheme.secondaryColor),
+                          borderSide:
+                              BorderSide(color: AppTheme.secondaryColor),
                         ),
                         enabled: true,
                         filled: true,
@@ -2129,10 +2717,12 @@ RxString shipId = "".obs;
                         labelStyle: GoogleFonts.poppins(color: Colors.black),
                         labelText: "Select Payment Method".tr,
                         fillColor: const Color(0xffE2E2E2).withOpacity(.35),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 14),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(color: AppTheme.secondaryColor),
+                          borderSide:
+                              BorderSide(color: AppTheme.secondaryColor),
                         ),
                       ),
                       isExpanded: true,
@@ -2146,8 +2736,14 @@ RxString shipId = "".obs;
                               value: e.paymentMethodId.toString(),
                               child: Row(
                                 children: [
-                                  Expanded(child: Text(e.paymentMethodEn.toString())),
-                                  SizedBox(width: 35, height: 35, child: Image.network(e.imageUrl.toString()))
+                                  Expanded(
+                                      child:
+                                          Text(e.paymentMethodEn.toString())),
+                                  SizedBox(
+                                      width: 35,
+                                      height: 35,
+                                      child:
+                                          Image.network(e.imageUrl.toString()))
                                 ],
                               )))
                           .toList(),

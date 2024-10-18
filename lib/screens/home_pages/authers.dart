@@ -96,10 +96,11 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                       // height: 140,
                                       // width: 100,
                                       child: CachedNetworkImage(
+                                      
                                         imageUrl: homeController.getFeaturedModel.value.data![index].user!.storeLogoApp.toString(),
                                         height: 120,
                                         width: 120,
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.fitWidth,
                                         errorWidget: (_, __, ___) => Image.asset('assets/images/new_logo.png',
                                         height: 50,
                                           width: 50,

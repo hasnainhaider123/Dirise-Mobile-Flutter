@@ -77,7 +77,7 @@ class _TrendingProductsState extends State<TrendingProducts> {
                 Align(
                   alignment: Alignment.topLeft,
                   child: Container(
-                    height: Platform.isAndroid ? 580 : 580,
+                    height: Platform.isAndroid ? 590 : 590,
                     margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
                     child: ListView.builder(
                         itemCount: homeController.trendingModel.value.product!.product!.length,

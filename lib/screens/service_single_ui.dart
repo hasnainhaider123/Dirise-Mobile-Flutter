@@ -215,7 +215,7 @@ class _ServiceProductScreenState extends State<ServiceProductScreen> {
 
   RxInt productQuantity = 1.obs;
   final cartController = Get.put(CartController());
-  CarouselControllerImpl carouselController = CarouselControllerImpl();
+  CarouselSliderController carouselController = CarouselSliderController();
   final wishListController = Get.put(WishListController());
   RxBool alreadyReview = false.obs;
   int _counter = 1;

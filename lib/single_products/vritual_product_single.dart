@@ -395,7 +395,7 @@ class _VritualProductScreenState extends State<VritualProductScreen> {
 
   // bool get checkLoaded => modelSingleProduct.singleGiveawayProduct!.pname != null;
 
-  CarouselControllerImpl carouselController = CarouselControllerImpl();
+CarouselSliderController carouselController = CarouselSliderController();
 
   final wishListController = Get.put(WishListController());
 
@@ -1727,6 +1727,13 @@ class _VritualProductScreenState extends State<VritualProductScreen> {
                                       '${'QTY'.tr}: ${item.inStock} ${'piece'.tr}',
                                       style: normalStyle,
                                     ),
+                                     const SizedBox(
+                                                height: 10,
+                                              ),
+                                              Text(item.shortDescription),
+                                              const SizedBox(
+                                                height: 10,
+                                              ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     crossAxisAlignment: CrossAxisAlignment.start,

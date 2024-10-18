@@ -377,8 +377,10 @@ class _ProductUIState extends State<ProductUI> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () {
-          print(widget.productElement.id);
+    onTap: () {
+          debugPrint(widget.productElement.itemType);
+           debugPrint(widget.productElement.productType);
+          
           if (widget.productElement.itemType == 'giveaway') {
             Get.to(() => const GiveAwayProduct(), arguments: widget.productElement.id.toString());
           }
@@ -400,7 +402,7 @@ class _ProductUIState extends State<ProductUI> {
           }
         },
       child:  widget.productElement.itemType != 'giveaway' &&   widget.productElement.isShowcase != true && widget.productElement.showcaseProduct != true
-          ? Padding(
+? Padding(
         padding: const EdgeInsets.all(5.0),
         child:
         Container(

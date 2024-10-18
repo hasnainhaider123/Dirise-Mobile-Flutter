@@ -1131,7 +1131,7 @@ class _SingleCategoriesState extends State<SingleCategories> {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
                                   return Text(
-                                    'Loading...',
+                                    'counting items...',
                                     style: GoogleFonts.poppins(
                                       color: const Color(0xff014E70),
                                       fontSize: 16,

@@ -171,7 +171,8 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
   Map<String, dynamic> get getMap {
     Map<String, dynamic> map = {};
     map["product_id"] = id.toString();
-    map["quantity"] = map["quantity"] = int.tryParse(productQuantity.value.toString());
+    map["quantity"] =
+        map["quantity"] = int.tryParse(productQuantity.value.toString());
     map["key"] = 'fedexRate';
     map["country_id"] = profileController.model.user!.country_id;
 
@@ -185,6 +186,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
     // }
     return map;
   }
+
   final homeController = Get.put(TrendingProductsController());
   RxStatus statusSingle = RxStatus.empty();
   String formattedDate = "";
@@ -194,17 +196,21 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
   getProductDetails({BuildContext? context}) {
     statusSingle = RxStatus.loading();
     repositories
-        .postApi(
-         context : context,
-        url: ApiUrls.simpleProductUrl, mapData: {"product_id": id.toString(), "key": 'fedexRate', "is_def_address" : homeController.defaultAddressId.toString()
+        .postApi(context: context, url: ApiUrls.simpleProductUrl, mapData: {
+      "product_id": id.toString(),
+      "key": 'fedexRate',
+      "is_def_address": homeController.defaultAddressId.toString()
     }).then((value) {
       modelSingleProduct.value = SimpleProductModel.fromJson(jsonDecode(value));
       if (modelSingleProduct.value.simpleProduct != null) {
         log("modelSingleProduct.product!.toJson().....${modelSingleProduct.value.simpleProduct!.toJson()}");
-        imagesList.addAll(modelSingleProduct.value.simpleProduct!.galleryImage ?? []);
+        imagesList
+            .addAll(modelSingleProduct.value.simpleProduct!.galleryImage ?? []);
         imagesList = imagesList.toSet().toList();
-        if (modelSingleProduct.value.simpleProduct!.catId != null && modelSingleProduct.value.simpleProduct!.catId!.isNotEmpty) {
-          releatedId = modelSingleProduct.value.simpleProduct!.catId!.last.id.toString();
+        if (modelSingleProduct.value.simpleProduct!.catId != null &&
+            modelSingleProduct.value.simpleProduct!.catId!.isNotEmpty) {
+          releatedId =
+              modelSingleProduct.value.simpleProduct!.catId!.last.id.toString();
           productId = modelSingleProduct.value.simpleProduct!.id.toString();
         }
 
@@ -219,7 +225,9 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
         print("releatedId" + releatedId);
         similarProduct();
         statusSingle = RxStatus.success();
-        ratingRills = ratingRill * double.parse(modelSingleProduct.value.simpleProduct!.rating.toString());
+        ratingRills = ratingRill *
+            double.parse(
+                modelSingleProduct.value.simpleProduct!.rating.toString());
       } else {
         statusSingle = RxStatus.empty();
       }
@@ -239,9 +247,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
     map["product_id"] = id.toString();
     map["quantity"] = map["quantity"] = int.tryParse(_counter.toString());
     map["key"] = 'fedexRate';
-    map["country_id"] = profileController.model.user != null && cartController.countryId.isEmpty
-        ? profileController.model.user!.country_id
-        : cartController.countryId.toString();
+    map["country_id"] =
+        profileController.model.user != null && cartController.countryId.isEmpty
+            ? profileController.model.user!.country_id
+            : cartController.countryId.toString();
 
     // if (isBookingProduct) {
     //   map["start_date"] = selectedDate.text.trim();
@@ -251,8 +260,11 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
     // if (isVariantType) {
     //   map["variation"] = selectedVariant!.id.toString();
     // }
-    repositories.postApi(url: ApiUrls.addToCartUrl, mapData: map, context: context).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(url: ApiUrls.addToCartUrl, mapData: map, context: context)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       showToast(response.message.toString());
       if (response.status == true) {
         Get.back();
@@ -266,14 +278,15 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
   addToWishList() {
     repositories
         .postApi(
-        url: ApiUrls.addToWishListUrl,
-        mapData: {
-          "product_id": id.toString(),
-        },
-        context: context)
+            url: ApiUrls.addToWishListUrl,
+            mapData: {
+              "product_id": id.toString(),
+            },
+            context: context)
         .then((value) {
       modelSingleProduct.value.simpleProduct!.inWishlist == true;
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       showToast(response.message);
       if (response.status == true) {
         wishListController.getYourWishList();
@@ -286,18 +299,20 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
   removeFromWishList() {
     repositories
         .postApi(
-        url: ApiUrls.removeFromWishListUrl,
-        mapData: {
-          "product_id": id.toString(),
-        },
-        context: context)
+            url: ApiUrls.removeFromWishListUrl,
+            mapData: {
+              "product_id": id.toString(),
+            },
+            context: context)
         .then((value) {
       modelSingleProduct.value.simpleProduct!.inWishlist == true;
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       showToast(response.message);
       if (response.status == true) {
         wishListController.getYourWishList();
-        wishListController.favoriteItems.removeWhere((element) => element == id.toString());
+        wishListController.favoriteItems
+            .removeWhere((element) => element == id.toString());
         wishListController.updateFav;
       }
     });
@@ -314,7 +329,9 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
     map["product_id"] = id.toString();
     map["quantity"] = map["quantity"] = int.tryParse(_counter.toString());
     map["key"] = 'fedexRate';
-    map["country_id"] = profileController.model.user != null ? profileController.model.user!.country_id : '117';
+    map["country_id"] = profileController.model.user != null
+        ? profileController.model.user!.country_id
+        : '117';
     map["zip_code"] = cartController.zipCode.toString();
     // if (isBookingProduct) {
     //   map["start_date"] = selectedDate.text.trim();
@@ -324,14 +341,18 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
     // if (isVariantType) {
     //   map["variation"] = selectedVariant!.id.toString();
     // }
-    repositories.postApi(url: ApiUrls.buyNowDetailsUrl, mapData: map, context: context).then((value) {
+    repositories
+        .postApi(url: ApiUrls.buyNowDetailsUrl, mapData: map, context: context)
+        .then((value) {
       log("Value>>>>>>>$value");
       print('singleee');
-      cartController.directOrderResponse.value = ModelDirectOrderResponse.fromJson(jsonDecode(value));
+      cartController.directOrderResponse.value =
+          ModelDirectOrderResponse.fromJson(jsonDecode(value));
 
       showToast(cartController.directOrderResponse.value.message.toString());
       if (cartController.directOrderResponse.value.status == true) {
-        cartController.directOrderResponse.value.prodcutData!.inStock = productQuantity.value;
+        cartController.directOrderResponse.value.prodcutData!.inStock =
+            productQuantity.value;
         if (kDebugMode) {
           print(cartController.directOrderResponse.value.prodcutData!.inStock);
         }
@@ -362,7 +383,11 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
     // if (isVariantType) {
     //   map["variation"] = selectedVariant!.id.toString();
     // }
-    repositories.postApi(url: ApiUrls.releatedProduct, mapData: map,)
+    repositories
+        .postApi(
+      url: ApiUrls.releatedProduct,
+      mapData: map,
+    )
         .then((value) {
       log("Value>>>>>>>$value");
       print('singleee');
@@ -372,6 +397,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
       if (modelRelated.value.status == true) {}
     });
   }
+
   final RxBool search = false.obs;
   List<String> imagesList = [];
   RxInt currentIndex = 0.obs;
@@ -394,7 +420,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
 
   // bool get checkLoaded => modelSingleProduct.singleGiveawayProduct!.pname != null;
 
-  CarouselControllerImpl carouselController = CarouselControllerImpl();
+  CarouselSliderController carouselController = CarouselSliderController();
 
   final wishListController = Get.put(WishListController());
 
@@ -425,6 +451,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
       }
     });
   }
+
   final ScrollController _scrollController = ScrollController();
 
   // Function to scroll to the top
@@ -510,52 +537,61 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
         ],
         titleSpacing: 0,
         bottom: PreferredSize(
-          preferredSize: search.value == true ? Size.fromHeight(50.0) : Size.fromHeight(0.0),
+          preferredSize: search.value == true
+              ? Size.fromHeight(50.0)
+              : Size.fromHeight(0.0),
           child: search.value == true
               ? Hero(
-            tag: "search_tag",
-            child: Material(
-              color: Colors.transparent,
-              surfaceTintColor: Colors.transparent,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                child: TextField(
-                  maxLines: 1,
-                  style: GoogleFonts.poppins(fontSize: 16),
-                  textInputAction: TextInputAction.search,
-                  onSubmitted: (vb) {
-                    Get.to(() =>
-                        SearchProductsScreen(
-                          searchText: vb,
-                        ));
-                  },
-                  decoration: InputDecoration(
-                      filled: true,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Image.asset(
-                          'assets/icons/search.png',
-                          height: 5,
-                        ),
+                  tag: "search_tag",
+                  child: Material(
+                    color: Colors.transparent,
+                    surfaceTintColor: Colors.transparent,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: TextField(
+                        maxLines: 1,
+                        style: GoogleFonts.poppins(fontSize: 16),
+                        textInputAction: TextInputAction.search,
+                        onSubmitted: (vb) {
+                          Get.to(() => SearchProductsScreen(
+                                searchText: vb,
+                              ));
+                        },
+                        decoration: InputDecoration(
+                            filled: true,
+                            prefixIcon: Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Image.asset(
+                                'assets/icons/search.png',
+                                height: 5,
+                              ),
+                            ),
+                            border: InputBorder.none,
+                            enabledBorder: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                borderSide:
+                                    BorderSide(color: AppTheme.buttonColor)),
+                            disabledBorder: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                borderSide:
+                                    BorderSide(color: AppTheme.buttonColor)),
+                            focusedBorder: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(8)),
+                                borderSide:
+                                    BorderSide(color: AppTheme.buttonColor)),
+                            fillColor: Colors.white,
+                            contentPadding: const EdgeInsets.all(15),
+                            hintText: AppStrings.searchFieldText.tr,
+                            hintStyle: GoogleFonts.poppins(
+                                color: AppTheme.buttonColor,
+                                fontWeight: FontWeight.w400)),
                       ),
-                      border: InputBorder.none,
-                      enabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(color: AppTheme.buttonColor)),
-                      disabledBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(color: AppTheme.buttonColor)),
-                      focusedBorder: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                          borderSide: BorderSide(color: AppTheme.buttonColor)),
-                      fillColor: Colors.white,
-                      contentPadding: const EdgeInsets.all(15),
-                      hintText: AppStrings.searchFieldText.tr,
-                      hintStyle: GoogleFonts.poppins(color: AppTheme.buttonColor, fontWeight: FontWeight.w400)),
-                ),
-              ),
-            ),
-          )
+                    ),
+                  ),
+                )
               : SizedBox.shrink(),
         ),
       ),
@@ -572,22 +608,29 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                       children: [
                         Row(
                           children: [
-                            if (modelSingleProduct.value.simpleProduct!.discountOff != '0.00')
+                            if (modelSingleProduct
+                                    .value.simpleProduct!.discountOff !=
+                                '0.00')
                               Container(
                                 padding: const EdgeInsets.all(4),
-                                decoration:
-                                    BoxDecoration(color: const Color(0xFFFF6868), borderRadius: BorderRadius.circular(10)),
+                                decoration: BoxDecoration(
+                                    color: const Color(0xFFFF6868),
+                                    borderRadius: BorderRadius.circular(10)),
                                 child: Row(
                                   children: [
                                     Text(
                                       " SALE".tr,
                                       style: GoogleFonts.poppins(
-                                          fontSize: 12, fontWeight: FontWeight.w700, color: const Color(0xFFFFDF33)),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: const Color(0xFFFFDF33)),
                                     ),
                                     Text(
                                       " ${modelSingleProduct.value.simpleProduct!.discountOff}${'%'}  ",
                                       style: GoogleFonts.poppins(
-                                          fontSize: 12, fontWeight: FontWeight.w700, color: Colors.white),
+                                          fontSize: 12,
+                                          fontWeight: FontWeight.w700,
+                                          color: Colors.white),
                                     ),
                                   ],
                                 ),
@@ -614,18 +657,20 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                               if (wishListController.refreshFav.value > 0) {}
                               return LikeButtonCat(
                                 onPressed: () {
-                                  if (wishListController.favoriteItems.contains(id.toString())) {
+                                  if (wishListController.favoriteItems
+                                      .contains(id.toString())) {
                                     removeFromWishList();
                                   } else {
-                                    if(profileController.userLoggedIn){
+                                    if (profileController.userLoggedIn) {
                                       addToWishList();
                                       setState(() {});
-                                    }else{
+                                    } else {
                                       Get.to(const LoginScreen());
                                     }
                                   }
                                 },
-                                isLiked: wishListController.favoriteItems.contains(id.toString()),
+                                isLiked: wishListController.favoriteItems
+                                    .contains(id.toString()),
                               );
                             }),
                             // Icon(Icons.favorite_border, color: Colors.red,),
@@ -650,7 +695,8 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                   onTap: () {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
-                                        builder: (context) => FullScreenImageViewer(
+                                        builder: (context) =>
+                                            FullScreenImageViewer(
                                           images: imagesList,
                                           initialIndex: imagesList.indexOf(i),
                                         ),
@@ -661,7 +707,8 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                       imageUrl: i,
                                       height: 300,
                                       fit: BoxFit.contain,
-                                      errorWidget: (_, __, ___) => Image.asset('assets/images/new_logo.png')),
+                                      errorWidget: (_, __, ___) => Image.asset(
+                                          'assets/images/new_logo.png')),
                                 );
                               },
                             );
@@ -689,11 +736,17 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                         ),
                         // Center(child: Image.asset("assets/svgs/single.png")),
                         Obx(() => Container(
-                              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 18),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: 8, horizontal: 18),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
                                 color: Colors.white,
-                                boxShadow: [BoxShadow(offset: Offset(1, 1), blurRadius: 2, color: Colors.grey)],
+                                boxShadow: [
+                                  BoxShadow(
+                                      offset: Offset(1, 1),
+                                      blurRadius: 2,
+                                      color: Colors.grey)
+                                ],
                               ),
                               child: Text(
                                 "${currentIndex.value + 1}/${imagesList.length}",
@@ -722,13 +775,23 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           height: 20,
                         ),
                         Text(
-                          modelSingleProduct.value.simpleProduct!.pname.toString().capitalize!,
-                          style:
-                              GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18, color: const Color(0xFF19313C)),
+                          modelSingleProduct.value.simpleProduct!.pname
+                              .toString()
+                              .capitalize!,
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              color: const Color(0xFF19313C)),
                         ),
                         Text(
-                          modelSingleProduct.value.simpleProduct!.shortDescription.toString().capitalize!,
-                          style: GoogleFonts.poppins(fontWeight: FontWeight.w400, fontSize: 12, color: const Color(0xFF19313C)),
+                          modelSingleProduct
+                              .value.simpleProduct!.shortDescription
+                              .toString()
+                              .capitalize!,
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 12,
+                              color: const Color(0xFF19313C)),
                         ),
 
                         // Row(
@@ -808,167 +871,227 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
 
                         Row(
                           children: [
-                            if (modelSingleProduct.value.simpleProduct!.discountOff != '0.00')
+                            if (modelSingleProduct
+                                    .value.simpleProduct!.discountOff !=
+                                '0.00')
                               Flexible(
                                 child: Text.rich(
-                                  profileController.selectedLAnguage.value =="English"
-                                  ?TextSpan(
-                                    text: '${modelSingleProduct.value.simpleProduct!.pPrice.toString().split('.')[0]}.',
-                                    style: GoogleFonts.poppins(
-                                        decorationColor: Colors.red,
-                                        decorationThickness: 2,
-                                        decoration: TextDecoration.lineThrough,
-                                        color: const Color(0xff19313B),
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.w600),
-                                    children: [
-                                      WidgetSpan(
-                                        alignment: PlaceholderAlignment.middle,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
+                                  profileController.selectedLAnguage.value ==
+                                          "English"
+                                      ? TextSpan(
+                                          text:
+                                              '${modelSingleProduct.value.simpleProduct!.pPrice.toString().split('.')[0]}.',
+                                          style: GoogleFonts.poppins(
+                                              decorationColor: Colors.red,
+                                              decorationThickness: 2,
+                                              decoration:
+                                                  TextDecoration.lineThrough,
+                                              color: const Color(0xff19313B),
+                                              fontSize: 24,
+                                              fontWeight: FontWeight.w600),
                                           children: [
-                                            const Text(
-                                              'KWD',
-                                              style: TextStyle(
-                                                fontSize: 8,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF19313B),
-                                              ),
-                                            ),
-                                            InkWell(
-                                              onTap: () {
-                                                // print("date:::::::::::" + widget.simpleProduct.shippingDate);
-                                              },
-                                              child: Text(
-                                                '${modelSingleProduct.value.simpleProduct!.pPrice.toString().split('.')[1]}',
-                                                style: GoogleFonts.poppins(
-                                                    decorationColor: Colors.red,
-                                                    decorationThickness: 2,
-                                                    // decoration: TextDecoration.lineThrough,
-                                                    color: const Color(0xff19313B),
-                                                    fontSize: 8,
-                                                    fontWeight: FontWeight.w600),
+                                            WidgetSpan(
+                                              alignment:
+                                                  PlaceholderAlignment.middle,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  const Text(
+                                                    'KWD',
+                                                    style: TextStyle(
+                                                      fontSize: 8,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color(0xFF19313B),
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      // print("date:::::::::::" + widget.simpleProduct.shippingDate);
+                                                    },
+                                                    child: Text(
+                                                      '${modelSingleProduct.value.simpleProduct!.pPrice.toString().split('.')[1]}',
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              decorationColor:
+                                                                  Colors.red,
+                                                              decorationThickness:
+                                                                  2,
+                                                              // decoration: TextDecoration.lineThrough,
+                                                              color: const Color(
+                                                                  0xff19313B),
+                                                              fontSize: 8,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                  :TextSpan(
-                                    children: [
-                                      WidgetSpan(
-                                        alignment: PlaceholderAlignment.bottom,
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
+                                        )
+                                      : TextSpan(
                                           children: [
-                                            const Text(
-                                              'KWD',
-                                              style: TextStyle(
-                                                fontSize: 8,
-                                                fontWeight: FontWeight.w500,
-                                                color: Color(0xFF19313B),
+                                            WidgetSpan(
+                                              alignment:
+                                                  PlaceholderAlignment.bottom,
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  const Text(
+                                                    'KWD',
+                                                    style: TextStyle(
+                                                      fontSize: 8,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color(0xFF19313B),
+                                                    ),
+                                                  ),
+                                                  InkWell(
+                                                    onTap: () {
+                                                      // print("date:::::::::::" + widget.simpleProduct.shippingDate);
+                                                    },
+                                                    child: Text(
+                                                      '${modelSingleProduct.value.simpleProduct!.pPrice.toString().split('.')[1]}',
+                                                      style: GoogleFonts.poppins(
+                                                          decorationColor:
+                                                              Colors.red,
+                                                          decorationThickness:
+                                                              2,
+                                                          decoration:
+                                                              TextDecoration
+                                                                  .lineThrough,
+                                                          color: const Color(
+                                                              0xff19313B),
+                                                          fontSize: 8,
+                                                          fontWeight:
+                                                              FontWeight.w600),
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            InkWell(
-                                              onTap: () {
-                                                // print("date:::::::::::" + widget.simpleProduct.shippingDate);
-                                              },
-                                              child: Text(
-                                                '${modelSingleProduct.value.simpleProduct!.pPrice.toString().split('.')[1]}',
-                                                style: GoogleFonts.poppins(
-                                                    decorationColor: Colors.red,
-                                                    decorationThickness: 2,
-                                                    decoration: TextDecoration.lineThrough,
-                                                    color: const Color(0xff19313B),
-                                                    fontSize: 8,
-                                                    fontWeight: FontWeight.w600),
-                                              ),
-                                            ),
+                                            TextSpan(
+                                              text:
+                                                  '.${modelSingleProduct.value.simpleProduct!.pPrice.toString().split('.')[0]}',
+                                              style: GoogleFonts.poppins(
+                                                  decorationColor: Colors.red,
+                                                  decorationThickness: 2,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  color:
+                                                      const Color(0xff19313B),
+                                                  fontSize: 24,
+                                                  fontWeight: FontWeight.w600),
+                                            )
                                           ],
                                         ),
-                                      ),
-                                      TextSpan(
-                                        text: '.${modelSingleProduct.value.simpleProduct!.pPrice.toString().split('.')[0]}',
-                                        style: GoogleFonts.poppins(
-                                            decorationColor: Colors.red,
-                                            decorationThickness: 2,
-                                            decoration: TextDecoration.lineThrough,
-                                            color: const Color(0xff19313B),
-                                            fontSize: 24,
-                                            fontWeight: FontWeight.w600),
-                                      )
-                                    ],
-                                  ),
                                 ),
                               ),
                             const SizedBox(width: 7),
                             Flexible(
                               child: Text.rich(
-                                profileController.selectedLAnguage.value == "English"
-                                ?TextSpan(
-                                  text: '${modelSingleProduct.value.simpleProduct!.discountPrice.toString().split('.')[0]}.',
-                                  style:
-                                      const TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: Color(0xFF19313B)),
-                                  children: [
-                                    WidgetSpan(
-                                      alignment: PlaceholderAlignment.middle,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                profileController.selectedLAnguage.value ==
+                                        "English"
+                                    ? TextSpan(
+                                        text:
+                                            '${modelSingleProduct.value.simpleProduct!.discountPrice.toString().split('.')[0]}.',
+                                        style: const TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xFF19313B)),
                                         children: [
-                                          const Text(
-                                            'KWD',
-                                            style: TextStyle(
-                                                fontSize: 8, fontWeight: FontWeight.w500, color: Color(0xFF19313B)),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              print("date:::::::::::" +
-                                                  modelSingleProduct.value.simpleProduct!.shippingDate.toString());
-                                            },
-                                            child: Text(
-                                              '${modelSingleProduct.value.simpleProduct!.discountPrice.toString().split('.')[1]}',
-                                              style: const TextStyle(
-                                                  fontSize: 8, fontWeight: FontWeight.w600, color: Color(0xFF19313B)),
+                                          WidgetSpan(
+                                            alignment:
+                                                PlaceholderAlignment.middle,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                const Text(
+                                                  'KWD',
+                                                  style: TextStyle(
+                                                      fontSize: 8,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color(0xFF19313B)),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    print("date:::::::::::" +
+                                                        modelSingleProduct
+                                                            .value
+                                                            .simpleProduct!
+                                                            .shippingDate
+                                                            .toString());
+                                                  },
+                                                  child: Text(
+                                                    '${modelSingleProduct.value.simpleProduct!.discountPrice.toString().split('.')[1]}',
+                                                    style: const TextStyle(
+                                                        fontSize: 8,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color:
+                                                            Color(0xFF19313B)),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
                                         ],
-                                      ),
-                                    ),
-                                  ],
-                                )
-                                :TextSpan(
-                                  children: [
-                                    WidgetSpan(
-                                      alignment: PlaceholderAlignment.bottom,
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.start,
+                                      )
+                                    : TextSpan(
                                         children: [
-                                          const Text(
-                                            'KWD',
-                                            style: TextStyle(
-                                                fontSize: 8, fontWeight: FontWeight.w500, color: Color(0xFF19313B)),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              print("date:::::::::::" +
-                                                  modelSingleProduct.value.simpleProduct!.shippingDate.toString());
-                                            },
-                                            child: Text(
-                                              '${modelSingleProduct.value.simpleProduct!.discountPrice.toString().split('.')[1]}',
-                                              style: const TextStyle(
-                                                  fontSize: 8, fontWeight: FontWeight.w600, color: Color(0xFF19313B)),
+                                          WidgetSpan(
+                                            alignment:
+                                                PlaceholderAlignment.bottom,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                const Text(
+                                                  'KWD',
+                                                  style: TextStyle(
+                                                      fontSize: 8,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Color(0xFF19313B)),
+                                                ),
+                                                InkWell(
+                                                  onTap: () {
+                                                    print("date:::::::::::" +
+                                                        modelSingleProduct
+                                                            .value
+                                                            .simpleProduct!
+                                                            .shippingDate
+                                                            .toString());
+                                                  },
+                                                  child: Text(
+                                                    '${modelSingleProduct.value.simpleProduct!.discountPrice.toString().split('.')[1]}',
+                                                    style: const TextStyle(
+                                                        fontSize: 8,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        color:
+                                                            Color(0xFF19313B)),
+                                                  ),
+                                                ),
+                                              ],
                                             ),
                                           ),
+                                          TextSpan(
+                                            text:
+                                                '.${modelSingleProduct.value.simpleProduct!.discountPrice.toString().split('.')[0]}',
+                                            style: const TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w600,
+                                                color: Color(0xFF19313B)),
+                                          )
                                         ],
                                       ),
-                                    ),
-                                    TextSpan(
-                                      text: '.${modelSingleProduct.value.simpleProduct!.discountPrice.toString().split('.')[0]}',
-                                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: Color(0xFF19313B)),
-                                    )
-                                  ],
-                                ),
                               ),
                             ),
                           ],
@@ -977,10 +1100,14 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                             ? Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  modelSingleProduct.value.simpleProduct!.rating != '0'
+                                  modelSingleProduct
+                                              .value.simpleProduct!.rating !=
+                                          '0'
                                       ? RatingBar.builder(
-                                          initialRating:
-                                              double.parse(modelSingleProduct.value.simpleProduct!.rating.toString()),
+                                          initialRating: double.parse(
+                                              modelSingleProduct
+                                                  .value.simpleProduct!.rating
+                                                  .toString()),
                                           minRating: 1,
                                           direction: Axis.horizontal,
                                           updateOnDrag: true,
@@ -989,7 +1116,8 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                           allowHalfRating: true,
                                           itemSize: 20,
                                           itemCount: 5,
-                                          itemBuilder: (context, _) => const Icon(
+                                          itemBuilder: (context, _) =>
+                                              const Icon(
                                             Icons.star,
                                             size: 8,
                                             color: Colors.amber,
@@ -1003,14 +1131,20 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                     width: 10,
                                   ),
                                   // Image.asset("assets/svgs/rils.png"),
-                                  modelSingleProduct.value.simpleProduct!.rating != '0'
+                                  modelSingleProduct
+                                              .value.simpleProduct!.rating !=
+                                          '0'
                                       ? Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
                                           children: [
                                             Text(
                                               'RILS'.tr,
-                                              style: TextStyle(color: AppTheme.buttonColor, fontWeight: FontWeight.w500),
+                                              style: TextStyle(
+                                                  color: AppTheme.buttonColor,
+                                                  fontWeight: FontWeight.w500),
                                             ),
                                             Text(ratingRills.toString())
                                           ],
@@ -1018,52 +1152,81 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                       : const SizedBox.shrink()
                                 ],
                               )
-                            :  Text('No reviews'.tr),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
-                          height: 28,
-                          child: ListView.builder(
-                            itemCount: modelSingleProduct.value.simpleProduct!.catId!.length,
-                            shrinkWrap: true,
-                            scrollDirection: Axis.horizontal,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (BuildContext context, int index) {
-                              return Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(vertical: 7, horizontal: 37),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF014E70).withOpacity(.07),
-                                      borderRadius: BorderRadius.circular(20),
-                                    ),
-                                    child: Text(
-                                      modelSingleProduct.value.simpleProduct!.catId![index].title.toString(),
-                                      style: GoogleFonts.poppins(
-                                          color: const Color(0xFF014E70), fontSize: 10, fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    width: 10,
-                                  )
-                                ],
-                              );
-                            },
+                            : Text('No reviews'.tr),
+                        if (modelSingleProduct
+                            .value.simpleProduct!.catId!.isNotEmpty)
+                          Column(
+                            children: [
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              SizedBox(
+                                height: 28,
+                                child: ListView.builder(
+                                  itemCount: modelSingleProduct
+                                      .value.simpleProduct!.catId!.length,
+                                  shrinkWrap: true,
+                                  scrollDirection: Axis.horizontal,
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return Row(
+                                      children: [
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 7, horizontal: 37),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF014E70)
+                                                .withOpacity(.07),
+                                            borderRadius:
+                                                BorderRadius.circular(20),
+                                          ),
+                                          child: Text(
+                                            modelSingleProduct
+                                                .value
+                                                .simpleProduct!
+                                                .catId![index]
+                                                .title
+                                                .toString(),
+                                            style: GoogleFonts.poppins(
+                                                color: const Color(0xFF014E70),
+                                                fontSize: 10,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        )
+                                      ],
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 15,
+                              ),
+                            ],
                           ),
-                        ),
                         const SizedBox(
                           height: 20,
                         ),
                         Text(
                           "Description".tr,
-                          style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18, color: const Color(0xFF014E70)),
+                          style: GoogleFonts.poppins(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18,
+                              color: const Color(0xFF014E70)),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        if (modelSingleProduct.value.simpleProduct!.longDescription != '' &&
-                            modelSingleProduct.value.simpleProduct!.longDescription != null)
+                        if (modelSingleProduct
+                                    .value.simpleProduct!.longDescription !=
+                                '' &&
+                            modelSingleProduct
+                                    .value.simpleProduct!.longDescription !=
+                                null)
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
@@ -1073,8 +1236,13 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                               ),
                               Expanded(
                                 child: Text(
-                                  modelSingleProduct.value.simpleProduct!.longDescription ?? '',
-                                  style: GoogleFonts.poppins(fontWeight: FontWeight.w400, fontSize: 12, color: const Color(0xFF19313C)),
+                                  modelSingleProduct.value.simpleProduct!
+                                          .longDescription ??
+                                      '',
+                                  style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 12,
+                                      color: const Color(0xFF19313C)),
                                 ),
                               ),
                             ],
@@ -1117,7 +1285,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           children: [
                             Text(
                               'Quantity : '.tr,
-                              style: GoogleFonts.poppins(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
                             IconButton(
@@ -1130,7 +1301,9 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                             Text(
                               '$_counter',
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF014E70), fontSize: 26, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF014E70),
+                                  fontSize: 26,
+                                  fontWeight: FontWeight.w500),
                             ),
                             IconButton(
                               icon: const Icon(
@@ -1138,22 +1311,21 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                 color: Color(0xFF014E70),
                               ),
                               // onPressed: incrementCounter,
-                              onPressed: (){
-                                int inStock = int.tryParse(modelSingleProduct.value.simpleProduct!.inStock) ?? 0;
-                                if(inStock == -1){
+                              onPressed: () {
+                                int inStock = int.tryParse(modelSingleProduct
+                                        .value.simpleProduct!.inStock) ??
+                                    0;
+                                if (inStock == -1) {
                                   print("1---: ${inStock}");
                                   setState(() {
                                     _counter++;
                                   });
-                                }
-                               else if(inStock == 0) {
+                                } else if (inStock == 0) {
                                   print("2---: ${inStock}");
                                   showToastCenter('Product out of stock'.tr);
-                                }
-                               else if (_counter >= inStock) {
+                                } else if (_counter >= inStock) {
                                   showToastCenter('Product out of stock'.tr);
-                                }
-                               else {
+                                } else {
                                   setState(() {
                                     print("3---: ${inStock}");
                                     _counter++;
@@ -1164,7 +1336,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           ],
                         ),
                         const SizedBox(
-                          height:10,
+                          height: 10,
                         ),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1216,50 +1388,61 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                         Row(
                           children: [
                             Expanded(
-                              child: profileController.selectedLAnguage.value == "English"
-                                  ?ElevatedButton(
-                                onPressed: () {
-                                  cartController.productElementId = id.toString();
-                                  cartController.productQuantity = productQuantity.value.toString();
-                                  directBuyProduct();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.red,
-                                  surfaceTintColor: Colors.red,
-                                  minimumSize: const Size(double.infinity, 40), // Use double.infinity for full width
-                                ),
-                                child: FittedBox(
-                                  child: Text(
-                                    "  Buy Now  ".tr,
-                                    style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
-                                  ),
-                                ),
-                              )
-                                  :SizedBox(
-                                width:130,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    cartController.productElementId = id.toString();
-                                    cartController.productQuantity = productQuantity.value.toString();
-                                    directBuyProduct();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.red,
-                                    surfaceTintColor: Colors.red,
-                                  ),
-                                  child: FittedBox(
-                                    child: Text(
-                                      "  Buy Now  ".tr,
-                                      style: GoogleFonts.poppins(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white),
+                              child: profileController.selectedLAnguage.value ==
+                                      "English"
+                                  ? ElevatedButton(
+                                      onPressed: () {
+                                        cartController.productElementId =
+                                            id.toString();
+                                        cartController.productQuantity =
+                                            productQuantity.value.toString();
+                                        directBuyProduct();
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red,
+                                        surfaceTintColor: Colors.red,
+                                        minimumSize: const Size(double.infinity,
+                                            40), // Use double.infinity for full width
+                                      ),
+                                      child: FittedBox(
+                                        child: Text(
+                                          "  Buy Now  ".tr,
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    )
+                                  : SizedBox(
+                                      width: 130,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          cartController.productElementId =
+                                              id.toString();
+                                          cartController.productQuantity =
+                                              productQuantity.value.toString();
+                                          directBuyProduct();
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor: Colors.red,
+                                          surfaceTintColor: Colors.red,
+                                        ),
+                                        child: FittedBox(
+                                          child: Text(
+                                            "  Buy Now  ".tr,
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              ),
                             ),
-                            SizedBox(width: 8), // Optional: Adds space between the buttons
+                            SizedBox(
+                                width:
+                                    8), // Optional: Adds space between the buttons
                             Expanded(
                               child: ElevatedButton(
                                 onPressed: () {
@@ -1268,12 +1451,16 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppTheme.buttonColor,
                                   surfaceTintColor: AppTheme.buttonColor,
-                                  minimumSize: const Size(double.infinity, 40), // Use double.infinity for full width
+                                  minimumSize: const Size(double.infinity,
+                                      40), // Use double.infinity for full width
                                 ),
                                 child: FittedBox(
                                   child: Text(
                                     "Add to Cart".tr,
-                                    style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white),
                                   ),
                                 ),
                               ),
@@ -1285,7 +1472,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                         ),
                         Text(
                           'Specifications'.tr,
-                          style: GoogleFonts.poppins(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(
                           height: 16,
@@ -1295,7 +1485,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           children: [
                             Text(
                               'SKU :'.tr,
-                              style: GoogleFonts.poppins(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
 
                             const SizedBox(
@@ -1306,8 +1499,13 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                               width: 7,
                             ),
                             Text(
-                              modelSingleProduct.value.simpleProduct!.serialNumber ?? '',
-                              style: GoogleFonts.poppins(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w500),
+                              modelSingleProduct
+                                      .value.simpleProduct!.serialNumber ??
+                                  '',
+                              style: GoogleFonts.poppins(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
@@ -1374,7 +1572,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
 
                         Text(
                           'Delivery'.tr,
-                          style: GoogleFonts.poppins(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(
                           height: 16,
@@ -1383,7 +1584,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           children: [
                             Text(
                               'Your Location :'.tr,
-                              style: GoogleFonts.poppins(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(
                               width: 20,
@@ -1402,7 +1606,9 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                 overflow: TextOverflow.ellipsis,
                                 locationController.city.toString(),
                                 style: GoogleFonts.poppins(
-                                    color: const Color(0xFF014E70), fontSize: 14, fontWeight: FontWeight.w500),
+                                    color: const Color(0xFF014E70),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                           ],
@@ -1414,7 +1620,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           children: [
                             Text(
                               'Delivery:'.tr,
-                              style: GoogleFonts.poppins(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(
                               width: 20,
@@ -1430,11 +1639,15 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                             Expanded(
                               child: Text(
                                 // formattedDate.toString(),
-                                modelSingleProduct.value.simpleProduct!.shippingDate.toString(),
+                                modelSingleProduct
+                                    .value.simpleProduct!.shippingDate
+                                    .toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.poppins(
-                                    color: const Color(0xFF014E70), fontSize: 14, fontWeight: FontWeight.w500),
+                                    color: const Color(0xFF014E70),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                           ],
@@ -1448,7 +1661,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           children: [
                             Text(
                               'Delivery Charges :'.tr,
-                              style: GoogleFonts.poppins(color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(
                               width: 20,
@@ -1465,11 +1681,17 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                               child: Text(
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                modelSingleProduct.value.simpleProduct!.lowestDeliveryPrice == ""
+                                modelSingleProduct.value.simpleProduct!
+                                            .lowestDeliveryPrice ==
+                                        ""
                                     ? "0"
-                                    : modelSingleProduct.value.simpleProduct!.lowestDeliveryPrice.toString(),
+                                    : modelSingleProduct.value.simpleProduct!
+                                        .lowestDeliveryPrice
+                                        .toString(),
                                 style: GoogleFonts.poppins(
-                                    color: const Color(0xFF014E70), fontSize: 14, fontWeight: FontWeight.w500),
+                                    color: const Color(0xFF014E70),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                           ],
@@ -1486,7 +1708,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                         ),
                         Text(
                           'Seller information'.tr,
-                          style: GoogleFonts.poppins(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w500),
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500),
                         ),
                         const SizedBox(
                           height: 10,
@@ -1498,14 +1723,21 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           children: [
                             Flexible(
                               child: Text(
-                                modelSingleProduct.value.simpleProduct!.storemeta!.storeName.toString(),
-                                style: GoogleFonts.poppins(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w400),
+                                modelSingleProduct
+                                    .value.simpleProduct!.storemeta!.storeName
+                                    .toString(),
+                                style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400),
                               ),
                             ),
                             const SizedBox(
                               width: 20,
                             ),
-                            if (modelSingleProduct.value.simpleProduct!.storemeta!.verifyBatch == true)
+                            if (modelSingleProduct.value.simpleProduct!
+                                    .storemeta!.verifyBatch ==
+                                true)
                               Image.asset(
                                 "assets/svgs/verified.png",
                                 width: 100,
@@ -1522,16 +1754,23 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           children: [
                             Text(
                               'Seller id :'.tr,
-                              style: GoogleFonts.poppins(color: Colors.black, fontSize: 12, fontWeight: FontWeight.w500),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.black,
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(
                               width: 16,
                             ),
                             Expanded(
                               child: Text(
-                                modelSingleProduct.value.simpleProduct!.storemeta!.storeId.toString(),
+                                modelSingleProduct
+                                    .value.simpleProduct!.storemeta!.storeId
+                                    .toString(),
                                 style: GoogleFonts.poppins(
-                                    color: const Color(0xFF014E70), fontSize: 14, fontWeight: FontWeight.w500),
+                                    color: const Color(0xFF014E70),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500),
                               ),
                             ),
                           ],
@@ -1545,15 +1784,25 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                             // Image.asset("assets/svgs/pak.png"),
 
                             Text(
-                              modelSingleProduct.value.simpleProduct!.storemeta!.storeLocation.toString(),
-                              style: GoogleFonts.poppins(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w600),
+                              modelSingleProduct
+                                  .value.simpleProduct!.storemeta!.storeLocation
+                                  .toString(),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(
                               width: 30,
                             ),
                             Text(
-                              modelSingleProduct.value.simpleProduct!.storemeta!.storeCategory.toString(),
-                              style: GoogleFonts.poppins(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w500),
+                              modelSingleProduct
+                                  .value.simpleProduct!.storemeta!.storeCategory
+                                  .toString(),
+                              style: GoogleFonts.poppins(
+                                  color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500),
                             ),
                           ],
                         ),
@@ -1595,15 +1844,25 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                         ),
                         Text(
                           'Seller documents'.tr,
-                          style: GoogleFonts.poppins(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
                           height: 20,
                         ),
-                        modelSingleProduct.value.simpleProduct!.storemeta!.commercialLicense != ""
+                        modelSingleProduct.value.simpleProduct!.storemeta!
+                                    .commercialLicense !=
+                                ""
                             ? Center(
                                 child: CachedNetworkImage(
-                                  imageUrl: modelSingleProduct.value.simpleProduct!.storemeta!.commercialLicense.toString(),
+                                  imageUrl: modelSingleProduct
+                                      .value
+                                      .simpleProduct!
+                                      .storemeta!
+                                      .commercialLicense
+                                      .toString(),
                                   height: 180,
                                   fit: BoxFit.cover,
                                   // errorWidget: (_, __, ___) => Image.asset('assets/images/new_logo.png')
@@ -1612,7 +1871,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                             : Center(
                                 child: Text(
                                   'No documents were uploaded by vendor '.tr,
-                                  style: GoogleFonts.poppins(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w400),
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                         // Center(child: Image.asset("assets/svgs/licence.png")),
@@ -1623,16 +1885,23 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                         // modelSingleProduct.value.simpleProduct!.storemeta!.document2 != ""?
                         Text(
                           'Seller translated documents'.tr,
-                          style: GoogleFonts.poppins(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontSize: 20,
+                              fontWeight: FontWeight.w600),
                         ),
                         const SizedBox(
                           height: 20,
                         ),
 
-                        modelSingleProduct.value.simpleProduct!.storemeta!.document2 != ""
+                        modelSingleProduct.value.simpleProduct!.storemeta!
+                                    .document2 !=
+                                ""
                             ? Center(
                                 child: CachedNetworkImage(
-                                  imageUrl: modelSingleProduct.value.simpleProduct!.storemeta!.document2.toString(),
+                                  imageUrl: modelSingleProduct
+                                      .value.simpleProduct!.storemeta!.document2
+                                      .toString(),
                                   height: 180,
                                   fit: BoxFit.cover,
                                   // errorWidget: (_, __, ___) => Image.asset('assets/images/new_logo.png')
@@ -1641,7 +1910,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                             : Center(
                                 child: Text(
                                   'No documents were uploaded by vendor '.tr,
-                                  style: GoogleFonts.poppins(color: Colors.black, fontSize: 15, fontWeight: FontWeight.w400),
+                                  style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                         const SizedBox(
@@ -1653,7 +1925,8 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           onTap: () {
                             Get.to(() => SingleStoreScreen(
                                 storeDetails: VendorStoreData(
-                                    id: modelSingleProduct.value.simpleProduct!.vendorInformation!.storeId)));
+                                    id: modelSingleProduct.value.simpleProduct!
+                                        .vendorInformation!.storeId)));
                           },
                           child: Align(
                             alignment: Alignment.centerRight,
@@ -1661,13 +1934,17 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                               width: 150,
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                  border: Border.all(color: const Color(0xFF014E70), width: 1.5),
+                                  border: Border.all(
+                                      color: const Color(0xFF014E70),
+                                      width: 1.5),
                                   borderRadius: BorderRadius.circular(30)),
                               child: Center(
                                 child: Text(
                                   "Seller profile".tr,
                                   style: GoogleFonts.poppins(
-                                      color: const Color(0xFF014E70), fontSize: 14, fontWeight: FontWeight.w500),
+                                      color: const Color(0xFF014E70),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ),
                             ),
@@ -1716,12 +1993,15 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                         modelRelated.value.relatedProduct != null
                             ? Text(
                                 'Similar products'.tr,
-                                style: GoogleFonts.poppins(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
+                                style: GoogleFonts.poppins(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w600),
                               )
                             : const SizedBox(),
 
                         Obx(() {
-                          if ( isDataLoading.value == false) {
+                          if (isDataLoading.value == false) {
                             return const Center(
                               child: LoadingAnimation(),
                             );
@@ -1741,612 +2021,812 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           }
                           return modelRelated.value.relatedProduct != null
                               ? ListView.builder(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: modelRelated.value.relatedProduct!.product!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  var item = modelRelated.value.relatedProduct!.product![index];
-                                  return GestureDetector(
-                                    onTap: (){
-                                      log('dasdadadad ${item.itemType}');
-                                      if (item.itemType == 'giveaway') {
-                                        Get.to(() => const GiveAwayProduct(), arguments: item.id.toString());
-                                      }
-                                      else if (item.productType == 'variants'&& item.itemType == 'product') {
-                                        Get.to(() => const VarientsProductScreen(), arguments: item.id.toString());
-                                      }
-                                      else if (item.productType == 'booking'&& item.itemType == 'product') {
-                                        Get.to(() => const BookableProductScreen(), arguments: item.id.toString());
-                                      }
-                                      else if (item.productType == 'virtual_product'&& item.itemType == 'virtual_product') {
-                                        Get.to(() =>  VritualProductScreen(), arguments:  item.id.toString());
-                                      }
-                                      else if (item.itemType == 'product') {
-                                        imagesList.clear();
-                                        id = item.id.toString();
-                                        getProductDetails(context: context);
-                                        _scrollToTop();
-                                        Get.to(() => const SimpleProductScreen(), arguments: item.id.toString());
-                                      }else if(item.itemType =='service'){
-                                        imagesList.clear();
-                                        id = item.id.toString();
-                                        getProductDetails(context: context);
-                                        _scrollToTop();
-                                        Get.to(() => const ServiceProductScreen(), arguments: item.id.toString());
-                                      }
-                                    },
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(5.0),
-                                      child: Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: const BoxDecoration(color: Colors.white, boxShadow: [
-                                          BoxShadow(
-                                            blurStyle: BlurStyle.outer,
-                                            offset: Offset(1, 1),
-                                            color: Colors.black12,
-                                            blurRadius: 3,
-                                          )
-                                        ]),
-                                        constraints: BoxConstraints(
-                                          minWidth: 0,
-                                          maxWidth: MediaQuery.of(context).size.width * .8,
-                                        ),
-                                        margin: const EdgeInsets.only(right: 9),
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                if (item.discountOff != '0.00')
-                                                  Container(
-                                                    padding: const EdgeInsets.all(4),
-                                                    decoration: BoxDecoration(
-                                                        color: const Color(0xFFFF6868),
-                                                        borderRadius: BorderRadius.circular(10)),
-                                                    child: Row(
-                                                      children: [
-                                                        Text(
-                                                          " SALE".tr,
-                                                          style: GoogleFonts.poppins(
-                                                              fontSize: 12,
-                                                              fontWeight: FontWeight.w700,
-                                                              color: const Color(0xFFFFDF33)),
-                                                        ),
-                                                        Text(
-                                                          " ${item.discountOff}${'%'}  ",
-                                                          style: GoogleFonts.poppins(
-                                                              fontSize: 12,
-                                                              fontWeight: FontWeight.w700,
-                                                              color: Colors.white),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                Obx(() {
-                                                  if (wishListController.refreshFav.value > 0) {}
-                                                  return LikeButtonCat(
-                                                    onPressed: () {
-                                                      if (wishListController.favoriteItems.contains(item.id.toString())) {
-                                                        removeFromWishList();
-                                                      } else {
-                                                        addToWishList();
-                                                      }
-                                                    },
-                                                    isLiked: wishListController.favoriteItems.contains(item.id.toString()),
-                                                  );
-                                                }),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: Center(
-                                                    child: CachedNetworkImage(
-                                                      imageUrl: item.featuredImage.toString(),
-                                                      height: 200,
-                                                      fit: BoxFit.contain,
-                                                      errorWidget: (_, __, ___) =>
-                                                          Image.asset('assets/images/new_logo.png'),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            const SizedBox(height: 10),
-                                            Text(
-                                              item.pname.toString(),
-                                              maxLines: 2,
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: const Color(0xFF19313C)),
-                                            ),
-                                            const SizedBox(height: 3),
-                                            Text(
-                                              item.shortDescription.toString().capitalize!,
-                                              style: GoogleFonts.poppins(fontWeight: FontWeight.w400, fontSize: 12, color: const Color(0xFF19313C)),
-                                            ),
-                                            item.itemType != 'giveaway'
-                                              ?Row(
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  itemCount: modelRelated
+                                      .value.relatedProduct!.product!.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    var item = modelRelated
+                                        .value.relatedProduct!.product![index];
+                                    return GestureDetector(
+                                      onTap: () {
+                                        log('dasdadadad ${item.itemType}');
+                                        if (item.itemType == 'giveaway') {
+                                          Get.to(() => const GiveAwayProduct(),
+                                              arguments: item.id.toString());
+                                        } else if (item.productType ==
+                                                'variants' &&
+                                            item.itemType == 'product') {
+                                          Get.to(
+                                              () =>
+                                                  const VarientsProductScreen(),
+                                              arguments: item.id.toString());
+                                        } else if (item.productType ==
+                                                'booking' &&
+                                            item.itemType == 'product') {
+                                          Get.to(
+                                              () =>
+                                                  const BookableProductScreen(),
+                                              arguments: item.id.toString());
+                                        } else if (item.productType ==
+                                                'virtual_product' &&
+                                            item.itemType ==
+                                                'virtual_product') {
+                                          Get.to(() => VritualProductScreen(),
+                                              arguments: item.id.toString());
+                                        } else if (item.itemType == 'product') {
+                                          imagesList.clear();
+                                          id = item.id.toString();
+                                          getProductDetails(context: context);
+                                          _scrollToTop();
+                                          Get.to(
+                                              () => const SimpleProductScreen(),
+                                              arguments: item.id.toString());
+                                        } else if (item.itemType == 'service') {
+                                          imagesList.clear();
+                                          id = item.id.toString();
+                                          getProductDetails(context: context);
+                                          _scrollToTop();
+                                          Get.to(
+                                              () =>
+                                                  const ServiceProductScreen(),
+                                              arguments: item.id.toString());
+                                        }
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(5.0),
+                                        child: Container(
+                                          padding: const EdgeInsets.all(8),
+                                          decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  blurStyle: BlurStyle.outer,
+                                                  offset: Offset(1, 1),
+                                                  color: Colors.black12,
+                                                  blurRadius: 3,
+                                                )
+                                              ]),
+                                          constraints: BoxConstraints(
+                                            minWidth: 0,
+                                            maxWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                .8,
+                                          ),
+                                          margin:
+                                              const EdgeInsets.only(right: 9),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
-                                                  item.discountOff != '0.00'
-                                                  ? Flexible(
-                                                child: Text.rich(
-                                                    profileController.selectedLAnguage.value =="English"
-                                                        ?TextSpan(
-                                                      text: '${item.pPrice.toString().split('.')[0]}.',
-                                                      style: GoogleFonts.poppins(
-                                                          decorationColor: Colors.red,
-                                                          decorationThickness: 2,
-                                                          decoration: TextDecoration.lineThrough,
-                                                          color: const Color(0xff19313B),
-                                                          fontSize: 24,
-                                                          fontWeight: FontWeight.w600),
-                                                      children: [
-                                                        WidgetSpan(
-                                                          alignment: PlaceholderAlignment.middle,
-                                                          child: Column(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            children: [
-                                                              const Text(
-                                                                'KWD',
-                                                                style: TextStyle(
-                                                                  fontSize: 8,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  color: Color(0xFF19313B),
-                                                                ),
-                                                              ),
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  print("date:::::::::::" + item.shippingDate);
-                                                                },
-                                                                child: Text(
-                                                                  '${item.pPrice.toString().split('.')[1]}',
-                                                                  style: GoogleFonts.poppins(
-                                                                      decorationColor: Colors.red,
-                                                                      decorationThickness: 2,
-                                                                      // decoration: TextDecoration.lineThrough,
-                                                                      color: const Color(0xff19313B),
-                                                                      fontSize: 8,
-                                                                      fontWeight: FontWeight.w600),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    )
-                                                        :TextSpan(
-                                                      children: [
-                                                        WidgetSpan(
-                                                          alignment: PlaceholderAlignment.bottom,
-                                                          child: Column(
-                                                            mainAxisAlignment: MainAxisAlignment.start,
-                                                            children: [
-                                                              const Text(
-                                                                'KWD',
-                                                                style: TextStyle(
-                                                                  fontSize: 8,
-                                                                  fontWeight: FontWeight.w500,
-                                                                  color: Color(0xFF19313B),
-                                                                ),
-                                                              ),
-                                                              InkWell(
-                                                                onTap: () {
-                                                                  print("date:::::::::::" + item.shippingDate);
-                                                                },
-                                                                child: Text(
-                                                                  '${item.pPrice.toString().split('.')[1]}',
-                                                                  style: GoogleFonts.poppins(
-                                                                      decorationColor: Colors.red,
-                                                                      decorationThickness: 2,
-                                                                      // decoration: TextDecoration.lineThrough,
-                                                                      color: const Color(0xff19313B),
-                                                                      fontSize: 8,
-                                                                      fontWeight: FontWeight.w600),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
-                                                        ),
-                                                        TextSpan(
-                                                          text: '.${item.pPrice.toString().split('.')[0]}',
-                                                          style: GoogleFonts.poppins(
-                                                              decorationColor: Colors.red,
-                                                              decorationThickness: 2,
-                                                              decoration: TextDecoration.lineThrough,
-                                                              color: const Color(0xff19313B),
-                                                              fontSize: 24,
-                                                              fontWeight: FontWeight.w600),
-                                                        )
-                                                      ],
-                                                    )
-                                                ),
-                                              )
-                                                  : const SizedBox.shrink(),
-                                            const SizedBox(
-                                              width: 5,
-                                            ),
-                                                  Flexible(
-                                                    child: Text.rich(
-                                                      profileController.selectedLAnguage.value == "English"
-                                                      ?TextSpan(
-                                                        text: '${item.discountPrice.toString().split('.')[0]}.',
-                                                        style: const TextStyle(
-                                                            fontSize: 24,
-                                                            fontWeight: FontWeight.w600,
-                                                            color: Color(0xFF19313B)),
+                                                  if (item.discountOff !=
+                                                      '0.00')
+                                                    Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              4),
+                                                      decoration: BoxDecoration(
+                                                          color: const Color(
+                                                              0xFFFF6868),
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10)),
+                                                      child: Row(
                                                         children: [
-                                                          WidgetSpan(
-                                                            alignment: PlaceholderAlignment.middle,
-                                                            child: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              children: [
-                                                                const Text(
-                                                                  'KWD',
-                                                                  style: TextStyle(
-                                                                      fontSize: 8,
-                                                                      fontWeight: FontWeight.w500,
-                                                                      color: Color(0xFF19313B)),
-                                                                ),
-                                                                InkWell(
-                                                                  onTap: () {
-                                                                    print(
-                                                                        "date:::::::::::" + item.shippingDate.toString());
-                                                                  },
-                                                                  child: Text(
-                                                                    '${item.discountPrice.toString().split('.')[1]}',
-                                                                    style: const TextStyle(
-                                                                        fontSize: 8,
-                                                                        fontWeight: FontWeight.w600,
-                                                                        color: Color(0xFF19313B)),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
+                                                          Text(
+                                                            " SALE".tr,
+                                                            style: GoogleFonts.poppins(
+                                                                fontSize: 12,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w700,
+                                                                color: const Color(
+                                                                    0xFFFFDF33)),
+                                                          ),
+                                                          Text(
+                                                            " ${item.discountOff}${'%'}  ",
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                                    fontSize:
+                                                                        12,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w700,
+                                                                    color: Colors
+                                                                        .white),
                                                           ),
                                                         ],
-                                                      )
-                                                      :TextSpan(
-                                                        children: [
-                                                          WidgetSpan(
-                                                            alignment: PlaceholderAlignment.bottom,
-                                                            child: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              children: [
-                                                                const Text(
-                                                                  'KWD',
-                                                                  style: TextStyle(
-                                                                      fontSize: 8,
-                                                                      fontWeight: FontWeight.w500,
-                                                                      color: Color(0xFF19313B)),
-                                                                ),
-                                                                InkWell(
-                                                                  onTap: () {
-                                                                    print(
-                                                                        "date:::::::::::" + item.shippingDate.toString());
-                                                                  },
-                                                                  child: Text(
-                                                                    '${item.discountPrice.toString().split('.')[1]}',
-                                                                    style: const TextStyle(
-                                                                        fontSize: 8,
-                                                                        fontWeight: FontWeight.w600,
-                                                                        color: Color(0xFF19313B)),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text: '.${item.discountPrice.toString().split('.')[0]}',
-                                                            style: const TextStyle(
-                                                                fontSize: 24,
-                                                                fontWeight: FontWeight.w600,
-                                                                color: Color(0xFF19313B)),
-                                                          )
-                                                        ],
+                                                      ),
+                                                    ),
+                                                  Obx(() {
+                                                    if (wishListController
+                                                            .refreshFav.value >
+                                                        0) {}
+                                                    return LikeButtonCat(
+                                                      onPressed: () {
+                                                        if (wishListController
+                                                            .favoriteItems
+                                                            .contains(item.id
+                                                                .toString())) {
+                                                          removeFromWishList();
+                                                        } else {
+                                                          addToWishList();
+                                                        }
+                                                      },
+                                                      isLiked:
+                                                          wishListController
+                                                              .favoriteItems
+                                                              .contains(item.id
+                                                                  .toString()),
+                                                    );
+                                                  }),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 10),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: Center(
+                                                      child: CachedNetworkImage(
+                                                        imageUrl: item
+                                                            .featuredImage
+                                                            .toString(),
+                                                        height: 200,
+                                                        fit: BoxFit.contain,
+                                                        errorWidget: (_, __,
+                                                                ___) =>
+                                                            Image.asset(
+                                                                'assets/images/new_logo.png'),
                                                       ),
                                                     ),
                                                   ),
                                                 ],
-                                              )
-                                              : const SizedBox.shrink(),
-                                            // const SizedBox(height: 8),
-                                            if (item.inStock != "-1")
-                                              Text(
-                                                '${'QTY'.tr}: ${item.inStock} ${'piece'.tr}',
-                                                style: normalStyle,
                                               ),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                Expanded(
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      item.rating != 0
-                                                      ?RatingBar.builder(
-                                                        initialRating: double.parse(item.rating.toString()),
-                                                        minRating: 1,
-                                                        direction: Axis.horizontal,
-                                                        updateOnDrag: true,
-                                                        tapOnlyMode: false,
-                                                        ignoreGestures: true,
-                                                        allowHalfRating: true,
-                                                        itemSize: 20,
-                                                        itemCount: 5,
-                                                        itemBuilder: (context, _) => const Icon(
-                                                          Icons.star,
-                                                          size: 8,
-                                                          color: Colors.amber,
+                                              const SizedBox(height: 10),
+                                              Text(
+                                                item.pname.toString(),
+                                                maxLines: 2,
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w500,
+                                                    color: const Color(
+                                                        0xFF19313C)),
+                                              ),
+                                              const SizedBox(height: 3),
+                                              Text(
+                                                item.shortDescription
+                                                    .toString()
+                                                    .capitalize!,
+                                                style: GoogleFonts.poppins(
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 12,
+                                                    color: const Color(
+                                                        0xFF19313C)),
+                                              ),
+                                              item.itemType != 'giveaway'
+                                                  ? Row(
+                                                      children: [
+                                                        item.discountOff !=
+                                                                '0.00'
+                                                            ? Flexible(
+                                                                child: Text.rich(profileController
+                                                                            .selectedLAnguage
+                                                                            .value ==
+                                                                        "English"
+                                                                    ? TextSpan(
+                                                                        text:
+                                                                            '${item.pPrice.toString().split('.')[0]}.',
+                                                                        style: GoogleFonts.poppins(
+                                                                            decorationColor: Colors
+                                                                                .red,
+                                                                            decorationThickness:
+                                                                                2,
+                                                                            decoration: TextDecoration
+                                                                                .lineThrough,
+                                                                            color: const Color(
+                                                                                0xff19313B),
+                                                                            fontSize:
+                                                                                24,
+                                                                            fontWeight:
+                                                                                FontWeight.w600),
+                                                                        children: [
+                                                                          WidgetSpan(
+                                                                            alignment:
+                                                                                PlaceholderAlignment.middle,
+                                                                            child:
+                                                                                Column(
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              children: [
+                                                                                const Text(
+                                                                                  'KWD',
+                                                                                  style: TextStyle(
+                                                                                    fontSize: 8,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    color: Color(0xFF19313B),
+                                                                                  ),
+                                                                                ),
+                                                                                InkWell(
+                                                                                  onTap: () {
+                                                                                    print("date:::::::::::" + item.shippingDate);
+                                                                                  },
+                                                                                  child: Text(
+                                                                                    '${item.pPrice.toString().split('.')[1]}',
+                                                                                    style: GoogleFonts.poppins(
+                                                                                        decorationColor: Colors.red,
+                                                                                        decorationThickness: 2,
+                                                                                        // decoration: TextDecoration.lineThrough,
+                                                                                        color: const Color(0xff19313B),
+                                                                                        fontSize: 8,
+                                                                                        fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      )
+                                                                    : TextSpan(
+                                                                        children: [
+                                                                          WidgetSpan(
+                                                                            alignment:
+                                                                                PlaceholderAlignment.bottom,
+                                                                            child:
+                                                                                Column(
+                                                                              mainAxisAlignment: MainAxisAlignment.start,
+                                                                              children: [
+                                                                                const Text(
+                                                                                  'KWD',
+                                                                                  style: TextStyle(
+                                                                                    fontSize: 8,
+                                                                                    fontWeight: FontWeight.w500,
+                                                                                    color: Color(0xFF19313B),
+                                                                                  ),
+                                                                                ),
+                                                                                InkWell(
+                                                                                  onTap: () {
+                                                                                    print("date:::::::::::" + item.shippingDate);
+                                                                                  },
+                                                                                  child: Text(
+                                                                                    '${item.pPrice.toString().split('.')[1]}',
+                                                                                    style: GoogleFonts.poppins(
+                                                                                        decorationColor: Colors.red,
+                                                                                        decorationThickness: 2,
+                                                                                        // decoration: TextDecoration.lineThrough,
+                                                                                        color: const Color(0xff19313B),
+                                                                                        fontSize: 8,
+                                                                                        fontWeight: FontWeight.w600),
+                                                                                  ),
+                                                                                ),
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                          TextSpan(
+                                                                            text:
+                                                                                '.${item.pPrice.toString().split('.')[0]}',
+                                                                            style: GoogleFonts.poppins(
+                                                                                decorationColor: Colors.red,
+                                                                                decorationThickness: 2,
+                                                                                decoration: TextDecoration.lineThrough,
+                                                                                color: const Color(0xff19313B),
+                                                                                fontSize: 24,
+                                                                                fontWeight: FontWeight.w600),
+                                                                          )
+                                                                        ],
+                                                                      )),
+                                                              )
+                                                            : const SizedBox
+                                                                .shrink(),
+                                                        const SizedBox(
+                                                          width: 5,
                                                         ),
-                                                        onRatingUpdate: (rating) {
-                                                          print(rating);
-                                                        },
-                                                      )
-                                                      :Text("No Review".tr),
-                                                      // const SizedBox(height: 7),
-                                                      if (item.shippingDate != "No International Shipping Available")
-                                                        Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                                          children: [
-                                                            Text(
-                                                              'shipping'.tr,
-                                                              style: GoogleFonts.poppins(
-                                                                  color: const Color(0xff858484),
-                                                                  fontSize: 13,
-                                                                  fontWeight: FontWeight.w500),
-                                                            ),
-                                                            if (item.lowestDeliveryPrice != null)
-                                                              Text(
-                                                                'KWD ${item.lowestDeliveryPrice.toString()}',
-                                                                style: GoogleFonts.poppins(
-                                                                    color: const Color(0xff858484),
-                                                                    fontSize: 13,
-                                                                    fontWeight: FontWeight.w500),
-                                                              ),
-                                                            if (item.shippingDate != null)
-                                                              Text(
-                                                                item.shippingDate.toString(),
-                                                                maxLines: 2,
-                                                                style: GoogleFonts.poppins(
-                                                                    color: const Color(0xff858484),
-                                                                    fontSize: 13,
-                                                                    fontWeight: FontWeight.w500),
-                                                              ),
-                                                          ],
-                                                        )
-                                                      else
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            Get.to(() => const ContactUsScreen());
-                                                          },
-                                                          child: RichText(
-                                                            text: TextSpan(
-                                                                text: 'international shipping not available'.tr,
-                                                                style: GoogleFonts.poppins(
-                                                                    color: const Color(0xff858484),
-                                                                    fontSize: 13,
-                                                                    fontWeight: FontWeight.w500),
-                                                                children: [
-                                                                  TextSpan(
-                                                                      text: ' contact us'.tr,
-                                                                      style: GoogleFonts.poppins(
-                                                                          decoration: TextDecoration.underline,
-                                                                          color: AppTheme.buttonColor,
-                                                                          fontSize: 13,
-                                                                          fontWeight: FontWeight.w500)),
-                                                                  TextSpan(
-                                                                      text: ' for the solution'.tr,
-                                                                      style: GoogleFonts.poppins(
-                                                                          color: const Color(0xff858484),
-                                                                          fontSize: 13,
-                                                                          fontWeight: FontWeight.w500)),
-                                                                ]),
+                                                        Flexible(
+                                                          child: Text.rich(
+                                                            profileController
+                                                                        .selectedLAnguage
+                                                                        .value ==
+                                                                    "English"
+                                                                ? TextSpan(
+                                                                    text:
+                                                                        '${item.discountPrice.toString().split('.')[0]}.',
+                                                                    style: const TextStyle(
+                                                                        fontSize:
+                                                                            24,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .w600,
+                                                                        color: Color(
+                                                                            0xFF19313B)),
+                                                                    children: [
+                                                                      WidgetSpan(
+                                                                        alignment:
+                                                                            PlaceholderAlignment.middle,
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            const Text(
+                                                                              'KWD',
+                                                                              style: TextStyle(fontSize: 8, fontWeight: FontWeight.w500, color: Color(0xFF19313B)),
+                                                                            ),
+                                                                            InkWell(
+                                                                              onTap: () {
+                                                                                print("date:::::::::::" + item.shippingDate.toString());
+                                                                              },
+                                                                              child: Text(
+                                                                                '${item.discountPrice.toString().split('.')[1]}',
+                                                                                style: const TextStyle(fontSize: 8, fontWeight: FontWeight.w600, color: Color(0xFF19313B)),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                : TextSpan(
+                                                                    children: [
+                                                                      WidgetSpan(
+                                                                        alignment:
+                                                                            PlaceholderAlignment.bottom,
+                                                                        child:
+                                                                            Column(
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.start,
+                                                                          children: [
+                                                                            const Text(
+                                                                              'KWD',
+                                                                              style: TextStyle(fontSize: 8, fontWeight: FontWeight.w500, color: Color(0xFF19313B)),
+                                                                            ),
+                                                                            InkWell(
+                                                                              onTap: () {
+                                                                                print("date:::::::::::" + item.shippingDate.toString());
+                                                                              },
+                                                                              child: Text(
+                                                                                '${item.discountPrice.toString().split('.')[1]}',
+                                                                                style: const TextStyle(fontSize: 8, fontWeight: FontWeight.w600, color: Color(0xFF19313B)),
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      TextSpan(
+                                                                        text:
+                                                                            '.${item.discountPrice.toString().split('.')[0]}',
+                                                                        style: const TextStyle(
+                                                                            fontSize:
+                                                                                24,
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                            color: Color(0xFF19313B)),
+                                                                      )
+                                                                    ],
+                                                                  ),
                                                           ),
                                                         ),
-                                                    ],
-                                                  ),
+                                                      ],
+                                                    )
+                                                  : const SizedBox.shrink(),
+                                              // const SizedBox(height: 8),
+
+                                              if (item.inStock != "-1")
+                                                Text(
+                                                  '${'QTY'.tr}: ${item.inStock} ${'piece'.tr}',
+                                                  style: normalStyle,
                                                 ),
-                                                Expanded(
-                                                  child: Column(
-                                                    children: [
-                                                      // profileController.selectedLAnguage.value == "English"
-                                                      // ?ElevatedButton(
-                                                      //   onPressed: () {
-                                                      //     cartController.productElementId = id.toString();
-                                                      //     cartController.productQuantity = productQuantity.value.toString();
-                                                      //     directBuyProduct();
-                                                      //   },
-                                                      //   style: ElevatedButton.styleFrom(
-                                                      //     backgroundColor: Colors.red,
-                                                      //     surfaceTintColor: Colors.red,
-                                                      //   ),
-                                                      //   child: FittedBox(
-                                                      //     child: Text(
-                                                      //       "  Buy Now  ".tr,
-                                                      //       style: GoogleFonts.poppins(
-                                                      //           fontSize: 16,
-                                                      //           fontWeight: FontWeight.w500,
-                                                      //           color: Colors.white),
-                                                      //     ),
-                                                      //   ),
-                                                      // )
-                                                      // :SizedBox(
-                                                      //   width:130,
-                                                      //   child: ElevatedButton(
-                                                      //     onPressed: () {
-                                                      //       cartController.productElementId = id.toString();
-                                                      //       cartController.productQuantity = productQuantity.value.toString();
-                                                      //       directBuyProduct();
-                                                      //     },
-                                                      //     style: ElevatedButton.styleFrom(
-                                                      //       backgroundColor: Colors.red,
-                                                      //       surfaceTintColor: Colors.red,
-                                                      //     ),
-                                                      //     child: FittedBox(
-                                                      //       child: Text(
-                                                      //         "  Buy Now  ".tr,
-                                                      //         style: GoogleFonts.poppins(
-                                                      //             fontSize: 16,
-                                                      //             fontWeight: FontWeight.w500,
-                                                      //             color: Colors.white),
-                                                      //       ),
-                                                      //     ),
-                                                      //   ),
-                                                      // ),
-                                                      // ElevatedButton(
-                                                      //   onPressed: () {
-                                                      //     addToCartProduct();
-                                                      //   },
-                                                      //   style: ElevatedButton.styleFrom(
-                                                      //     backgroundColor: AppTheme.buttonColor,
-                                                      //     surfaceTintColor: AppTheme.buttonColor,
-                                                      //   ),
-                                                      //   child: FittedBox(
-                                                      //     child: Text(
-                                                      //       "Add to Cart".tr,
-                                                      //       style: GoogleFonts.poppins(
-                                                      //           fontSize: 16,
-                                                      //           fontWeight: FontWeight.w500,
-                                                      //           color: Colors.white),
-                                                      //     ),
-                                                      //   ),
-                                                      // ),
-                                                      // if (item.itemType != 'giveaway')
-                                                      //   Row(
-                                                      //     mainAxisAlignment: MainAxisAlignment.center,
-                                                      //     crossAxisAlignment: CrossAxisAlignment.center,
-                                                      //     children: [
-                                                      //       GestureDetector(
-                                                      //         onTap: () {
-                                                      //           // Get.to(() => ProductDescription(
-                                                      //           // product: item,
-                                                      //           // modelRelated: modelRelated
-                                                      //           // ));
-                                                      //         },
-                                                      //         child: Text(
-                                                      //           "Show Details".tr,
-                                                      //           style: GoogleFonts.poppins(
-                                                      //               color: Colors.black,
-                                                      //               fontSize: 16,
-                                                      //               fontWeight: FontWeight.w500),
-                                                      //         ),
-                                                      //       ),
-                                                      //     ],
-                                                      //   )
-                                                      // else
-                                                      //   Container(
-                                                      //     color: AppTheme.buttonColor,
-                                                      //     padding: const EdgeInsets.symmetric(vertical: 8.0),
-                                                      //     child: Center(
-                                                      //       child: GestureDetector(
-                                                      //         onTap: () {
-                                                      //           // Get.to(() => ProductDescription(
-                                                      //           // product: item,
-                                                      //           // modelRelated: modelRelated
-                                                      //           // ));
-                                                      //         },
-                                                      //         child: Text(
-                                                      //           "Enter to Giveaway".tr,
-                                                      //           style: GoogleFonts.poppins(
-                                                      //               color: Colors.white,
-                                                      //               fontSize: 16,
-                                                      //               fontWeight: FontWeight.w500),
-                                                      //         ),
-                                                      //       ),
-                                                      //     ),
-                                                      //   ),
-                                                    ],
+
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Expanded(
+                                                    child: Column(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        item.rating != 0
+                                                            ? RatingBar.builder(
+                                                                initialRating:
+                                                                    double.parse(item
+                                                                        .rating
+                                                                        .toString()),
+                                                                minRating: 1,
+                                                                direction: Axis
+                                                                    .horizontal,
+                                                                updateOnDrag:
+                                                                    true,
+                                                                tapOnlyMode:
+                                                                    false,
+                                                                ignoreGestures:
+                                                                    true,
+                                                                allowHalfRating:
+                                                                    true,
+                                                                itemSize: 20,
+                                                                itemCount: 5,
+                                                                itemBuilder:
+                                                                    (context,
+                                                                            _) =>
+                                                                        const Icon(
+                                                                  Icons.star,
+                                                                  size: 8,
+                                                                  color: Colors
+                                                                      .amber,
+                                                                ),
+                                                                onRatingUpdate:
+                                                                    (rating) {
+                                                                  print(rating);
+                                                                },
+                                                              )
+                                                            : Text(
+                                                                "No Review".tr),
+                                                        // const SizedBox(height: 7),
+                                                        if (item.shippingDate !=
+                                                            "No International Shipping Available")
+                                                          Column(
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .start,
+                                                            children: [
+                                                              Text(
+                                                                'shipping'.tr,
+                                                                style: GoogleFonts.poppins(
+                                                                    color: const Color(
+                                                                        0xff858484),
+                                                                    fontSize:
+                                                                        13,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500),
+                                                              ),
+                                                              if (item.lowestDeliveryPrice !=
+                                                                  null)
+                                                                Text(
+                                                                  'KWD ${item.lowestDeliveryPrice.toString()}',
+                                                                  style: GoogleFonts.poppins(
+                                                                      color: const Color(
+                                                                          0xff858484),
+                                                                      fontSize:
+                                                                          13,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                ),
+                                                              if (item.shippingDate !=
+                                                                  null)
+                                                                Text(
+                                                                  item.shippingDate
+                                                                      .toString(),
+                                                                  maxLines: 2,
+                                                                  style: GoogleFonts.poppins(
+                                                                      color: const Color(
+                                                                          0xff858484),
+                                                                      fontSize:
+                                                                          13,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                ),
+                                                            ],
+                                                          )
+                                                        else
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              Get.to(() =>
+                                                                  const ContactUsScreen());
+                                                            },
+                                                            child: RichText(
+                                                              text: TextSpan(
+                                                                  text:
+                                                                      'international shipping not available'
+                                                                          .tr,
+                                                                  style: GoogleFonts.poppins(
+                                                                      color: const Color(
+                                                                          0xff858484),
+                                                                      fontSize:
+                                                                          13,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500),
+                                                                  children: [
+                                                                    TextSpan(
+                                                                        text: ' contact us'
+                                                                            .tr,
+                                                                        style: GoogleFonts.poppins(
+                                                                            decoration: TextDecoration
+                                                                                .underline,
+                                                                            color: AppTheme
+                                                                                .buttonColor,
+                                                                            fontSize:
+                                                                                13,
+                                                                            fontWeight:
+                                                                                FontWeight.w500)),
+                                                                    TextSpan(
+                                                                        text: ' for the solution'
+                                                                            .tr,
+                                                                        style: GoogleFonts.poppins(
+                                                                            color: const Color(
+                                                                                0xff858484),
+                                                                            fontSize:
+                                                                                13,
+                                                                            fontWeight:
+                                                                                FontWeight.w500)),
+                                                                  ]),
+                                                            ),
+                                                          ),
+                                                      ],
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 30,),
-                                            Row(
-                                              children: [
-                                                Expanded(
-                                                  child: profileController.selectedLAnguage.value == "English"
-                                                  ?ElevatedButton(
-                                                    onPressed: () {
-                                                          cartController.productElementId = id.toString();
-                                                          cartController.productQuantity = productQuantity.value.toString();
-                                                          directBuyProduct();
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                      backgroundColor: Colors.red,
-                                                      surfaceTintColor: Colors.red,
-                                                      minimumSize: const Size(double.infinity, 40), // Use double.infinity for full width
+                                                  Expanded(
+                                                    child: Column(
+                                                      children: [
+                                                        // profileController.selectedLAnguage.value == "English"
+                                                        // ?ElevatedButton(
+                                                        //   onPressed: () {
+                                                        //     cartController.productElementId = id.toString();
+                                                        //     cartController.productQuantity = productQuantity.value.toString();
+                                                        //     directBuyProduct();
+                                                        //   },
+                                                        //   style: ElevatedButton.styleFrom(
+                                                        //     backgroundColor: Colors.red,
+                                                        //     surfaceTintColor: Colors.red,
+                                                        //   ),
+                                                        //   child: FittedBox(
+                                                        //     child: Text(
+                                                        //       "  Buy Now  ".tr,
+                                                        //       style: GoogleFonts.poppins(
+                                                        //           fontSize: 16,
+                                                        //           fontWeight: FontWeight.w500,
+                                                        //           color: Colors.white),
+                                                        //     ),
+                                                        //   ),
+                                                        // )
+                                                        // :SizedBox(
+                                                        //   width:130,
+                                                        //   child: ElevatedButton(
+                                                        //     onPressed: () {
+                                                        //       cartController.productElementId = id.toString();
+                                                        //       cartController.productQuantity = productQuantity.value.toString();
+                                                        //       directBuyProduct();
+                                                        //     },
+                                                        //     style: ElevatedButton.styleFrom(
+                                                        //       backgroundColor: Colors.red,
+                                                        //       surfaceTintColor: Colors.red,
+                                                        //     ),
+                                                        //     child: FittedBox(
+                                                        //       child: Text(
+                                                        //         "  Buy Now  ".tr,
+                                                        //         style: GoogleFonts.poppins(
+                                                        //             fontSize: 16,
+                                                        //             fontWeight: FontWeight.w500,
+                                                        //             color: Colors.white),
+                                                        //       ),
+                                                        //     ),
+                                                        //   ),
+                                                        // ),
+                                                        // ElevatedButton(
+                                                        //   onPressed: () {
+                                                        //     addToCartProduct();
+                                                        //   },
+                                                        //   style: ElevatedButton.styleFrom(
+                                                        //     backgroundColor: AppTheme.buttonColor,
+                                                        //     surfaceTintColor: AppTheme.buttonColor,
+                                                        //   ),
+                                                        //   child: FittedBox(
+                                                        //     child: Text(
+                                                        //       "Add to Cart".tr,
+                                                        //       style: GoogleFonts.poppins(
+                                                        //           fontSize: 16,
+                                                        //           fontWeight: FontWeight.w500,
+                                                        //           color: Colors.white),
+                                                        //     ),
+                                                        //   ),
+                                                        // ),
+                                                        // if (item.itemType != 'giveaway')
+                                                        //   Row(
+                                                        //     mainAxisAlignment: MainAxisAlignment.center,
+                                                        //     crossAxisAlignment: CrossAxisAlignment.center,
+                                                        //     children: [
+                                                        //       GestureDetector(
+                                                        //         onTap: () {
+                                                        //           // Get.to(() => ProductDescription(
+                                                        //           // product: item,
+                                                        //           // modelRelated: modelRelated
+                                                        //           // ));
+                                                        //         },
+                                                        //         child: Text(
+                                                        //           "Show Details".tr,
+                                                        //           style: GoogleFonts.poppins(
+                                                        //               color: Colors.black,
+                                                        //               fontSize: 16,
+                                                        //               fontWeight: FontWeight.w500),
+                                                        //         ),
+                                                        //       ),
+                                                        //     ],
+                                                        //   )
+                                                        // else
+                                                        //   Container(
+                                                        //     color: AppTheme.buttonColor,
+                                                        //     padding: const EdgeInsets.symmetric(vertical: 8.0),
+                                                        //     child: Center(
+                                                        //       child: GestureDetector(
+                                                        //         onTap: () {
+                                                        //           // Get.to(() => ProductDescription(
+                                                        //           // product: item,
+                                                        //           // modelRelated: modelRelated
+                                                        //           // ));
+                                                        //         },
+                                                        //         child: Text(
+                                                        //           "Enter to Giveaway".tr,
+                                                        //           style: GoogleFonts.poppins(
+                                                        //               color: Colors.white,
+                                                        //               fontSize: 16,
+                                                        //               fontWeight: FontWeight.w500),
+                                                        //         ),
+                                                        //       ),
+                                                        //     ),
+                                                        //   ),
+                                                      ],
                                                     ),
-                                                    child: FittedBox(
-                                                      child: Text(
-                                                        "  Buy Now  ".tr,
-                                                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
-                                                      ),
-                                                    ),
-                                                  )
-                                                      :SizedBox(
-                                                    width:130,
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: profileController
+                                                                .selectedLAnguage
+                                                                .value ==
+                                                            "English"
+                                                        ? ElevatedButton(
+                                                            onPressed: () {
+                                                              cartController
+                                                                      .productElementId =
+                                                                  id.toString();
+                                                              cartController
+                                                                      .productQuantity =
+                                                                  productQuantity
+                                                                      .value
+                                                                      .toString();
+                                                              directBuyProduct();
+                                                            },
+                                                            style:
+                                                                ElevatedButton
+                                                                    .styleFrom(
+                                                              backgroundColor:
+                                                                  Colors.red,
+                                                              surfaceTintColor:
+                                                                  Colors.red,
+                                                              minimumSize: const Size(
+                                                                  double
+                                                                      .infinity,
+                                                                  40), // Use double.infinity for full width
+                                                            ),
+                                                            child: FittedBox(
+                                                              child: Text(
+                                                                "  Buy Now  "
+                                                                    .tr,
+                                                                style: GoogleFonts.poppins(
+                                                                    fontSize:
+                                                                        16,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Colors
+                                                                        .white),
+                                                              ),
+                                                            ),
+                                                          )
+                                                        : SizedBox(
+                                                            width: 130,
+                                                            child:
+                                                                ElevatedButton(
+                                                              onPressed: () {
+                                                                cartController
+                                                                        .productElementId =
+                                                                    id.toString();
+                                                                cartController
+                                                                        .productQuantity =
+                                                                    productQuantity
+                                                                        .value
+                                                                        .toString();
+                                                                directBuyProduct();
+                                                              },
+                                                              style:
+                                                                  ElevatedButton
+                                                                      .styleFrom(
+                                                                backgroundColor:
+                                                                    Colors.red,
+                                                                surfaceTintColor:
+                                                                    Colors.red,
+                                                              ),
+                                                              child: FittedBox(
+                                                                child: Text(
+                                                                  "  Buy Now  "
+                                                                      .tr,
+                                                                  style: GoogleFonts.poppins(
+                                                                      fontSize:
+                                                                          16,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Colors
+                                                                          .white),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                  ),
+                                                  SizedBox(
+                                                      width:
+                                                          8), // Optional: Adds space between the buttons
+                                                  Expanded(
                                                     child: ElevatedButton(
                                                       onPressed: () {
-                                                        cartController.productElementId = id.toString();
-                                                        cartController.productQuantity = productQuantity.value.toString();
-                                                        directBuyProduct();
+                                                        addToCartProduct();
                                                       },
-                                                      style: ElevatedButton.styleFrom(
-                                                        backgroundColor: Colors.red,
-                                                        surfaceTintColor: Colors.red,
+                                                      style: ElevatedButton
+                                                          .styleFrom(
+                                                        backgroundColor:
+                                                            AppTheme
+                                                                .buttonColor,
+                                                        surfaceTintColor:
+                                                            AppTheme
+                                                                .buttonColor,
+                                                        minimumSize: const Size(
+                                                            double.infinity,
+                                                            40), // Use double.infinity for full width
                                                       ),
                                                       child: FittedBox(
                                                         child: Text(
-                                                          "  Buy Now  ".tr,
-                                                          style: GoogleFonts.poppins(
-                                                              fontSize: 16,
-                                                              fontWeight: FontWeight.w500,
-                                                              color: Colors.white),
+                                                          "Add to Cart".tr,
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  color: Colors
+                                                                      .white),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                                SizedBox(width: 8), // Optional: Adds space between the buttons
-                                                Expanded(
-                                                  child: ElevatedButton(
-                                                    onPressed: () {
-                                                      addToCartProduct();
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                      backgroundColor: AppTheme.buttonColor,
-                                                      surfaceTintColor: AppTheme.buttonColor,
-                                                      minimumSize: const Size(double.infinity, 40), // Use double.infinity for full width
-                                                    ),
-                                                    child: FittedBox(
-                                                      child: Text(
-                                                        "Add to Cart".tr,
-                                                        style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 20,)
-                                          ],
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                height: 20,
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  );
-                                },
-                              )
+                                    );
+                                  },
+                                )
                               : Center(
                                   child: Text(
                                     'No Similar products'.tr,
-                                    style:
-                                        GoogleFonts.poppins(color: Colors.black, fontSize: 20, fontWeight: FontWeight.w600),
+                                    style: GoogleFonts.poppins(
+                                        color: Colors.black,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600),
                                   ),
                                 );
                         })

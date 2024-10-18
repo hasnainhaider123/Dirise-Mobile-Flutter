@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dirise/language/app_strings.dart';
 import 'package:dirise/screens/product_details/product_widget.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -108,7 +109,7 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
           height: 20,
         ),
         SizedBox(
-          height: 260,
+          height: 280,
           // margin: const EdgeInsets.fromLTRB(15, 20, 15, 0),
           child: Obx(() {
             return homeController.getShowModal.value.showcaseProduct != null
@@ -133,16 +134,20 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                 width: size.width * .92,
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(8),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        blurStyle: BlurStyle.outer,
-                                        offset: Offset(1, 1),
-                                        color: Colors.black12,
-                                        blurRadius: 3,
-                                      )
-                                    ]),
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                  boxShadow: [
+                                    BoxShadow(
+                                        color: Colors.grey.withOpacity(
+                                            0.6), // Shadow color with opacity
+                                        spreadRadius:
+                                            4, // How far the shadow spreads
+                                        blurRadius: 6, // Softness of the shadow
+                                        offset: const Offset(0,
+                                            0) // Changes position of shadow (horizontal, vertical)
+                                        ),
+                                  ],
+                                ),
                                 // constraints: BoxConstraints(
                                 //   // maxHeight: 100,
                                 //   minWidth: 0,
@@ -162,7 +167,23 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Expanded(
+                                        Container(
+                                          padding: const EdgeInsets.all(10),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Colors.grey.withOpacity(
+                                                      0.6), // Shadow color with opacity
+                                                  spreadRadius:
+                                                      3, // How far the shadow spreads
+                                                  blurRadius:
+                                                      5, // Softness of the shadow
+                                                  offset: const Offset(0,
+                                                      0) // Changes position of shadow (horizontal, vertical)
+                                                  ),
+                                            ],
+                                          ),
                                           child: CachedNetworkImage(
                                               imageUrl:
                                                   item.featuredImage.toString(),
@@ -189,8 +210,13 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  // Image.asset('assets/svgs/flagk.png'),
-                                                  // const SizedBox(width: 5,),
+                                                  Container(),
+                                                  if (item.countryName
+                                                          .toString()
+                                                          .toLowerCase() ==
+                                                      'kuwait city')
+                                                    Image.asset(
+                                                        'assets/svgs/flagk.png'),
                                                   Text(
                                                     item.countryName.toString(),
                                                     style: GoogleFonts.poppins(
@@ -290,206 +316,282 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                                 ],
                                               ),
                                               const SizedBox(
-                                                height: 5,
+                                                height: 15,
                                               ),
                                               Text(
                                                 item.pname.toString(),
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: GoogleFonts.poppins(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w500,
                                                     color: const Color(
                                                         0xFF19313C)),
                                               ),
+
+                                              // Row(
+                                              //   children: [
+                                              //     Text(
+                                              //       item.catId.toString(),
+                                              //       maxLines: 1,
+                                              //       overflow:
+                                              //           TextOverflow.ellipsis,
+                                              //       style: GoogleFonts.poppins(
+                                              //           fontSize: 12,
+                                              //           fontWeight:
+                                              //               FontWeight.w400,
+                                              //           color: const Color(
+                                              //               0xFF19313C)),
+                                              //     ),
+                                              //     Text(
+                                              //       item.catId.toString(),
+                                              //       maxLines: 1,
+                                              //       overflow:
+                                              //           TextOverflow.ellipsis,
+                                              //       style: GoogleFonts.poppins(
+                                              //           fontSize: 12,
+                                              //           fontWeight:
+                                              //               FontWeight.w400,
+                                              //           color: const Color(
+                                              //               0xFF19313C)),
+                                              //     ),
+                                              //   ],
+                                              // ),
                                               const SizedBox(
                                                 height: 5,
                                               ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    item.catId.toString(),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: const Color(
-                                                            0xFF19313C)),
-                                                  ),
-                                                  Text(
-                                                    item.catId.toString(),
-                                                    maxLines: 1,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: const Color(
-                                                            0xFF19313C)),
-                                                  ),
-                                                ],
-                                              ),
-                                              // const SizedBox(height: 5,),
                                               // Row(
                                               //   children: [
-                                              //     Text("yokun", style: GoogleFonts.poppins(
-                                              //         fontSize: 10, fontWeight: FontWeight.w400, color: const Color(0xFF19313C)),
+                                              //     Text(
+                                              //       "yokun",
+                                              //       style: GoogleFonts.poppins(
+                                              //           fontSize: 11,
+                                              //           fontWeight:
+                                              //               FontWeight.w400,
+                                              //           color: const Color(
+                                              //               0xFF19313C)),
                                               //     ),
-                                              //     const SizedBox(width: 6,),
-                                              //     Text("gmc", style: GoogleFonts.poppins(
-                                              //         fontSize: 10, fontWeight: FontWeight.w400, color: const Color(0xFF19313C)),
+                                              //     const SizedBox(
+                                              //       width: 6,
                                               //     ),
-                                              //     const SizedBox(width: 6,),
-                                              //     Text("used", style: GoogleFonts.poppins(
-                                              //         fontSize: 10, fontWeight: FontWeight.w400, color: const Color(0xFF19313C)),
+                                              //     Text(
+                                              //       "gmc",
+                                              //       style: GoogleFonts.poppins(
+                                              //           fontSize: 11,
+                                              //           fontWeight:
+                                              //               FontWeight.w400,
+                                              //           color: const Color(
+                                              //               0xFF19313C)),
                                               //     ),
-                                              //     const SizedBox(width: 6,),
-                                              //     Text("2024", style: GoogleFonts.poppins(
-                                              //         fontSize: 10, fontWeight: FontWeight.w400, color: const Color(0xFF19313C)),
+                                              //     const SizedBox(
+                                              //       width: 6,
+                                              //     ),
+                                              //     Text(
+                                              //       "used",
+                                              //       style: GoogleFonts.poppins(
+                                              //           fontSize: 11,
+                                              //           fontWeight:
+                                              //               FontWeight.w400,
+                                              //           color: const Color(
+                                              //               0xFF19313C)),
+                                              //     ),
+                                              //     const SizedBox(
+                                              //       width: 6,
+                                              //     ),
+                                              //     Text(
+                                              //       "2024",
+                                              //       style: GoogleFonts.poppins(
+                                              //           fontSize: 11,
+                                              //           fontWeight:
+                                              //               FontWeight.w400,
+                                              //           color: const Color(
+                                              //               0xFF19313C)),
                                               //     ),
                                               //   ],
                                               // ),
                                               const SizedBox(
                                                 height: 15,
                                               ),
-                                              Text.rich(
-                                                profileController
-                                                            .selectedLAnguage
-                                                            .value ==
-                                                        "English"
-                                                    ? TextSpan(
-                                                        text:
-                                                            '${item.discountPrice.toString().split('.')[0]}.',
-                                                        style: const TextStyle(
-                                                          fontSize: 32,
-                                                          fontWeight:
-                                                              FontWeight.w600,
-                                                          color:
-                                                              Color(0xFF19313B),
+                                              Align(
+                                                alignment: Alignment.topRight,
+                                                child: Text.rich(
+                                                  profileController
+                                                              .selectedLAnguage
+                                                              .value ==
+                                                          "English"
+                                                      ? TextSpan(
+                                                          text:
+                                                              '${item.discountPrice.toString().split('.')[0]}.',
+                                                          style:
+                                                              const TextStyle(
+                                                            fontSize: 32,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            color: Color(
+                                                                0xFF19313B),
+                                                          ),
+                                                          children: [
+                                                            WidgetSpan(
+                                                              alignment:
+                                                                  PlaceholderAlignment
+                                                                      .middle,
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  const Text(
+                                                                    'KWD',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          8,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Color(
+                                                                          0xFF19313B),
+                                                                    ),
+                                                                  ),
+                                                                  InkWell(
+                                                                    onTap: () {
+                                                                      // print("date:::::::::::" + widget.productElement.shippingDate);
+                                                                    },
+                                                                    child: Text(
+                                                                      '${item.discountPrice.toString().split('.')[1]}',
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            8,
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                        color: Color(
+                                                                            0xFF19313B),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        )
+                                                      : TextSpan(
+                                                          children: [
+                                                            WidgetSpan(
+                                                              alignment:
+                                                                  PlaceholderAlignment
+                                                                      .bottom,
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  const Text(
+                                                                    'KWD',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          8,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Color(
+                                                                          0xFF19313B),
+                                                                    ),
+                                                                  ),
+                                                                  InkWell(
+                                                                    onTap: () {
+                                                                      // print("date:::::::::::" + widget.productElement.shippingDate);
+                                                                    },
+                                                                    child: Text(
+                                                                      '${item.discountPrice.toString().split('.')[1]}',
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            8,
+                                                                        fontWeight:
+                                                                            FontWeight.w600,
+                                                                        color: Color(
+                                                                            0xFF19313B),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                            TextSpan(
+                                                              text:
+                                                                  '.${item.discountPrice.toString().split('.')[0]}',
+                                                              style:
+                                                                  const TextStyle(
+                                                                fontSize: 32,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                color: Color(
+                                                                    0xFF19313B),
+                                                              ),
+                                                            )
+                                                          ],
                                                         ),
-                                                        children: [
-                                                          WidgetSpan(
-                                                            alignment:
-                                                                PlaceholderAlignment
-                                                                    .middle,
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                const Text(
-                                                                  'KWD',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize: 8,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: Color(
-                                                                        0xFF19313B),
-                                                                  ),
-                                                                ),
-                                                                InkWell(
-                                                                  onTap: () {
-                                                                    // print("date:::::::::::" + widget.productElement.shippingDate);
-                                                                  },
-                                                                  child: Text(
-                                                                    '${item.discountPrice.toString().split('.')[1]}',
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontSize:
-                                                                          8,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: Color(
-                                                                          0xFF19313B),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    : TextSpan(
-                                                        children: [
-                                                          WidgetSpan(
-                                                            alignment:
-                                                                PlaceholderAlignment
-                                                                    .bottom,
-                                                            child: Column(
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .start,
-                                                              children: [
-                                                                const Text(
-                                                                  'KWD',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontSize: 8,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w500,
-                                                                    color: Color(
-                                                                        0xFF19313B),
-                                                                  ),
-                                                                ),
-                                                                InkWell(
-                                                                  onTap: () {
-                                                                    // print("date:::::::::::" + widget.productElement.shippingDate);
-                                                                  },
-                                                                  child: Text(
-                                                                    '${item.discountPrice.toString().split('.')[1]}',
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontSize:
-                                                                          8,
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .w600,
-                                                                      color: Color(
-                                                                          0xFF19313B),
-                                                                    ),
-                                                                  ),
-                                                                ),
-                                                              ],
-                                                            ),
-                                                          ),
-                                                          TextSpan(
-                                                            text:
-                                                                '.${item.discountPrice.toString().split('.')[0]}',
-                                                            style:
-                                                                const TextStyle(
-                                                              fontSize: 32,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
-                                                              color: Color(
-                                                                  0xFF19313B),
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
+                                                ),
                                               ),
                                             ],
                                           ),
                                         )
                                       ],
                                     ),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
                                     Row(
                                       children: [
                                         Expanded(
-                                          child: Text(
-                                            item.shortDescription.toString(),
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w400,
-                                                color: const Color(0xFF19313C)),
+                                          child: RichText(
+                                            text: TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text: item.shortDescription !=
+                                                              null &&
+                                                          item.shortDescription!
+                                                                  .length >
+                                                              60
+                                                      ? "${item.shortDescription!.substring(0, 60)}..." // Truncate description
+                                                      : item.shortDescription
+                                                          .toString(), // Show full description if less than 80 characters
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: const Color(
+                                                          0xFF19313C)),
+                                                ),
+                                                TextSpan(
+                                                  text:
+                                                      " Details", // "Details" link
+                                                  style: GoogleFonts.poppins(
+                                                      fontSize: 11,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                      color: Colors.blue,
+                                                      decoration: TextDecoration
+                                                          .underline),
+                                                  recognizer:
+                                                      TapGestureRecognizer()
+                                                        ..onTap = () {
+                                                          // Handle the "Details" tap, for example by navigating to a detailed view
+                                                          debugPrint(
+                                                              "Details tapped");
+                                                          Get.to(
+                                                              () =>
+                                                                  const AdvirtismentProductScreen(),
+                                                              arguments: item.id
+                                                                  .toString());
+                                                          // You can use Navigator or Get.to() for navigation
+                                                        },
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                         GestureDetector(
@@ -520,8 +622,6 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                             String whatsappUrl =
                                                 'https://wa.me/$phoneNumber';
                                             launchURLl(whatsappUrl);
-
-                                        
                                           },
                                           child: SvgPicture.asset(
                                             'assets/svgs/chat-dots.svg',
@@ -638,6 +738,4 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
       ],
     );
   }
-
- 
 }
