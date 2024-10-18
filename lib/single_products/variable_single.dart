@@ -1191,7 +1191,7 @@ class _VarientsProductScreenState extends State<VarientsProductScreen> {
                                   fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(
-                              width: 20,
+                              width: 10,
                             ),
                             const Icon(
                               Icons.circle,
@@ -1199,13 +1199,16 @@ class _VarientsProductScreenState extends State<VarientsProductScreen> {
                               size: 6,
                             ),
                             const SizedBox(
-                              width: 7,
+                              width: 5,
                             ),
                             Expanded(
                               child: Text(
+                                "${locationController.addressListModel.value.defaultAddress!.city ?? ''},"
+                                " ${locationController.addressListModel.value.defaultAddress!.state ?? ''},"
+                                " ${locationController.addressListModel.value.defaultAddress!.country ?? ''}",
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                locationController.city.toString(),
+                                // locationController.city.toString(),
                                 style: GoogleFonts.poppins(
                                     color: const Color(0xFF014E70),
                                     fontSize: 14,
