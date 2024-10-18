@@ -523,7 +523,7 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                             ),
                             5.spaceY,
                             Text(
-                              'Small businesses & start ups '.tr,
+                              'Small businesses & startups '.tr,
                               style: GoogleFonts.poppins(
                                   color: const Color(0xff111727), fontWeight: FontWeight.w400, fontSize: 13),
                             ),

@@ -94,68 +94,68 @@ class _ExtraInformationState extends State<ExtraInformation> {
                 // add your child widgets here
               ),
             ),
-            const SizedBox(height: 20,),
-            GestureDetector(
-              onTap: (){
-                 // Get.to(()=> VarientProductsScreen(productType: 'variants',));
-                Get.to(AddProductScreen());
-              },
-              child: Container(
-                width:size.width,
-                decoration:  BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
-                  image: DecorationImage(
-                    image: profileController.selectedLAnguage.value == "English"
-                    ?AssetImage('assets/images/tellus (2).png')
-                    :AssetImage('assets/images/tellus (2)_arab.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // adjust the width and height as needed
-                height: 180,
-                // child:  Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
-                //   child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       children:[
-                //         Text('Variable'.tr,style:GoogleFonts.poppins(fontSize:30,fontWeight:FontWeight.w500)),
-                //         Text('My item have variable shape, size, color, price, material...etc'.tr,style:GoogleFonts.poppins(fontSize:20))
-                //       ]),
-                // )
-                // ,// add your child widgets here
-              ),
-            ),
-            const SizedBox(height: 20,),
-            GestureDetector(
-              onTap: (){
-                Get.to(()=>const TellUsYourSelfScreen());
-              },
-              child: Container(
-                width:size.width,
-                decoration:  BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
-                  image: DecorationImage(
-                    image: profileController.selectedLAnguage.value == "English"
-                    ?AssetImage('assets/images/tellus (3).png')
-                    :AssetImage('assets/images/tellus (3)_arab.png'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                // adjust the width and height as needed
-                height: 180,
-                // child:  Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
-                //   child: Column(
-                //       crossAxisAlignment: CrossAxisAlignment.start,
-                //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //       children:[
-                //         Text('Bookable'.tr,style:GoogleFonts.poppins(fontSize:30,fontWeight:FontWeight.w500)),
-                //         Text('I Need to set times, availability, offs, & locations ..etc'.tr,style:GoogleFonts.poppins(fontSize:20))
-                //
-                //       ]),
-                // )
-                // ,// add your child widgets here
-              ),
-            ),
+            // const SizedBox(height: 20,),
+            // GestureDetector(
+            //   onTap: (){
+            //      // Get.to(()=> VarientProductsScreen(productType: 'variants',));
+            //     Get.to(AddProductScreen());
+            //   },
+            //   child: Container(
+            //     width:size.width,
+            //     decoration:  BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
+            //       image: DecorationImage(
+            //         image: profileController.selectedLAnguage.value == "English"
+            //         ?AssetImage('assets/images/tellus (2).png')
+            //         :AssetImage('assets/images/tellus (2)_arab.png'),
+            //         fit: BoxFit.cover,
+            //       ),
+            //     ),
+            //     // adjust the width and height as needed
+            //     height: 180,
+            //     // child:  Padding(
+            //     //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+            //     //   child: Column(
+            //     //       crossAxisAlignment: CrossAxisAlignment.start,
+            //     //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     //       children:[
+            //     //         Text('Variable'.tr,style:GoogleFonts.poppins(fontSize:30,fontWeight:FontWeight.w500)),
+            //     //         Text('My item have variable shape, size, color, price, material...etc'.tr,style:GoogleFonts.poppins(fontSize:20))
+            //     //       ]),
+            //     // )
+            //     // ,// add your child widgets here
+            //   ),
+            // ),
+            // const SizedBox(height: 20,),
+            // GestureDetector(
+            //   onTap: (){
+            //     Get.to(()=>const TellUsYourSelfScreen());
+            //   },
+            //   child: Container(
+            //     width:size.width,
+            //     decoration:  BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10)),
+            //       image: DecorationImage(
+            //         image: profileController.selectedLAnguage.value == "English"
+            //         ?AssetImage('assets/images/tellus (3).png')
+            //         :AssetImage('assets/images/tellus (3)_arab.png'),
+            //         fit: BoxFit.cover,
+            //       ),
+            //     ),
+            //     // adjust the width and height as needed
+            //     height: 180,
+            //     // child:  Padding(
+            //     //   padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 13),
+            //     //   child: Column(
+            //     //       crossAxisAlignment: CrossAxisAlignment.start,
+            //     //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     //       children:[
+            //     //         Text('Bookable'.tr,style:GoogleFonts.poppins(fontSize:30,fontWeight:FontWeight.w500)),
+            //     //         Text('I Need to set times, availability, offs, & locations ..etc'.tr,style:GoogleFonts.poppins(fontSize:20))
+            //     //
+            //     //       ]),
+            //     // )
+            //     // ,// add your child widgets here
+            //   ),
+            // ),
             const SizedBox(height: 20,),
             // Text("Extra information",),
             // Text("This is an optional step for some products")

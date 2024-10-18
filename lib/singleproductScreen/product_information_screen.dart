@@ -55,6 +55,7 @@ class _ProductInformationScreensState extends State<ProductInformationScreens> {
   final addProductController = Get.put(AddProductController());
   final profileController = Get.put(ProfileController());
   final homeController = Get.put(TrendingProductsController());
+  
   deliverySizeApi() {
     Map<String, dynamic> map = {};
     map['category_id'] = idForChild.join(',').toString();
