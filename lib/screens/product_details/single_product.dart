@@ -46,7 +46,7 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
   TextEditingController reviewController = TextEditingController();
   final profileController = Get.put(ProfileController());
 
- ProductElement get productDetails => productElement;
+  ProductElement get productDetails => productElement;
   ModelSingleProduct modelSingleProduct = ModelSingleProduct();
   ModelAddReview modelAddReview = ModelAddReview();
 
@@ -56,7 +56,8 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
 
   bool get isVariantType => productElement.productType == "variants";
 
-  bool get isVirtualProductAudio => productElement.virtualProductType == "voice";
+  bool get isVirtualProductAudio =>
+      productElement.virtualProductType == "voice";
 
   bool get canBuyProduct => productElement.addToCart == true;
   String dropdownvalue1 = 'red';
@@ -115,7 +116,11 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
     return true;
   }
 
-  pickDate({required Function(DateTime gg) onPick, DateTime? initialDate, DateTime? firstDate, DateTime? lastDate}) async {
+  pickDate(
+      {required Function(DateTime gg) onPick,
+      DateTime? initialDate,
+      DateTime? firstDate,
+      DateTime? lastDate}) async {
     DateTime lastD = lastDate ?? DateTime(2101);
     DateTime initialD = initialDate ?? firstDate ?? DateTime.now();
 
@@ -142,13 +147,13 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
     // updateValues();
   }
 
-  Map<String, dynamic> get getMap
-  {
+  Map<String, dynamic> get getMap {
     Map<String, dynamic> map = {};
     map["product_id"] = productElement.id.toString();
-    map["quantity"] = map["quantity"] = int.tryParse(productQuantity.value.toString());
-     map["key"] = 'fedexRate';
-     map["country_id"]=profileController.model.user!.country_id;
+    map["quantity"] =
+        map["quantity"] = int.tryParse(productQuantity.value.toString());
+    map["key"] = 'fedexRate';
+    map["country_id"] = profileController.model.user!.country_id;
 
     if (isBookingProduct) {
       map["start_date"] = selectedDate.text.trim();
@@ -162,7 +167,10 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
   }
 
   getProductDetails() {
-    repositories.postApi(url: ApiUrls.singleProductUrl, mapData: {"id": productElement.id.toString(),"key":'fedexRate'}).then((value) {
+    repositories.postApi(url: ApiUrls.singleProductUrl, mapData: {
+      "id": productElement.id.toString(),
+      "key": 'fedexRate'
+    }).then((value) {
       modelSingleProduct = ModelSingleProduct.fromJson(jsonDecode(value));
       if (modelSingleProduct.product != null) {
         log("modelSingleProduct.product!.toJson().....${modelSingleProduct.product!.toJson()}");
@@ -182,9 +190,13 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
     if (!validateSlots()) return;
     Map<String, dynamic> map = {};
     map["product_id"] = productElement.id.toString();
-    map["quantity"] = map["quantity"] = int.tryParse(productQuantity.value.toString());
+    map["quantity"] =
+        map["quantity"] = int.tryParse(productQuantity.value.toString());
     map["key"] = 'fedexRate';
-    map["country_id"]= profileController.model.user!= null && cartController.countryId.isEmpty ? profileController.model.user!.country_id : cartController.countryId.toString();
+    map["country_id"] =
+        profileController.model.user != null && cartController.countryId.isEmpty
+            ? profileController.model.user!.country_id
+            : cartController.countryId.toString();
 
     if (isBookingProduct) {
       map["start_date"] = selectedDate.text.trim();
@@ -194,8 +206,11 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
     if (isVariantType) {
       map["variation"] = selectedVariant!.id.toString();
     }
-    repositories.postApi(url: ApiUrls.addToCartUrl, mapData: map, context: context).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(url: ApiUrls.addToCartUrl, mapData: map, context: context)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       showToast(response.message.toString());
       if (response.status == true) {
         Get.back();
@@ -208,19 +223,22 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
     if (!validateSlots()) return;
     Map<String, dynamic> map = {};
     cartController.productElementId = productElement.id.toString();
-    cartController.productQuantity =  productQuantity.value.toString();
-    cartController.isBookingProduct =  isBookingProduct;
-    cartController.selectedDate =  selectedDate.text.trim();
-    cartController.selectedSlot =  selectedSlot.split("--").first;
+    cartController.productQuantity = productQuantity.value.toString();
+    cartController.isBookingProduct = isBookingProduct;
+    cartController.selectedDate = selectedDate.text.trim();
+    cartController.selectedSlot = selectedSlot.split("--").first;
     cartController.selectedSlotEnd = selectedSlot.split("--").last;
     cartController.isVariantType = isVariantType;
     if (isVariantType) {
       cartController.selectedVariant = selectedVariant!.id.toString();
     }
     map["product_id"] = productElement.id.toString();
-    map["quantity"] = map["quantity"] = int.tryParse(productQuantity.value.toString());
+    map["quantity"] =
+        map["quantity"] = int.tryParse(productQuantity.value.toString());
     map["key"] = 'fedexRate';
-    map["country_id"]= profileController.model.user!= null ? profileController.model.user!.country_id : '117';
+    map["country_id"] = profileController.model.user != null
+        ? profileController.model.user!.country_id
+        : '117';
     map["zip_code"] = cartController.zipCode.toString();
     if (isBookingProduct) {
       map["start_date"] = selectedDate.text.trim();
@@ -230,15 +248,18 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
     if (isVariantType) {
       map["variation"] = selectedVariant!.id.toString();
     }
-    repositories.postApi(url: ApiUrls.buyNowDetailsUrl, mapData: map, context: context).then((value) {
+    repositories
+        .postApi(url: ApiUrls.buyNowDetailsUrl, mapData: map, context: context)
+        .then((value) {
       log("Value>>>>>>>$value");
       print('singleee');
-      cartController.directOrderResponse.value = ModelDirectOrderResponse.fromJson(jsonDecode(value));
+      cartController.directOrderResponse.value =
+          ModelDirectOrderResponse.fromJson(jsonDecode(value));
 
       showToast(cartController.directOrderResponse.value.message.toString());
       if (cartController.directOrderResponse.value.status == true) {
-
-        cartController.directOrderResponse.value.prodcutData!.inStock = productQuantity.value;
+        cartController.directOrderResponse.value.prodcutData!.inStock =
+            productQuantity.value;
         if (kDebugMode) {
           print(cartController.directOrderResponse.value.prodcutData!.inStock);
         }
@@ -254,7 +275,7 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
   @override
   void initState() {
     super.initState();
-  productElement = widget.productDetails;
+    productElement = widget.productDetails;
     imagesList.add(productElement.featuredImage.toString());
     imagesList.addAll(productElement.galleryImage ?? []);
     getPublishPostData();
@@ -264,19 +285,21 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
   RxInt productQuantity = 1.obs;
   final cartController = Get.put(CartController());
 
-  bool get checkLoaded => productElement.pName != null && productElement.sPrice != null;
-
+  bool get checkLoaded =>
+      productElement.pName != null && productElement.sPrice != null;
 
   Rx<ModelGetReview> modelGetReview = ModelGetReview().obs;
 
   Future getPublishPostData() async {
-    repositories.getApi(url: ApiUrls.getReviewUrl + productElement.id.toString()).then((value) {
+    repositories
+        .getApi(url: ApiUrls.getReviewUrl + productElement.id.toString())
+        .then((value) {
       modelGetReview.value = ModelGetReview.fromJson(jsonDecode(value));
     });
   }
 
   RxBool alreadyReview = false.obs;
-  CarouselControllerImpl carouselController = CarouselControllerImpl();
+  CarouselSliderController carouselController = CarouselSliderController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -286,7 +309,9 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
           ? Form(
               key: formKey,
               child: Padding(
-                padding: const EdgeInsets.all(20).copyWith(bottom: 10).copyWith(top: 10),
+                padding: const EdgeInsets.all(20)
+                    .copyWith(bottom: 10)
+                    .copyWith(top: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
@@ -297,7 +322,9 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                         Container(
                           height: 5,
                           width: context.getSize.width * .22,
-                          decoration: BoxDecoration(color: Colors.grey.shade400, borderRadius: BorderRadius.circular(100)),
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade400,
+                              borderRadius: BorderRadius.circular(100)),
                         )
                       ],
                     ),
@@ -322,9 +349,11 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                   builder: (BuildContext context) {
                                     return GestureDetector(
                                       onTap: () {
-                                        showImageViewer(context, Image.network(i).image,
+                                        showImageViewer(
+                                            context, Image.network(i).image,
                                             doubleTapZoomable: true,
-                                            backgroundColor: AppTheme.buttonColor,
+                                            backgroundColor:
+                                                AppTheme.buttonColor,
                                             useSafeArea: true,
                                             swipeDismissible: false);
                                       },
@@ -332,7 +361,9 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                           imageUrl: i,
                                           height: 180,
                                           fit: BoxFit.cover,
-                                          errorWidget: (_, __, ___) => Image.asset('assets/images/new_logo.png')),
+                                          errorWidget: (_, __, ___) =>
+                                              Image.asset(
+                                                  'assets/images/new_logo.png')),
                                     );
                                   },
                                 );
@@ -365,216 +396,322 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                     child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    productElement.discountOff!= "0.00"? Text(
-                                      "${productElement.discountOff} ${'%'} Off",
+                                    productElement.discountOff != "0.00"
+                                        ? Text(
+                                            "${productElement.discountOff} ${'%'} Off",
+                                            style: GoogleFonts.poppins(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w500,
+                                                color: const Color(0xffC22E2E)),
+                                          )
+                                        : const SizedBox.shrink(),
+                                    const SizedBox(
+                                      height: 5,
+                                    ),
+                                    Text(
+                                      productElement.pName
+                                          .toString()
+                                          .capitalize!,
                                       style: GoogleFonts.poppins(
-                                          fontSize: 14, fontWeight: FontWeight.w500, color: const Color(0xffC22E2E)),
-                                    ): const SizedBox.shrink(),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      productElement.pName.toString().capitalize!,
-                                      style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                     const SizedBox(
                                       height: 5,
                                     ),
-                                    productElement.inStock == "-1"?SizedBox.shrink():
-                                    Text(
-                                      '${productElement.inStock.toString()} pieces',
-                                      style: GoogleFonts.poppins(color: const Color(0xff858484), fontSize: 17),
-                                    ),
-                                    productElement.itemType != 'giveaway'?    const SizedBox(
-                                      height: 5,
-                                    ): const   SizedBox.shrink(),
-
-                                   productElement.itemType != 'giveaway'
+                                    productElement.inStock == "-1"
+                                        ? SizedBox.shrink()
+                                        : Text(
+                                            '${productElement.inStock.toString()} pieces',
+                                            style: GoogleFonts.poppins(
+                                                color: const Color(0xff858484),
+                                                fontSize: 17),
+                                          ),
+                                    productElement.itemType != 'giveaway'
+                                        ? const SizedBox(
+                                            height: 5,
+                                          )
+                                        : const SizedBox.shrink(),
+                                    productElement.itemType != 'giveaway'
                                         ? Row(
-                                      children: [
-                                        productElement.pPrice ==  productElement.discountPrice
-                                            ? const Text('')
-                                            : profileController.selectedLAnguage.value == "English"
-                                            ? Text.rich(
-                                          TextSpan(
-                                            text: '${productElement.pPrice.toString().split('.')[0]}.',
-                                            style: const TextStyle(
-                                              fontSize: 24,
-                                              decorationColor: Colors.red,
-                                              decorationThickness: 2,
-                                              decoration: TextDecoration.lineThrough,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xFF19313B),
-                                            ),
                                             children: [
-                                              WidgetSpan(
-                                                alignment: PlaceholderAlignment.middle,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: [
-                                                    const Text(
-                                                      'KWD',
-                                                      style: TextStyle(
-                                                        fontSize: 8,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: Color(0xFF19313B),
-                                                      ),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        print("date:::::::::::" + productElement.pPrice);
-                                                      },
-                                                      child: Text(
-                                                        '${productElement.pPrice.toString().split('.')[1]}',
-                                                        style: const TextStyle(
-                                                          fontSize: 8,
-                                                          fontWeight: FontWeight.w600,
-                                                          color: Color(0xFF19313B),
+                                              productElement.pPrice ==
+                                                      productElement
+                                                          .discountPrice
+                                                  ? const Text('')
+                                                  : profileController
+                                                              .selectedLAnguage
+                                                              .value ==
+                                                          "English"
+                                                      ? Text.rich(
+                                                          TextSpan(
+                                                            text:
+                                                                '${productElement.pPrice.toString().split('.')[0]}.',
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 24,
+                                                              decorationColor:
+                                                                  Colors.red,
+                                                              decorationThickness:
+                                                                  2,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color: Color(
+                                                                  0xFF19313B),
+                                                            ),
+                                                            children: [
+                                                              WidgetSpan(
+                                                                alignment:
+                                                                    PlaceholderAlignment
+                                                                        .middle,
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    const Text(
+                                                                      'KWD',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            8,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        color: Color(
+                                                                            0xFF19313B),
+                                                                      ),
+                                                                    ),
+                                                                    InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        print("date:::::::::::" +
+                                                                            productElement.pPrice);
+                                                                      },
+                                                                      child:
+                                                                          Text(
+                                                                        '${productElement.pPrice.toString().split('.')[1]}',
+                                                                        style:
+                                                                            const TextStyle(
+                                                                          fontSize:
+                                                                              8,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                          color:
+                                                                              Color(0xFF19313B),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        )
+                                                      : Text.rich(
+                                                          TextSpan(
+                                                            children: [
+                                                              WidgetSpan(
+                                                                alignment:
+                                                                    PlaceholderAlignment
+                                                                        .bottom,
+                                                                child: Column(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .start,
+                                                                  children: [
+                                                                    const Text(
+                                                                      'KWD',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontSize:
+                                                                            8,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        color: Color(
+                                                                            0xFF19313B),
+                                                                      ),
+                                                                    ),
+                                                                    InkWell(
+                                                                      onTap:
+                                                                          () {
+                                                                        print("date:::::::::::" +
+                                                                            productElement.pPrice);
+                                                                      },
+                                                                      child:
+                                                                          Text(
+                                                                        '${productElement.pPrice.toString().split('.')[1]}',
+                                                                        style:
+                                                                            const TextStyle(
+                                                                          fontSize:
+                                                                              8,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                          color:
+                                                                              Color(0xFF19313B),
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text:
+                                                                    '.${productElement.pPrice.toString().split('.')[0]}',
+                                                                style:
+                                                                    const TextStyle(
+                                                                  fontSize: 24,
+                                                                  decorationColor:
+                                                                      Colors
+                                                                          .red,
+                                                                  decorationThickness:
+                                                                      2,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .lineThrough,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Color(
+                                                                      0xFF19313B),
+                                                                ),
+                                                              )
+                                                            ],
+                                                          ),
                                                         ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
+                                              const SizedBox(
+                                                width: 7,
                                               ),
-                                            ],
-                                          ),
-                                        )
-                                            : Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              WidgetSpan(
-                                                alignment: PlaceholderAlignment.bottom,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: [
-                                                    const Text(
-                                                      'KWD',
-                                                      style: TextStyle(
-                                                        fontSize: 8,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: Color(0xFF19313B),
-                                                      ),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        print("date:::::::::::" + productElement.pPrice);
-                                                      },
-                                                      child: Text(
-                                                        '${productElement.pPrice.toString().split('.')[1]}',
+                                              profileController.selectedLAnguage
+                                                          .value ==
+                                                      "English"
+                                                  ? Text.rich(
+                                                      TextSpan(
+                                                        text:
+                                                            '${productElement.discountPrice.toString().split('.')[0]}.',
                                                         style: const TextStyle(
-                                                          fontSize: 8,
-                                                          fontWeight: FontWeight.w600,
-                                                          color: Color(0xFF19313B),
+                                                          fontSize: 24,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          color:
+                                                              Color(0xFF19313B),
                                                         ),
+                                                        children: [
+                                                          WidgetSpan(
+                                                            alignment:
+                                                                PlaceholderAlignment
+                                                                    .middle,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                const Text(
+                                                                  'KWD',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize: 8,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Color(
+                                                                        0xFF19313B),
+                                                                  ),
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    print("date:::::::::::" +
+                                                                        productElement
+                                                                            .shippingDate);
+                                                                  },
+                                                                  child: Text(
+                                                                    '${productElement.discountPrice.toString().split('.')[1]}',
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontSize:
+                                                                          8,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      color: Color(
+                                                                          0xFF19313B),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    )
+                                                  : Text.rich(
+                                                      TextSpan(
+                                                        children: [
+                                                          WidgetSpan(
+                                                            alignment:
+                                                                PlaceholderAlignment
+                                                                    .bottom,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                const Text(
+                                                                  'KWD',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize: 8,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Color(
+                                                                        0xFF19313B),
+                                                                  ),
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () {
+                                                                    print("date:::::::::::" +
+                                                                        productElement
+                                                                            .shippingDate);
+                                                                  },
+                                                                  child: Text(
+                                                                    '${productElement.discountPrice.toString().split('.')[1]}',
+                                                                    style:
+                                                                        const TextStyle(
+                                                                      fontSize:
+                                                                          8,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      color: Color(
+                                                                          0xFF19313B),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                          TextSpan(
+                                                            text:
+                                                                '.${productElement.discountPrice.toString().split('.')[0]}',
+                                                            style:
+                                                                const TextStyle(
+                                                              fontSize: 24,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
+                                                              color: Color(
+                                                                  0xFF19313B),
+                                                            ),
+                                                          )
+                                                        ],
                                                       ),
                                                     ),
-                                                  ],
-                                                ),
-                                              ),
-                                              TextSpan(
-                                                text: '.${productElement.pPrice.toString().split('.')[0]}',
-                                                style: const TextStyle(
-                                                  fontSize: 24,
-                                                  decorationColor: Colors.red,
-                                                  decorationThickness: 2,
-                                                  decoration: TextDecoration.lineThrough,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Color(0xFF19313B),
-                                                ),
-                                              )
                                             ],
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          width: 7,
-                                        ),
-                                        profileController.selectedLAnguage.value == "English"
-                                        ?Text.rich(
-                                          TextSpan(
-                                            text: '${productElement.discountPrice.toString().split('.')[0]}.',
-                                            style: const TextStyle(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w600,
-                                              color: Color(0xFF19313B),
-                                            ),
-                                            children: [
-                                              WidgetSpan(
-                                                alignment: PlaceholderAlignment.middle,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: [
-                                                    const Text(
-                                                      'KWD',
-                                                      style: TextStyle(
-                                                        fontSize: 8,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: Color(0xFF19313B),
-                                                      ),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        print("date:::::::::::" + productElement.shippingDate);
-                                                      },
-                                                      child: Text(
-                                                        '${productElement.discountPrice.toString().split('.')[1]}',
-                                                        style: const TextStyle(
-                                                          fontSize: 8,
-                                                          fontWeight: FontWeight.w600,
-                                                          color: Color(0xFF19313B),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                        :Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              WidgetSpan(
-                                                alignment: PlaceholderAlignment.bottom,
-                                                child: Column(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                  children: [
-                                                    const Text(
-                                                      'KWD',
-                                                      style: TextStyle(
-                                                        fontSize: 8,
-                                                        fontWeight: FontWeight.w500,
-                                                        color: Color(0xFF19313B),
-                                                      ),
-                                                    ),
-                                                    InkWell(
-                                                      onTap: () {
-                                                        print("date:::::::::::" + productElement.shippingDate);
-                                                      },
-                                                      child: Text(
-                                                        '${productElement.discountPrice.toString().split('.')[1]}',
-                                                        style: const TextStyle(
-                                                          fontSize: 8,
-                                                          fontWeight: FontWeight.w600,
-                                                          color: Color(0xFF19313B),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              TextSpan(
-                                                text: '.${productElement.discountPrice.toString().split('.')[0]}',
-                                                style: const TextStyle(
-                                                  fontSize: 24,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: Color(0xFF19313B),
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
+                                          )
                                         : const SizedBox.shrink(),
                                   ],
                                 )),
@@ -588,7 +725,11 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                           // color: Colors.red,
                                         ))
                                   else
-                                    SizedBox(width: 40, height: 40, child: SvgPicture.asset("assets/svgs/pdf.svg"))
+                                    SizedBox(
+                                        width: 40,
+                                        height: 40,
+                                        child: SvgPicture.asset(
+                                            "assets/svgs/pdf.svg"))
                               ],
                             ),
                             const SizedBox(
@@ -599,7 +740,8 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                 'Variants',
                                 style: normalStyle,
                               ),
-                              if (modelSingleProduct.product != null && modelSingleProduct.product!.variants != null)
+                              if (modelSingleProduct.product != null &&
+                                  modelSingleProduct.product!.variants != null)
                                 DropdownButtonFormField(
                                   value: selectedVariant,
                                   isExpanded: true,
@@ -623,7 +765,10 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                           value: e,
                                           child: Row(
                                             children: [
-                                              Expanded(child: Text(e.comb.toString().capitalize!)),
+                                              Expanded(
+                                                  child: Text(e.comb
+                                                      .toString()
+                                                      .capitalize!)),
                                               Text("kwd ${e.price}"),
                                               const SizedBox(
                                                 width: 4,
@@ -634,8 +779,10 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                   onChanged: (newValue) {
                                     if (newValue == null) return;
                                     selectedVariant = newValue;
-                                    carouselController.animateToPage(imagesList
-                                        .indexWhere((element) => element.toString() == selectedVariant!.image.toString()));
+                                    carouselController.animateToPage(
+                                        imagesList.indexWhere((element) =>
+                                            element.toString() ==
+                                            selectedVariant!.image.toString()));
                                     setState(() {});
                                   },
                                 ),
@@ -643,60 +790,82 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                             const SizedBox(
                               height: 20,
                             ),
-                            if(modelSingleProduct.product!= null)
-                            modelSingleProduct.product?.shippingDate != "No Internation Shipping Available"?
-                            Column(crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'shipping',
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff858484),
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                if(modelSingleProduct.product!= null)
-                                if(modelSingleProduct.product?.lowestDeliveryPrice!=null)
-                                  Text(
-                                    'KWD${modelSingleProduct.product!.lowestDeliveryPrice.toString()}',
-                                    style: GoogleFonts.poppins(
-                                        color: const Color(0xff858484),
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                if(modelSingleProduct.product!= null)
-                                if(modelSingleProduct.product!.shippingDate!=null)
-                                  Text(
-                                    modelSingleProduct.product!.shippingDate.toString(),
-                                    style: GoogleFonts.poppins(
-                                        color: const Color(0xff858484),
-                                        fontSize: 13,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                              ],
-                            ): GestureDetector(
-                              onTap: () {
-                                Get.to(() => const ContactUsScreen());
-                              },
-                              child: RichText(
-                                text: TextSpan(
-                                    text: 'vendor doesn\'t ship internationally',
-                                    style: GoogleFonts.poppins(
-                                        color: const Color(0xff858484), fontSize: 13, fontWeight: FontWeight.w500),
-                                    children: [
-                                      TextSpan(
-                                          text: ' contact us',
+                            if (modelSingleProduct.product != null)
+                              modelSingleProduct.product?.shippingDate !=
+                                      "No Internation Shipping Available"
+                                  ? Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          'shipping',
                                           style: GoogleFonts.poppins(
-                                              decoration: TextDecoration.underline,
-                                              color: AppTheme.buttonColor,
+                                              color: const Color(0xff858484),
                                               fontSize: 13,
-                                              fontWeight: FontWeight.w500)),
-                                      TextSpan(
-                                          text: ' for the soloution',
-                                          style: GoogleFonts.poppins(
-                                              color: const Color(0xff858484), fontSize: 13, fontWeight: FontWeight.w500)),
-                                    ]),
-                              ),
-                            ),
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                        if (modelSingleProduct.product != null)
+                                          if (modelSingleProduct.product
+                                                  ?.lowestDeliveryPrice !=
+                                              null)
+                                            Text(
+                                              'KWD${modelSingleProduct.product!.lowestDeliveryPrice.toString()}',
+                                              style: GoogleFonts.poppins(
+                                                  color:
+                                                      const Color(0xff858484),
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                        if (modelSingleProduct.product != null)
+                                          if (modelSingleProduct
+                                                  .product!.shippingDate !=
+                                              null)
+                                            Text(
+                                              modelSingleProduct
+                                                  .product!.shippingDate
+                                                  .toString(),
+                                              style: GoogleFonts.poppins(
+                                                  color:
+                                                      const Color(0xff858484),
+                                                  fontSize: 13,
+                                                  fontWeight: FontWeight.w500),
+                                            ),
+                                      ],
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        Get.to(() => const ContactUsScreen());
+                                      },
+                                      child: RichText(
+                                        text: TextSpan(
+                                            text:
+                                                'vendor doesn\'t ship internationally',
+                                            style: GoogleFonts.poppins(
+                                                color: const Color(0xff858484),
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w500),
+                                            children: [
+                                              TextSpan(
+                                                  text: ' contact us',
+                                                  style: GoogleFonts.poppins(
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      color:
+                                                          AppTheme.buttonColor,
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                              TextSpan(
+                                                  text: ' for the soloution',
+                                                  style: GoogleFonts.poppins(
+                                                      color: const Color(
+                                                          0xff858484),
+                                                      fontSize: 13,
+                                                      fontWeight:
+                                                          FontWeight.w500)),
+                                            ]),
+                                      ),
+                                    ),
                             // Text("No Internation Shipping Available",
                             //   style: GoogleFonts.poppins(
                             //     shadows: [const Shadow(color: Colors.black, offset: Offset(0, -4))],
@@ -705,13 +874,19 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                             //     fontWeight: FontWeight.w500,
                             //     decoration: TextDecoration.underline,
                             //   ),),
-                            const SizedBox(height: 15,),
+                            const SizedBox(
+                              height: 15,
+                            ),
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
                                 'DESCRIPTION'.tr,
                                 style: GoogleFonts.poppins(
-                                  shadows: [const Shadow(color: Colors.black, offset: Offset(0, -4))],
+                                  shadows: [
+                                    const Shadow(
+                                        color: Colors.black,
+                                        offset: Offset(0, -4))
+                                  ],
                                   color: Colors.transparent,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
@@ -723,7 +898,8 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                               height: 15,
                             ),
                             Text(
-                              Bidi.stripHtmlIfNeeded(productElement.shortDescription ?? ''),
+                              Bidi.stripHtmlIfNeeded(
+                                  productElement.shortDescription ?? ''),
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w400,
@@ -738,7 +914,11 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                 'CUSTOMER REVIEWS (${modelGetReview.value.reviewCount != null ? modelGetReview.value.reviewCount.toString() : '0'})'
                                     .tr,
                                 style: GoogleFonts.poppins(
-                                  shadows: [const Shadow(color: Colors.black, offset: Offset(0, -4))],
+                                  shadows: [
+                                    const Shadow(
+                                        color: Colors.black,
+                                        offset: Offset(0, -4))
+                                  ],
                                   color: Colors.transparent,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w500,
@@ -753,13 +933,18 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                               return modelGetReview.value.status == true
                                   ? ListView.builder(
                                       shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: modelGetReview.value.data!.length,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount:
+                                          modelGetReview.value.data!.length,
                                       itemBuilder: (context, index) {
-                                        final item = modelGetReview.value.data![index];
+                                        final item =
+                                            modelGetReview.value.data![index];
                                         return Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
                                             10.spaceY,
                                             Text(
@@ -773,7 +958,9 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                             Text(
                                               item.comment.toString(),
                                               style: GoogleFonts.poppins(
-                                                  fontSize: 14, fontWeight: FontWeight.w400, color: Colors.black87),
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.w400,
+                                                  color: Colors.black87),
                                             ),
                                           ],
                                         );
@@ -783,10 +970,11 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                             }),
                             20.spaceY,
                             productElement.beforePurchase == true &&
-                                productElement.alreadyReview == false &&
+                                    productElement.alreadyReview == false &&
                                     alreadyReview.value == false
                                 ? Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(
@@ -798,8 +986,12 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                       ),
                                       15.spaceY,
                                       Padding(
-                                        padding: const EdgeInsets.all(8.0).copyWith(
-                                          bottom: MediaQuery.of(context).viewInsets.bottom + 01.0,
+                                        padding:
+                                            const EdgeInsets.all(8.0).copyWith(
+                                          bottom: MediaQuery.of(context)
+                                                  .viewInsets
+                                                  .bottom +
+                                              01.0,
                                         ),
                                         child: CommonTextField(
                                           hintText: 'Write a review',
@@ -811,31 +1003,44 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                       ElevatedButton(
                                         onPressed: () {
                                           Map<String, String> map = {};
-                                          map['comment'] = reviewController.text.toString();
-                                          map['product_id'] = productElement.id.toString();
-                                          repositories.postApi(url: ApiUrls.addReviewUrl, mapData: map).then((value) {
-                                            modelAddReview = ModelAddReview.fromJson(jsonDecode(value));
+                                          map['comment'] =
+                                              reviewController.text.toString();
+                                          map['product_id'] =
+                                              productElement.id.toString();
+                                          repositories
+                                              .postApi(
+                                                  url: ApiUrls.addReviewUrl,
+                                                  mapData: map)
+                                              .then((value) {
+                                            modelAddReview =
+                                                ModelAddReview.fromJson(
+                                                    jsonDecode(value));
                                             if (modelAddReview.status == true) {
-                                              showToast(modelAddReview.message.toString());
+                                              showToast(modelAddReview.message
+                                                  .toString());
                                               setState(() {
                                                 alreadyReview.value = true;
                                               });
                                               getPublishPostData();
                                               reviewController.text = '';
                                             } else {
-                                              showToast(modelAddReview.message.toString());
+                                              showToast(modelAddReview.message
+                                                  .toString());
                                             }
                                           });
                                         },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: AppTheme.buttonColor,
-                                          surfaceTintColor: AppTheme.buttonColor,
+                                          surfaceTintColor:
+                                              AppTheme.buttonColor,
                                         ),
                                         child: FittedBox(
                                           child: Text(
                                             "POST A REVIEW".tr,
                                             style: GoogleFonts.poppins(
-                                                fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500,
+                                                color: Colors.white),
                                           ),
                                         ),
                                       ),
@@ -847,7 +1052,9 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                             ),
                             if (isBookingProduct)
                               if (modelSingleProduct.product != null &&
-                                  modelSingleProduct.product!.serviceTimeSloat != null) ...[
+                                  modelSingleProduct
+                                          .product!.serviceTimeSloat !=
+                                      null) ...[
                                 Text(
                                   "Select Date".tr,
                                   style: normalStyle,
@@ -860,24 +1067,40 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                     pickDate(
                                         onPick: (DateTime gg) {
                                           if (dateFormat
-                                              .parse((modelSingleProduct.product!.productAvailability!.fromDate ??
-                                                      modelSingleProduct.product!.productAvailability!.toDate)
+                                              .parse((modelSingleProduct
+                                                          .product!
+                                                          .productAvailability!
+                                                          .fromDate ??
+                                                      modelSingleProduct
+                                                          .product!
+                                                          .productAvailability!
+                                                          .toDate)
                                                   .toString())
                                               .isAfter(gg)) {
-                                            showToast("This date is not available".tr);
+                                            showToast(
+                                                "This date is not available"
+                                                    .tr);
                                             return;
                                           }
-                                          selectedDate.text = dateFormat.format(gg);
+                                          selectedDate.text =
+                                              dateFormat.format(gg);
                                           selectedDateTime = gg;
                                         },
                                         initialDate: selectedDateTime,
                                         firstDate: DateTime.now(),
                                         lastDate: dateFormat.parse(
-                                            (modelSingleProduct.product!.productAvailability!.toDate ??
-                                                    modelSingleProduct.product!.productAvailability!.fromDate)
+                                            (modelSingleProduct
+                                                        .product!
+                                                        .productAvailability!
+                                                        .toDate ??
+                                                    modelSingleProduct
+                                                        .product!
+                                                        .productAvailability!
+                                                        .fromDate)
                                                 .toString()));
                                   },
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   validator: (value) {
                                     if (value!.trim().isEmpty) {
                                       return "Please select date".tr;
@@ -886,16 +1109,21 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                   },
                                   readOnly: true,
                                   controller: selectedDate,
-                                  key:GlobalKey<FormFieldState>(),
+                                  key: GlobalKey<FormFieldState>(),
                                   decoration: InputDecoration(
-                                    border: const OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                    border: const OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.grey)),
                                     enabled: true,
                                     suffixIcon: Icon(
                                       CupertinoIcons.calendar,
                                       color: Colors.grey.shade800,
                                     ),
-                                    contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                                    enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.grey)),
+                                    contentPadding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 10),
+                                    enabledBorder: const OutlineInputBorder(
+                                        borderSide:
+                                            BorderSide(color: Colors.grey)),
                                     hintText: "Select Date".tr,
                                   ),
                                 ),
@@ -909,19 +1137,26 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                 Wrap(
                                   key: slotKey,
                                   spacing: 14,
-                                  children: modelSingleProduct.product!.serviceTimeSloat!
+                                  children: modelSingleProduct
+                                      .product!.serviceTimeSloat!
                                       .map((e) => FilterChip(
                                           label: Text(
                                               "${e.timeSloat.toString().convertToFormatTime} - ${e.timeSloatEnd.toString().convertToFormatTime}"),
                                           side: BorderSide(
-                                            color: showValidation && selectedSlot.isEmpty
-                                                ? Theme.of(context).colorScheme.error
+                                            color: showValidation &&
+                                                    selectedSlot.isEmpty
+                                                ? Theme.of(context)
+                                                    .colorScheme
+                                                    .error
                                                 : Colors.grey,
                                           ),
-                                          padding: const EdgeInsets.symmetric(horizontal: 0, vertical: 8),
-                                          selected: selectedSlot == "${e.timeSloat}--${e.timeSloatEnd}",
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 0, vertical: 8),
+                                          selected: selectedSlot ==
+                                              "${e.timeSloat}--${e.timeSloatEnd}",
                                           onSelected: (value) {
-                                            selectedSlot = "${e.timeSloat}--${e.timeSloatEnd}";
+                                            selectedSlot =
+                                                "${e.timeSloat}--${e.timeSloatEnd}";
                                             setState(() {});
                                           }))
                                       .toList(),
@@ -929,7 +1164,10 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                 if (showValidation && selectedSlot.isEmpty)
                                   Text(
                                     "Please select available slots".tr,
-                                    style: normalStyle.copyWith(color: Theme.of(context).colorScheme.error, fontSize: 13),
+                                    style: normalStyle.copyWith(
+                                        color:
+                                            Theme.of(context).colorScheme.error,
+                                        fontSize: 13),
                                   ),
                                 const SizedBox(
                                   height: 16,
@@ -959,10 +1197,12 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                   backgroundColor: const Color(0xffEAEAEA),
                                   child: Center(
                                       child: Text(
-                                        "━",
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 16, fontWeight: FontWeight.w500, color: Colors.black),
-                                      )),
+                                    "━",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.black),
+                                  )),
                                 ),
                               ),
                               SizedBox(
@@ -971,7 +1211,9 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                               Obx(() {
                                 return Text(
                                   productQuantity.value.toString(),
-                                  style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 18),
+                                  style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18),
                                 );
                               }),
                               SizedBox(
@@ -979,7 +1221,7 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  if (productElement.inStock ==0) {
+                                  if (productElement.inStock == 0) {
                                     showToast("Out Of Stock".tr);
                                   } else {
                                     productQuantity.value++;
@@ -990,10 +1232,12 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                   backgroundColor: const Color(0xffEAEAEA),
                                   child: Center(
                                       child: Text(
-                                        "+",
-                                        style: GoogleFonts.poppins(
-                                            fontSize: 20, fontWeight: FontWeight.w600, color: Colors.black),
-                                      )),
+                                    "+",
+                                    style: GoogleFonts.poppins(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.black),
+                                  )),
                                 ),
                               ),
                             ],
@@ -1015,7 +1259,10 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                   child: FittedBox(
                                     child: Text(
                                       "Buy Now".tr,
-                                      style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white),
                                     ),
                                   ),
                                 ),
@@ -1033,7 +1280,10 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
                                   child: FittedBox(
                                     child: Text(
                                       "Add to Cart".tr,
-                                      style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.white),
+                                      style: GoogleFonts.poppins(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white),
                                     ),
                                   ),
                                 ),
@@ -1049,5 +1299,4 @@ class _SingleProductDetailsState extends State<SingleProductDetails> {
           : const LoadingAnimation(),
     );
   }
-
 }

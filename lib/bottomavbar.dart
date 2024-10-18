@@ -84,7 +84,8 @@ class _BottomNavbarState extends State<BottomNavbar> {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
         await showDialog(
           context: context,
-          barrierDismissible: false, // Prevents dialog from being dismissed by tapping outside
+          barrierDismissible:
+              false, // Prevents dialog from being dismissed by tapping outside
           builder: (BuildContext context) {
             return WillPopScope(
               onWillPop: () async {
@@ -92,9 +93,10 @@ class _BottomNavbarState extends State<BottomNavbar> {
                 return false;
               },
               child: AlertDialog(
-                title:  Text("Purpose of collecting location".tr),
-                content:  Text(
-                    "This app collects location data to show your current city and zip code, and also for shipping information, even when the app is closed or not in use.".tr),
+                title: Text("Purpose of collecting location".tr),
+                content: Text(
+                    "This app collects location data to show your current city and zip code, and also for shipping information, even when the app is closed or not in use."
+                        .tr),
                 actions: [
                   TextButton(
                     onPressed: () {
@@ -108,7 +110,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                       //   exit(0);
                       // }
                     },
-                    child:  Text("Exit App".tr),
+                    child: Text("Exit App".tr),
                   ),
                   TextButton(
                     onPressed: () async {
@@ -116,7 +118,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                       Navigator.of(context).pop();
                       locationController.checkGps(context);
                     },
-                    child:  Text("Allow".tr),
+                    child: Text("Allow".tr),
                   ),
                 ],
               ),
@@ -170,7 +172,8 @@ class _BottomNavbarState extends State<BottomNavbar> {
           body: pages[bottomController.pageIndex.value],
           backgroundColor: const Color(0xFFEBF3F6),
           bottomNavigationBar: buildMyNavBar(),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerDocked,
           floatingActionButton: Visibility(
             child: GestureDetector(
               onTap: () {
@@ -184,27 +187,27 @@ class _BottomNavbarState extends State<BottomNavbar> {
                 padding: const EdgeInsets.all(5.0),
                 decoration: BoxDecoration(
                     color: const Color(0xFFEBF3F6),
-                  borderRadius: BorderRadius.circular(100)
-                ),
+                    borderRadius: BorderRadius.circular(100)),
                 child: Container(
                   height: 60,
                   width: 60,
                   decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: AppTheme.buttonColor,
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Padding(
                     padding: const EdgeInsets.all(9.0),
                     child: Center(
-                      child: profileController.selectedLAnguage.value == 'English' ?
-                      Image.asset(
-                        'assets/images/D-Sell-Icon.png',
-                        height: 30,
-                      ) :
-                      Image.asset(
-                        'assets/images/D-Sell-Icon-arab.png',
-                        height: 30,
-                      )
+                      child:
+                          profileController.selectedLAnguage.value == 'English'
+                              ? Image.asset(
+                                  'assets/images/Sell-White-EN.png',
+                                  height: 30,
+                                )
+                              : Image.asset(
+                                  'assets/images/Sell-White-AR.png',
+                                  height: 30,
+                                ),
                     ),
                   ),
                 ),
@@ -249,7 +252,9 @@ class _BottomNavbarState extends State<BottomNavbar> {
                             child: Image.asset(
                               'assets/images/home_new.png',
                               width: 30,
-                              color: bottomController.pageIndex.value == 0 ? AppTheme.buttonColor : AppTheme.primaryColor,
+                              color: bottomController.pageIndex.value == 0
+                                  ? AppTheme.buttonColor
+                                  : AppTheme.primaryColor,
                             ),
                           ),
                         ),
@@ -270,8 +275,9 @@ class _BottomNavbarState extends State<BottomNavbar> {
                             child: Image.asset(
                               'assets/images/category_new.png',
                               width: 30,
-                              color:
-                                  bottomController.pageIndex.value == 1 ? AppTheme.buttonColor : AppTheme.primaryColor,
+                              color: bottomController.pageIndex.value == 1
+                                  ? AppTheme.buttonColor
+                                  : AppTheme.primaryColor,
                             ),
                           ),
                         ),
@@ -284,10 +290,10 @@ class _BottomNavbarState extends State<BottomNavbar> {
                         child: MaterialButton(
                           padding: padding,
                           onPressed: () {
-                            if(userLoggedIn){
+                            if (userLoggedIn) {
                               bottomController.updateIndexValue(2);
                               setState(() {});
-                            }else{
+                            } else {
                               Get.to(const LoginScreen());
                             }
                           },
@@ -298,8 +304,9 @@ class _BottomNavbarState extends State<BottomNavbar> {
                             child: Image.asset(
                               'assets/images/fav_new.png',
                               width: 30,
-                              color:
-                                  bottomController.pageIndex.value == 2 ? AppTheme.buttonColor : AppTheme.primaryColor,
+                              color: bottomController.pageIndex.value == 2
+                                  ? AppTheme.buttonColor
+                                  : AppTheme.primaryColor,
                             ),
                           ),
                         ),
@@ -321,8 +328,9 @@ class _BottomNavbarState extends State<BottomNavbar> {
                               'assets/images/profile_new.png',
                               width: 30,
                               height: 30,
-                              color:
-                                  bottomController.pageIndex.value == 3 ? AppTheme.buttonColor : AppTheme.primaryColor,
+                              color: bottomController.pageIndex.value == 3
+                                  ? AppTheme.buttonColor
+                                  : AppTheme.primaryColor,
                             ),
                           ),
                         ),
