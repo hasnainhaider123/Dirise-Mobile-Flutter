@@ -168,7 +168,7 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Container(
-                                          padding: const EdgeInsets.all(10),
+                                          padding: const EdgeInsets.all(8),
                                           decoration: BoxDecoration(
                                             color: Colors.white,
                                             boxShadow: [
@@ -187,8 +187,14 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                           child: CachedNetworkImage(
                                               imageUrl:
                                                   item.featuredImage.toString(),
-                                              height: 150,
-                                              width: 150,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.18,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.2,
                                               fit: BoxFit.cover,
                                               errorWidget: (_, __, ___) =>
                                                   Image.asset(
@@ -217,14 +223,23 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                                       'kuwait city')
                                                     Image.asset(
                                                         'assets/svgs/flagk.png'),
-                                                  Text(
-                                                    item.countryName.toString(),
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400,
-                                                        color: const Color(
-                                                            0xFF19313C)),
+                                                  Expanded(
+                                                    child: FittedBox(
+                                                      fit: BoxFit.scaleDown,
+                                                      child: Text(
+                                                        item.countryName
+                                                            .toString(),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
+                                                        style: GoogleFonts.poppins(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            color: const Color(
+                                                                0xFF19313C)),
+                                                      ),
+                                                    ),
                                                   ),
                                                   const SizedBox(
                                                     width: 5,
