@@ -240,12 +240,13 @@ class _VendorOrderListState extends State<VendorOrderList> {
                               textAlignVertical: TextAlignVertical.center,
                               textInputAction: TextInputAction.search,
                               onChanged: (value) {
+                                log('search order is${productController.searchOrderController.text}');
                                 debounceSearch();
                                 setState(() {});
                                 if(productController.searchOrderController.text == ''){
                                   productController.modelVendorOrders.value.order!.data!.clear();
                                   productController.data.clear();
-                                  log('printttt ${  productController.modelVendorOrders.value.order!.data!.toString()}');
+                                 log('printttt ${  productController.modelVendorOrders.value.order!.data!.toString()}');
                                 }
 
                               },
