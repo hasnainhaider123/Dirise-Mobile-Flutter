@@ -11,8 +11,14 @@ class CustomOutlineButton extends StatelessWidget {
   final Color? textColor;
   final double? borderRadius;
 
-  const   CustomOutlineButton(
-      {Key? key, required this.title, this.borderRadius, this.onPressed, this.backgroundColor, this.textColor, this.expandedValue = false})
+  const CustomOutlineButton(
+      {Key? key,
+      required this.title,
+      this.borderRadius,
+      this.onPressed,
+      this.backgroundColor,
+      this.textColor,
+      this.expandedValue = false})
       : super(key: key);
 
   @override
@@ -25,9 +31,8 @@ class CustomOutlineButton extends StatelessWidget {
           style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(borderRadius ?? 4),
-                side: const BorderSide(color: AppTheme.buttonColor,width: 2),
-
+                borderRadius: BorderRadius.circular(borderRadius ?? 4),
+                side: const BorderSide(color: AppTheme.buttonColor, width: 2),
               ),
               textStyle: GoogleFonts.poppins(
                 fontWeight: FontWeight.bold,
@@ -35,18 +40,24 @@ class CustomOutlineButton extends StatelessWidget {
           onPressed: onPressed,
           child: expandedValue == true
               ? SizedBox(
-            width: double.maxFinite,
-            child: Center(
-              child: Text(
-                title,
-                style: GoogleFonts.poppins(color: const Color(0xFF014E70), fontSize: 19, fontWeight: FontWeight.w500),
-              ),
-            ),
-          )
+                  width: double.maxFinite,
+                  child: Center(
+                    child: Text(
+                      title,
+                      style: GoogleFonts.poppins(
+                          color: const Color(0xFF014E70),
+                          fontSize: 19,
+                          fontWeight: FontWeight.w500),
+                    ),
+                  ),
+                )
               : Text(
-            title,
-            style: GoogleFonts.poppins(color: const Color(0xFF014E70), fontSize: 18, fontWeight: FontWeight.w500),
-          )),
+                  title,
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xFF014E70),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500),
+                )),
     );
   }
 }

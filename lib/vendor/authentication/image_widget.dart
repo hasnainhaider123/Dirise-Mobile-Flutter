@@ -14,7 +14,7 @@ class ImageWidget extends StatefulWidget {
       {super.key,
       required this.file,
       required this.title,
-     required this.validation,
+      required this.validation,
       required this.filePicked,
       this.imageOnly});
   final File file;
@@ -81,7 +81,7 @@ class _ImageWidgetState extends State<ImageWidget> {
             children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title:  Text('Files'.tr),
+                title: Text('Files'.tr),
                 onTap: () async {
                   Get.back();
                   if (widget.imageOnly == true) {
@@ -163,7 +163,10 @@ class _ImageWidgetState extends State<ImageWidget> {
         8.spaceY,
         Text(
           widget.title,
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w500, color: const Color(0xff2F2F2F), fontSize: 16),
+          style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w500,
+              color: const Color(0xff2F2F2F),
+              fontSize: 16),
         ),
         8.spaceY,
         GestureDetector(
@@ -172,14 +175,15 @@ class _ImageWidgetState extends State<ImageWidget> {
             pickImagesNew();
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.padding16),
+            padding: EdgeInsets.symmetric(
+                horizontal: AddSize.padding16, vertical: AddSize.padding16),
             width: AddSize.screenWidth,
             height: context.getSize.width * .38,
             decoration: BoxDecoration(
                 color: const Color(0xffE2E2E2).withOpacity(.4),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                color: Colors.grey,
+                  color: Colors.grey,
                 )),
             child: file.path == ""
                 ? Column(
@@ -302,7 +306,10 @@ class _ImageWidget1State extends State<ImageWidget1> {
         8.spaceY,
         Text(
           widget.title,
-          style: GoogleFonts.poppins(fontWeight: FontWeight.w500, color: const Color(0xff2F2F2F), fontSize: 16),
+          style: GoogleFonts.poppins(
+              fontWeight: FontWeight.w500,
+              color: const Color(0xff2F2F2F),
+              fontSize: 16),
         ),
         8.spaceY,
         GestureDetector(
@@ -310,7 +317,8 @@ class _ImageWidget1State extends State<ImageWidget1> {
             pickFile();
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.padding16),
+            padding: EdgeInsets.symmetric(
+                horizontal: AddSize.padding16, vertical: AddSize.padding16),
             width: AddSize.screenWidth,
             height: context.getSize.width * .38,
             decoration: BoxDecoration(
@@ -337,21 +345,28 @@ class _ImageWidget1State extends State<ImageWidget1> {
                         decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: validation ? Theme.of(context).colorScheme.error : Colors.grey,
+                              color: validation
+                                  ? Theme.of(context).colorScheme.error
+                                  : Colors.grey,
                               width: 1.8,
                             )),
                         padding: const EdgeInsets.all(6),
                         child: Icon(
                           Icons.upload_file_outlined,
                           size: 40,
-                          color: validation ? Theme.of(context).colorScheme.error : Colors.grey,
+                          color: validation
+                              ? Theme.of(context).colorScheme.error
+                              : Colors.grey,
                         ),
                       )
                     ],
                   )
                 : Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [const Icon(Icons.upload), Text(file.path.toString().split("/").last)],
+                    children: [
+                      const Icon(Icons.upload),
+                      Text(file.path.toString().split("/").last)
+                    ],
                   ),
           ),
         ),
@@ -419,7 +434,7 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
             children: <Widget>[
               ListTile(
                 leading: const Icon(Icons.photo_library),
-                title:  Text('Files'.tr),
+                title: Text('Files'.tr),
                 onTap: () async {
                   Get.back();
                   final pickedFile = await ImagePicker().pickImage(
@@ -445,7 +460,6 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                   }
                 },
               ),
-
               ListTile(
                 leading: Icon(Icons.cancel),
                 title: Text('Cancel'.tr),
@@ -486,7 +500,8 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
             pickImagesNew();
           },
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.padding16),
+            padding: EdgeInsets.symmetric(
+                horizontal: AddSize.padding16, vertical: AddSize.padding16),
             width: AddSize.screenWidth,
             height: context.getSize.width * .38,
             decoration: BoxDecoration(
@@ -515,7 +530,9 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                            color: validation ? Theme.of(context).colorScheme.error : Colors.grey,
+                            color: validation
+                                ? Theme.of(context).colorScheme.error
+                                : Colors.grey,
                             width: 1.8,
                           ),
                         ),
@@ -523,7 +540,9 @@ class _ProductImageWidgetState extends State<ProductImageWidget> {
                         child: Icon(
                           Icons.upload_file_outlined,
                           size: 40,
-                          color: validation ? Theme.of(context).colorScheme.error : Colors.grey,
+                          color: validation
+                              ? Theme.of(context).colorScheme.error
+                              : Colors.grey,
                         ),
                       )
                     ],

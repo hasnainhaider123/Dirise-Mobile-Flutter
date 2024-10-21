@@ -122,7 +122,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   final RxBool _isValue = false.obs;
   var vendor = [
     'Dashboard',
-    'Fulfilled Orders',
+    'Sell Orders',
     'Pending Products',
     'Approved Products',
     'Operating Hours',

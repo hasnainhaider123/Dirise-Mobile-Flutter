@@ -1667,18 +1667,18 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                                       const SizedBox(
                                         height: 20,
                                       ),
-                                      ImageWidget(
-                                        key: paymentReceiptCertificateKey,
-                                        title: "Payment Receipt Certificate".tr,
-                                        file: paymentReceiptCertificate,
-                                        validation: checkValidation(
-                                            showValidation.value,
-                                            paymentReceiptCertificate
-                                                .path.isEmpty),
-                                        filePicked: (File g) {
-                                          paymentReceiptCertificate = g;
-                                        },
-                                      ),
+                                      // ImageWidget(
+                                      //   key: paymentReceiptCertificateKey,
+                                      //   title: "Payment Receipt Certificate".tr,
+                                      //   file: paymentReceiptCertificate,
+                                      //   validation: checkValidation(
+                                      //       showValidation.value,
+                                      //       paymentReceiptCertificate
+                                      //           .path.isEmpty),
+                                      //   filePicked: (File g) {
+                                      //     paymentReceiptCertificate = g;
+                                      //   },
+                                      // ),
                                       const SizedBox(
                                         height: 20,
                                       ),

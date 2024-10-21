@@ -18,8 +18,11 @@ class _StatusWidgetState extends State<StatusWidget> {
   final vendorProfileController = Get.put(VendorProfileController());
   final profileController = Get.put(ProfileController());
 
-  bool get paymentDone => vendorProfileController.model.user!.subscription_status.toString() == "pending";
-  bool get profileComplete => vendorProfileController.model.user!.vendorProfile!.is_complete == "false";
+  bool get paymentDone =>
+      vendorProfileController.model.user!.subscription_status.toString() ==
+      "pending";
+  bool get profileComplete =>
+      vendorProfileController.model.user!.vendorProfile!.is_complete == "false";
 
   @override
   Widget build(BuildContext context) {
@@ -38,9 +41,11 @@ class _StatusWidgetState extends State<StatusWidget> {
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Theme(
-                      data: ThemeData(useMaterial3: true, dividerColor: Colors.transparent),
+                      data: ThemeData(
+                          useMaterial3: true, dividerColor: Colors.transparent),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -48,24 +53,32 @@ class _StatusWidgetState extends State<StatusWidget> {
                             const SizedBox(
                               height: 5,
                             ),
-                            vendorProfileController.model.user!.vendorPublishStatus.toString() == 'pending'
+                            vendorProfileController
+                                        .model.user!.vendorPublishStatus
+                                        .toString() ==
+                                    'pending'
                                 ? Text(
-                                    profileController.selectedLAnguage.value == "English"
-                                    ?'Pre-approved: You must upload the required documents to be approved and able to receive your payments.'
-                                    :'Pre-approved: You must upload the required documents to be approved and able to receive your payments'.tr,
-                                    style: titleStyle.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.red
-                                    ),
-                                  )
-                                : Text(
-                                    profileController.selectedLAnguage.value =="English"
-                                    ?vendorProfileController.model.user!.vendorPublishStatus.toString().capitalizeFirst.toString()
-                                    :"Approved".tr,
+                                    profileController.selectedLAnguage.value ==
+                                            "English"
+                                        ? 'Pre-approved: You must upload the required documents to be approved and able to receive your payments.'
+                                        : 'Pre-approved: You must upload the required documents to be approved and able to receive your payments'
+                                            .tr,
                                     style: titleStyle.copyWith(
                                         fontWeight: FontWeight.w500,
-                                        color: Colors.red
-                                    ),
+                                        color: Colors.red),
+                                  )
+                                : Text(
+                                    profileController.selectedLAnguage.value ==
+                                            "English"
+                                        ? vendorProfileController
+                                            .model.user!.vendorPublishStatus
+                                            .toString()
+                                            .capitalizeFirst
+                                            .toString()
+                                        : "Approved".tr,
+                                    style: titleStyle.copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.red),
                                   )
                             /*== 'approved' ?
                           Text( vendorProfileController.model.user!.vendorPublishStatus.toString().capitalizeFirst.toString(),style: titleStyle,) :
