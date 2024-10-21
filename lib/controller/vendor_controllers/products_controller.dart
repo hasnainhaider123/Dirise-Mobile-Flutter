@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'package:dirise/model/approved_model_.dart';
 import 'package:dirise/model/common_modal.dart';
 import 'package:dirise/repository/repository.dart';
@@ -8,7 +9,7 @@ import 'package:get/get.dart';
 import '../../model/vendor_models/model_vendor_orders.dart';
 import '../../model/vendor_models/model_vendor_product_list.dart';
 
-enum ProductTypes{
+enum ProductTypes {
   all,
   virtual,
   simple,
@@ -61,77 +62,94 @@ class ProductsController extends GetxController {
     'خدمة',
     'افتراضي',
   ];
-  Future getProductList({bool? reset,context}) async {
+  Future getProductList({bool? reset, context}) async {
     String url = ApiUrls.myProductsListUrl;
     List<String> params = [];
-    if(textEditingController.text.trim().isNotEmpty){
+    if (textEditingController.text.trim().isNotEmpty) {
       params.add("search=${textEditingController.text.trim()}");
     }
     params.add("page=$page");
     if (selectedValue1 != null && selectedValue1.toString().isNotEmpty) {
-      params.add("filter_type=${selectedValue1 == "All"?"":selectedValue1.toString()}");
+      params.add(
+          "filter_type=${selectedValue1 == "All" ? "" : selectedValue1.toString()}");
     }
-    if(params.isNotEmpty){
+    if (params.isNotEmpty) {
       url = "$url?${params.join("&")}";
     }
-    await repositories.getApi(url: "$url&limit=50",context: context).then((value) {
+    await repositories
+        .getApi(url: "$url&limit=50", context: context)
+        .then((value) {
       apiLoaded = true;
       model = ModelProductsList.fromJson(jsonDecode(value));
       updateUI;
     });
   }
-  Future getProductList1({bool? reset,context}) async {
+
+  Future getProductList1({bool? reset, context}) async {
     String url = ApiUrls.myApproved;
     List<String> params = [];
-    if(textEditingController.text.trim().isNotEmpty){
+    if (textEditingController.text.trim().isNotEmpty) {
       params.add("search=${textEditingController.text.trim()}");
     }
     params.add("page=$page1");
     if (selectedValue != null && selectedValue.toString().isNotEmpty) {
-      if(selectedValue == 'الجميع'){
+      if (selectedValue == 'الجميع') {
         selectedValueSelect = 'All';
-      }else if(selectedValue == 'يتبرع'){
+      } else if (selectedValue == 'يتبرع') {
         selectedValueSelect = 'Giveaway';
-      }else if(selectedValue == 'منتج'){
+      } else if (selectedValue == 'منتج') {
         selectedValueSelect = 'Product';
-      }else if(selectedValue == 'وظيفة'){
+      } else if (selectedValue == 'وظيفة') {
         selectedValueSelect = 'Job';
-      }else if(selectedValue == 'خدمة'){
+      } else if (selectedValue == 'خدمة') {
         selectedValueSelect = 'Service';
-      }else if(selectedValue == 'افتراضي'){
+      } else if (selectedValue == 'افتراضي') {
         selectedValueSelect = 'Virtual';
       }
-      params.add("filter_type=${selectedValue == "All"?"":selectedValueSelect.toString()}");
-      print("value slected"+selectedValueSelect.toString());
+      params.add(
+          "filter_type=${selectedValue == "All" ? "" : selectedValueSelect.toString()}");
+      print("value slected" + selectedValueSelect.toString());
     }
-    if(params.isNotEmpty){
+    if (params.isNotEmpty) {
       url = "$url?${params.join("&")}";
     }
-    await repositories.getApi(url: "$url&limit=50",context: context).then((value) {
+    await repositories
+        .getApi(url: "$url&limit=50", context: context)
+        .then((value) {
       apiLoaded1 = true;
       model1 = ApprovedModel.fromJson(jsonDecode(value));
       updateUI;
     });
   }
+
   List<OrderData> data = [];
-  Future getProductOrderList({bool? reset,context}) async {
+  Future getProductOrderList({bool? reset, context}) async {
     String url = ApiUrls.searchOrderList;
+    log("url is $url");
     List<String> params = [];
-    if(searchOrderController.text.trim().isNotEmpty){
+    if (searchOrderController.text.trim().isNotEmpty) {
       params.add("search=${searchOrderController.text.trim()}");
+      debugPrint('search is value ${searchOrderController.text.trim()}');
     }
     params.add("page=$page1");
     if (selectedValue != null && selectedValue.toString().isNotEmpty) {
-      params.add("keyword=${selectedValue == "All"?"":selectedValue.toString()}");
-      print("value slected"+selectedValue.toString());
+      params.add(
+          "keyword=${selectedValue == "All" ? "" : selectedValue.toString()}");
+      print("value slected" + selectedValue.toString());
     }
-    if(params.isNotEmpty){
+
+    if (params.isNotEmpty) {
+     
       url = "$url?${params.join("&")}";
+      log('url is given as :$url');
     }
-    await repositories.getApi(url: "$url&limit=50",context: context).then((value) {
+    await repositories
+        .getApi(url: "$url&limit=50", context: context)
+        .then((value) {
+      debugPrint('Raw response: $value');
       apiLoaded1 = true;
       modelVendorOrders.value = ModelVendorOrders.fromJson(jsonDecode(value));
-      data.addAll( modelVendorOrders.value.order!.data!);
+      data.addAll(modelVendorOrders.value.order!.data!);
       updateUI;
     });
   }
@@ -143,9 +161,13 @@ class ProductsController extends GetxController {
     required Function(bool gg) changed,
   }) async {
     await repositories
-        .postApi(url: ApiUrls.updateProductStatusUrl, mapData: {"product_id": productID,'is_publish':IsPublish}, context: context)
+        .postApi(
+            url: ApiUrls.updateProductStatusUrl,
+            mapData: {"product_id": productID, 'is_publish': IsPublish},
+            context: context)
         .then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       if (response.status == true) {
         changed(true);
       }

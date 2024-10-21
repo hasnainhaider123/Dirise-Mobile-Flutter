@@ -53,8 +53,9 @@ class _OrderDetailsState extends State<OrderDetails> {
     'payment failed'
   ];
   Future getOrderDetails() async {
+  
     await repositories.postApi(url: ApiUrls.orderDetailsUrl, mapData: {
-      "order_id": orderId,
+      "order_id": widget.orderId,
     }).then((value) {
       singleOrder = ModelSingleOrderResponse.fromJson(jsonDecode(value));
       log('valueee${singleOrder.toJson()}');
@@ -236,6 +237,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     super.initState();
     // log("ffffffff${createShipmentModel.value.data!.trackingNo.toString()}");
     // Add an initial container
+     log("orderId is ${widget.orderId}");
     containers.add(DynamicContainerState(
       unitOfMeasure: unitOfMeasure,
       unit: unit,

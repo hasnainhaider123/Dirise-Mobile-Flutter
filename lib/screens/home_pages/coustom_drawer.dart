@@ -122,7 +122,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   final RxBool _isValue = false.obs;
   var vendor = [
     'Dashboard',
-    'Fulfilled Orders',
+    'Sold Orders',
     'Pending Products',
     'Approved Products',
     'Operating Hours',
@@ -2471,7 +2471,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                               Get.toNamed(
                                                   VendorDashBoardScreen.route);
                                             } else if (vendor[index] ==
-                                                    'Order' &&
+                                                    'Sold Orders' &&
                                                 vendorArab[index] == 'طلب') {
                                               Get.to(const VendorOrderList());
                                             } else if (vendor[index] ==

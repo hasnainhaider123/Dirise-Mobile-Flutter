@@ -113,7 +113,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
   RxString language = "".obs;
   final RxBool _isValue = false.obs;
 
-  var vendor = ['Dashboard', 'fulfilled orders', 'Pending Products', 'Approved Products','Operating Hours','Social Media','Bank Details', 'Earnings'];
+  var vendor = ['Dashboard', 'Sold Orders', 'Pending Products', 'Approved Products','Operating Hours','Social Media','Bank Details', 'Earnings'];
   var vendorArab = ['لوحة القيادة', 'طلب', 'المنتجات المعلقة', 'المنتجات المعتمدة','ساعات العمل','وسائل التواصل الاجتماعي','التفاصيل المصرفية', 'الأرباح'];
   var vendor1 = ['Become a vendor', 'Pending Products', 'Approved Products'];
   var vendor1Arab = ['كن بائعًا', 'المنتجات المعلقة', 'المنتجات المعتمدة'];
@@ -2291,7 +2291,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                            if (vendor[index] == 'Dashboard' && vendorArab[index] == 'لوحة القيادة') {
                                                Get.toNamed( VendorDashBoardScreen.route);
                                             }
-                                           else if(vendor[index] == 'Order' && vendorArab[index] == 'طلب'){
+                                           else if(vendor[index] == 'Sold Orders' && vendorArab[index] == 'طلب'){
                                              Get.to(const VendorOrderList());
                                            }
                                            else if(vendor[index] == 'Pending Products' && vendorArab[index] == 'المنتجات المعلقة'){
