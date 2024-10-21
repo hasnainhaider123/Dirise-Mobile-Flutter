@@ -51,15 +51,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       Map map = <String, String>{};
       map['first_name'] = firstNameController.text.trim();
       map['last_name'] = lastNameController.text.trim();
-      map['name'] = "${firstNameController.text.trim()} ${lastNameController.text.trim()}".trim();
+      map['name'] =
+          "${firstNameController.text.trim()} ${lastNameController.text.trim()}"
+              .trim();
       map['phone'] = phoneController.text.trim();
       map['referral_email'] = referralEmailController.text.trim();
       map['country_id'] = profileController.selectedCountry!.id.toString();
       map['state_id'] = profileController.selectedState!.stateId.toString();
       map['phone_country_code'] = code12.toString();
-      if( profileController.selectedCity!= null) {
+      if (profileController.selectedCity != null) {
         map['city_id'] = profileController.selectedCity!.cityId.toString();
-      }else{
+      } else {
         map['city_id'] = '';
       }
       map['street_name'] = addressController.text.trim();
@@ -68,12 +70,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (image.path.isNotEmpty) {
         gg["profile_image"] = image;
       }
-      repositories.multiPartApi(mapData: map, images: gg, url: ApiUrls.updateProfile, context: context, onProgress: (gg, kk) {})
+      repositories
+          .multiPartApi(
+              mapData: map,
+              images: gg,
+              url: ApiUrls.updateProfile,
+              context: context,
+              onProgress: (gg, kk) {})
           .then((value) {
-        ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+        ModelCommonResponse response =
+            ModelCommonResponse.fromJson(jsonDecode(value));
         profileController.selectedLAnguage.value == "English"
-        ?showToast(response.message.toString())
-        :showToast("تم تحديث الملف الشخصي بنجاح.");
+            ? showToast(response.message.toString())
+            : showToast("تم تحديث الملف الشخصي بنجاح.");
         print("Toast-----: ${response.message.toString()}");
         if (response.status == true) {
           profileController.getDataProfile();
@@ -81,7 +90,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           // Get.offNamed(ProfileScreen.route);
           Get.back();
           Get.back();
-        }else{
+        } else {
           Get.back();
         }
       });
@@ -104,8 +113,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               padding: const EdgeInsets.all(18.0),
               child: StatefulBuilder(builder: (context, newState) {
                 String gg = searchController.text.trim().toLowerCase();
-                List<CommonAddressRelatedClass> filteredList =
-                    addressList.where((element) => element.title.toString().toLowerCase().contains(gg)).toList();
+                List<CommonAddressRelatedClass> filteredList = addressList
+                    .where((element) =>
+                        element.title.toString().toLowerCase().contains(gg))
+                    .toList();
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -118,13 +129,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.buttonColor, width: 1.2)),
+                              borderSide: const BorderSide(
+                                  color: AppTheme.buttonColor, width: 1.2)),
                           enabled: true,
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.buttonColor, width: 1.2)),
+                              borderSide: const BorderSide(
+                                  color: AppTheme.buttonColor, width: 1.2)),
                           suffixIcon: const Icon(Icons.search),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12)),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 12)),
                     ),
                     Flexible(
                         child: ListView.builder(
@@ -132,38 +146,48 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                // dense: true,
-                                onTap: () {
-                                  selectedAddressIdPicked(filteredList[index].addressId);
-                                  FocusManager.instance.primaryFocus!.unfocus();
-                                  Get.back();
-                                },
-                                leading: filteredList[index].flagUrl != null
-                                    ? SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: filteredList[index].flagUrl.toString().contains("svg")
-                                            ? SvgPicture.network(
-                                                filteredList[index].flagUrl.toString(),
-                                              )
-                                            : Image.network(
-                                                filteredList[index].flagUrl.toString(),
-                                                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                                              ))
-                                    : null,
-                                visualDensity: VisualDensity.compact,
-                                title: Text(filteredList[index].title),
-                                trailing: selectedAddressId == filteredList[index].addressId
-                                    ? const Icon(
-                                        Icons.check,
-                                        color: AppTheme.buttonColor,
-                                      )
-                                    :   Image.asset(
-                                  'assets/images/forward_icon.png',
-                                  height: 17,
-                                  width: 17,
-                                )
-                              );
+                                  // dense: true,
+                                  onTap: () {
+                                    selectedAddressIdPicked(
+                                        filteredList[index].addressId);
+                                    FocusManager.instance.primaryFocus!
+                                        .unfocus();
+                                    Get.back();
+                                  },
+                                  leading: filteredList[index].flagUrl != null
+                                      ? SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: filteredList[index]
+                                                  .flagUrl
+                                                  .toString()
+                                                  .contains("svg")
+                                              ? SvgPicture.network(
+                                                  filteredList[index]
+                                                      .flagUrl
+                                                      .toString(),
+                                                )
+                                              : Image.network(
+                                                  filteredList[index]
+                                                      .flagUrl
+                                                      .toString(),
+                                                  errorBuilder: (_, __, ___) =>
+                                                      const SizedBox.shrink(),
+                                                ))
+                                      : null,
+                                  visualDensity: VisualDensity.compact,
+                                  title: Text(filteredList[index].title),
+                                  trailing: selectedAddressId ==
+                                          filteredList[index].addressId
+                                      ? const Icon(
+                                          Icons.check,
+                                          color: AppTheme.buttonColor,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/forward_icon.png',
+                                          height: 17,
+                                          width: 17,
+                                        ));
                             }))
                   ],
                 );
@@ -177,14 +201,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     showCupertinoModalPopup<void>(
       context: context,
       builder: (BuildContext context) => CupertinoActionSheet(
-        title:  Text(
+        title: Text(
           'Select Picture from'.tr,
-          style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+          style: TextStyle(
+              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
         ),
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             onPressed: () {
-              Helpers.addImagePicker(imageSource: ImageSource.camera, imageQuality: 75).then((value) async {
+              Helpers.addImagePicker(
+                      imageSource: ImageSource.camera, imageQuality: 75)
+                  .then((value) async {
                 CroppedFile? croppedFile = await ImageCropper().cropImage(
                   sourcePath: value.path,
                   // aspectRatioPresets: [
@@ -216,11 +243,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Get.back();
               });
             },
-            child:  Text("Camera".tr),
+            child: Text("Camera".tr),
           ),
           CupertinoActionSheetAction(
             onPressed: () {
-              Helpers.addImagePicker(imageSource: ImageSource.gallery, imageQuality: 75).then((value) async {
+              Helpers.addImagePicker(
+                      imageSource: ImageSource.gallery, imageQuality: 75)
+                  .then((value) async {
                 CroppedFile? croppedFile = await ImageCropper().cropImage(
                   sourcePath: value.path,
                   // aspectRatioPresets: [
@@ -254,14 +283,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Get.back();
               });
             },
-            child:  Text('Gallery'.tr),
+            child: Text('Gallery'.tr),
           ),
           CupertinoActionSheetAction(
             isDestructiveAction: true,
             onPressed: () {
               Get.back();
             },
-            child:  Text('Cancel'.tr),
+            child: Text('Cancel'.tr),
           ),
         ],
       ),
@@ -275,47 +304,56 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     profileController.getDataProfile();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
-    firstNameController.text = profileController.model.user!.firstName.toString();
-    lastNameController.text = profileController.model.user!.lastName.toString();
-    emailController.text = profileController.model.user!.email.toString();
-    referralEmailController.text = profileController.model.user!.referralEmail ?? '';
-    phoneController.text = profileController.model.user!.phone.toString();
-    addressController.text = profileController.model.user!.street_name.toString();
-    code = profileController.model.user!.phoneCountryCode.toString();
-    profileController.code = profileController.model.user!.countryCode.toString();
-    profileController.code1 = profileController.model.user!.countryCode.toString();
-    print("Phone Country Code-----: ${code.toString()}");
-    print("Country Code-----: ${profileController.code}");
-    if(profileController.model.user!.country_id != null){
+      firstNameController.text =
+          profileController.model.user!.firstName.toString();
+      lastNameController.text =
+          profileController.model.user!.lastName.toString();
+      emailController.text = profileController.model.user!.email.toString();
+      referralEmailController.text =
+          profileController.model.user!.referralEmail ?? '';
+      phoneController.text = profileController.model.user!.phone.toString();
+      addressController.text =
+          profileController.model.user!.street_name.toString();
+      code = profileController.model.user!.phoneCountryCode.toString();
+      profileController.code =
+          profileController.model.user!.countryCode.toString();
+      profileController.code1 =
+          profileController.model.user!.countryCode.toString();
+      print("Phone Country Code-----: ${code.toString()}");
+      print("Country Code-----: ${profileController.code}");
+      if (profileController.model.user!.country_id != null) {
+        profileController.selectedCountry = Country(
+          name: profileController.model.user!.country_name.toString(),
+          id: profileController.model.user!.country_id.toString(),
+        );
+        profileController
+            .getStateList(
+                countryId: profileController.model.user!.country_id.toString())
+            .then((value) {
+          setState(() {});
+        });
+      }
 
+      if (profileController.model.user!.state_id != null) {
+        profileController.selectedState = CountryState(
+          stateName: profileController.model.user!.state_name.toString(),
+          stateId: profileController.model.user!.state_id.toString(),
+        );
+        profileController
+            .getCityList(
+                stateId: profileController.model.user!.state_id.toString())
+            .then((value) {
+          setState(() {});
+        });
+      }
 
-
-      profileController.selectedCountry = Country(
-        name: profileController.model.user!.country_name.toString(),
-        id: profileController.model.user!.country_id.toString(),
-      );
-      profileController.getStateList(countryId: profileController.model.user!.country_id.toString()).then((value) {
-        setState(() {});
-      });
-    }
-
-    if(profileController.model.user!.state_id != null){
-      profileController.selectedState = CountryState(
-        stateName: profileController.model.user!.state_name.toString(),
-        stateId: profileController.model.user!.state_id.toString(),
-      );
-      profileController.getCityList(stateId: profileController.model.user!.state_id.toString()).then((value) {
-        setState(() {});
-      });
-    }
-
-    if(profileController.model.user!.city != null){
-      profileController.selectedCity = City(
-        cityId: profileController.model.user!.city.toString(),
-        cityName: profileController.model.user!.city_name.toString(),
-      );
-    }
-    setState(() {});
+      if (profileController.model.user!.city != null) {
+        profileController.selectedCity = City(
+          cityId: profileController.model.user!.city.toString(),
+          cityName: profileController.model.user!.city_name.toString(),
+        );
+      }
+      setState(() {});
     });
   }
 
@@ -334,24 +372,24 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             Get.back();
           },
           child: GestureDetector(
-            onTap: (){
+            onTap: () {
               Get.back();
             },
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                profileController.selectedLAnguage.value != 'English' ?
-                Image.asset(
-                  'assets/images/forward_icon.png',
-                  height: 19,
-                  width: 19,
-                ) :
-                Image.asset(
-                  'assets/images/back_icon_new.png',
-                  height: 19,
-                  width: 19,
-                ),
+                profileController.selectedLAnguage.value != 'English'
+                    ? Image.asset(
+                        'assets/images/forward_icon.png',
+                        height: 19,
+                        width: 19,
+                      )
+                    : Image.asset(
+                        'assets/images/back_icon_new.png',
+                        height: 19,
+                        width: 19,
+                      ),
               ],
             ),
           ),
@@ -362,7 +400,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: Form(
             key: _formKey,
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -381,7 +420,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle, border: Border.all(color: profileCircleColor, width: 1.2)),
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: profileCircleColor, width: 1.2)),
                           height: 140,
                           width: 140,
                         ).animate().scale(
@@ -391,13 +432,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         // if(false)
                         Container(
                           decoration: BoxDecoration(
-                              shape: BoxShape.circle, border: Border.all(color: profileCircleColor, width: 1.2)),
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                  color: profileCircleColor, width: 1.2)),
                           height: 125,
                           width: 125,
-                        ).animate(delay: const Duration(milliseconds: 1000)).fade(delay: 200.ms).then().scale(
-                            duration: const Duration(milliseconds: 600),
-                            begin: const Offset(1.12, 1.12),
-                            end: const Offset(1, 1)),
+                        )
+                            .animate(delay: const Duration(milliseconds: 1000))
+                            .fade(delay: 200.ms)
+                            .then()
+                            .scale(
+                                duration: const Duration(milliseconds: 600),
+                                begin: const Offset(1.12, 1.12),
+                                end: const Offset(1, 1)),
                         // if(false)
                         ClipRRect(
                           borderRadius: BorderRadius.circular(10000),
@@ -415,7 +462,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   )
                                 : Container(
                                     decoration: const BoxDecoration(
-                                      borderRadius: BorderRadius.all(Radius.circular(100)),
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(100)),
                                       color: AppTheme.primaryColor,
                                     ),
                                     child: ClipOval(
@@ -423,9 +471,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         width: 120,
                                         height: 120,
                                         fit: BoxFit.cover,
-                                        imageUrl: profileController.model.user!.profileImage.toString(),
-                                        placeholder: (context, url) => const SizedBox(),
-                                        errorWidget: (context, url, error) => const SizedBox(),
+                                        imageUrl: profileController
+                                            .model.user!.profileImage
+                                            .toString(),
+                                        placeholder: (context, url) =>
+                                            const SizedBox(),
+                                        errorWidget: (context, url, error) =>
+                                            const SizedBox(),
                                       ),
                                     ),
                                   ),
@@ -510,11 +562,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               Text(
                 AppStrings.phoneNumberr.tr,
-                style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(
+                    fontSize: 15, fontWeight: FontWeight.w500),
               ),
               5.spaceY,
               IntlPhoneField(
-                textAlign: profileController.selectedLAnguage.value == 'English' ? TextAlign.left  : TextAlign.right,
+                textAlign: profileController.selectedLAnguage.value == 'English'
+                    ? TextAlign.left
+                    : TextAlign.right,
                 // key: ValueKey(code),
                 flagsButtonPadding: const EdgeInsets.all(8),
                 dropdownIconPosition: IconPosition.trailing,
@@ -522,11 +577,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 cursorColor: Colors.black,
                 textInputAction: TextInputAction.next,
                 dropdownTextStyle: const TextStyle(color: Colors.black),
-                style: const TextStyle(
-                    color: AppTheme.textColor
-                ),
+                style: const TextStyle(color: AppTheme.textColor),
                 controller: phoneController,
-                decoration:  InputDecoration(
+                decoration: InputDecoration(
                     contentPadding: EdgeInsets.zero,
                     hintStyle: const TextStyle(color: AppTheme.textColor),
                     hintText: 'Phone Number'.tr,
@@ -534,18 +587,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     border: const OutlineInputBorder(
                       borderSide: BorderSide(),
                     ),
-                    enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor)),
-                    focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor))),
-                initialCountryCode: profileController.code.toString(),
-                languageCode:  profileController.model.user!.phoneCountryCode.toString(),
-                invalidNumberMessage: profileController.selectedLAnguage.value == 'English'
-                    ? 'Invalid phone number'
-                    : 'رقم الهاتف غير صالح',
+                    enabledBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: AppTheme.shadowColor)),
+                    focusedBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: AppTheme.shadowColor))),
+                initialCountryCode:
+                    profileController.model.user!.phoneCountryCode ?? 'AF',
+                initialValue: phoneController.text.isNotEmpty
+                    ? phoneController.text
+                    : profileController.model.user!.phone,
+                languageCode:
+                    profileController.model.user!.phoneCountryCode.toString(),
+                invalidNumberMessage:
+                    profileController.selectedLAnguage.value == 'English'
+                        ? 'Invalid phone number'
+                        : 'رقم الهاتف غير صالح',
                 onCountryChanged: (phone) {
                   code12 = phone.code;
                   print('Phone Code----: ${phone.code}');
                   print('Language Code----: ${profileController.code}');
-                  print('InitialCountry Code----: ${profileController.model.user!.phoneCountryCode.toString()}');
+                  print(
+                      'InitialCountry Code----: ${profileController.model.user!.phoneCountryCode.toString()}');
                   print('12.dfghdfjgdfkg   ${profileController.code}');
                 },
                 validator: (value) {
@@ -562,7 +624,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   // print(profileController.code.toString());
                 },
               ),
-               4.spaceY,
+              4.spaceY,
               ...fieldWithName(
                 title: AppStrings.country.tr,
                 hintText: AppStrings.selectCountry,
@@ -571,22 +633,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   showAddressSelectorDialog(
                       addressList: profileController.modelCountryList!.country!
                           .map((e) => CommonAddressRelatedClass(
-                              title: e.name.toString(), addressId: e.id.toString(), flagUrl: e.icon.toString()))
+                              title: e.name.toString(),
+                              addressId: e.id.toString(),
+                              flagUrl: e.icon.toString()))
                           .toList(),
                       selectedAddressIdPicked: (String gg) {
-                        String previous = ((profileController.selectedCountry ?? Country()).id ?? "").toString();
-                        profileController.selectedCountry = profileController.modelCountryList!.country!
-                            .firstWhere((element) => element.id.toString() == gg);
-                        if (previous != profileController.selectedCountry!.id.toString()) {
-                          profileController.getStateList(countryId: gg, reset: true).then((value) {
+                        String previous =
+                            ((profileController.selectedCountry ?? Country())
+                                        .id ??
+                                    "")
+                                .toString();
+                        profileController.selectedCountry = profileController
+                            .modelCountryList!.country!
+                            .firstWhere(
+                                (element) => element.id.toString() == gg);
+                        if (previous !=
+                            profileController.selectedCountry!.id.toString()) {
+                          profileController
+                              .getStateList(countryId: gg, reset: true)
+                              .then((value) {
                             setState(() {});
                           });
                           setState(() {});
                         }
                       },
-                      selectedAddressId: ((profileController.selectedCountry ?? Country()).id ?? "").toString());
+                      selectedAddressId:
+                          ((profileController.selectedCountry ?? Country())
+                                      .id ??
+                                  "")
+                              .toString());
                 },
-                controller: TextEditingController(text: (profileController.selectedCountry ?? Country()).name ?? ""),
+                controller: TextEditingController(
+                    text:
+                        (profileController.selectedCountry ?? Country()).name ??
+                            ""),
                 validator: (v) {
                   if (v!.trim().isEmpty) {
                     return "Please select country".tr;
@@ -597,37 +677,52 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ...fieldWithName(
                 title: AppStrings.state.tr,
                 hintText: AppStrings.selectState.tr,
-                controller:
-                    TextEditingController(text: (profileController.selectedState ?? CountryState()).stateName ?? ""),
+                controller: TextEditingController(
+                    text: (profileController.selectedState ?? CountryState())
+                            .stateName ??
+                        ""),
                 readOnly: true,
                 onTap: () {
-                  if (profileController.modelStateList == null && profileController.stateRefresh.value > 0) {
+                  if (profileController.modelStateList == null &&
+                      profileController.stateRefresh.value > 0) {
                     showToast(AppStrings.selectCountryFirst);
                     return;
                   }
-                  if(profileController.stateRefresh.value < 0){
+                  if (profileController.stateRefresh.value < 0) {
                     return;
                   }
-                  if(profileController.modelStateList!.state!.isEmpty)return;
+                  if (profileController.modelStateList!.state!.isEmpty) return;
                   showAddressSelectorDialog(
                       addressList: profileController.modelStateList!.state!
-                          .map((e) =>
-                              CommonAddressRelatedClass(title: e.stateName.toString(), addressId: e.stateId.toString()))
+                          .map((e) => CommonAddressRelatedClass(
+                              title: e.stateName.toString(),
+                              addressId: e.stateId.toString()))
                           .toList(),
                       selectedAddressIdPicked: (String gg) {
                         String previous =
-                            ((profileController.selectedState ?? CountryState()).stateId ?? "").toString();
-                        profileController.selectedState = profileController.modelStateList!.state!
-                            .firstWhere((element) => element.stateId.toString() == gg);
-                        if (previous != profileController.selectedState!.stateId.toString()) {
-                          profileController.getCityList(stateId: gg, reset: true).then((value) {
+                            ((profileController.selectedState ?? CountryState())
+                                        .stateId ??
+                                    "")
+                                .toString();
+                        profileController.selectedState =
+                            profileController.modelStateList!.state!.firstWhere(
+                                (element) => element.stateId.toString() == gg);
+                        if (previous !=
+                            profileController.selectedState!.stateId
+                                .toString()) {
+                          profileController
+                              .getCityList(stateId: gg, reset: true)
+                              .then((value) {
                             setState(() {});
                           });
                           setState(() {});
                         }
                       },
                       selectedAddressId:
-                          ((profileController.selectedState ?? CountryState()).stateId ?? "").toString());
+                          ((profileController.selectedState ?? CountryState())
+                                      .stateId ??
+                                  "")
+                              .toString());
                 },
                 suffixIcon: Obx(() {
                   if (profileController.stateRefresh.value > 0) {
@@ -652,58 +747,67 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   return null;
                 },
               ),
-              if(profileController.modelCityList != null && profileController.modelCityList!.city!.isNotEmpty)
-              ...fieldWithName(
-                title: AppStrings.city.tr,
-                hintText: AppStrings.selectCity.tr,
-                controller: TextEditingController(text: (profileController.selectedCity ?? City()).cityName ?? ""),
-                onTap: () {
-                  if (profileController.modelCityList == null && profileController.cityRefresh.value > 0) {
-                    showToast(AppStrings.selectCity.tr);
-                    return;
-                  }
-                  if(profileController.cityRefresh.value < 0){
-                    return;
-                  }
-                  if(profileController.modelCityList!.city!.isEmpty)return;
-                  showAddressSelectorDialog(
-                      addressList: profileController.modelCityList!.city!
-                          .map((e) =>
-                          CommonAddressRelatedClass(title: e.cityName.toString(), addressId: e.cityId.toString()))
-                          .toList(),
-                      selectedAddressIdPicked: (String gg) {
-                        profileController.selectedCity = profileController.modelCityList!.city!
-                            .firstWhere((element) => element.cityId.toString() == gg);
-                        print(gg.toString());
-                        setState(() {});
-                      },
-                      selectedAddressId:
-                      ((profileController.selectedCity ?? City()).cityId ?? "").toString());
-                },
-                suffixIcon: Obx(() {
-                  if (profileController.cityRefresh.value > 0) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          'assets/images/drop_icon.png',
-                          height: 17,
-                          width: 17,
-                        ),
-                      ],
-                    );
-                  }
-                  return const CupertinoActivityIndicator();
-                }),
-                validator: (v) {
-                  if (v!.trim().isEmpty) {
-                    return 'Please select city'.tr;
-                  }
-                  return null;
-                },
-              ),
-
+              if (profileController.modelCityList != null &&
+                  profileController.modelCityList!.city!.isNotEmpty)
+                ...fieldWithName(
+                  title: AppStrings.city.tr,
+                  hintText: AppStrings.selectCity.tr,
+                  controller: TextEditingController(
+                      text:
+                          (profileController.selectedCity ?? City()).cityName ??
+                              ""),
+                  onTap: () {
+                    if (profileController.modelCityList == null &&
+                        profileController.cityRefresh.value > 0) {
+                      showToast(AppStrings.selectCity.tr);
+                      return;
+                    }
+                    if (profileController.cityRefresh.value < 0) {
+                      return;
+                    }
+                    if (profileController.modelCityList!.city!.isEmpty) return;
+                    showAddressSelectorDialog(
+                        addressList: profileController.modelCityList!.city!
+                            .map((e) => CommonAddressRelatedClass(
+                                title: e.cityName.toString(),
+                                addressId: e.cityId.toString()))
+                            .toList(),
+                        selectedAddressIdPicked: (String gg) {
+                          profileController.selectedCity =
+                              profileController.modelCityList!.city!.firstWhere(
+                                  (element) => element.cityId.toString() == gg);
+                          print(gg.toString());
+                          setState(() {});
+                        },
+                        selectedAddressId:
+                            ((profileController.selectedCity ?? City())
+                                        .cityId ??
+                                    "")
+                                .toString());
+                  },
+                  suffixIcon: Obx(() {
+                    if (profileController.cityRefresh.value > 0) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'assets/images/drop_icon.png',
+                            height: 17,
+                            width: 17,
+                          ),
+                        ],
+                      );
+                    }
+                    return const CupertinoActivityIndicator();
+                  }),
+                  validator: (v) {
+                    if (v!.trim().isEmpty) {
+                      return 'Please select city'.tr;
+                    }
+                    return null;
+                  },
+                ),
               ...fieldWithName(
                 title: AppStrings.streetAddress.tr,
                 hintText: AppStrings.enterstreetAddress.tr,
@@ -722,37 +826,38 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       bottomNavigationBar: SizedBox(
         width: double.infinity,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14).copyWith(bottom: 12),
+          padding:
+              const EdgeInsets.symmetric(horizontal: 14).copyWith(bottom: 12),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.buttonColor,
-                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10))),
                 textStyle: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
                 )),
             onPressed: () {
-              if(_formKey.currentState!.validate()){
+              if (_formKey.currentState!.validate()) {
                 showDialog<String>(
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
-                    title:  Text('Are you sure!'.tr),
+                    title: Text('Are you sure!'.tr),
                     content: Text('Do you want to edit your profile'.tr),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => Get.back(),
-                        child:  Text('Cancel'.tr),
+                        child: Text('Cancel'.tr),
                       ),
                       TextButton(
-                        onPressed: ()  {
+                        onPressed: () {
                           updateProfile();
                         },
-                        child:  Text('OK'.tr),
+                        child: Text('OK'.tr),
                       ),
                     ],
                   ),
                 );
-              }
-              else{
+              } else {
                 updateProfile();
               }
             },
@@ -760,7 +865,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               padding: const EdgeInsets.symmetric(vertical: 10),
               child: Text(
                 AppStrings.save.tr,
-                style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+                style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
               ),
             ),
           ),
@@ -772,18 +880,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
 List<Widget> fieldWithName(
     {required String title,
-      required String hintText,
-      required TextEditingController controller,
-      FormFieldValidator<String>? validator,
-      final TextInputType? keyboardType,
-      bool? readOnly,
-      final List<TextInputFormatter>? inputFormatters,
-      VoidCallback? onTap,
-      Widget? suffixIcon}) {
+    required String hintText,
+    required TextEditingController controller,
+    FormFieldValidator<String>? validator,
+    final TextInputType? keyboardType,
+    bool? readOnly,
+    final List<TextInputFormatter>? inputFormatters,
+    VoidCallback? onTap,
+    Widget? suffixIcon}) {
   return [
     Text(
       title.tr.toString().capitalizeFirst ?? '',
-      style: GoogleFonts.poppins(fontSize: 15 , fontWeight: FontWeight.w500),
+      style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500),
     ),
     const SizedBox(
       height: 5,

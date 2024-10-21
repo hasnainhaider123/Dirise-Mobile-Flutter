@@ -62,7 +62,7 @@ class Repositories {
 
       if (kDebugMode) {
         log("API Url.....  $url");
-        log("API mapData.....  $mapData");
+        log("API mapData.....  $mapData}");
         if (true) {
           log("API mapData.....  $headers");
         }
