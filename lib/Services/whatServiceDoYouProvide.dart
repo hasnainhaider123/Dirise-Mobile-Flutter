@@ -29,10 +29,17 @@ class whatServiceDoYouProvide extends StatefulWidget {
   bool? isDelivery = false;
 
   whatServiceDoYouProvide(
-      {super.key, this.percentage, this.price, this.fixedPrice, this.id, this.name, this.isDelivery});
+      {super.key,
+      this.percentage,
+      this.price,
+      this.fixedPrice,
+      this.id,
+      this.name,
+      this.isDelivery});
 
   @override
-  State<whatServiceDoYouProvide> createState() => _whatServiceDoYouProvideState();
+  State<whatServiceDoYouProvide> createState() =>
+      _whatServiceDoYouProvideState();
 }
 
 class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
@@ -46,7 +53,7 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
   String productName = "";
   String discountedPrice = "";
   bool isPercentageDiscount = true;
-  double discountAmount12 =0.0;
+  double discountAmount12 = 0.0;
   double afterCalculation = 0.0;
   double discountDouble = 0.0;
   double discountedPriceValue = 0.0;
@@ -64,7 +71,7 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
       log('dirise fees${diriseFeesAsDouble.toString()}');
       log('dirise fees${discountedPriceValue.toString()}');
       double additionalDiscountAmount = (realPrice * diriseFeesAsDouble) / 100;
-      double fees = (discountedPriceValue * diriseFeesAsDouble) / 100 ;
+      double fees = (discountedPriceValue * diriseFeesAsDouble) / 100;
       log('dirise fees neww ${fees.toString()}');
       // double finalPrice = realPrice - additionalDiscountAmount;
       double finalPrice1 = discountedPriceValue + fees;
@@ -75,7 +82,7 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
       log('this is call....2');
       double discountedPriceValue = realPrice - fixedPrice;
       log('discount price ${discountedPriceValue.toString()}');
-      double fees = (discountedPriceValue * diriseFeesAsDouble) / 100 ;
+      double fees = (discountedPriceValue * diriseFeesAsDouble) / 100;
       log('discount fees ${fees.toString()}');
       // double discountedPriceValue1 = discountedPriceValue + diriseFeesAsDouble;
       // double discountedPriceValue1 = afterCalculation - discountDouble;
@@ -89,7 +96,8 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
       });
     }
   }
-  double diriseFeesAsDouble = 0.0 ;
+
+  double diriseFeesAsDouble = 0.0;
   TextEditingController discountPrecrnt = TextEditingController();
   TextEditingController fixedDiscount = TextEditingController();
 
@@ -113,8 +121,13 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
     map['product_name'] = serviceNameController.text.trim();
     map['item_type'] = 'service';
     map['p_price'] = priceController.text.trim();
-    map['fixed_discount_price'] = isDelivery.value == false ?  "0" : fixedDiscount.text == '' ? '0' : fixedDiscount.text.trim();
-    map['discount_percent'] = discountPrecrnt.text == '' ? '0' : discountPrecrnt.text.trim();
+    map['fixed_discount_price'] = isDelivery.value == false
+        ? "0"
+        : fixedDiscount.text == ''
+            ? '0'
+            : fixedDiscount.text.trim();
+    map['discount_percent'] =
+        discountPrecrnt.text == '' ? '0' : discountPrecrnt.text.trim();
     map['id'] = addProductController.idProduct.value.toString();
     map['is_onsale'] = isDelivery.value.toString();
 
@@ -122,8 +135,12 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
 
     final Repositories repositories = Repositories();
     FocusManager.instance.primaryFocus!.unfocus();
-    repositories.postApi(url: ApiUrls.giveawayProductAddress, context: context, mapData: map).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(
+            url: ApiUrls.giveawayProductAddress, context: context, mapData: map)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       print('API Response Status Code: ${response.status}');
       // showToast(response.message.toString());
       if (response.status == true) {
@@ -141,11 +158,11 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
 
   getVendorCategories(id) {
     repositories.getApi(url: ApiUrls.getProductDetailsUrl + id).then((value) {
-      productDetailsModel.value = ModelProductDetails.fromJson(jsonDecode(value));
+      productDetailsModel.value =
+          ModelProductDetails.fromJson(jsonDecode(value));
       setState(() {});
     });
   }
-
 
   @override
   void initState() {
@@ -157,16 +174,18 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
       discountPrecrnt.text = widget.percentage.toString();
       fixedDiscount.text = widget.fixedPrice.toString();
       isDelivery.value = widget.isDelivery!;
-      featuredImage = profileController.productDetailsModel.value.productDetails!.product!.featuredImage;
+      featuredImage = profileController
+          .productDetailsModel.value.productDetails!.product!.featuredImage;
     }
     getVendorCategories(addProductController.idProduct.value.toString());
   }
+
   double discountAmount = 0.0;
   RxBool isDelivery = false.obs;
   bool isDeliveryy = false;
   RxBool isPercantage = false.obs;
   String discount = '0.0';
-  String diriseFeesAsString = '' ;
+  String diriseFeesAsString = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -174,31 +193,32 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
         backgroundColor: Colors.white,
         elevation: 0,
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.back();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileController.selectedLAnguage.value != 'English' ?
-              Image.asset(
-                'assets/images/forward_icon.png',
-                height: 19,
-                width: 19,
-              ) :
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 19,
-                width: 19,
-              ),
+              profileController.selectedLAnguage.value != 'English'
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 19,
+                      width: 19,
+                    )
+                  : Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 19,
+                      width: 19,
+                    ),
             ],
           ),
         ),
         titleSpacing: 0,
         title: Text(
           'What service do you provide?'.tr,
-          style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20),
+          style: GoogleFonts.poppins(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20),
         ),
       ),
       body: SingleChildScrollView(
@@ -212,7 +232,10 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
               children: [
                 Text(
                   'Service name'.tr,
-                  style: GoogleFonts.inter(color: const Color(0xff292F45), fontWeight: FontWeight.w500, fontSize: 14),
+                  style: GoogleFonts.inter(
+                      color: const Color(0xff292F45),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14),
                 ),
                 CommonTextField(
                   controller: serviceNameController,
@@ -231,7 +254,10 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                 ),
                 Text(
                   'Price'.tr,
-                  style: GoogleFonts.inter(color: const Color(0xff292F45), fontWeight: FontWeight.w500, fontSize: 14),
+                  style: GoogleFonts.inter(
+                      color: const Color(0xff292F45),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14),
                 ),
                 CommonTextField(
                   controller: priceController,
@@ -250,16 +276,24 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                     fixedDiscount.text = '';
                     realPrice = value;
                     realPrice1 = double.tryParse(value) ?? 0.0;
-                    diriseFeesAsString = productDetailsModel.value.productDetails!.diriseFess;
-                    diriseFeesAsDouble = double.parse(productDetailsModel.value.productDetails!.diriseFess.toString());
+                    diriseFeesAsString =
+                        productDetailsModel.value.productDetails!.diriseFess;
+                    diriseFeesAsDouble = double.parse(productDetailsModel
+                        .value.productDetails!.diriseFess
+                        .toString());
 
-                    double fees = diriseFeesAsString != null ? double.parse(diriseFeesAsString) : 0.0;
-                    if(fixedDiscount.text.isEmpty || discountPrecrnt.text.isEmpty){
-                      double additionalDiscountAmount = (realPrice1 * diriseFeesAsDouble) / 100;
-                      double withoutDiscount = realPrice1 + additionalDiscountAmount;
+                    double fees = diriseFeesAsString != null
+                        ? double.parse(diriseFeesAsString)
+                        : 0.0;
+                    if (fixedDiscount.text.isEmpty ||
+                        discountPrecrnt.text.isEmpty) {
+                      double additionalDiscountAmount =
+                          (realPrice1 * diriseFeesAsDouble) / 100;
+                      double withoutDiscount =
+                          realPrice1 + additionalDiscountAmount;
                       discountedPrice = withoutDiscount.toString();
                     }
-                    if(priceController.text.isEmpty){
+                    if (priceController.text.isEmpty) {
                       discountedPrice = '';
                       discount = '';
                       fixedDiscount.text = "";
@@ -271,9 +305,7 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                     discountAmount12 = (realPrice1 * fees) / 100;
                     afterCalculation = realPrice1 + discountAmount12;
                     log('value${realPrice1.toString()}');
-                    setState(() {
-
-                    });
+                    setState(() {});
                   },
                   validator: (value) {
                     if (value!.trim().isEmpty) {
@@ -281,24 +313,32 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                     }
                     double? price = double.tryParse(value);
                     if (price == null || price <= 0) {
-                      return 'Price must be a non-negative number & greater than zero'.tr;
+                      return 'Price must be a non-negative number & greater than zero'
+                          .tr;
                     }
                     return null; // Return null if validation passes
                   },
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       'I want to show this item on sale'.tr,
-                      style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 14),
+                      style: GoogleFonts.poppins(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14),
                     ),
                     Transform.translate(
                       offset: const Offset(-6, 0),
                       child: Checkbox(
-                          visualDensity: const VisualDensity(horizontal: -1, vertical: -3),
-                          materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                          visualDensity:
+                              const VisualDensity(horizontal: -1, vertical: -3),
+                          materialTapTargetSize:
+                              MaterialTapTargetSize.shrinkWrap,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4),
                           ),
@@ -314,12 +354,15 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                               discount = '0.0';
                               sale = '0.0';
                               discountAmount = 0.0;
-                              if(fixedDiscount.text.isEmpty || discountPrecrnt.text.isEmpty){
-                                double additionalDiscountAmount = (realPrice1 * diriseFeesAsDouble) / 100;
-                                double withoutDiscount = realPrice1 + additionalDiscountAmount;
+                              if (fixedDiscount.text.isEmpty ||
+                                  discountPrecrnt.text.isEmpty) {
+                                double additionalDiscountAmount =
+                                    (realPrice1 * diriseFeesAsDouble) / 100;
+                                double withoutDiscount =
+                                    realPrice1 + additionalDiscountAmount;
                                 discountedPrice = withoutDiscount.toString();
                               }
-                              if (widget.id != null){
+                              if (widget.id != null) {
                                 priceController.text = '';
                               }
                             });
@@ -336,7 +379,9 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                       Text(
                         'Discount amount'.tr,
                         style: GoogleFonts.poppins(
-                            color: const Color(0xff292F45), fontWeight: FontWeight.w400, fontSize: 14),
+                            color: const Color(0xff292F45),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14),
                       ),
                       CommonTextField(
                         controller: fixedDiscount,
@@ -347,12 +392,12 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                           discountDouble = double.tryParse(value) ?? 0.0;
                           discountPrecrnt.text = "";
                           isPercentageDiscount = false;
-                          if(discountPrecrnt.text.isEmpty){
+                          if (discountPrecrnt.text.isEmpty) {
                             discountedPriceValue = 0.0;
                           }
                           calculateDiscount();
                           sale = value;
-                          if(fixedDiscount.text.isEmpty){
+                          if (fixedDiscount.text.isEmpty) {
                             discountedPrice = '';
                             discount = '';
                           }
@@ -365,12 +410,17 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                             }
                             double? price = double.tryParse(value);
                             if (price == null || price < 0) {
-                              return 'Discount amount must be a non-negative number'.tr;
+                              return 'Discount amount must be a non-negative number'
+                                  .tr;
                             }
                             double? discountValue = double.tryParse(value);
-                            double? priceValue = double.tryParse(priceController.text);
-                            if (discountValue != null && priceValue != null && discountValue > priceValue) {
-                              return 'Discount amount cannot be greater than Price'.tr;
+                            double? priceValue =
+                                double.tryParse(priceController.text);
+                            if (discountValue != null &&
+                                priceValue != null &&
+                                discountValue > priceValue) {
+                              return 'Discount amount cannot be greater than Price'
+                                  .tr;
                             }
                           }
                           return null; // Return null if validation passes
@@ -384,7 +434,10 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                         alignment: Alignment.center,
                         child: Text(
                           'OR'.tr,
-                          style: GoogleFonts.poppins(color: Colors.red, fontWeight: FontWeight.w400, fontSize: 14),
+                          style: GoogleFonts.poppins(
+                              color: Colors.red,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14),
                         ),
                       ),
                       const SizedBox(
@@ -393,7 +446,9 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                       Text(
                         'Discount Percentage'.tr,
                         style: GoogleFonts.poppins(
-                            color: const Color(0xff292F45), fontWeight: FontWeight.w400, fontSize: 14),
+                            color: const Color(0xff292F45),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14),
                       ),
                       CommonTextField(
                         controller: discountPrecrnt,
@@ -402,7 +457,8 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                         keyboardType: TextInputType.number,
                         hintText: 'Discount Percentage'.tr,
                         onChanged: (value) {
-                          discountDouble = double.tryParse(value.toString()) ?? 0.0;
+                          discountDouble =
+                              double.tryParse(value.toString()) ?? 0.0;
                           fixedDiscount.text = "";
                           isPercentageDiscount = true;
                           calculateDiscount();
@@ -416,12 +472,13 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                             }
                             double? price = double.tryParse(value);
                             if (price == null || price < 0) {
-                              return 'Discount percentage must be a non-negative number'.tr;
-                            }
-                            else {
+                              return 'Discount percentage must be a non-negative number'
+                                  .tr;
+                            } else {
                               double? percentage = double.tryParse(value);
                               if (percentage == null || percentage > 100) {
-                                return 'Discount percentage must be between 0 and 100'.tr;
+                                return 'Discount percentage must be between 0 and 100'
+                                    .tr;
                               }
                             }
                           }
@@ -612,141 +669,181 @@ class _whatServiceDoYouProvideState extends State<whatServiceDoYouProvide> {
                 ),
                 Text(
                   'Calculated price'.tr,
-                  style: GoogleFonts.inter(color: const Color(0xff292F45), fontWeight: FontWeight.w500, fontSize: 14),
+                  style: GoogleFonts.inter(
+                      color: const Color(0xff292F45),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 14),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 Text(
                   'This is what your customer will see after DIRISE fees.'.tr,
-                  style: GoogleFonts.inter(color: const Color(0xff514949), fontWeight: FontWeight.w400, fontSize: 12),
+                  style: GoogleFonts.inter(
+                      color: const Color(0xff514949),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 Container(
-                  padding: const EdgeInsets.only(left: 10, right: 15, top: 15, bottom: 15),
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), color: Colors.grey.shade200),
-                  child: Row(
+                  padding: const EdgeInsets.only(
+                      left: 10, right: 15, top: 15, bottom: 15),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(11),
+                      color: Colors.grey.shade200),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Expanded(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Real Price'.tr,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff014E70), fontWeight: FontWeight.w600, fontSize: 12),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    "${realPrice} KWD".tr,
-                                    // "${afterCalculation} KWD".tr,
-                                    style: GoogleFonts.poppins(
-                                        color: const Color(0xff014E70), fontWeight: FontWeight.w400, fontSize: 10),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Discount amount'.tr,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff014E70), fontWeight: FontWeight.w600, fontSize: 12),
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                discountedPriceValue == 0.0 ?
-                                Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    ' $discount KWD '.tr,
-                                    style: GoogleFonts.poppins(
-                                        color: const Color(0xff014E70), fontWeight: FontWeight.w400, fontSize: 10),
-                                  ),
-                                ): Expanded(
-                                  flex: 2,
-                                  child: Text(
-                                    ' $discountAmount KWD '.tr,
-                                    style: GoogleFonts.poppins(
-                                        color: const Color(0xff014E70), fontWeight: FontWeight.w400, fontSize: 10),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Final price'.tr,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff014E70), fontWeight: FontWeight.w600, fontSize: 12),
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Expanded(
-                                  child: Text(
-                                    "${discountedPrice} KWD".tr,
-                                    style: GoogleFonts.poppins(
-                                        color: const Color(0xff014E70), fontWeight: FontWeight.w400, fontSize: 10),
-                                  ),
-                                )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
+                      Row(
                         children: [
-                          Stack(
+                          Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Real Price'.tr,
+                                      style: GoogleFonts.poppins(
+                                          color: const Color(0xff014E70),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        "${realPrice} KWD".tr,
+                                        // "${afterCalculation} KWD".tr,
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff014E70),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 10),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Discount amount'.tr,
+                                      style: GoogleFonts.poppins(
+                                          color: const Color(0xff014E70),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12),
+                                    ),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    discountedPriceValue == 0.0
+                                        ? Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              ' $discount KWD '.tr,
+                                              style: GoogleFonts.poppins(
+                                                  color:
+                                                      const Color(0xff014E70),
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 10),
+                                            ),
+                                          )
+                                        : Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                              ' $discountAmount KWD '.tr,
+                                              style: GoogleFonts.poppins(
+                                                  color:
+                                                      const Color(0xff014E70),
+                                                  fontWeight: FontWeight.w400,
+                                                  fontSize: 10),
+                                            ),
+                                          ),
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Final price'.tr,
+                                      style: GoogleFonts.poppins(
+                                          color: const Color(0xff014E70),
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 12),
+                                    ),
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Expanded(
+                                      child: Text(
+                                        "${discountedPrice} KWD".tr,
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff014E70),
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 10),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                              ],
+                            ),
+                          ),
+                          Column(
                             children: [
-                              Container(
-                                margin: const EdgeInsets.only(left: 2, right: 2, bottom: 2),
-                                padding: const EdgeInsets.all(15),
-                                height: 150,
-                                width: 130,
-                                decoration: BoxDecoration(borderRadius: BorderRadius.circular(11), color: Colors.white),
-                                child:   Image.file(profileController.productImage,
-                                    errorBuilder: (_, __, ___) =>  Image.network(featuredImage.toString())),
+                              Stack(
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                        left: 2, right: 2, bottom: 2),
+                                    padding: const EdgeInsets.all(15),
+                                    height: 150,
+                                    width: 130,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(11),
+                                        color: Colors.white),
+                                    child: Image.file(
+                                        profileController.productImage,
+                                        errorBuilder: (_, __, ___) =>
+                                            Image.network(
+                                                featuredImage.toString())),
+                                  ),
+                                  // const Positioned(
+                                  //     right: 20,
+                                  //     top: 10,
+                                  //     child: Icon(
+                                  //       Icons.delete,
+                                  //       color: Color(0xff014E70),
+                                  //     ))
+                                ],
                               ),
-                              // const Positioned(
-                              //     right: 20,
-                              //     top: 10,
-                              //     child: Icon(
-                              //       Icons.delete,
-                              //       color: Color(0xff014E70),
-                              //     ))
                             ],
-                          ),
-                          Text(
-                            serviceNameController.text
-                                .toString()
-                                .tr,
-                            style: GoogleFonts.inter(
-                                color: const Color(0xff014E70), fontWeight: FontWeight.w600, fontSize: 12),
-                          ),
+                          )
                         ],
-                      )
+                      ),
+                      Text(
+                        serviceNameController.text.toString().tr,
+                        style: GoogleFonts.inter(
+                            color: const Color(0xff014E70),
+                            fontWeight: FontWeight.w600,
+                            fontSize: 12),
+                      ),
                     ],
                   ),
                 ),
