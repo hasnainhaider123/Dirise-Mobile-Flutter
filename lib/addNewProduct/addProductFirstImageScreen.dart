@@ -99,6 +99,7 @@ class _AddProductFirstImageScreenState extends State<AddProductFirstImageScreen>
        profileController.productImage = featuredImage;
       if(response.status == false){
         showToastCenter(response.message.toString());
+        log(response.message.toString());
       }
       addProductController.idProduct.value = response.productDetails!.product!.id.toString();
       if(widget.id != null){

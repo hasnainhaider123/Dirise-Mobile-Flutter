@@ -193,6 +193,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
   String dateTimeString = "";
   double ratingRills = 0.0;
   int ratingRill = 20;
+
   getProductDetails({BuildContext? context}) {
     statusSingle = RxStatus.loading();
     repositories
@@ -201,6 +202,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
       "key": 'fedexRate',
       "is_def_address": homeController.defaultAddressId.toString()
     }).then((value) {
+      //log('value of data${jsonDecode(value)}');
       modelSingleProduct.value = SimpleProductModel.fromJson(jsonDecode(value));
       if (modelSingleProduct.value.simpleProduct != null) {
         log("modelSingleProduct.product!.toJson().....${modelSingleProduct.value.simpleProduct!.toJson()}");
@@ -472,6 +474,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // log('data out item is ${modelSingleProduct.value.simpleProduct.toString()}');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -1640,8 +1643,14 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                               child: Text(
                                 // formattedDate.toString(),
                                 modelSingleProduct
-                                    .value.simpleProduct!.shippingDate
-                                    .toString(),
+                                        .value.simpleProduct!.shippingDate
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains('next day delivery')
+                                    ? 'Tomorrow'
+                                    : modelSingleProduct
+                                        .value.simpleProduct!.shippingDate
+                                        .toString(),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: GoogleFonts.poppins(

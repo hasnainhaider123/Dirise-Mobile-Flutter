@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class SimpleProductModel {
   bool? status;
   dynamic message;
@@ -57,6 +58,7 @@ class SimpleProduct {
   dynamic discountPrice;
   dynamic discountOff;
   dynamic shippingPolicy;
+
   VendorInformation? vendorInformation;
   SimpleProduct(
       {this.id,
@@ -91,7 +93,8 @@ class SimpleProduct {
         this.discountPrice,
         this.discountOff,
         this.shippingPolicy,
-        this.vendorInformation
+        this.vendorInformation,
+  
       });
 
   SimpleProduct.fromJson(Map<String, dynamic> json) {
@@ -105,6 +108,7 @@ class SimpleProduct {
       });
     }
     pname = json['pname'];
+
     productType = json['product_type'];
     itemType = json['item_type'];
     featuredImage = json['featured_image'];
@@ -182,6 +186,11 @@ class SimpleProduct {
     data['shipping_policy'] = shippingPolicy;
     return data;
   }
+
+  @override
+  String toString() {
+    return 'SimpleProduct(id: $id, vendorId: $vendorId, addressId: $addressId, catId: ${catId.toString()}, pname: $pname, productType: $productType, itemType: $itemType, featuredImage: $featuredImage, featureImageApp: $featureImageApp, featureImageWeb: $featureImageWeb, galleryImage: $galleryImage, serialNumber: $serialNumber, productNumber: $productNumber, productCode: $productCode, promotionCode: $promotionCode, inStock: $inStock, pPrice: $pPrice, returnPolicyDesc: $returnPolicyDesc, shortDescription: $shortDescription, longDescription: $longDescription, isComplete: $isComplete, virtualProductFile: $virtualProductFile, views: $views, rating: $rating, inWishlist: $inWishlist, alreadyReview: $alreadyReview, storemeta: $storemeta, lowestDeliveryPrice: $lowestDeliveryPrice, shippingDate: $shippingDate, discountPrice: $discountPrice, discountOff: $discountOff, shippingPolicy: $shippingPolicy ,';
+  }
 }
 class VendorInformation {
   dynamic storeId;
@@ -256,6 +265,9 @@ class CatId {
     data['title'] = title;
     return data;
   }
+
+  @override
+  String toString() => 'CatId(id: $id, title: $title)';
 }
 
 class Storemeta {
