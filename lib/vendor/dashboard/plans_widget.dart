@@ -19,8 +19,13 @@ class PlanWidget extends StatefulWidget {
 class _PlanWidgetState extends State<PlanWidget> {
   final vendorProfileController = Get.put(VendorProfileController());
 
-  bool get paymentDone => vendorProfileController.model.user!.subscription_status.toString() == "pending";
-  bool get profileComplete => vendorProfileController.model.user!.vendorProfile!.is_complete == "false";
+  bool get paymentDone =>
+      vendorProfileController.model.user!.subscription_status.toString() ==
+      "pending";
+  bool get profileComplete =>
+      vendorProfileController.model.user!.vendorProfile!.is_complete == "false";
+
+  bool _isExpanded = true;
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +39,36 @@ class _PlanWidgetState extends State<PlanWidget> {
                 child: Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: Theme(
-                    data: ThemeData(useMaterial3: true, dividerColor: Colors.transparent),
+                    data: ThemeData(
+                        useMaterial3: true, dividerColor: Colors.transparent),
                     child: ExpansionTile(
                       textColor: const Color(0xFF393A3C),
-                      initiallyExpanded: true,
+                      initiallyExpanded: _isExpanded,
+                      trailing: _isExpanded
+                          ? Image.asset(
+                              'assets/images/up_icon.png',
+                              height: 20,
+                              width: 20,
+                            )
+                          : Image.asset(
+                              'assets/images/drop_icon.png',
+                              height: 20,
+                              width: 20,
+                            ),
+                      onExpansionChanged: (bool expanded) {
+                        setState(() {
+                          _isExpanded = expanded;
+                        });
+                      },
                       iconColor: Colors.grey,
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                           Text("Active Plan".tr),
+                          Text("Active Plan".tr),
                           Text(
-                            vendorProfileController.model.user!.vendorType.toString().capitalize!,
+                            vendorProfileController.model.user!.vendorType
+                                .toString()
+                                .capitalize!,
                             style: titleStyle,
                           ),
                         ],
@@ -63,7 +87,8 @@ class _PlanWidgetState extends State<PlanWidget> {
                                     // Get.to(() => EditVendorPlan(
                                     //       selectedPlanId: vendorProfileController.model.user!.activePlanId.toString(),
                                     //     ));
-                                    Get.to(()=>const WhichplantypedescribeyouScreen());
+                                    Get.to(() =>
+                                        const WhichplantypedescribeyouScreen());
                                   },
                                   behavior: HitTestBehavior.translucent,
                                   child: Row(
@@ -75,7 +100,8 @@ class _PlanWidgetState extends State<PlanWidget> {
                                       Expanded(
                                         child: Text(
                                           "Pending".tr,
-                                          style: titleStyle.copyWith(color: Colors.redAccent),
+                                          style: titleStyle.copyWith(
+                                              color: Colors.redAccent),
                                         ).convertToShimmerRed,
                                       )
                                     ],
@@ -121,28 +147,42 @@ class _PlanWidgetState extends State<PlanWidget> {
                               //     ),
                               //   ),
                               // ],
-                              if (vendorProfileController.model.user!.planStartDate != null) ...[
-                                 Text("Plan Start Date".tr),
+                              if (vendorProfileController
+                                      .model.user!.planStartDate !=
+                                  null) ...[
+                                Text("Plan Start Date".tr),
                                 Text(
-                                  vendorProfileController.model.user!.planStartDate.toString().capitalize!,
+                                  vendorProfileController
+                                      .model.user!.planStartDate
+                                      .toString()
+                                      .capitalize!,
                                   style: titleStyle,
                                 ),
                                 const SizedBox(
                                   height: 16,
                                 ),
                               ],
-                              if (vendorProfileController.model.user!.planExpireDate != null) ...[
-                                 Text("Plan Expiry Date".tr),
+                              if (vendorProfileController
+                                      .model.user!.planExpireDate !=
+                                  null) ...[
+                                Text("Plan Expiry Date".tr),
                                 Text(
-                                  vendorProfileController.model.user!.planExpireDate.toString().capitalize!,
+                                  vendorProfileController
+                                      .model.user!.planExpireDate
+                                      .toString()
+                                      .capitalize!,
                                   style: titleStyle,
                                 ),
                                 const SizedBox(
                                   height: 14,
                                 ),
                               ],
-                              if (vendorProfileController.model.user!.planStartDate == null &&
-                                  vendorProfileController.model.user!.planExpireDate == null)
+                              if (vendorProfileController
+                                          .model.user!.planStartDate ==
+                                      null &&
+                                  vendorProfileController
+                                          .model.user!.planExpireDate ==
+                                      null)
                                 Padding(
                                   padding: const EdgeInsets.only(bottom: 8),
                                   child: Text(
@@ -159,34 +199,48 @@ class _PlanWidgetState extends State<PlanWidget> {
                                           //       selectedPlanId:
                                           //           vendorProfileController.model.user!.activePlanId.toString(),
                                           //     ));
-                                          Get.to(()=>const WhichplantypedescribeyouScreen());
+                                          Get.to(() =>
+                                              const WhichplantypedescribeyouScreen());
                                         },
                                         style: OutlinedButton.styleFrom(
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(5),
+                                            borderRadius:
+                                                BorderRadius.circular(5),
                                           ),
                                           side: BorderSide(
-                                              color: paymentDone ? Colors.redAccent : const Color(0xffECB403)),
+                                              color: paymentDone
+                                                  ? Colors.redAccent
+                                                  : const Color(0xffECB403)),
                                           surfaceTintColor: Colors.white,
                                           elevation: 2,
-                                          shadowColor: paymentDone ? Colors.redAccent : const Color(0xffECB403),
+                                          shadowColor: paymentDone
+                                              ? Colors.redAccent
+                                              : const Color(0xffECB403),
                                           backgroundColor: Colors.white,
                                         ),
                                         child: FittedBox(
                                           child: Text(
                                             AppStrings.renewPlan.tr,
                                             style: titleStyle.copyWith(
-                                                color: paymentDone ? Colors.redAccent : const Color(0xffECB403),
+                                                color: paymentDone
+                                                    ? Colors.redAccent
+                                                    : const Color(0xffECB403),
                                                 fontSize: 18),
                                           ),
                                         )),
                                   ),
-                                  if (vendorProfileController.model.user!.vendorType.toString().toLowerCase() !=
+                                  if (vendorProfileController
+                                          .model.user!.vendorType
+                                          .toString()
+                                          .toLowerCase() !=
                                       "company")
                                     const SizedBox(
                                       width: 16,
                                     ),
-                                  if (vendorProfileController.model.user!.vendorType.toString().toLowerCase() !=
+                                  if (vendorProfileController
+                                          .model.user!.vendorType
+                                          .toString()
+                                          .toLowerCase() !=
                                       "company")
                                     Expanded(
                                       child: OutlinedButton(
@@ -195,22 +249,29 @@ class _PlanWidgetState extends State<PlanWidget> {
                                             //       selectedPlanId:
                                             //           vendorProfileController.model.user!.activePlanId.toString(),
                                             //     ));
-                                            Get.to(()=>const WhichplantypedescribeyouScreen());
+                                            Get.to(() =>
+                                                const WhichplantypedescribeyouScreen());
                                           },
                                           style: OutlinedButton.styleFrom(
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(5),
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                             ),
-                                            side: const BorderSide(color: Color(0xff13BFA6)),
+                                            side: const BorderSide(
+                                                color: Color(0xff13BFA6)),
                                             surfaceTintColor: Colors.white,
                                             elevation: 2,
-                                            shadowColor: const Color(0xff13BFA6),
+                                            shadowColor:
+                                                const Color(0xff13BFA6),
                                             backgroundColor: Colors.white,
                                           ),
                                           child: FittedBox(
                                             child: Text(
                                               AppStrings.upgradePlan.tr,
-                                              style: titleStyle.copyWith(color: const Color(0xff13BFA6), fontSize: 18),
+                                              style: titleStyle.copyWith(
+                                                  color:
+                                                      const Color(0xff13BFA6),
+                                                  fontSize: 18),
                                             ),
                                           )),
                                     ),
