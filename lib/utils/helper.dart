@@ -20,7 +20,6 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 
 class NewHelper {
-
   static String countryCodeToEmoji(String countryCode) {
     // 0x41 is Letter A
     // 0x1F1E6 is Regional Indicator Symbol Letter A
@@ -36,16 +35,16 @@ class NewHelper {
   static String getDiscountPercentage({
     required String sellingPrice,
     required String actualPrice,
-}){
-    double percent = (((actualPrice.toNum - sellingPrice.toNum)/actualPrice.toNum) * 100);
-    if(percent == 0 || percent > 100){
+  }) {
+    double percent =
+        (((actualPrice.toNum - sellingPrice.toNum) / actualPrice.toNum) * 100);
+    if (percent == 0 || percent > 100) {
       return "";
     }
     return percent.toStringAsFixed(2);
   }
 
   Future<File?> addFilePicker({List<String>? allowedExtensions}) async {
-
     try {
       final item = await FilePicker.platform.pickFiles(
         type: allowedExtensions != null ? FileType.custom : FileType.any,
@@ -62,7 +61,6 @@ class NewHelper {
   }
 
   Future<File?> addVideoPicker({List<String>? allowedExtensions}) async {
-
     try {
       final item = await FilePicker.platform.pickFiles(
         type: allowedExtensions != null ? FileType.video : FileType.video,
@@ -95,14 +93,16 @@ class NewHelper {
     }
   }
 
-  Future<File?> addImagePicker({ImageSource imageSource = ImageSource.gallery, int imageQuality = 80}) async {
+  Future<File?> addImagePicker(
+      {ImageSource imageSource = ImageSource.gallery,
+      int imageQuality = 80}) async {
     try {
-      final item = await ImagePicker().pickImage(source: imageSource, imageQuality: imageQuality);
+      final item = await ImagePicker()
+          .pickImage(source: imageSource, imageQuality: imageQuality);
       if (item == null) {
         return null;
       } else {
         return await FlutterExifRotation.rotateImage(path: item.path);
-
       }
     } on PlatformException catch (e) {
       throw Exception(e);
@@ -111,8 +111,10 @@ class NewHelper {
 
   Future<List<File>?> multiImagePicker({int imageQuality = 80}) async {
     try {
-      final item = await ImagePicker().pickMultiImage(imageQuality: imageQuality);
-      return List.generate(min(5, item.length), (index) => File(item[index].path));
+      final item =
+          await ImagePicker().pickMultiImage(imageQuality: imageQuality);
+      return List.generate(
+          min(5, item.length), (index) => File(item[index].path));
     } on PlatformException catch (e) {
       throw Exception(e);
     }
@@ -129,23 +131,27 @@ class NewHelper {
       builder: (BuildContext context) => CupertinoActionSheet(
         title: Text(
           'Select Image'.tr,
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 18, color: AppTheme.primaryColor),
+          style: GoogleFonts.poppins(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              color: AppTheme.primaryColor),
         ),
         cancelButton: CupertinoActionSheetAction(
-          child:  Text('Cancel'.tr),
+          child: Text('Cancel'.tr),
           onPressed: () {
             Navigator.of(context, rootNavigator: true).pop("Cancel");
           },
         ),
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
-            child:  Text('Gallery'.tr),
+            child: Text('Gallery'.tr),
             onPressed: () {
               // pickImage(
               //     ImageSource.gallery);
 
-              NewHelper().addImagePicker(imageSource: ImageSource.gallery).then((v) async {
-
+              NewHelper()
+                  .addImagePicker(imageSource: ImageSource.gallery)
+                  .then((v) async {
                 CroppedFile? croppedFile = await ImageCropper().cropImage(
                   sourcePath: v!.path,
                   // aspectRatioPresets: [
@@ -171,53 +177,51 @@ class NewHelper {
                   ],
                 );
                 if (croppedFile != null) {
-                  gotImage(await FlutterExifRotation.rotateImage(path: croppedFile.path));
+                  gotImage(await FlutterExifRotation.rotateImage(
+                      path: croppedFile.path));
                   Get.back();
                 }
-
-
               });
-
             },
           ),
           CupertinoActionSheetAction(
-            child:  Text('Camera'.tr),
+            child: Text('Camera'.tr),
             onPressed: () {
-
-              NewHelper().addImagePicker(imageSource: ImageSource.camera).then((v) async {
-              if(v == null)return;
-              final item =await FlutterExifRotation.rotateImage(path: v.path);
-              CroppedFile? croppedFile = await ImageCropper().cropImage(
-                sourcePath: item.path,
-                // aspectRatioPresets: [
-                //   // CropAspectRatioPreset.square,
-                //   // CropAspectRatioPreset.ratio3x2,
-                //   // CropAspectRatioPreset.original,
-                //   CropAspectRatioPreset.ratio4x3,
-                //   // CropAspectRatioPreset.ratio16x9
-                // ],
-                uiSettings: [
-                  AndroidUiSettings(
-                      toolbarTitle: 'Cropper',
-                      toolbarColor: Colors.deepOrange,
-                      toolbarWidgetColor: Colors.white,
-                      initAspectRatio: CropAspectRatioPreset.ratio4x3,
-                      lockAspectRatio: true),
-                  IOSUiSettings(
-                    title: 'Cropper',
-                  ),
-                  WebUiSettings(
-                    context: context,
-                  ),
-                ],
-              );
-              if (croppedFile != null) {
-                gotImage(await FlutterExifRotation.rotateImage(path: v.path));
-                Get.back();
-              }
-
-
-            });
+              NewHelper()
+                  .addImagePicker(imageSource: ImageSource.camera)
+                  .then((v) async {
+                if (v == null) return;
+                final item =
+                    await FlutterExifRotation.rotateImage(path: v.path);
+                CroppedFile? croppedFile = await ImageCropper().cropImage(
+                  sourcePath: item.path,
+                  // aspectRatioPresets: [
+                  //   // CropAspectRatioPreset.square,
+                  //   // CropAspectRatioPreset.ratio3x2,
+                  //   // CropAspectRatioPreset.original,
+                  //   CropAspectRatioPreset.ratio4x3,
+                  //   // CropAspectRatioPreset.ratio16x9
+                  // ],
+                  uiSettings: [
+                    AndroidUiSettings(
+                        toolbarTitle: 'Cropper',
+                        toolbarColor: Colors.deepOrange,
+                        toolbarWidgetColor: Colors.white,
+                        initAspectRatio: CropAspectRatioPreset.ratio4x3,
+                        lockAspectRatio: true),
+                    IOSUiSettings(
+                      title: 'Cropper',
+                    ),
+                    WebUiSettings(
+                      context: context,
+                    ),
+                  ],
+                );
+                if (croppedFile != null) {
+                  gotImage(await FlutterExifRotation.rotateImage(path: v.path));
+                  Get.back();
+                }
+              });
 
               // NewHelper().addImagePicker(imageSource: ImageSource.camera).then((value) async {
               //   if (value == null) return;
@@ -228,7 +232,7 @@ class NewHelper {
           ),
           if (removeOption == true)
             CupertinoActionSheetAction(
-              child:  Text('Remove'.tr),
+              child: Text('Remove'.tr),
               onPressed: () {
                 Get.back();
                 if (removeImage != null) {
@@ -240,14 +244,14 @@ class NewHelper {
       ),
     );
   }
-
 }
 
 class Helpers {
   Helpers.of(BuildContext context) {
     context = context;
   }
-  static Future<List<File>?> addMultiImagePicker({int imageQuality = 30}) async {
+  static Future<List<File>?> addMultiImagePicker(
+      {int imageQuality = 30}) async {
     try {
       final result = await FilePicker.platform.pickFiles(
         allowMultiple: true,
@@ -258,7 +262,8 @@ class Helpers {
       if (result == null) {
         return null;
       } else {
-        List<File> files = result.files.map((file) => File(file.path.toString())).toList();
+        List<File> files =
+            result.files.map((file) => File(file.path.toString())).toList();
         return files;
       }
     } catch (e) {
@@ -266,9 +271,12 @@ class Helpers {
     }
   }
 
-  static Future addImagePicker({ImageSource imageSource = ImageSource.gallery, int imageQuality = 100}) async {
+  static Future addImagePicker(
+      {ImageSource imageSource = ImageSource.gallery,
+      int imageQuality = 100}) async {
     try {
-      final item = await ImagePicker().pickImage(source: imageSource, imageQuality: imageQuality);
+      final item = await ImagePicker()
+          .pickImage(source: imageSource, imageQuality: imageQuality);
       if (item == null) {
         return null;
       } else {
@@ -278,7 +286,6 @@ class Helpers {
       throw Exception(e);
     }
   }
-
 
   static launchEmail({required String email}) async {
     final Uri params = Uri(
@@ -313,19 +320,23 @@ class Helpers {
         top: 0,
         left: 0,
         child: Material(
-          color: AppTheme.primaryColor.withOpacity(0.25),
-          child:  Center(
-              child: SizedBox(height: 100, width: 100, child: Lottie.asset("assets/loti/loading.json", frameRate: FrameRate.max))
-                  .animate()
-                  .scale(duration: 200.ms)
-                  .fade(duration: 200.ms))
-        ),
+            color: AppTheme.primaryColor.withOpacity(0.25),
+            child: Center(
+                child: SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: Lottie.asset("assets/loti/loading.json",
+                            frameRate: FrameRate.max))
+                    .animate()
+                    .scale(duration: 200.ms)
+                    .fade(duration: 200.ms))),
       );
     });
     return loader;
   }
 
-  static OverlayEntry overlayLoaderProgress(context, {required RxString progress, required text}) {
+  static OverlayEntry overlayLoaderProgress(context,
+      {required RxString progress, required text}) {
     OverlayEntry loader = OverlayEntry(builder: (context) {
       final size = MediaQuery.of(context).size;
       return Positioned(
@@ -342,7 +353,8 @@ class Helpers {
                 Card(
                   elevation: 5,
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -417,7 +429,8 @@ class Helpers {
     Uri uri = Uri(
         scheme: Uri.parse(baseUrl).scheme,
         host: Uri.parse(baseUrl).host,
-        port: Uri.parse(baseUrl).port, //GlobalConfiguration().getValue('base_url')
+        port: Uri.parse(baseUrl)
+            .port, //GlobalConfiguration().getValue('base_url')
         path: path + path);
     return uri;
   }
@@ -449,7 +462,8 @@ class Helpers {
       backgroundColor: Colors.black,
       content: Text(
         message,
-        style: GoogleFonts.poppins(fontSize: 14.0, fontWeight: FontWeight.w600, color: Colors.white),
+        style: GoogleFonts.poppins(
+            fontSize: 14.0, fontWeight: FontWeight.w600, color: Colors.white),
       ),
     ));
   }
@@ -463,21 +477,19 @@ class Helpers {
 }
 
 extension ConvertToNum on String {
-
-  Duration get durationTime{
+  Duration get durationTime {
     return Duration(
       hours: split(":").first.toNum.toInt(),
       minutes: split(":")[1].toNum.toInt(),
     );
   }
 
-  String get normalTime{
-    if(split(":").length > 1){
-    return "${split(":").first}:${split(":")[1]}";
+  String get normalTime {
+    if (split(":").length > 1) {
+      return "${split(":").first}:${split(":")[1]}";
     }
     return this;
   }
-
 
   num? get convertToNum {
     return num.tryParse(this);
@@ -512,8 +524,6 @@ extension ConvertToNum on String {
   }
 }
 
-
-
 // extension CheckNull on String?{
 //   String get checkNull{
 //     return this ?? "";
@@ -544,15 +554,15 @@ extension Spacing on num {
 }
 
 extension GetContext on BuildContext {
-
   Size get getSize => MediaQuery.of(this).size;
 
   Future get navigate async {
-    return await Scrollable.ensureVisible(this, alignment: .25, duration: const Duration(milliseconds: 600));
+    return await Scrollable.ensureVisible(this,
+        alignment: .25, duration: const Duration(milliseconds: 600));
   }
 }
-GlobalKey<FormFieldState> textFieldKey = GlobalKey<FormFieldState>();
 
+GlobalKey<FormFieldState> textFieldKey = GlobalKey<FormFieldState>();
 
 extension ValidateErrors on TextEditingController {
   bool get checkEmpty {
@@ -578,7 +588,7 @@ extension ValidateErrors on TextEditingController {
   }
 
   bool get checkEmail {
-    if(!text.trim().invalidEmail)return false;
+    if (!text.trim().invalidEmail) return false;
     BuildContext? context1 = textFieldKey.currentContext;
     if (context1 != null) {
       context1.navigate;
@@ -589,7 +599,7 @@ extension ValidateErrors on TextEditingController {
   }
 
   bool get checkPhoneNumber {
-    if(text.trim().length >= 10)return false;
+    if (text.trim().length >= 10) return false;
     BuildContext? context1 = textFieldKey.currentContext;
     if (context1 != null) {
       context1.navigate;
@@ -605,13 +615,13 @@ extension ValidateErrors on TextEditingController {
     return checkEmpty || checkNum;
   }
 
-  bool get checkBothWithEmail{
+  bool get checkBothWithEmail {
     // print("checkEmpty.....   $checkEmpty");
     // print("checkNum.....   $checkNum");
     return checkEmpty || checkEmail;
   }
 
-  bool get checkBothWithPhone{
+  bool get checkBothWithPhone {
     // print("checkEmpty.....   $checkEmpty");
     // print("checkNum.....   $checkNum");
     return checkEmpty || checkPhoneNumber;
@@ -627,8 +637,9 @@ extension WidgetExtensions on Widget {
     );
   }
 
-  SliverToBoxAdapter get toBoxAdapter => SliverToBoxAdapter(child: this,);
-
+  SliverToBoxAdapter get toBoxAdapter => SliverToBoxAdapter(
+        child: this,
+      );
 }
 
 extension ConvertToDateon on Duration {
