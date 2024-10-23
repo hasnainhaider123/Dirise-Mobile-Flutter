@@ -960,7 +960,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                                     // selectedShippingMethod =
                                                                     //     value
                                                                     //         .toString();
-                                                                    selectedShippingMethod = value.toString();  
+                                                                    selectedShippingMethod =
+                                                                        value
+                                                                            .toString();
                                                                     shippingType
                                                                             .value =
                                                                         'local_shipping';
@@ -1314,7 +1316,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                                                     onChanged: (value) {
                                                                                       log("which is selected + $value");
                                                                                       setState(() {
-                                                                                           selectedShippingMethod = value.toString();  
+                                                                                        selectedShippingMethod = value.toString();
                                                                                         shippingType.value = 'fedex_shipping';
                                                                                         e.value.shippingOption.value = value.toString();
                                                                                         e.value.shipping!.fedexShippingOption.value = value.toString();
@@ -1514,7 +1516,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                                     value: product
                                                                         .methodId
                                                                         .toString(),
-                                                                    groupValue: selectedShippingMethod,
+                                                                    groupValue:
+                                                                        selectedShippingMethod,
                                                                     visualDensity:
                                                                         const VisualDensity(
                                                                             horizontal:
@@ -1532,7 +1535,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                                                         (value) {
                                                                       setState(
                                                                           () {
-                                                                            selectedShippingMethod = value.toString();  
+                                                                        selectedShippingMethod =
+                                                                            value.toString();
                                                                         e.value.shippingOption.value =
                                                                             value.toString();
                                                                         shippingType.value =
@@ -1705,7 +1709,16 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                 .toList(),
                       ),
                     )
-                  : const SizedBox();
+                  : LoadingAnimation();
+          // Container(
+          //     height: 100,
+          //     width: double.infinity,
+          //     color: Colors.white,
+          //     child: SizedBox(
+          //       height: 20,
+          //       child: const CircularProgressIndicator(),
+          //     ),
+          //   );
 
           // : const SizedBox.shrink();
           // CustomScrollView(

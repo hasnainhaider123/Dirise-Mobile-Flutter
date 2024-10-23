@@ -53,7 +53,6 @@ class _OrderDetailsState extends State<OrderDetails> {
     'payment failed'
   ];
   Future getOrderDetails() async {
-  
     await repositories.postApi(url: ApiUrls.orderDetailsUrl, mapData: {
       "order_id": widget.orderId,
     }).then((value) {
@@ -76,7 +75,8 @@ class _OrderDetailsState extends State<OrderDetails> {
 
   SingleOrderData get order => singleOrder.order!;
   Rx<CreateShipmentModel> createShipmentModel = CreateShipmentModel().obs;
-  Rx<CreateShipmentModelError> createShipmentModelError = CreateShipmentModelError().obs;
+  Rx<CreateShipmentModelError> createShipmentModelError =
+      CreateShipmentModelError().obs;
   void createShipment(String id, List<DynamicContainerState> containerStates) {
     List<Map<String, dynamic>> payload = [];
 
@@ -108,13 +108,21 @@ class _OrderDetailsState extends State<OrderDetails> {
       'payload': payload,
     };
 
-    repositories.postApi(mapData: map, url: ApiUrls.createShipment, context: context, showResponse: true).then((value) {
-      createShipmentModel.value = CreateShipmentModel.fromJson(jsonDecode(value));
+    repositories
+        .postApi(
+            mapData: map,
+            url: ApiUrls.createShipment,
+            context: context,
+            showResponse: true)
+        .then((value) {
+      createShipmentModel.value =
+          CreateShipmentModel.fromJson(jsonDecode(value));
       if (createShipmentModel.value.status == true) {
         showToastCenter(createShipmentModel.value.message.toString());
       } else {
         // createShipmentModelError.value = CreateShipmentModelError.fromJson(jsonDecode(value));
-        createShipmentModel.value = CreateShipmentModel.fromJson(jsonDecode(value));
+        createShipmentModel.value =
+            CreateShipmentModel.fromJson(jsonDecode(value));
         showToastCenter(createShipmentModel.value.message.toString());
       }
     });
@@ -125,13 +133,21 @@ class _OrderDetailsState extends State<OrderDetails> {
       'id': id,
       'key': 'label',
     };
-    repositories.postApi(mapData: map, url: ApiUrls.createShipment, context: context, showResponse: true).then((value) {
-      createShipmentModel.value = CreateShipmentModel.fromJson(jsonDecode(value));
+    repositories
+        .postApi(
+            mapData: map,
+            url: ApiUrls.createShipment,
+            context: context,
+            showResponse: true)
+        .then((value) {
+      createShipmentModel.value =
+          CreateShipmentModel.fromJson(jsonDecode(value));
       if (createShipmentModel.value.status == true) {
         showToastCenter(createShipmentModel.value.message.toString());
       } else {
         // createShipmentModelError.value = CreateShipmentModelError.fromJson(jsonDecode(value));
-        createShipmentModel.value = CreateShipmentModel.fromJson(jsonDecode(value));
+        createShipmentModel.value =
+            CreateShipmentModel.fromJson(jsonDecode(value));
         showToastCenter(createShipmentModel.value.message.toString());
       }
     });
@@ -171,8 +187,11 @@ class _OrderDetailsState extends State<OrderDetails> {
     map['order_id'] = orderId;
     map['status'] = status;
 
-    repositories.postApi(mapData: map, url: ApiUrls.changeOrderStatus, context: context).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(mapData: map, url: ApiUrls.changeOrderStatus, context: context)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       if (response.status == true) {
         showToastCenter(response.message.toString());
       } else {
@@ -237,7 +256,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     super.initState();
     // log("ffffffff${createShipmentModel.value.data!.trackingNo.toString()}");
     // Add an initial container
-     log("orderId is ${widget.orderId}");
+    log("orderId is ${widget.orderId}");
     containers.add(DynamicContainerState(
       unitOfMeasure: unitOfMeasure,
       unit: unit,
@@ -257,7 +276,8 @@ class _OrderDetailsState extends State<OrderDetails> {
               // cmValue.value = newValue;
             });
           },
-          items: unitOfMeasureList.map<DropdownMenuItem<String>>((String value) {
+          items:
+              unitOfMeasureList.map<DropdownMenuItem<String>>((String value) {
             return DropdownMenuItem<String>(
               value: value,
               child: Text(value),
@@ -267,12 +287,15 @@ class _OrderDetailsState extends State<OrderDetails> {
             border: InputBorder.none,
             filled: true,
             fillColor: const Color(0xffE2E2E2).withOpacity(.35),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10).copyWith(right: 8),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 15, vertical: 10)
+                    .copyWith(right: 8),
             focusedErrorBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 borderSide: BorderSide(color: AppTheme.secondaryColor)),
             errorBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)), borderSide: BorderSide(color: Color(0xffE2E2E2))),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderSide: BorderSide(color: Color(0xffE2E2E2))),
             focusedBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 borderSide: BorderSide(color: AppTheme.secondaryColor)),
@@ -313,12 +336,15 @@ class _OrderDetailsState extends State<OrderDetails> {
             border: InputBorder.none,
             filled: true,
             fillColor: const Color(0xffE2E2E2).withOpacity(.35),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10).copyWith(right: 8),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 15, vertical: 10)
+                    .copyWith(right: 8),
             focusedErrorBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 borderSide: BorderSide(color: AppTheme.secondaryColor)),
             errorBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(8)), borderSide: BorderSide(color: Color(0xffE2E2E2))),
+                borderRadius: BorderRadius.all(Radius.circular(8)),
+                borderSide: BorderSide(color: Color(0xffE2E2E2))),
             focusedBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(8)),
                 borderSide: BorderSide(color: AppTheme.secondaryColor)),
@@ -374,7 +400,8 @@ class _OrderDetailsState extends State<OrderDetails> {
             10.spaceX,
             Expanded(
                 child: CommonTextField(
-              controller: containerState.controllers['dimensionWidthController']!,
+              controller:
+                  containerState.controllers['dimensionWidthController']!,
               obSecure: false,
               hintText: 'Width X',
               keyboardType: TextInputType.number,
@@ -388,7 +415,8 @@ class _OrderDetailsState extends State<OrderDetails> {
             10.spaceX,
             Expanded(
                 child: CommonTextField(
-              controller: containerState.controllers['dimensionHeightController']!,
+              controller:
+                  containerState.controllers['dimensionHeightController']!,
               obSecure: false,
               hintText: 'Height X',
               keyboardType: TextInputType.number,
@@ -411,7 +439,8 @@ class _OrderDetailsState extends State<OrderDetails> {
   void createShipment1(String id, List<DynamicContainerState> containerStates) {
     List<Map<String, dynamic>> payload = [];
 
-    print('Container States: $containerStates'); // Check containerStates content
+    print(
+        'Container States: $containerStates'); // Check containerStates content
 
     for (int i = 0; i < containerStates.length; i++) {
       DynamicContainerState state = containerStates[i];
@@ -464,7 +493,8 @@ class _OrderDetailsState extends State<OrderDetails> {
         ),
         body: singleOrder.order != null
             ? Padding(
-                padding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.padding10),
+                padding: EdgeInsets.symmetric(
+                    horizontal: AddSize.padding16, vertical: AddSize.padding10),
                 child: SingleChildScrollView(
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -475,7 +505,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFF37C666).withOpacity(0.10),
+                                  color:
+                                      const Color(0xFF37C666).withOpacity(0.10),
                                   offset: const Offset(
                                     .1,
                                     .1,
@@ -486,11 +517,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ],
                             ),
                             child: Padding(
-                                padding: const EdgeInsets.all(18.0).copyWith(bottom: 8),
+                                padding: const EdgeInsets.all(18.0)
+                                    .copyWith(bottom: 8),
                                 child: Column(children: [
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Image.asset(
                                         'assets/images/orderdetails.png',
@@ -499,7 +533,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                       addWidth(15),
                                       Expanded(
                                         child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Text(
                                               '${'Order ID'.tr}: ${order.id.toString()}',
@@ -519,8 +554,10 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         ),
                                       ),
                                       DropdownButton<String>(
-                                        icon: const Icon(Icons.keyboard_arrow_down),
-                                        iconDisabledColor: const Color(0xff97949A),
+                                        icon: const Icon(
+                                            Icons.keyboard_arrow_down),
+                                        iconDisabledColor:
+                                            const Color(0xff97949A),
                                         iconEnabledColor: AppTheme.buttonColor,
                                         value: statusValue,
                                         isDense: true,
@@ -535,11 +572,13 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                   child: Text(
                                                     label.toString(),
                                                     style: GoogleFonts.poppins(
-                                                      color: const Color(0xff463B57),
+                                                      color: const Color(
+                                                          0xff463B57),
                                                     ),
                                                   ),
                                                 ))
                                             .toList(),
+                                        // alignment: Alignment.topLeft,
                                       ),
                                     ],
                                   ),
@@ -550,28 +589,42 @@ class _OrderDetailsState extends State<OrderDetails> {
                                       .map((e) => Column(
                                             children: [
                                               Padding(
-                                                padding: const EdgeInsets.only(bottom: 2),
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 2),
                                                 child: Row(
-                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Expanded(
                                                         child: Column(
-                                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
                                                             Text(
-                                                              e.productName.toString(),
+                                                              e.productName
+                                                                  .toString(),
                                                               style: GoogleFonts.poppins(
-                                                                  color: const Color(0xFF303C5E),
-                                                                  fontWeight: FontWeight.w600,
+                                                                  color: const Color(
+                                                                      0xFF303C5E),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
                                                                   fontSize: 16),
                                                             ),
                                                             addHeight(5),
                                                             Text(
                                                               '${e.quantity.toString()} ${'piece'.tr}',
                                                               style: GoogleFonts.poppins(
-                                                                  color: const Color(0xFF6A8289),
-                                                                  fontWeight: FontWeight.w500,
+                                                                  color: const Color(
+                                                                      0xFF6A8289),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
                                                                   fontSize: 14),
                                                             ),
                                                           ],
@@ -579,10 +632,14 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                       ),
                                                       Text(
                                                         "${(e.productPrice.toString().toNum * e.quantity.toString().toNum).toStringAsFixed(2)} KWD",
-                                                        style: GoogleFonts.poppins(
-                                                            color: AppTheme.primaryColor,
-                                                            fontWeight: FontWeight.w600,
-                                                            fontSize: 16),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                color: AppTheme
+                                                                    .primaryColor,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 16),
                                                       ),
                                                     ]),
                                               ),
@@ -600,7 +657,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                         Text(
                           'Customer Detail'.tr,
                           style: GoogleFonts.poppins(
-                              color: const Color(0xff303C5E), fontSize: 18, fontWeight: FontWeight.w700),
+                              color: const Color(0xff303C5E),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700),
                         ),
                         const SizedBox(
                           height: 16,
@@ -611,7 +670,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFF37C666).withOpacity(0.10),
+                                  color:
+                                      const Color(0xFF37C666).withOpacity(0.10),
                                   offset: const Offset(
                                     .1,
                                     .1,
@@ -625,34 +685,46 @@ class _OrderDetailsState extends State<OrderDetails> {
                               children: [
                                 Padding(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: AddSize.screenWidth * 0.02, vertical: AddSize.screenHeight * .005),
+                                      horizontal: AddSize.screenWidth * 0.02,
+                                      vertical: AddSize.screenHeight * .005),
                                   child: Padding(
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: AddSize.padding15, vertical: AddSize.padding15),
+                                        horizontal: AddSize.padding15,
+                                        vertical: AddSize.padding15),
                                     child: Column(
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Row(children: [
                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Customer Name".tr,
                                                     style: GoogleFonts.poppins(
-                                                        color: const Color(0xff486769),
-                                                        fontWeight: FontWeight.w300,
+                                                        color: const Color(
+                                                            0xff486769),
+                                                        fontWeight:
+                                                            FontWeight.w300,
                                                         fontSize: 14),
                                                   ),
                                                   Text(
                                                     order.user != null
-                                                        ? order.user!.firstName.toString()
-                                                        : order.orderMeta!.billingFirstName ??
-                                                            order.orderMeta!.billingLastName ??
+                                                        ? order.user!.firstName
+                                                            .toString()
+                                                        : order.orderMeta!
+                                                                .billingFirstName ??
+                                                            order.orderMeta!
+                                                                .billingLastName ??
                                                             "",
                                                     style: GoogleFonts.poppins(
-                                                        height: 1.5, fontWeight: FontWeight.w600, fontSize: 16),
+                                                        height: 1.5,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 16),
                                                   ),
                                                 ],
                                               ),
@@ -661,7 +733,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                               height: 37,
                                               width: 37,
                                               decoration: const ShapeDecoration(
-                                                  color: Color(0xFFFE7E73), shape: CircleBorder()),
+                                                  color: Color(0xFFFE7E73),
+                                                  shape: CircleBorder()),
                                               child: const Center(
                                                   child: Icon(
                                                 Icons.person_rounded,
@@ -673,41 +746,62 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         ),
                                         const Divider(),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Row(children: [
                                               Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Customer Number".tr,
                                                     style: GoogleFonts.poppins(
-                                                        color: const Color(0xff486769),
-                                                        fontWeight: FontWeight.w300,
+                                                        color: const Color(
+                                                            0xff486769),
+                                                        fontWeight:
+                                                            FontWeight.w300,
                                                         fontSize: 14),
                                                   ),
                                                   Text(
-                                                    order.orderMeta!.billingPhone ?? order.user!.phone ?? '',
+                                                    order.orderMeta!
+                                                            .billingPhone ??
+                                                        order.user!.phone ??
+                                                        '',
                                                     style: GoogleFonts.poppins(
-                                                        height: 1.5, fontWeight: FontWeight.w600, fontSize: 16),
+                                                        height: 1.5,
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 16),
                                                   ),
                                                 ],
                                               ),
                                             ]),
                                             GestureDetector(
                                               onTap: () {
-                                                if (order.orderMeta!.billingPhone != null &&
-                                                    order.orderMeta!.billingPhone.toString().isNotEmpty) {
-                                                  _makingPhoneCall("tel:${order.orderMeta!.billingPhone}");
+                                                if (order.orderMeta!
+                                                            .billingPhone !=
+                                                        null &&
+                                                    order
+                                                        .orderMeta!.billingPhone
+                                                        .toString()
+                                                        .isNotEmpty) {
+                                                  _makingPhoneCall(
+                                                      "tel:${order.orderMeta!.billingPhone}");
                                                 } else {
-                                                  _makingPhoneCall("tel:${order.user!.phone}");
+                                                  _makingPhoneCall(
+                                                      "tel:${order.user!.phone}");
                                                 }
                                               },
                                               child: Container(
                                                   height: 37,
                                                   width: 37,
-                                                  decoration: const ShapeDecoration(
-                                                      color: Color(0xFF71E189), shape: CircleBorder()),
+                                                  decoration:
+                                                      const ShapeDecoration(
+                                                          color:
+                                                              Color(0xFF71E189),
+                                                          shape:
+                                                              CircleBorder()),
                                                   child: const Center(
                                                       child: Icon(
                                                     Icons.phone,
@@ -719,30 +813,33 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         ),
                                         const Divider(),
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             Expanded(
                                               child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
                                                     "Customer Address".tr,
                                                     style: GoogleFonts.poppins(
-                                                        color: const Color(0xff486769),
-                                                        fontWeight: FontWeight.w300,
+                                                        color: const Color(
+                                                            0xff486769),
+                                                        fontWeight:
+                                                            FontWeight.w300,
                                                         fontSize: 14),
                                                   ),
                                                   Text(
-                                                    '${order.orderMeta!.shippingCity ?? order.orderMeta!.billingCity ?? ''}, ${order.orderMeta!.shippingState ?? ''
-                                                        ?? order.orderMeta!.billingState ?? ''}, ${order.orderMeta!.shippingCountry  ?? order.orderMeta!.billingCountry ?? ''}, ${order.orderMeta!.shippingZipCode ?? order.orderMeta!.billingZipCode ?? ''}',
-                                                    style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 15),
+                                                    '${order.orderMeta!.shippingCity ?? order.orderMeta!.billingCity ?? ''}, ${order.orderMeta!.shippingState ?? '' ?? order.orderMeta!.billingState ?? ''}, ${order.orderMeta!.shippingCountry ?? order.orderMeta!.billingCountry ?? ''}, ${order.orderMeta!.shippingZipCode ?? order.orderMeta!.billingZipCode ?? ''}',
+                                                    style: GoogleFonts.poppins(
+                                                        fontWeight:
+                                                            FontWeight.w600,
+                                                        fontSize: 15),
                                                   ),
                                                   const SizedBox(
                                                     width: 5,
                                                   ),
-
-
-
                                                 ],
                                               ),
                                             ),
@@ -751,8 +848,11 @@ class _OrderDetailsState extends State<OrderDetails> {
                                               child: Container(
                                                 height: 37,
                                                 width: 37,
-                                                decoration: const ShapeDecoration(
-                                                    color: Color(0xFF7ED957), shape: CircleBorder()),
+                                                decoration:
+                                                    const ShapeDecoration(
+                                                        color:
+                                                            Color(0xFF7ED957),
+                                                        shape: CircleBorder()),
                                                 child: const Center(
                                                     child: Icon(
                                                   Icons.location_on,
@@ -777,7 +877,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                               borderRadius: BorderRadius.circular(5),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFF37C666).withOpacity(0.10),
+                                  color:
+                                      const Color(0xFF37C666).withOpacity(0.10),
                                   offset: const Offset(
                                     .1,
                                     .1,
@@ -788,13 +889,15 @@ class _OrderDetailsState extends State<OrderDetails> {
                               ],
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 15),
                               child: Column(
                                 children: [
                                   // order.couponCode
                                   if (order.couponCode != null) ...[
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Expanded(
                                           child: Text(
@@ -821,7 +924,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     ),
                                   ],
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
                                         child: Text(
@@ -847,7 +951,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     height: 12,
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Expanded(
                                         child: Text(
@@ -882,7 +987,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                             : Text(
                                 'Shipping Detail'.tr,
                                 style: GoogleFonts.poppins(
-                                    color: const Color(0xff303C5E), fontSize: 18, fontWeight: FontWeight.w700),
+                                    color: const Color(0xff303C5E),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700),
                               ),
                         const SizedBox(
                           height: 16,
@@ -894,7 +1001,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   borderRadius: BorderRadius.circular(12),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: const Color(0xFF37C666).withOpacity(0.10),
+                                      color: const Color(0xFF37C666)
+                                          .withOpacity(0.10),
                                       offset: const Offset(
                                         .1,
                                         .1,
@@ -909,38 +1017,57 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     children: [
                                       Padding(
                                         padding: EdgeInsets.symmetric(
-                                            horizontal: AddSize.screenWidth * 0.02,
-                                            vertical: AddSize.screenHeight * .005),
+                                            horizontal:
+                                                AddSize.screenWidth * 0.02,
+                                            vertical:
+                                                AddSize.screenHeight * .005),
                                         child: Padding(
                                           padding: EdgeInsets.symmetric(
-                                              horizontal: AddSize.padding15, vertical: AddSize.padding15),
+                                              horizontal: AddSize.padding15,
+                                              vertical: AddSize.padding15),
                                           child: Column(
                                             children: [
                                               10.spaceY,
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Text(
                                                     "Name".tr,
                                                     style: GoogleFonts.poppins(
-                                                      color: const Color(0xFF293044),
+                                                      color: const Color(
+                                                          0xFF293044),
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
-                                                  singleOrder.order!.orderShipping != null
+                                                  singleOrder.order!
+                                                              .orderShipping !=
+                                                          null
                                                       ? Text(
-                                                          singleOrder.order!.orderShipping!.shippingTitle!.toString(),
+                                                          singleOrder
+                                                              .order!
+                                                              .orderShipping!
+                                                              .shippingTitle!
+                                                              .toString(),
                                                           style: GoogleFonts.poppins(
-                                                              color: const Color(0xff486769),
-                                                              fontWeight: FontWeight.w300,
+                                                              color: const Color(
+                                                                  0xff486769),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
                                                               fontSize: 14),
                                                         )
                                                       : Text(
                                                           '',
                                                           style: GoogleFonts.poppins(
-                                                              color: const Color(0xff486769),
-                                                              fontWeight: FontWeight.w300,
+                                                              color: const Color(
+                                                                  0xff486769),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
                                                               fontSize: 14),
                                                         ),
                                                 ],
@@ -949,56 +1076,83 @@ class _OrderDetailsState extends State<OrderDetails> {
                                               const Divider(),
                                               10.spaceY,
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Text(
                                                     "Price".tr,
                                                     style: GoogleFonts.poppins(
-                                                      color: const Color(0xFF293044),
+                                                      color: const Color(
+                                                          0xFF293044),
                                                       fontSize: 15,
-                                                      fontWeight: FontWeight.w600,
+                                                      fontWeight:
+                                                          FontWeight.w600,
                                                     ),
                                                   ),
-                                                  singleOrder.order!.orderShipping != null
+                                                  singleOrder.order!
+                                                              .orderShipping !=
+                                                          null
                                                       ? Text(
                                                           'KWD ${singleOrder.order!.orderShipping!.shippingPrice!.toString()}',
                                                           style: GoogleFonts.poppins(
-                                                              color: const Color(0xff486769),
-                                                              fontWeight: FontWeight.w300,
+                                                              color: const Color(
+                                                                  0xff486769),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
                                                               fontSize: 14),
                                                         )
                                                       : Text(
                                                           '',
                                                           style: GoogleFonts.poppins(
-                                                              color: const Color(0xff486769),
-                                                              fontWeight: FontWeight.w300,
+                                                              color: const Color(
+                                                                  0xff486769),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w300,
                                                               fontSize: 14),
                                                         ),
                                                 ],
                                               ),
                                               10.spaceY,
                                               const Divider(),
-                                              if (createShipmentModel.value.data != null)
+                                              if (createShipmentModel
+                                                      .value.data !=
+                                                  null)
                                                 Obx(() {
                                                   return Column(
                                                     children: [
                                                       10.spaceY,
                                                       Row(
-                                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
                                                         children: [
                                                           Text(
                                                             "Tracking ID".tr,
-                                                            style: GoogleFonts.poppins(
-                                                              color: const Color(0xFF293044),
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                              color: const Color(
+                                                                  0xFF293044),
                                                               fontSize: 15,
-                                                              fontWeight: FontWeight.w600,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600,
                                                             ),
                                                           ),
                                                           Text(
-                                                            createShipmentModel.value.data!.trackingNo.toString(),
+                                                            createShipmentModel
+                                                                .value
+                                                                .data!
+                                                                .trackingNo
+                                                                .toString(),
                                                             style: GoogleFonts.poppins(
-                                                                color: const Color(0xff486769),
-                                                                fontWeight: FontWeight.w300,
+                                                                color: const Color(
+                                                                    0xff486769),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w300,
                                                                 fontSize: 14),
                                                           ),
                                                         ],
@@ -1007,37 +1161,37 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                     ],
                                                   );
                                                 }),
-                                              createShipmentModel.value.data == null
+                                              createShipmentModel.value.data ==
+                                                      null
                                                   ? Column(
                                                       children: [
-                                                        containerShow1.value == false
+                                                        containerShow1.value ==
+                                                                false
                                                             ? Row(
                                                                 children: [
                                                                   Expanded(
                                                                     child: ElevatedButton(
                                                                         onPressed: () {
                                                                           // createShipment(orderId);
-                                                                          createShipment12121(orderId);
+                                                                          createShipment12121(
+                                                                              orderId);
                                                                         },
-                                                                        style: ElevatedButton.styleFrom(
-                                                                            minimumSize:
-                                                                                const Size(double.maxFinite, 50),
-                                                                            backgroundColor: AppTheme.buttonColor,
-                                                                            elevation: 0,
-                                                                            shape: RoundedRectangleBorder(
-                                                                                borderRadius: BorderRadius.circular(
-                                                                                    AddSize.size10)),
-                                                                            textStyle: GoogleFonts.poppins(
-                                                                                fontSize: AddSize.font20,
-                                                                                fontWeight: FontWeight.w600)),
-                                                                        child: Text(
-                                                                          "Create Shipment".tr,
-                                                                          style: GoogleFonts.poppins(
-                                                                            color: Colors.white,
-                                                                            fontWeight: FontWeight.w600,
-                                                                            fontSize: 16,
+                                                                        style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
+                                                                        child: FittedBox(
+                                                                          fit: BoxFit
+                                                                              .scaleDown,
+                                                                          child:
+                                                                              Text(
+                                                                            "Create Shipment".tr,
+                                                                            style:
+                                                                                GoogleFonts.poppins(
+                                                                              color: Colors.white,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              fontSize: 16,
+                                                                            ),
+                                                                            textAlign:
+                                                                                TextAlign.center,
                                                                           ),
-                                                                          textAlign: TextAlign.center,
                                                                         )),
                                                                   ),
                                                                   SizedBox(
@@ -1048,31 +1202,31 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                         onPressed: () {
                                                                           // createShipment(orderId);
 
-                                                                          setState(() {
-                                                                            containerShow.value = true;
-                                                                            containerShow1.value = true;
+                                                                          setState(
+                                                                              () {
+                                                                            containerShow.value =
+                                                                                true;
+                                                                            containerShow1.value =
+                                                                                true;
                                                                           });
-                                                                          print(containerShow.value);
+                                                                          print(
+                                                                              containerShow.value);
                                                                         },
-                                                                        style: ElevatedButton.styleFrom(
-                                                                            minimumSize:
-                                                                                const Size(double.maxFinite, 50),
-                                                                            backgroundColor: AppTheme.buttonColor,
-                                                                            elevation: 0,
-                                                                            shape: RoundedRectangleBorder(
-                                                                                borderRadius: BorderRadius.circular(
-                                                                                    AddSize.size10)),
-                                                                            textStyle: GoogleFonts.poppins(
-                                                                                fontSize: AddSize.font20,
-                                                                                fontWeight: FontWeight.w600)),
+                                                                        style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
                                                                         child: Text(
-                                                                          "Edit Shipment".tr,
-                                                                          style: GoogleFonts.poppins(
-                                                                            color: Colors.white,
-                                                                            fontWeight: FontWeight.w600,
-                                                                            fontSize: 16,
+                                                                          "Edit Shipment"
+                                                                              .tr,
+                                                                          style:
+                                                                              GoogleFonts.poppins(
+                                                                            color:
+                                                                                Colors.white,
+                                                                            fontWeight:
+                                                                                FontWeight.w600,
+                                                                            fontSize:
+                                                                                16,
                                                                           ),
-                                                                          textAlign: TextAlign.center,
+                                                                          textAlign:
+                                                                              TextAlign.center,
                                                                         )),
                                                                   ),
                                                                 ],
@@ -1085,64 +1239,112 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                   //   containerShow.value = true;
                                                                   //   containerShow1.value = false;
                                                                   // });
-                                                                  print(containerShow.value);
+                                                                  print(containerShow
+                                                                      .value);
                                                                 },
                                                                 style: ElevatedButton.styleFrom(
-                                                                    minimumSize: const Size(double.maxFinite, 50),
-                                                                    backgroundColor: AppTheme.buttonColor,
-                                                                    elevation: 0,
+                                                                    minimumSize:
+                                                                        const Size(
+                                                                            double
+                                                                                .maxFinite,
+                                                                            50),
+                                                                    backgroundColor:
+                                                                        AppTheme
+                                                                            .buttonColor,
+                                                                    elevation:
+                                                                        0,
                                                                     shape: RoundedRectangleBorder(
                                                                         borderRadius:
-                                                                            BorderRadius.circular(AddSize.size10)),
+                                                                            BorderRadius.circular(AddSize
+                                                                                .size10)),
                                                                     textStyle: GoogleFonts.poppins(
-                                                                        fontSize: AddSize.font20,
-                                                                        fontWeight: FontWeight.w600)),
+                                                                        fontSize:
+                                                                            AddSize
+                                                                                .font20,
+                                                                        fontWeight:
+                                                                            FontWeight.w600)),
                                                                 child: Text(
-                                                                  "Edit Shipment".tr,
-                                                                  style: GoogleFonts.poppins(
-                                                                    color: Colors.white,
-                                                                    fontWeight: FontWeight.w600,
-                                                                    fontSize: 16,
+                                                                  "Edit Shipment"
+                                                                      .tr,
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    color: Colors
+                                                                        .white,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    fontSize:
+                                                                        16,
                                                                   ),
                                                                 )),
                                                       ],
                                                     )
                                                   : const SizedBox.shrink(),
-                                              if (createShipmentModel.value.data != null)
+                                              if (createShipmentModel
+                                                      .value.data !=
+                                                  null)
                                                 ElevatedButton(
                                                     onPressed: () async {
-                                                      String? url = createShipmentModel.value.data?.url?.toString();
+                                                      String? url =
+                                                          createShipmentModel
+                                                              .value.data?.url
+                                                              ?.toString();
                                                       log("(sdfgsdgf${url.toString()})");
 
-                                                      if (url == null || url.isEmpty) {
-                                                        showToast("Invalid URL provided".tr);
+                                                      if (url == null ||
+                                                          url.isEmpty) {
+                                                        showToast(
+                                                            "Invalid URL provided"
+                                                                .tr);
                                                       }
-                                                      if (url != null && !url.startsWith('http')) {
-                                                        url = 'https://$url'; // or 'http://', depending on your use case
+                                                      if (url != null &&
+                                                          !url.startsWith(
+                                                              'http')) {
+                                                        url =
+                                                            'https://$url'; // or 'http://', depending on your use case
                                                       }
                                                       // try {
-                                                        OverlayEntry loader = Helpers.overlayLoader(context);
-                                                        Overlay.of(context)!.insert(loader);
+                                                      OverlayEntry loader =
+                                                          Helpers.overlayLoader(
+                                                              context);
+                                                      Overlay.of(context)!
+                                                          .insert(loader);
 
-                                                        // Use http package instead of HttpClient for simplicity
-                                                        var response = await http.get(
-                                                            Uri.parse(createShipmentModel.value.data!.url.toString()));
-                                                        if (response.statusCode == 200) {
-                                                          var bytes = response.bodyBytes;
+                                                      // Use http package instead of HttpClient for simplicity
+                                                      var response = await http
+                                                          .get(Uri.parse(
+                                                              createShipmentModel
+                                                                  .value
+                                                                  .data!
+                                                                  .url
+                                                                  .toString()));
+                                                      if (response.statusCode ==
+                                                          200) {
+                                                        var bytes =
+                                                            response.bodyBytes;
 
-                                                          // Get the application documents directory to save the PDF
-                                                          String dir = (await getApplicationDocumentsDirectory()).path;
-                                                          File file = File('$dir/certificate.pdf');
-                                                          await file.writeAsBytes(bytes);
+                                                        // Get the application documents directory to save the PDF
+                                                        String dir =
+                                                            (await getApplicationDocumentsDirectory())
+                                                                .path;
+                                                        File file = File(
+                                                            '$dir/certificate.pdf');
+                                                        await file.writeAsBytes(
+                                                            bytes);
 
-                                                          Helpers.hideLoader(loader);
+                                                        Helpers.hideLoader(
+                                                            loader);
 
-                                                          // Open the saved PDF file
-                                                          OpenFilex.open(file.path);
-                                                        } else {
-                                                          Helpers.hideLoader(loader);
-                                                          showToast("Failed to download PDF".tr);
-                                                        }
+                                                        // Open the saved PDF file
+                                                        OpenFilex.open(
+                                                            file.path);
+                                                      } else {
+                                                        Helpers.hideLoader(
+                                                            loader);
+                                                        showToast(
+                                                            "Failed to download PDF"
+                                                                .tr);
+                                                      }
                                                       // }
                                                       // catch (e) {
                                                       //   Helpers.hideLoader(loader);
@@ -1151,18 +1353,34 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                       // }
                                                     },
                                                     style: ElevatedButton.styleFrom(
-                                                        minimumSize: const Size(double.maxFinite, 50),
-                                                        backgroundColor: AppTheme.buttonColor,
+                                                        minimumSize: const Size(
+                                                            double.maxFinite,
+                                                            50),
+                                                        backgroundColor:
+                                                            AppTheme
+                                                                .buttonColor,
                                                         elevation: 0,
                                                         shape: RoundedRectangleBorder(
-                                                            borderRadius: BorderRadius.circular(AddSize.size10)),
-                                                        textStyle: GoogleFonts.poppins(
-                                                            fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        AddSize
+                                                                            .size10)),
+                                                        textStyle:
+                                                            GoogleFonts.poppins(
+                                                                fontSize:
+                                                                    AddSize
+                                                                        .font20,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600)),
                                                     child: Text(
                                                       'Download Label'.tr,
-                                                      style: GoogleFonts.poppins(
+                                                      style:
+                                                          GoogleFonts.poppins(
                                                         color: Colors.white,
-                                                        fontWeight: FontWeight.w600,
+                                                        fontWeight:
+                                                            FontWeight.w600,
                                                         fontSize: 16,
                                                       ),
                                                     ))
@@ -1188,14 +1406,16 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         borderRadius: BorderRadius.circular(12),
                                         boxShadow: [
                                           BoxShadow(
-                                            color: const Color(0xFF37C666).withOpacity(0.10),
+                                            color: const Color(0xFF37C666)
+                                                .withOpacity(0.10),
                                             offset: const Offset(.1, .1),
                                             blurRadius: 20.0,
                                             spreadRadius: 1.0,
                                           ),
                                         ],
                                       ),
-                                      child: buildDynamicContainer(containerState),
+                                      child:
+                                          buildDynamicContainer(containerState),
                                     ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
@@ -1204,11 +1424,15 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         onTap: removeContainer,
                                         child: Container(
                                           padding: EdgeInsets.all(9),
-                                          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.red),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.red),
                                           child: Text(
                                             "-",
                                             style: TextStyle(
-                                                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600),
                                           ),
                                         ),
                                       ),
@@ -1219,11 +1443,15 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         onTap: addContainer,
                                         child: Container(
                                           padding: EdgeInsets.all(8),
-                                          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.green),
+                                          decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              color: Colors.green),
                                           child: Text(
                                             "+",
                                             style: TextStyle(
-                                                color: Colors.white, fontSize: 20, fontWeight: FontWeight.w600),
+                                                color: Colors.white,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w600),
                                           ),
                                         ),
                                       ),
@@ -1237,13 +1465,18 @@ class _OrderDetailsState extends State<OrderDetails> {
                                             // containerShow1.value == false;
                                           },
                                           style: ElevatedButton.styleFrom(
-                                              minimumSize: const Size(double.maxFinite, 50),
-                                              backgroundColor: AppTheme.buttonColor,
+                                              minimumSize: const Size(
+                                                  double.maxFinite, 50),
+                                              backgroundColor:
+                                                  AppTheme.buttonColor,
                                               elevation: 0,
                                               shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(AddSize.size10)),
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          AddSize.size10)),
                                               textStyle: GoogleFonts.poppins(
-                                                  fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
+                                                  fontSize: AddSize.font20,
+                                                  fontWeight: FontWeight.w600)),
                                           child: Text(
                                             "Create Shipment".tr,
                                             style: GoogleFonts.poppins(
@@ -1267,8 +1500,12 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 minimumSize: const Size(double.maxFinite, 60),
                                 backgroundColor: AppTheme.buttonColor,
                                 elevation: 0,
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)),
-                                textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(AddSize.size10)),
+                                textStyle: GoogleFonts.poppins(
+                                    fontSize: AddSize.font20,
+                                    fontWeight: FontWeight.w600)),
                             child: Text(
                               "Update Status".tr,
                               style: GoogleFonts.poppins(
@@ -1277,7 +1514,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                 fontSize: 16,
                               ),
                             )),
-                      ].animate(interval: 80.ms, autoPlay: true).fade(duration: 160.ms)),
+                      ]
+                          .animate(interval: 80.ms, autoPlay: true)
+                          .fade(duration: 160.ms)),
                 ))
             : const LoadingAnimation());
   }

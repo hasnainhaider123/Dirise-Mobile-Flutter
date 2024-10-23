@@ -27,10 +27,12 @@ class Locationwherecustomerwilljoin extends StatefulWidget {
   const Locationwherecustomerwilljoin({Key? key});
 
   @override
-  State<Locationwherecustomerwilljoin> createState() => _LocationwherecustomerwilljoinState();
+  State<Locationwherecustomerwilljoin> createState() =>
+      _LocationwherecustomerwilljoinState();
 }
 
-class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwilljoin> {
+class _LocationwherecustomerwilljoinState
+    extends State<Locationwherecustomerwilljoin> {
   String selectedItem = 'Item 1'; // Default selected item
   RxBool isServiceProvide = false.obs;
   String selectedRadio = '';
@@ -59,12 +61,18 @@ class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwil
   final addProductController = Get.put(AddProductController());
   editAddressApi(Map<String, dynamic> addressData) {
     FocusManager.instance.primaryFocus!.unfocus();
-    repositories.postApi(url: ApiUrls.giveawayProductAddress, context: context, mapData: addressData).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(
+            url: ApiUrls.giveawayProductAddress,
+            context: context,
+            mapData: addressData)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       showToast(response.message.toString());
       if (response.status == true) {
         // Get.to(ServiceInternationalShippingService());
-        Get.to(()=> ServiceOptionalScreen());
+        Get.to(() => ServiceOptionalScreen());
       }
     });
   }
@@ -80,18 +88,25 @@ class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwil
       setState(() {});
     });
   }
+
   optionalApi() {
     Map<String, dynamic> map = {};
 
     map['address_id'] = id.toString();
     map['id'] = addProductController.idProduct.value.toString();
     FocusManager.instance.primaryFocus!.unfocus();
-    repositories.postApi(url: ApiUrls.giveawayProductAddress, context: context, mapData: map).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(
+            url: ApiUrls.giveawayProductAddress, context: context, mapData: map)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       print('API Response Status Code: ${response.status}');
       showToast(response.message.toString());
-      if (response.status == true) {
-  }});}
+      if (response.status == true) {}
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -107,25 +122,25 @@ class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwil
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         elevation: 0,
-        leading:GestureDetector(
-          onTap: (){
+        leading: GestureDetector(
+          onTap: () {
             Get.back();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileController.selectedLAnguage.value != 'English' ?
-              Image.asset(
-                'assets/images/forward_icon.png',
-                height: 19,
-                width: 19,
-              ) :
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 19,
-                width: 19,
-              ),
+              profileController.selectedLAnguage.value != 'English'
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 19,
+                      width: 19,
+                    )
+                  : Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 19,
+                      width: 19,
+                    ),
             ],
           ),
         ),
@@ -135,7 +150,10 @@ class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwil
           children: [
             Text(
               'Location where customer will join'.tr,
-              style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+              style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18),
             ),
           ],
         ),
@@ -150,7 +168,10 @@ class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwil
               20.spaceY,
               Text(
                 'Write address or choose*'.tr,
-                style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+                style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18),
               ),
               20.spaceY,
               GestureDetector(
@@ -161,7 +182,8 @@ class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwil
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 12),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 2, horizontal: 12),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
@@ -213,67 +235,82 @@ class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwil
                       itemCount: addressListModel.address!.shipping!.length,
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        var addressList = addressListModel.address!.shipping![index];
-                        city = addressList.city.toString();
-                        id = addressList.id.toString();
-                        state = addressList.state.toString();
-                        zip_code = addressList.zipCode.toString();
-                        country = addressList.country.toString();
-                        street = addressList.address.toString();
-                        town = addressList.town.toString();
+                        var addressList =
+                            addressListModel.address!.shipping![index];
 
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Flexible(
-                              child: Column(
-                                children: [
-                                  Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: const BorderRadius.all(Radius.circular(15)),
-                                        border: Border.all(color: const Color(0xffE4E2E2))),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(15),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Text('${"City".tr} - $city'),
-                                              Text('${"State".tr} - $state'),
-                                              Text('${"Country".tr} - $country'),
-                                              Text('${"Zip code".tr} - $zip_code'),
-                                              Text('${"Street".tr} - $street'),
-                                              Text('${"Town".tr} - $town'),
-                                              const SizedBox(
-                                                height: 8,
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                        // Check if important fields are null or empty
+                        if (addressList.city != null &&
+                            addressList.city!.isNotEmpty &&
+                            addressList.state != null &&
+                            addressList.state!.isNotEmpty &&
+                            addressList.country != null &&
+                            addressList.country!.isNotEmpty) {
+                          city = addressList.city.toString();
+                          id = addressList.id.toString();
+                          state = addressList.state.toString();
+                          zip_code = addressList.zipCode.toString();
+                          country = addressList.country.toString();
+                          street = addressList.address.toString();
+                          town = addressList.town.toString();
+
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Flexible(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(15)),
+                                        border: Border.all(
+                                            color: const Color(0xffE4E2E2)),
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                            padding: const EdgeInsets.all(15),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text('${"City".tr} - $city'),
+                                                Text('${"State".tr} - $state'),
+                                                Text(
+                                                    '${"Country".tr} - $country'),
+                                                Text(
+                                                    '${"Zip code".tr} - $zip_code'),
+                                                Text(
+                                                    '${"Street".tr} - $street'),
+                                                Text('${"Town".tr} - $town'),
+                                                const SizedBox(height: 8),
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(
-                                    height: 15,
-                                  ),
-                                ],
+                                    const SizedBox(height: 15),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Radio<String>(
-                              value: 'address_$index',
-                              groupValue: selectedRadio,
-                              onChanged: (value) {
-                                setState(() {
-
-                                  selectedRadio = value!;
-                                  optionalApi();
-                                });
-                              },
-                            ),
-                          ],
-                        );
+                              Radio<String>(
+                                value: 'address_$index',
+                                groupValue: selectedRadio,
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedRadio = value!;
+                                    optionalApi();
+                                  });
+                                },
+                              ),
+                            ],
+                          );
+                        } else {
+                          return SizedBox();
+                        }
                       },
                     )
                   : const Center(child: SizedBox()),
@@ -285,7 +322,8 @@ class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwil
                   });
                 },
                 child: Container(
-                  padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 12),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 2, horizontal: 12),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(8),
@@ -323,8 +361,9 @@ class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwil
                   if (selectedRadio == 'write') {
                     Get.to(PickUpAddressService());
                   } else if (selectedRadio.startsWith('address_')) {
-                     int index = int.parse(selectedRadio.split('_')[1]);
-                    var selectedAddress = addressListModel.address!.shipping![index];
+                    int index = int.parse(selectedRadio.split('_')[1]);
+                    var selectedAddress =
+                        addressListModel.address!.shipping![index];
                     city = selectedAddress.city.toString();
                     state = selectedAddress.state.toString();
                     zip_code = selectedAddress.zipCode.toString();
@@ -344,7 +383,7 @@ class _LocationwherecustomerwilljoinState extends State<Locationwherecustomerwil
                       addressData['address_id'] = selectedAddress.id!;
                     }
                     editAddressApi(addressData);
-            } else if (selectedRadio == 'online') {
+                  } else if (selectedRadio == 'online') {
                     Get.to(ServiceInternationalShippingService());
                   } else {
                     showToast('Please select Address Type'.tr);
