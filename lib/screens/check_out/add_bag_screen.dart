@@ -47,214 +47,324 @@ class _BagsScreenState extends State<BagsScreen> {
           },
           child: Obx(() {
             if (cartController.refreshInt.value > 0) {}
-            return cartController.cartModel.cart!= null
+            return cartController.cartModel.cart != null
                 ? cartController.cartModel.cart!.carsShowroom!.isNotEmpty
                     ? CustomScrollView(
                         shrinkWrap: true,
-                        slivers: cartController.cartModel.cart!.carsShowroom!.entries.map((e) => SliverList(
-                            delegate: SliverChildBuilderDelegate(
-                              childCount: e.value.products!.length,
-                                  (context, ii) {
-                                    Products product = e.value.products![ii];
-                                return GestureDetector(
-                                  onTap: (){
-                                    bottomSheet(productDetails: ProductElement.fromJson(e.value.products![ii].toJson()), context: context);
-                                  },
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                    //   border: ii != product.length - 1
-                                    //       ? const Border(bottom: BorderSide(color: Color(0xffD9D9D9)))
-                                    //       : null,
-                                    ),
-                                    margin: EdgeInsets.only(top: ii == 0 ? 16 : 0),
-                                    padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        if (ii == 0)
-                                          Padding(
-                                            padding: const EdgeInsets.only(bottom: 16),
-                                            child: Text(
-                                              "${'Sold By'.tr} ${e.key}",
-                                              style: titleStyle,
+                        slivers:
+                            cartController.cartModel.cart!.carsShowroom!.entries
+                                .map((e) => SliverList(
+                                        delegate: SliverChildBuilderDelegate(
+                                      childCount: e.value.products!.length,
+                                      (context, ii) {
+                                        Products product =
+                                            e.value.products![ii];
+                                        return GestureDetector(
+                                          onTap: () {
+                                            bottomSheet(
+                                                productDetails:
+                                                    ProductElement.fromJson(e
+                                                        .value.products![ii]
+                                                        .toJson()),
+                                                context: context);
+                                          },
+                                          child: Container(
+                                            decoration: const BoxDecoration(
+                                              color: Colors.white,
+                                              //   border: ii != product.length - 1
+                                              //       ? const Border(bottom: BorderSide(color: Color(0xffD9D9D9)))
+                                              //       : null,
                                             ),
-                                          ),
-                                        IntrinsicHeight(
-                                          child: Row(
-                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                            children: [
-                                              Container(
-                                                width: 75,
-                                                height: 75,
-                                                decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.circular(12),
-                                                ),
-                                                child: ClipRRect(
-                                                  borderRadius: BorderRadius.circular(12),
-                                                  child: Image.network(
-                                                    product.featuredImage.toString(),
-                                                    fit: BoxFit.contain,
-                                                    errorBuilder: (_, __, ___) =>  Image.asset(
-                                                        'assets/images/new_logo.png'
+                                            margin: EdgeInsets.only(
+                                                top: ii == 0 ? 16 : 0),
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 24, vertical: 16),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                if (ii == 0)
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 16),
+                                                    child: Text(
+                                                      "${'Sold By'.tr} ${e.key}",
+                                                      style: titleStyle,
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 16,
-                                              ),
-                                              Expanded(
-                                                child: Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                  children: [
-                                                    Text(
-                                                      product.pname.toString(),
-                                                      style: titleStyle.copyWith(fontWeight: FontWeight.w400),
-                                                      textAlign: TextAlign.start,
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 6,
-                                                    ),
-                                                     Text(
-                                                     product.productType == 'variants' ? 'KWD ${product.variantPrice}' :  'KWD ${product.discountPrice}',
-                                                      style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w400),
-                                                    ),
-                                                    // Text(
-                                                    //   'KWD ${product.discountPrice}',
-                                                    //   style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w400),
-                                                    // ),
-                                                    const SizedBox(
-                                                      height: 4,
-                                                    ),
-                                                    IntrinsicHeight(
-                                                      child: Row(
-                                                        children: [
-                                                          product.qty.toString() != '1' ? IconButton(
-                                                              onPressed: () {
-                                                                if (product.qty.toString().toNum > 1) {
-                                                                  cartController.updateCartQuantity(
-                                                                      context: context,
-                                                                      productId: product.id.toString(),
-                                                                      quantity: (product.qty.toString().toNum - 1).toString());
-                                                                } else {
-                                                                  cartController.removeItemFromCart(
-                                                                      productId: product.id.toString(), context: context);
-                                                                }
-                                                              },
-                                                              style: IconButton.styleFrom(
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(2)),
-                                                                backgroundColor: AppTheme.buttonColor,
-                                                              ),
-                                                              constraints: const BoxConstraints(minHeight: 0),
-                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                                                              visualDensity: VisualDensity.compact,
-                                                              icon: const Icon(
-                                                                Icons.remove,
-                                                                color: Colors.white,
-                                                                size: 20,
-                                                              )) :
-                                                          IconButton(
-                                                              onPressed: () {},
-                                                              style: IconButton.styleFrom(
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(2)),
-                                                                backgroundColor: AppTheme.primaryColor,
-                                                              ),
-                                                              constraints: const BoxConstraints(minHeight: 0),
-                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                                                              visualDensity: VisualDensity.compact,
-                                                              icon: const Icon(
-                                                                Icons.remove,
-                                                                color: Colors.white,
-                                                                size: 20,
-                                                              )),
-                                                          5.spaceX,
-                                                          Container(
-                                                            decoration: BoxDecoration(
-                                                                borderRadius: BorderRadius.circular(2),
-                                                                // color: Colors.grey,
-                                                                border: Border.all(color: Colors.grey.shade800)),
-                                                            margin: const EdgeInsets.symmetric(vertical: 6),
-                                                            padding: const EdgeInsets.symmetric(horizontal: 15),
-                                                            alignment: Alignment.center,
-                                                            child: Text(
-                                                              product.qty.toString(),
-                                                              style: normalStyle,
-                                                            ),
+                                                IntrinsicHeight(
+                                                  child: Row(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Container(
+                                                        width: 75,
+                                                        height: 75,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                        ),
+                                                        child: ClipRRect(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          child: Image.network(
+                                                            product
+                                                                .featuredImage
+                                                                .toString(),
+                                                            fit: BoxFit.contain,
+                                                            errorBuilder: (_,
+                                                                    __, ___) =>
+                                                                Image.asset(
+                                                                    'assets/images/new_logo.png'),
                                                           ),
-                                                          5.spaceX,
-                                                          IconButton(
-                                                              onPressed: () {
-                                                                if (product.qty.toString().toNum <
-                                                                    product.inStock.toString().toNum) {
-                                                                  cartController.updateCartQuantity(
-                                                                      context: context,
-                                                                      productId: product.id.toString(),
-                                                                      quantity: (product.qty.toString().toNum + 1).toString());
-                                                                }else{
-                                                                  showToastCenter("Out Of Stock".tr);
-                                                                }
-                                                              },
-                                                              style: IconButton.styleFrom(
-                                                                shape: RoundedRectangleBorder(
-                                                                    borderRadius: BorderRadius.circular(2)),
-                                                                backgroundColor: AppTheme.buttonColor,
-                                                              ),
-                                                              constraints: const BoxConstraints(minHeight: 0),
-                                                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                                                              visualDensity: VisualDensity.compact,
-                                                              icon: const Icon(
-                                                                Icons.add,
-                                                                color: Colors.white,
-                                                                size: 20,
-                                                              )),
-                                                        ],
+                                                        ),
                                                       ),
-                                                    )
-                                                  ],
-                                                ),
-                                              ),
-                                              IconButton(
-                                                  onPressed: () {
-                                                    showDialog<String>(
-                                                        context: context,
-                                                        builder: (BuildContext context) => AlertDialog(
-                                                      title:  Text('Remove cart'.tr),
-                                                      content:  Text('Do you want to remove from your cart.'.tr),
-                                                      actions: <Widget>[
-                                                        TextButton(
-                                                          onPressed: () => Get.back(),
-                                                          child:  Text('Cancel'.tr),
+                                                      const SizedBox(
+                                                        width: 16,
+                                                      ),
+                                                      Expanded(
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                          children: [
+                                                            Text(
+                                                              product.pname
+                                                                  .toString(),
+                                                              style: titleStyle.copyWith(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .start,
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 6,
+                                                            ),
+                                                            Text(
+                                                              product.productType ==
+                                                                      'variants'
+                                                                  ? 'KWD ${product.variantPrice}'
+                                                                  : 'KWD ${product.discountPrice}',
+                                                              style: GoogleFonts.poppins(
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w400),
+                                                            ),
+                                                            // Text(
+                                                            //   'KWD ${product.discountPrice}',
+                                                            //   style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w400),
+                                                            // ),
+                                                            const SizedBox(
+                                                              height: 4,
+                                                            ),
+                                                            IntrinsicHeight(
+                                                              child: Row(
+                                                                children: [
+                                                                  product.qty.toString() !=
+                                                                          '1'
+                                                                      ? IconButton(
+                                                                          onPressed:
+                                                                              () {
+                                                                            if (product.qty.toString().toNum >
+                                                                                1) {
+                                                                              cartController.updateCartQuantity(context: context, productId: product.id.toString(), quantity: (product.qty.toString().toNum - 1).toString());
+                                                                            } else {
+                                                                              cartController.removeItemFromCart(productId: product.id.toString(), context: context);
+                                                                            }
+                                                                          },
+                                                                          style: IconButton
+                                                                              .styleFrom(
+                                                                            shape:
+                                                                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                                                            backgroundColor:
+                                                                                AppTheme.buttonColor,
+                                                                          ),
+                                                                          constraints: const BoxConstraints(
+                                                                              minHeight:
+                                                                                  0),
+                                                                          padding: const EdgeInsets
+                                                                              .symmetric(
+                                                                              horizontal:
+                                                                                  8,
+                                                                              vertical:
+                                                                                  12),
+                                                                          visualDensity: VisualDensity
+                                                                              .compact,
+                                                                          icon:
+                                                                              const Icon(
+                                                                            Icons.remove,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            size:
+                                                                                20,
+                                                                          ))
+                                                                      : IconButton(
+                                                                          onPressed:
+                                                                              () {},
+                                                                          style: IconButton
+                                                                              .styleFrom(
+                                                                            shape:
+                                                                                RoundedRectangleBorder(borderRadius: BorderRadius.circular(2)),
+                                                                            backgroundColor:
+                                                                                AppTheme.primaryColor,
+                                                                          ),
+                                                                          constraints: const BoxConstraints(
+                                                                              minHeight:
+                                                                                  0),
+                                                                          padding: const EdgeInsets
+                                                                              .symmetric(
+                                                                              horizontal:
+                                                                                  8,
+                                                                              vertical:
+                                                                                  12),
+                                                                          visualDensity: VisualDensity
+                                                                              .compact,
+                                                                          icon:
+                                                                              const Icon(
+                                                                            Icons.remove,
+                                                                            color:
+                                                                                Colors.white,
+                                                                            size:
+                                                                                20,
+                                                                          )),
+                                                                  5.spaceX,
+                                                                  Container(
+                                                                    decoration: BoxDecoration(
+                                                                        borderRadius: BorderRadius.circular(2),
+                                                                        // color: Colors.grey,
+                                                                        border: Border.all(color: Colors.grey.shade800)),
+                                                                    margin: const EdgeInsets
+                                                                        .symmetric(
+                                                                        vertical:
+                                                                            6),
+                                                                    padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                        horizontal:
+                                                                            15),
+                                                                    alignment:
+                                                                        Alignment
+                                                                            .center,
+                                                                    child: Text(
+                                                                      product
+                                                                          .qty
+                                                                          .toString(),
+                                                                      style:
+                                                                          normalStyle,
+                                                                    ),
+                                                                  ),
+                                                                  5.spaceX,
+                                                                  IconButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        if (product.qty.toString().toNum <
+                                                                            product.inStock.toString().toNum) {
+                                                                          cartController.updateCartQuantity(
+                                                                              context: context,
+                                                                              productId: product.id.toString(),
+                                                                              quantity: (product.qty.toString().toNum + 1).toString());
+                                                                        } else {
+                                                                          showToastCenter(
+                                                                              "Out Of Stock".tr);
+                                                                        }
+                                                                      },
+                                                                      style: IconButton
+                                                                          .styleFrom(
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius:
+                                                                                BorderRadius.circular(2)),
+                                                                        backgroundColor:
+                                                                            AppTheme.buttonColor,
+                                                                      ),
+                                                                      constraints: const BoxConstraints(
+                                                                          minHeight:
+                                                                              0),
+                                                                      padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                          horizontal:
+                                                                              8,
+                                                                          vertical:
+                                                                              12),
+                                                                      visualDensity:
+                                                                          VisualDensity
+                                                                              .compact,
+                                                                      icon:
+                                                                          const Icon(
+                                                                        Icons
+                                                                            .add,
+                                                                        color: Colors
+                                                                            .white,
+                                                                        size:
+                                                                            20,
+                                                                      )),
+                                                                ],
+                                                              ),
+                                                            )
+                                                          ],
                                                         ),
-                                                        TextButton(
-                                                          onPressed: () async {
-                                                            Get.back();
-                                                            cartController.removeItemFromCart(productId: product.id.toString(), context: context);
+                                                      ),
+                                                      IconButton(
+                                                          onPressed: () {
+                                                            showDialog<String>(
+                                                                context:
+                                                                    context,
+                                                                builder: (BuildContext
+                                                                        context) =>
+                                                                    AlertDialog(
+                                                                      title: Text(
+                                                                          'Remove cart'
+                                                                              .tr),
+                                                                      content: Text(
+                                                                          'Do you want to remove from your cart.'
+                                                                              .tr),
+                                                                      actions: <Widget>[
+                                                                        TextButton(
+                                                                          onPressed: () =>
+                                                                              Get.back(),
+                                                                          child:
+                                                                              Text('Cancel'.tr),
+                                                                        ),
+                                                                        TextButton(
+                                                                          onPressed:
+                                                                              () async {
+                                                                            Get.back();
+                                                                            cartController.removeItemFromCart(
+                                                                                productId: product.id.toString(),
+                                                                                context: context);
+                                                                          },
+                                                                          child:
+                                                                              Text('OK'.tr),
+                                                                        ),
+                                                                      ],
+                                                                    ));
                                                           },
-                                                          child:  Text('OK'.tr),
-                                                        ),
-                                                      ],
-                                                    ));
-                                                  },
-                                                  visualDensity: VisualDensity.compact,
-                                                  icon: SvgPicture.asset(
-                                                    "assets/svgs/delete.svg",
-                                                    height: 18,
-                                                    width: 18,
-                                                  ))
-                                            ],
+                                                          visualDensity:
+                                                              VisualDensity
+                                                                  .compact,
+                                                          icon:
+                                                              SvgPicture.asset(
+                                                            "assets/svgs/delete.svg",
+                                                            height: 18,
+                                                            width: 18,
+                                                          ))
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ))).toList()
-
+                                        );
+                                      },
+                                    )))
+                                .toList()
 
                         // slivers: List.generate(cartController.cartModel.cart!.carsShowroom!.length, (i) {
                         //   List<SellersData> items = cartController.cartModel.cart!.getAllProducts[i];
@@ -417,12 +527,16 @@ class _BagsScreenState extends State<BagsScreen> {
                         //     },
                         //   ));
                         // }),
-                      )
+                        )
                     : Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset('assets/images/cart_img.png',width: 173,height: 200,),
+                          Image.asset(
+                            'assets/images/cart_img.png',
+                            width: 173,
+                            height: 200,
+                          ),
                           Center(
                             child: Text(
                               "${'Your cart is currently empty'.tr}\n"
@@ -435,17 +549,17 @@ class _BagsScreenState extends State<BagsScreen> {
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: AppTheme.buttonColor
-                            ),
+                                borderRadius: BorderRadius.circular(100),
+                                color: AppTheme.buttonColor),
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: TextButton(
                                 onPressed: () {
                                   Get.back();
                                 },
-                                child:  Text("Continue shopping".tr,style: const TextStyle(
-                                  color: Colors.white
-                                ),)),
+                                child: Text(
+                                  "Continue shopping".tr,
+                                  style: const TextStyle(color: Colors.white),
+                                )),
                           ),
                         ],
                       )
@@ -454,7 +568,7 @@ class _BagsScreenState extends State<BagsScreen> {
         ),
         bottomNavigationBar: Obx(() {
           if (cartController.refreshInt.value > 0) {}
-          return cartController.cartModel.cart!= null
+          return cartController.cartModel.cart != null
               ? cartController.cartModel.cart!.carsShowroom!.isNotEmpty
                   ? GestureDetector(
                       onTap: () {
@@ -463,7 +577,8 @@ class _BagsScreenState extends State<BagsScreen> {
                       behavior: HitTestBehavior.translucent,
                       child: Container(
                         height: 63,
-                        decoration: const BoxDecoration(color: Color(0xff014E70)),
+                        decoration:
+                            const BoxDecoration(color: Color(0xff014E70)),
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
                           child: Row(
@@ -473,21 +588,31 @@ class _BagsScreenState extends State<BagsScreen> {
                                 child: Row(
                                   children: [
                                     Container(
-                                        decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), color: Colors.white),
-                                        padding: const EdgeInsets.fromLTRB(20, 7, 20, 7),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            color: Colors.white),
+                                        padding: const EdgeInsets.fromLTRB(
+                                            20, 7, 20, 7),
                                         child: Text(
-                                          cartController.cartModel.totalProducts.toString(),
-                                          style: GoogleFonts.poppins(fontWeight: FontWeight.w700, fontSize: 18),
+                                          cartController.cartModel.totalProducts
+                                              .toString(),
+                                          style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18),
                                         )),
                                     const SizedBox(
                                       width: 10,
                                     ),
                                     Expanded(
-                                      child: Text("KWD ${cartController.cartModel.subtotal}",
+                                      child: Text(
+                                          "KWD ${cartController.cartModel.subtotal}",
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           style: GoogleFonts.poppins(
-                                              fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white)),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 18,
+                                              color: Colors.white)),
                                     ),
                                   ],
                                 ),
@@ -496,7 +621,9 @@ class _BagsScreenState extends State<BagsScreen> {
                                 children: [
                                   Text("Checkout".tr,
                                       style: GoogleFonts.poppins(
-                                          fontWeight: FontWeight.w500, fontSize: 18, color: Colors.white)),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                          color: Colors.white)),
                                   const SizedBox(
                                     width: 10,
                                   ),
@@ -524,25 +651,25 @@ class _BagsScreenState extends State<BagsScreen> {
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
       elevation: 0,
-      leading:GestureDetector(
-        onTap: (){
+      leading: GestureDetector(
+        onTap: () {
           Get.back();
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            profileController.selectedLAnguage.value != 'English' ?
-            Image.asset(
-              'assets/images/forward_icon.png',
-              height: 19,
-              width: 19,
-            ) :
-            Image.asset(
-              'assets/images/back_icon_new.png',
-              height: 19,
-              width: 19,
-            ),
+            profileController.selectedLAnguage.value != 'English'
+                ? Image.asset(
+                    'assets/images/forward_icon.png',
+                    height: 19,
+                    width: 19,
+                  )
+                : Image.asset(
+                    'assets/images/back_icon_new.png',
+                    height: 19,
+                    width: 19,
+                  ),
           ],
         ),
       ),
@@ -552,7 +679,8 @@ class _BagsScreenState extends State<BagsScreen> {
         children: [
           Text(
             title.tr,
-            style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 22),
+            style: GoogleFonts.poppins(
+                color: Colors.black, fontWeight: FontWeight.w600, fontSize: 22),
           ),
         ],
       ),

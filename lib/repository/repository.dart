@@ -1,4 +1,4 @@
-   import 'dart:async';
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
@@ -53,65 +53,69 @@ class Repositories {
     }
 
     // try {
-      final Map<String, String> headers = {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        HttpHeaders.acceptHeader: 'application/json',
-        if (model.token != null) HttpHeaders.authorizationHeader: 'Bearer ${model.token}'
-      };
-      mapData ??= {};
+    final Map<String, String> headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      HttpHeaders.acceptHeader: 'application/json',
+      if (model.token != null)
+        HttpHeaders.authorizationHeader: 'Bearer ${model.token}'
+    };
+    mapData ??= {};
 
-      if (kDebugMode) {
-        log("API Url.....  $url");
-        log("API mapData.....  $mapData}");
-        if (true) {
-          log("API mapData.....  $headers");
-        }
-      }
-
-      http.Response response = await http.post(Uri.parse(url), body: jsonEncode(mapData), headers: headers);
-
-      if (kDebugMode) {
-        if (showResponse == true) {
-          log("API Response Url........  $url");
-          log("API Response........  ${response.body}");
-          log("API Response Status Code........  ${response.statusCode}");
-          log("API Response Reason Phrase........  ${response.reasonPhrase}");
-        }
-      }
-
-      /// Today's tasks:
-      /// Dirise App:
-      /// 1. Dashboard Screen Done.
-      /// 2. Checkout bugs done.
-      /// 3. Dashboard UI done.
-
-      Helpers.hideLoader(loader);
-
-      if (response.statusCode == 200 || response.statusCode == 404 || response.statusCode == 400) {
-        if (withStatus != null) {
-          withStatus(response.statusCode, response.body);
-        }
-        return response.body;
-      } else if (response.statusCode == 401) {
-        logOutUser();
-        throw Exception(response.body);
-      } else {
-        // showToast(response.body);
-        throw Exception(response.body);
+    if (kDebugMode) {
+      log("API Url.....  $url");
+      log("API mapData.....  $mapData}");
+      if (true) {
+        log("API mapDataHeaders.....  $headers");
       }
     }
-    // on SocketException catch (e) {
-    //   Helpers.hideLoader(loader);
-    //   showToast("No Internet Access");
-    //   throw Exception(e);
-    // }
-    // catch (e) {
-    //   log('error isssss${e.toString()}');
-    //   log("API Response Url222........  $url");
-    //   log("API Response Url222........  $url");
-    //   Helpers.hideLoader(loader);
-    //   // throw Exception(e);
-    // }
+
+    http.Response response = await http.post(Uri.parse(url),
+        body: jsonEncode(mapData), headers: headers);
+
+    if (kDebugMode) {
+      if (showResponse == true) {
+        log("API Response Url........  $url");
+        log("API Response........  ${response.body}");
+        log("API Response Status Code........  ${response.statusCode}");
+        log("API Response Reason Phrase........  ${response.reasonPhrase}");
+      }
+    }
+
+    /// Today's tasks:
+    /// Dirise App:
+    /// 1. Dashboard Screen Done.
+    /// 2. Checkout bugs done.
+    /// 3. Dashboard UI done.
+
+    Helpers.hideLoader(loader);
+
+    if (response.statusCode == 200 ||
+        response.statusCode == 404 ||
+        response.statusCode == 400) {
+      if (withStatus != null) {
+        withStatus(response.statusCode, response.body);
+      }
+      return response.body;
+    } else if (response.statusCode == 401) {
+      logOutUser();
+      throw Exception(response.body);
+    } else {
+      // showToast(response.body);
+      throw Exception(response.body);
+    }
+  }
+  // on SocketException catch (e) {
+  //   Helpers.hideLoader(loader);
+  //   showToast("No Internet Access");
+  //   throw Exception(e);
+  // }
+  // catch (e) {
+  //   log('error isssss${e.toString()}');
+  //   log("API Response Url222........  $url");
+  //   log("API Response Url222........  $url");
+  //   Helpers.hideLoader(loader);
+  //   // throw Exception(e);
+  // }
   // }
 
   saveLoginDetails(String loginResponse) async {
@@ -141,7 +145,8 @@ class Repositories {
       final Map<String, String> headers = {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.acceptHeader: 'application/json',
-        if (model.token != null) HttpHeaders.authorizationHeader: 'Bearer ${model.token}'
+        if (model.token != null)
+          HttpHeaders.authorizationHeader: 'Bearer ${model.token}'
       };
 
       if (kDebugMode) {
@@ -206,7 +211,8 @@ class Repositories {
       final Map<String, String> headers = {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.acceptHeader: 'application/json',
-        if (model.token != null) HttpHeaders.authorizationHeader: 'Bearer ${model.token}'
+        if (model.token != null)
+          HttpHeaders.authorizationHeader: 'Bearer ${model.token}'
       };
 
       if (kDebugMode) {
@@ -214,7 +220,8 @@ class Repositories {
         log("API mapData.....  $headers");
       }
 
-      http.Response response = await http.delete(Uri.parse(url), headers: headers);
+      http.Response response =
+          await http.delete(Uri.parse(url), headers: headers);
 
       if (kDebugMode) {
         if (showResponse == true) {
@@ -271,11 +278,13 @@ class Repositories {
       final Map<String, String> headers = {
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.acceptHeader: 'application/json',
-        if (model.token != null) HttpHeaders.authorizationHeader: 'Bearer ${model.token}'
+        if (model.token != null)
+          HttpHeaders.authorizationHeader: 'Bearer ${model.token}'
       };
       images.removeWhere((key, value) => value.path.checkHTTP.isNotEmpty);
-      var request = CloseableMultipartRequest('POST', Uri.parse(url), onProgress: (int bytes, int totalBytes) {
-        if(images.isNotEmpty) {
+      var request = CloseableMultipartRequest('POST', Uri.parse(url),
+          onProgress: (int bytes, int totalBytes) {
+        if (images.isNotEmpty) {
           onProgress(bytes, totalBytes);
         }
       });
@@ -285,7 +294,8 @@ class Repositories {
       request.fields.addAll(mapData);
       for (var item in images.entries) {
         if (item.value.path != "") {
-          request.files.add(await _multipartFile(item.key.toString(), item.value));
+          request.files
+              .add(await _multipartFile(item.key.toString(), item.value));
         }
       }
       if (kDebugMode) {
@@ -303,29 +313,27 @@ class Repositories {
       Helpers.hideLoader(loader);
       if (response.statusCode == 200) {
         return value;
-      }
-      else if (response.statusCode == 401) {
+      } else if (response.statusCode == 401) {
         logOutUser();
         throw Exception(value);
-      }
-      else {
+      } else {
         Helpers.hideLoader(loader);
         throw Exception(value);
       }
-    } on
-    SocketException catch (e) {
+    } on SocketException catch (e) {
       Helpers.hideLoader(loader);
       showToast("No Internet Access");
       throw Exception(e);
-    }
-    catch (e) {
+    } catch (e) {
       Helpers.hideLoader(loader);
-      showToast("Something went wrong.....${e.toString().substring(0, math.min(e.toString().length, 50))}");
+      showToast(
+          "Something went wrong.....${e.toString().substring(0, math.min(e.toString().length, 50))}");
       throw Exception(e);
     }
   }
 
-  Future<http.MultipartFile> _multipartFile(String? fieldName, File file1) async {
+  Future<http.MultipartFile> _multipartFile(
+      String? fieldName, File file1) async {
     return http.MultipartFile(
       fieldName ?? 'file',
       http.ByteStream(Stream.castFrom(file1.openRead())),
