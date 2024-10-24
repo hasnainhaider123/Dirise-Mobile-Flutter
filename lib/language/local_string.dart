@@ -2646,9 +2646,9 @@ class LocaleString extends Translations {
        'Enter normal price first':'أدخل السعر الاساسي أولا',
        'After sell price cannot be higher than normal price':'لا يمكن أن يكون سعر البيع أعلى من السعر الاساسي',
        'Stock alert cannot be higher than Stock quantity':'لا يمكن أن يكون تحذير كمية المخزون أعلى من كمية المخزون',
-       'Customer accounts are limited to jobs and Giveaways. Click here to Register as a vendor in few steps'
-           :'تقتصر حسابات العملاء على الوظائف والمنتجات المجانية. انقر هنا للتسجيل كبائع في خطوات قليلة',
-       'Click here':'انقر هنا',
+       'Register as a vendor to start "selling “'
+           :'سجل كحساب بائع للمتابعه من "هنا"',
+            'Click here':'انقر هنا',
        'Nothing more to add Publish it, I might edit later :)':'لا يوجد المزيد لإضافته، انشره، ربما أقوم بالتعديل لاحقًا :)',
        'I’am Done':'لقد انتهيت',
        'My item have variable shape, size, color, price, material...etc':'السلعة الخاصة متنوعة في الشكل والحجم واللون والسعر والمواد...إلخ',
