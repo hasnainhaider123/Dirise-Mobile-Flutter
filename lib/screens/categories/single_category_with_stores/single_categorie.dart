@@ -3,7 +3,9 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dirise/controller/single_product_controller.dart';
 import 'package:dirise/language/app_strings.dart';
+import 'package:dirise/model/filter_by_price_model.dart';
 import 'package:dirise/repository/repository.dart';
 import 'package:dirise/utils/helper.dart';
 import 'package:dirise/widgets/loading_animation.dart';
@@ -53,11 +55,15 @@ class _SingleCategoriesState extends State<SingleCategories> {
   int paginationPage = 1;
 
   VendorCategoriesData get mainCategory => widget.vendorCategories;
+  final controller = Get.put(SingleCategoryController());
 
   String get categoryID => widget.vendorCategories.id.toString();
   List<ModelCategoryStores>? modelCategoryStores;
   bool allLoaded = false;
   bool paginationLoading = false;
+  Rx<ModelFilterByPrice> filterModel = ModelFilterByPrice().obs;
+  VendorStoreData gg = VendorStoreData();
+  VendorStoreData get storeInfo => gg;
 
   @override
   void initState() {
@@ -70,6 +76,25 @@ class _SingleCategoriesState extends State<SingleCategories> {
       _scrollController.addListener(() {
         paginateApi();
       });
+    });
+  }
+
+  filterProduct({productId}) {
+    repositories.postApi(
+      url: ApiUrls.filterByPriceUrl,
+      context: context,
+      mapData: {
+        "min_price": controller.currentRangeValues.start.toInt(),
+        "max_price": controller.currentRangeValues.end.toInt(),
+        "vendor_id": productId,
+      },
+    ).then((value) {
+      print('object${value.toString()}');
+      filterModel.value = ModelFilterByPrice.fromJson(jsonDecode(value));
+      if (filterModel.value.status == true) {
+        showToast(filterModel.value.message);
+        print(filterModel.value.product.toString());
+      }
     });
   }
 
@@ -550,7 +575,7 @@ class _SingleCategoriesState extends State<SingleCategories> {
                                         Flexible(
                                           child: Padding(
                                             padding: const EdgeInsets.only(
-                                                left: 8, right: 10),
+                                                left: 8, right: 8),
                                             child: Text(
                                               modelCategoryList!
                                                           .selectedVendorSubCategory !=
@@ -603,11 +628,11 @@ class _SingleCategoriesState extends State<SingleCategories> {
                                           child: Container(
                                             height: 36,
                                             constraints: BoxConstraints(
-                                                maxWidth:
-                                                    context.getSize.width *
-                                                        .75),
+                                              maxWidth:
+                                                  context.getSize.width * .75,
+                                            ),
                                             padding: const EdgeInsets.fromLTRB(
-                                                10, 0, 10, 0),
+                                                5, 0, 5, 0),
                                             decoration: BoxDecoration(
                                                 border: Border.all(
                                                     color: const Color(
@@ -623,7 +648,7 @@ class _SingleCategoriesState extends State<SingleCategories> {
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            left: 8, right: 10),
+                                                            left: 8, right: 8),
                                                     child: Text(
                                                       e.selectedCategory != null
                                                           ? e.selectedCategory!
@@ -977,10 +1002,119 @@ class _SingleCategoriesState extends State<SingleCategories> {
               ),
             ),
             const SliverToBoxAdapter(
-                // child: SizedBox(
-                //   height: 20,
-                // ),
-                ),
+              child: SizedBox(height: 10),
+            ),
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Text(
+                      'FILTER BY PRICE'.tr,
+                      style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600, fontSize: 17),
+                    ),
+                  ),
+                  RangeSlider(
+                    values: controller.currentRangeValues,
+                    max: 20000,
+                    divisions: 19999,
+                    labels: RangeLabels(
+                      controller.currentRangeValues.start.round().toString(),
+                      controller.currentRangeValues.end.round().toString(),
+                    ),
+                    onChanged: (RangeValues values) {
+                      setState(() {
+                        controller.currentRangeValues = values;
+                      });
+                    },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Price : '.tr),
+                        Text(
+                          'KWD :'.tr,
+                          style: GoogleFonts.poppins(
+                              fontSize: 15, fontWeight: FontWeight.w500),
+                          textAlign: TextAlign.center,
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Text(
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            ' ${controller.currentRangeValues.start.toInt()} - ${controller.currentRangeValues.end.toInt()}',
+                            style: GoogleFonts.poppins(
+                                fontSize: 15, fontWeight: FontWeight.w500),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        15.spaceX,
+                        Expanded(
+                          flex: 2,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              filterProduct(productId: storeInfo.id.toString());
+                              controller.isFilter.value = true;
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppTheme.buttonColor,
+                              surfaceTintColor: AppTheme.buttonColor,
+                            ),
+                            child: FittedBox(
+                              child: Text(
+                                "Filter".tr,
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                        10.spaceX,
+                        Expanded(
+                          flex: 2,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                controller.isFilter.value = false;
+                                controller.currentRangeValues =
+                                    const RangeValues(0, 0);
+                                print('valee${controller.isFilter.value}');
+                              });
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppTheme.buttonColor,
+                              surfaceTintColor: AppTheme.buttonColor,
+                            ),
+                            child: FittedBox(
+                              child: Text(
+                                "Clear".tr,
+                                style: GoogleFonts.poppins(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SliverToBoxAdapter(
+              child: SizedBox(
+                height: 20,
+              ),
+            ),
             if (modelCategoryStores != null)
               for (var i = 0; i < modelCategoryStores!.length; i++) ...list(i)
             else
@@ -1225,7 +1359,7 @@ class _SingleCategoriesState extends State<SingleCategories> {
           modelCategoryStores![i].promotionData!.isNotEmpty)
         SliverToBoxAdapter(
           child: Padding(
-            padding: const EdgeInsets.all(16).copyWith(top: 10),
+            padding: const EdgeInsets.all(16).copyWith(top: 5),
             child: GestureDetector(
               onTap: () {
                 final kk = modelCategoryStores![i].promotionData![min(
@@ -1247,10 +1381,10 @@ class _SingleCategoriesState extends State<SingleCategories> {
                 }
               },
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
+                  borderRadius: BorderRadius.circular(20),
                   child: SizedBox(
                       key: ValueKey(i * DateTime.now().millisecond),
-                      height: context.getSize.height * .3,
+                      height: context.getSize.height * .25,
                       width: double.maxFinite,
                       child: CachedNetworkImage(
                         imageUrl: modelCategoryStores![i]
@@ -1270,11 +1404,11 @@ class _SingleCategoriesState extends State<SingleCategories> {
             ),
           ),
         ),
-      const SliverToBoxAdapter(
-        child: SizedBox(
-          height: 20,
-        ),
-      ),
+      // const SliverToBoxAdapter(
+      //   child: SizedBox(
+      //     height: 20,
+      //   ),
+      // ),
     ];
   }
 }
