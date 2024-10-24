@@ -64,7 +64,7 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
       } else {
         final snackBar = SnackBar(
           content:  Text(
-              'Customer accounts are limited to jobs and Giveaways. Click here to Register as a vendor in few steps'.tr),
+           'Register as a vendor to start "selling “'.tr),
           action: SnackBarAction(
             label: 'Click here'.tr,
             onPressed: () {

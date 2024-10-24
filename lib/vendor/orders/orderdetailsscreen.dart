@@ -144,11 +144,14 @@ class _OrderDetailsState extends State<OrderDetails> {
           CreateShipmentModel.fromJson(jsonDecode(value));
       if (createShipmentModel.value.status == true) {
         showToastCenter(createShipmentModel.value.message.toString());
+        
       } else {
         // createShipmentModelError.value = CreateShipmentModelError.fromJson(jsonDecode(value));
         createShipmentModel.value =
             CreateShipmentModel.fromJson(jsonDecode(value));
         showToastCenter(createShipmentModel.value.message.toString());
+      
+      
       }
     });
   }
