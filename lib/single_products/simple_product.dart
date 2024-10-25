@@ -243,10 +243,10 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
   }
 
   //
-  addToCartProduct({int? counter,String? sid}) {
+  addToCartProduct({int? counter, String? sid}) {
     // if (!validateSlots()) return;
     Map<String, dynamic> map = {};
-    map["product_id"] = sid??id.toString();
+    map["product_id"] = sid ?? id.toString();
     map["quantity"] =
         map["quantity"] = counter ?? int.tryParse(_counter.toString());
     map["key"] = 'fedexRate';
@@ -329,9 +329,9 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
     // if (isVariantType) {
     //   cartController.selectedVariant = selectedVariant!.id.toString();
     // }
-     log('id is id $id and sid$sid');
-    map["product_id"] = sid?? id.toString();
-   
+    log('id is id $id and sid$sid');
+    map["product_id"] = sid ?? id.toString();
+
     map["quantity"] =
         map["quantity"] = counter ?? int.tryParse(_counter.toString());
     map["key"] = 'fedexRate';
@@ -2798,8 +2798,8 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                                                       counter:
                                                                           similarcounter,
                                                                       sid: item
-                                                                          .id.toString());
-                                                        
+                                                                          .id
+                                                                          .toString());
                                                                 },
                                                                 style: ElevatedButton
                                                                     .styleFrom(
@@ -2850,7 +2850,8 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                                                         counter:
                                                                             similarcounter,
                                                                         sid: item
-                                                                            .id.toString());
+                                                                            .id
+                                                                            .toString());
                                                                   },
                                                                   style: ElevatedButton
                                                                       .styleFrom(
@@ -2887,7 +2888,8 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                                             addToCartProduct(
                                                               counter:
                                                                   similarcounter,
-                                                                  sid: item.id.toString(),
+                                                              sid: item.id
+                                                                  .toString(),
                                                             );
                                                           },
                                                           style: ElevatedButton
