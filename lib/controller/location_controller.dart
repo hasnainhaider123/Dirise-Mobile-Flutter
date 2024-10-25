@@ -28,7 +28,8 @@ class LocationController extends GetxController {
   final TextEditingController countryController = TextEditingController();
   final TextEditingController zipcodeController = TextEditingController();
   final TextEditingController townController = TextEditingController();
-  Position? _currentPosition;  late Position position;
+  Position? _currentPosition;
+  late Position position;
   RxString long = "".obs, lat = "".obs;
   var locality = 'No location set'.obs;
   var country = 'Getting Country..'.obs;
@@ -50,9 +51,11 @@ class LocationController extends GetxController {
 
   getAddress() {
     repositories.getApi(url: ApiUrls.defaultAddressUrl).then((value) {
-      addressListModel.value = MyDefaultAddressModel.fromJson(jsonDecode(value));
+      addressListModel.value =
+          MyDefaultAddressModel.fromJson(jsonDecode(value));
     });
   }
+
   checkGps(context) async {
     log('firstttttt callllllll.....');
     servicestatus.value = await Geolocator.isLocationServiceEnabled();
@@ -75,44 +78,44 @@ class LocationController extends GetxController {
       showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text(
-              "Location",
-            ),
-            content: const Text(
-              "Please turn on GPS location service to narrow down the nearest Cooks.",
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: const Text('Approve'),
-                onPressed: () async {
-                  Navigator.of(context).pop();
-                  await Geolocator.openLocationSettings();
-                  servicestatus.value =
-                  await Geolocator.isLocationServiceEnabled();
-                  if (servicestatus.value) {
-                    permission = await Geolocator.checkPermission();
+                title: const Text(
+                  "Location",
+                ),
+                content: const Text(
+                  "Please turn on GPS location service to narrow down the nearest Cooks.",
+                ),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('Approve'),
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                      await Geolocator.openLocationSettings();
+                      servicestatus.value =
+                          await Geolocator.isLocationServiceEnabled();
+                      if (servicestatus.value) {
+                        permission = await Geolocator.checkPermission();
 
-                    if (permission == LocationPermission.denied) {
-                      permission = await Geolocator.requestPermission();
-                      if (permission == LocationPermission.denied) {
-                      } else if (permission ==
-                          LocationPermission.deniedForever) {
-                      } else {
-                        haspermission.value = true;
+                        if (permission == LocationPermission.denied) {
+                          permission = await Geolocator.requestPermission();
+                          if (permission == LocationPermission.denied) {
+                          } else if (permission ==
+                              LocationPermission.deniedForever) {
+                          } else {
+                            haspermission.value = true;
+                          }
+                        } else {
+                          haspermission.value = true;
+                        }
+
+                        if (haspermission.value) {
+                          getLocation();
+                          // editAddressApi();
+                        }
                       }
-                    } else {
-                      haspermission.value = true;
-                    }
-
-                    if (haspermission.value) {
-                      getLocation();
-                      // editAddressApi();
-                    }
-                  }
-                },
-              ),
-            ],
-          ));
+                    },
+                  ),
+                ],
+              ));
     }
   }
 
@@ -122,59 +125,121 @@ class LocationController extends GetxController {
   Rx<AddCurrentAddressModel> addCurrentAddress = AddCurrentAddressModel().obs;
   editAddressApi(context) {
     Map<String, dynamic> map = {};
-      map['zip_code'] =  zipcodeController.text;
+    map['zip_code'] = zipcodeController.text;
     print(map.toString());
-    repositories.postApi(url: ApiUrls.addCurrentAddress, mapData: map,context: context).then((value) {
-      addCurrentAddress.value = AddCurrentAddressModel.fromJson(jsonDecode(value));
-      profileController.selectedLAnguage.value == "English"
-      ?showToast(addCurrentAddress.value.message.toString())
-      :showToast("الموقع الحالي");
-      print("Toast----: ${addCurrentAddress.value.message.toString()}");
-      city.value = addCurrentAddress.value.data!.city;
-      zipcode.value = addCurrentAddress.value.data!.state;
-      cartController.countryId =  addCurrentAddress.value.data!.countryId.toString();
-      print(   "id::::::::::::::::::::::::::::::"+cartController.countryId);
-      cartController.getCart();
+    repositories
+        .postApi(url: ApiUrls.addCurrentAddress, mapData: map, context: context)
+        .then((value) {
+      print("API response: $value");
+      try {
+        var responseJson = jsonDecode(value);
+
+        // Check if the response status is false and handle the error message
+        if (responseJson['status'] == false) {
+          String errorMessage =
+              responseJson['message'] == "Something went wrong"
+                  ? "Enter Correct Zip Code"
+                  : responseJson['message'] ?? "Unknown error occurred";
+          showToast(errorMessage);
+          return;
+        }
+
+        // Parse the response only if status is true
+        addCurrentAddress.value = AddCurrentAddressModel.fromJson(responseJson);
+        String message = profileController.selectedLAnguage.value == "English"
+            ? addCurrentAddress.value.message.toString()
+            : "الموقع الحالي";
+        showToast(message);
+        print("Toast----: $message");
+
+        // Update only if data is not null
+        if (addCurrentAddress.value.data != null) {
+          city.value = addCurrentAddress.value.data!.city ?? "";
+          zipcode.value = addCurrentAddress.value.data!.state ?? "";
+          cartController.countryId =
+              addCurrentAddress.value.data!.countryId?.toString() ?? "";
+          print("id::::::::::::::::::::::::::::::" + cartController.countryId);
+          cartController.getCart();
+        } else {
+          showToast("Address data is missing.");
+        }
+      } catch (error) {
+        showToast("Failed to parse response");
+        print("Error parsing API response: $error");
+      }
       zipcodeController.clear();
       Get.back();
+    }).catchError((error) {
+      String errorMessage = error.toString().contains("Something went wrong")
+          ? "Enter Correct Zip Code"
+          : "An unexpected error occurred";
+      showToast(errorMessage);
+      print("API error: $error");
     });
+
+    // repositories
+    //     .postApi(url: ApiUrls.addCurrentAddress, mapData: map, context: context)
+    //     .then((value) {
+    //   print("API response: $value");
+    //   addCurrentAddress.value =
+    //       AddCurrentAddressModel.fromJson(jsonDecode(value));
+    //   profileController.selectedLAnguage.value == "English"
+    //       ? showToast(addCurrentAddress.value.message.toString())
+    //       : showToast("الموقع الحالي");
+    //   print("Toast----: ${addCurrentAddress.value.message.toString()}");
+    //   city.value = addCurrentAddress.value.data!.city;
+    //   zipcode.value = addCurrentAddress.value.data!.state;
+    //   cartController.countryId =
+    //       addCurrentAddress.value.data!.countryId.toString();
+    //   print("id::::::::::::::::::::::::::::::" + cartController.countryId);
+    //   cartController.getCart();
+    //   zipcodeController.clear();
+    //   Get.back();
+    // });
   }
+
   Future<bool> _handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-     showToast('Location services are disabled. Please enable the services');
+      showToast('Location services are disabled. Please enable the services');
       return false;
     }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-       showToast('Location permissions are denied');
+        showToast('Location permissions are denied');
         return false;
       }
     }
     if (permission == LocationPermission.deniedForever) {
-     showToast('Location permissions are permanently denied, we cannot request permissions.');
+      showToast(
+          'Location permissions are permanently denied, we cannot request permissions.');
       return false;
     }
     return true;
   }
+
   final Completer<GoogleMapController> googleMapController = Completer();
   GoogleMapController? mapController;
   Future<void> getCurrentPosition() async {
     final hasPermission = await _handleLocationPermission();
 
     if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
       // setState(() =>
       _currentPosition = position;
       // );
       _getAddressFromLatLng(_currentPosition!);
       mapController!.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude), zoom: 15)));
+          CameraPosition(
+              target: LatLng(
+                  _currentPosition!.latitude, _currentPosition!.longitude),
+              zoom: 15)));
       // _onAddMarkerButtonPressed(LatLng(_currentPosition!.latitude, _currentPosition!.longitude), "current location");
       // setState(() {});
       // location = _currentAddress!;
@@ -182,34 +247,39 @@ class LocationController extends GetxController {
       debugPrint(e);
     });
   }
+
   Future<void> _getAddressFromLatLng(Position position) async {
-    List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(position.latitude, position.longitude);
 
     if (placemarks != null && placemarks.isNotEmpty) {
       Placemark placemark = placemarks[0];
 
       // setState(() {
-        street = placemark.street ?? '';
-        city.value = placemark.locality ?? '';
-        state = placemark.administrativeArea ?? '';
-        countryName = placemark.country ?? '';
-        zipcode.value = placemark.postalCode ?? '';
-cartController.zipCode1 = placemark.postalCode ?? '';
-        town = placemark.subAdministrativeArea ?? '';
-    print('object ${street.toString()}');
-    print('object ${cartController.zipCode1}');
+      street = placemark.street ?? '';
+      city.value = placemark.locality ?? '';
+      state = placemark.administrativeArea ?? '';
+      countryName = placemark.country ?? '';
+      zipcode.value = placemark.postalCode ?? '';
+      cartController.zipCode1 = placemark.postalCode ?? '';
+      town = placemark.subAdministrativeArea ?? '';
+      print('object ${street.toString()}');
+      print('object ${cartController.zipCode1}');
       // });
     }
-    await placemarkFromCoordinates(_currentPosition!.latitude, _currentPosition!.longitude)
+    await placemarkFromCoordinates(
+            _currentPosition!.latitude, _currentPosition!.longitude)
         .then((List<Placemark> placemarks) {
       Placemark place = placemarks[0];
       // setState(() {
-        _address = '${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+      _address =
+          '${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
       // });
     }).catchError((e) {
       debugPrint(e.toString());
     });
   }
+
   Future getLocation() async {
     log("Getting user location.........");
     position = await Geolocator.getCurrentPosition(
@@ -217,7 +287,7 @@ cartController.zipCode1 = placemark.postalCode ?? '';
     long.value = position.longitude.toString();
     lat.value = position.latitude.toString();
     await placemarkFromCoordinates(
-        double.parse(lat.value), double.parse(long.value))
+            double.parse(lat.value), double.parse(long.value))
         .then((value) async {
       locality.value = value.last.locality!;
       country.value = 'Country : ${value.last.country}';
@@ -243,8 +313,8 @@ cartController.zipCode1 = placemark.postalCode ?? '';
   getApiLocation() async {
     log("Getting user location.........");
     await placemarkFromCoordinates(
-        double.parse(lat.value == '' ? "0" : lat.value),
-        double.parse(long.value == '' ? "0" : long.value))
+            double.parse(lat.value == '' ? "0" : lat.value),
+            double.parse(long.value == '' ? "0" : long.value))
         .then((value) {
       locality.value = 'Locality: ${value.first.locality}';
       country.value = 'Country : ${value.last.country}';
@@ -253,8 +323,6 @@ cartController.zipCode1 = placemark.postalCode ?? '';
       log(country.value);
     });
   }
-
-
 
   @override
   void onInit() {

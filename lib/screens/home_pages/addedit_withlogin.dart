@@ -19,19 +19,17 @@ import '../../widgets/common_textfield.dart';
 import '../check_out/address/edit_address.dart';
 import 'find_my_location.dart';
 
-
 class HomeAddEditAddressLogin extends StatefulWidget {
-
-
   const HomeAddEditAddressLogin({Key? key}) : super(key: key);
 
   @override
-  State<HomeAddEditAddressLogin> createState() => _HomeAddEditAddressLoginState();
+  State<HomeAddEditAddressLogin> createState() =>
+      _HomeAddEditAddressLoginState();
 }
 
 class _HomeAddEditAddressLoginState extends State<HomeAddEditAddressLogin> {
-
-  final TextEditingController specialInstructionController = TextEditingController();
+  final TextEditingController specialInstructionController =
+      TextEditingController();
   RxBool hide = true.obs;
   RxBool hide1 = true.obs;
   final TextEditingController zipcodeController = TextEditingController();
@@ -41,14 +39,15 @@ class _HomeAddEditAddressLoginState extends State<HomeAddEditAddressLogin> {
   String code = "+91";
   RxBool isSelect = false.obs;
 
-
   Rx<MyDefaultAddressModel> addressListModel1 = MyDefaultAddressModel().obs;
 
   getAddress1() {
     repositories.getApi(url: ApiUrls.defaultAddressUrl).then((value) {
-      addressListModel1.value = MyDefaultAddressModel.fromJson(jsonDecode(value));
+      addressListModel1.value =
+          MyDefaultAddressModel.fromJson(jsonDecode(value));
     });
   }
+
   final locationController = Get.put(LocationController());
 
   @override
@@ -56,7 +55,6 @@ class _HomeAddEditAddressLoginState extends State<HomeAddEditAddressLogin> {
     // TODO: implement initState
     super.initState();
     getAddress();
-
   }
 
   Rx<ModelUserAddressList> addressListModel = ModelUserAddressList().obs;
@@ -71,64 +69,77 @@ class _HomeAddEditAddressLoginState extends State<HomeAddEditAddressLogin> {
   defaultAddressApi() async {
     Map<String, dynamic> map = {};
     map['address_id'] = cartController.selectedAddress.id.toString();
-    repositories.postApi(url: ApiUrls.defaultAddressStatus, context: context, mapData: map).then((value) async {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(
+            url: ApiUrls.defaultAddressStatus, context: context, mapData: map)
+        .then((value) async {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       if (response.status == true) {
         profileController.selectedLAnguage.value == "English"
-            ?showToast(response.message)
-            :showToast("تم تسجيل الدخول إلى حسابك بنجاح");
+            ? showToast(response.message)
+            : showToast("تم تسجيل الدخول إلى حسابك بنجاح");
         print("Toast---: ${response.message}");
         locationController.getAddress();
         locationController.onTapLocation.value = false;
         Future.delayed(const Duration(seconds: 1), () {
-          homeController.defaultAddressId = locationController.addressListModel.value.defaultAddress!.id.toString();
-          cartController.countryId = locationController.addressListModel.value.defaultAddress!.countryId.toString();
-          locationController.zipcode.value = locationController.addressListModel.value.defaultAddress!.zipCode.toString();
-          locationController.state = locationController.addressListModel.value.defaultAddress!.state.toString();
-          locationController.city.value = locationController.addressListModel.value.defaultAddress!.city.toString();
+          homeController.defaultAddressId = locationController
+              .addressListModel.value.defaultAddress!.id
+              .toString();
+          cartController.countryId = locationController
+              .addressListModel.value.defaultAddress!.countryId
+              .toString();
+          locationController.zipcode.value = locationController
+              .addressListModel.value.defaultAddress!.zipCode
+              .toString();
+          locationController.state = locationController
+              .addressListModel.value.defaultAddress!.state
+              .toString();
+          locationController.city.value = locationController
+              .addressListModel.value.defaultAddress!.city
+              .toString();
           homeController.trendingData();
           homeController.popularProductsData();
           Get.back();
         });
-      }else{
+      } else {
         profileController.selectedLAnguage.value == "English"
-            ?showToast(response.message)
-            :showToast("تم حفظ العنوان الافتراضي بنجاح");
+            ? showToast(response.message)
+            : showToast("تم حفظ العنوان الافتراضي بنجاح");
         print("Toast---: ${response.message}");
       }
     });
   }
+
   final cartController = Get.put(CartController());
   final profileController = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         surfaceTintColor: Colors.white,
         elevation: 0,
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.back();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileController.selectedLAnguage.value != 'English' ?
-              Image.asset(
-                'assets/images/forward_icon.png',
-                height: 19,
-                width: 19,
-              ) :
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 19,
-                width: 19,
-              ),
+              profileController.selectedLAnguage.value != 'English'
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 19,
+                      width: 19,
+                    )
+                  : Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 19,
+                      width: 19,
+                    ),
             ],
           ),
         ),
@@ -138,328 +149,431 @@ class _HomeAddEditAddressLoginState extends State<HomeAddEditAddressLogin> {
           children: [
             Text(
               'Address'.tr,
-              style: GoogleFonts.poppins(color: const Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 20),
+              style: GoogleFonts.poppins(
+                  color: const Color(0xff292F45),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20),
             ),
           ],
         ),
       ),
       body: Obx(() {
-        return addressListModel.value.address != null ?
-        SingleChildScrollView(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: size.height * .02,
-              ),
-              Text(
-                "Where do you want to receive your orders".tr,
-                style: GoogleFonts.poppins(color: Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 16),
-              ),
-              SizedBox(
-                height: size.height * .02,
-              ),
-              InkWell(
-                onTap: (){
-                  Get.to(()=>FindMyLocation());
-                },
-                child: Text(
-                  "Find my location".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w400, fontSize: 14),
-                ),
-              ),
-              SizedBox(
-                height: size.height * .02,
-              ),
-              InkWell(
-                onTap: (){
-                  bottomSheet(addressData: AddressData());
-                },
-                child: Text(
-                  "Add new location".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w400, fontSize: 14),
-                ),
-              ),
-              SizedBox(
-                height: size.height * .02,
-              ),
-
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    isSelect.value = !isSelect.value;
-                  });
-                },
-                child: Text(
-                  "Enter your zip code".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w400, fontSize: 14),
-                ),
-              ),
-              isSelect.value == true ?
-              SizedBox(
-                height: size.height * .02,
-              ) : const SizedBox.shrink(),
-              if( isSelect.value == true )
-                ...commonField(
-                    hintText: "Zip Code",
-                    textController: locationController.zipcodeController,
-                    title: 'Zip Code*',
-                    validator: (String? value) {},
-                    keyboardType: TextInputType.number),
-              isSelect.value == true ?
-              SizedBox(
-                height: size.height * .02,
-              ) : const SizedBox.shrink(),
-              if( isSelect.value == true)
-                GestureDetector(
-                  onTap: () {
-                      locationController.editAddressApi(context);
-                     // Get.back();
-                    // setState(() {});
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20),
-                    width: Get.width,
-                    height: 50,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppTheme.buttonColor,
-                        width: 2.0, // Border width
-                      ),
-                      borderRadius: BorderRadius.circular(10), // Border radius
+        return addressListModel.value.address != null
+            ? SingleChildScrollView(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: size.height * .02,
                     ),
-                    padding: const EdgeInsets.all(10),
-                    // Padding inside the container
-                    child:  Center(
-                      child: Text(
-                        'Confirm Your Location'.tr,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AppTheme.buttonColor, // Text color
-                        ),
-                      ),
+                    Text(
+                      "Where do you want to receive your orders".tr,
+                      style: GoogleFonts.poppins(
+                          color: Color(0xff292F45),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16),
                     ),
-                  ),
-                ),
-              SizedBox(
-                height: size.height * .02,
-              ),
-              Text(
-                "Default Address".tr,
-                style: GoogleFonts.poppins(color: const Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 16),
-              ),
-              SizedBox(
-                height: size.height * .02,
-              ),
-              addressListModel.value.address != null
-                  ? ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: addressListModel.value.address!.shipping!.length,
-                  scrollDirection: Axis.vertical,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemBuilder: (context, index) {
-                    List<AddressData> shippingAddress = addressListModel.value.address!.shipping ?? [];
-                    final address = shippingAddress[index];
-                    return GestureDetector(
-                      onTap: (){
-                        locationController.city.value = address.getCity.toString();
-                        locationController.zipcode.value = address.state.toString();
-                        print('gvava ${locationController.city.value.toString()}');
-                        cartController.countryId =  address.countryId.toString();
-                        locationController.onTapLocation.value = true;
-                        cartController.getCart();
-                        Get.back();
+                    SizedBox(
+                      height: size.height * .02,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Get.to(() => FindMyLocation());
                       },
-                      child: Container(
-                        width: size.width,
-                        margin: const EdgeInsets.only(bottom: 15),
-                        padding: const EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10), border: Border.all(color: const Color(0xffDCDCDC))),
-                        child: IntrinsicHeight(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Icon(Icons.location_on_rounded),
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              Expanded(
-                                child: Text(
-                                  address.getCompleteAddressInFormat,
-                                  maxLines: 2,
-                                  style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500, fontSize: 15, color: const Color(0xff585858)),
-                                ),
-                              ),
-                              address.isDefault == true ?
-                              Text(
-                                "Default".tr,
-                                style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 15,
-                                    color: Colors.grey),
-                              ) : const SizedBox.shrink(),
-                              SizedBox(
-                                width: 30,
-                                child: address.isDefault == true
-                                ?PopupMenuButton(
-                                    color: Colors.white,
-                                    iconSize: 20,
-                                    icon: const Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.more_vert,
-                                          color: Colors.black,
-                                        ),
-                                      ],
-                                    ),
-                                    padding: EdgeInsets.zero,
-                                    onSelected: (value) {
-                                      setState(() {
-                                      });
-                                      Navigator.pushNamed(context, value.toString());
-                                    },
-                                    itemBuilder: (ac) {
-                                      return [
-                                        PopupMenuItem(
-                                          onTap: () {
-                                            bottomSheet(addressData: address);
-                                          },
-                                          // value: '/Edit',
-                                          child: Text("Edit".tr),
-                                        ),
-                                        PopupMenuItem(
-                                          onTap: () {
-                                            cartController.selectedAddress = address;
-                                            cartController.completeAddress = address.getCompleteAddressInFormat;
-                                            print("complete"+ cartController.completeAddress);
-                                            defaultAddressApi();
-                                            locationController.getAddress();
-                                            setState(() {
-                                            });
-                                          },
-                                          // value: '/slotViewScreen',
-                                          child: Text("Default Address".tr),
-                                        ),
-                                      ];
-                                    })
-                                :PopupMenuButton(
-                                    color: Colors.white,
-                                    iconSize: 20,
-                                    icon: const Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Icon(
-                                          Icons.more_vert,
-                                          color: Colors.black,
-                                        ),
-                                      ],
-                                    ),
-                                    padding: EdgeInsets.zero,
-                                    onSelected: (value) {
-                                      setState(() {
+                      child: Text(
+                        "Find my location".tr,
+                        style: GoogleFonts.poppins(
+                            color: const Color(0xff044484),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14),
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * .02,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        bottomSheet(addressData: AddressData());
+                      },
+                      child: Text(
+                        "Add new location".tr,
+                        style: GoogleFonts.poppins(
+                            color: const Color(0xff044484),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14),
+                      ),
+                    ),
+                    SizedBox(
+                      height: size.height * .02,
+                    ),
 
-                                      });
-                                      Navigator.pushNamed(context, value.toString());
-                                    },
-                                    itemBuilder: (ac) {
-                                      return [
-                                        PopupMenuItem(
-                                          onTap: () {
-                                            bottomSheet(addressData: address);
-                                          },
-                                          // value: '/Edit',
-                                          child: Text("Edit".tr),
-                                        ),
-                                        PopupMenuItem(
-                                          onTap: () {
-                                            cartController.selectedAddress = address;
-                                            cartController.completeAddress = address.getCompleteAddressInFormat;
-                                            print("complete"+ cartController.completeAddress);
-                                            defaultAddressApi();
-                                            locationController.getAddress();
-                                            setState(() {
-
-                                            });
-                                          },
-                                          // value: '/slotViewScreen',
-                                          child: Text("Default Address".tr),
-                                        ),
-                                        PopupMenuItem(
-                                          onTap: () {
-                                            cartController.deleteAddress(
-                                              context: context,
-                                              id: address.id.toString(),
-                                            ).then((value) {
-                                              if (value == true) {
-                                                cartController.addressListModel.address!.shipping!.removeWhere(
-                                                        (element) => element.id.toString() == address.id.toString());
-                                                cartController.updateUI();
-                                              }
-                                            });
-                                          },
-                                          // value: '/deactivate',
-                                          child: Text("Delete".tr),
-                                        ),
-                                      ];
-                                    }),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          isSelect.value = !isSelect.value;
+                        });
+                      },
+                      child: Text(
+                        "Enter your zip code".tr,
+                        style: GoogleFonts.poppins(
+                            color: const Color(0xff044484),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14),
+                      ),
+                    ),
+                    isSelect.value == true
+                        ? SizedBox(
+                            height: size.height * .02,
+                          )
+                        : const SizedBox.shrink(),
+                    if (isSelect.value == true)
+                      ...commonField(
+                          hintText: "Zip Code",
+                          textController: locationController.zipcodeController,
+                          title: 'Zip Code*',
+                          validator: (String? value) {},
+                          keyboardType: TextInputType.number),
+                    isSelect.value == true
+                        ? SizedBox(
+                            height: size.height * .02,
+                          )
+                        : const SizedBox.shrink(),
+                    if (isSelect.value == true)
+                      GestureDetector(
+                        onTap: () {
+                          if (locationController
+                              .zipcodeController.text.isEmpty) {
+                            showToast("Please enter zip code".tr);
+                          } else {
+                            locationController.editAddressApi(context);
+                          }
+                          // Get.back();
+                          // setState(() {});
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 20, right: 20),
+                          width: Get.width,
+                          height: 50,
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              color: AppTheme.buttonColor,
+                              width: 2.0, // Border width
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(10), // Border radius
+                          ),
+                          padding: const EdgeInsets.all(10),
+                          // Padding inside the container
+                          child: Center(
+                            child: Text(
+                              'Confirm Your Location'.tr,
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: AppTheme.buttonColor, // Text color
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
-                    );
-                  },
-                ) : const LoadingAnimation(),
-              // GestureDetector(
-              //   onTap: (){
-              //
-              //     if (formKey1.currentState!.validate()) {
-              //       editAddressApi();
-              //     }
-              //     setState(() {});
-              //   },
-              //   child: Container(
-              //     margin: const EdgeInsets.only(left: 20, right: 20),
-              //     width: Get.width,
-              //     height: 50,
-              //     decoration: BoxDecoration(
-              //       border: Border.all(
-              //         color: Colors.black, // Border color
-              //         width: 1.0, // Border width
-              //       ),
-              //       borderRadius: BorderRadius.circular(10), // Border radius
-              //     ),
-              //     padding: const EdgeInsets.all(10), // Padding inside the container
-              //     child: const Center(
-              //       child: Text(
-              //         'Confirm Your Location',
-              //         style: TextStyle(
-              //           fontSize: 16,
-              //           fontWeight: FontWeight.bold,
-              //           color: Colors.black, // Text color
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // SizedBox(
-              //   height: size.height * .02,
-              // ),
-            ],
-          )
-        )
+                    SizedBox(
+                      height: size.height * .02,
+                    ),
+                    Text(
+                      "Default Address".tr,
+                      style: GoogleFonts.poppins(
+                          color: const Color(0xff292F45),
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: size.height * .02,
+                    ),
+                    addressListModel.value.address != null
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: addressListModel
+                                .value.address!.shipping!.length,
+                            scrollDirection: Axis.vertical,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemBuilder: (context, index) {
+                              List<AddressData> shippingAddress =
+                                  addressListModel.value.address!.shipping ??
+                                      [];
+                              final address = shippingAddress[index];
+                              return GestureDetector(
+                                onTap: () {
+                                  locationController.city.value =
+                                      address.getCity.toString();
+                                  locationController.zipcode.value =
+                                      address.state.toString();
+                                  print(
+                                      'gvava ${locationController.city.value.toString()}');
+                                  cartController.countryId =
+                                      address.countryId.toString();
+                                  locationController.onTapLocation.value = true;
+                                  cartController.getCart();
+                                  Get.back();
+                                },
+                                child: address
+                                        .getCompleteAddressInFormat.isEmpty
+                                    ? SizedBox()
+                                    : Container(
+                                        width: size.width,
+                                        margin:
+                                            const EdgeInsets.only(bottom: 15),
+                                        padding: const EdgeInsets.all(15),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10),
+                                            border: Border.all(
+                                                color:
+                                                    const Color(0xffDCDCDC))),
+                                        child: IntrinsicHeight(
+                                          child: Row(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              const Icon(
+                                                  Icons.location_on_rounded),
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  address
+                                                      .getCompleteAddressInFormat,
+                                                  maxLines: 2,
+                                                  style: GoogleFonts.poppins(
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      fontSize: 15,
+                                                      color: const Color(
+                                                          0xff585858)),
+                                                ),
+                                              ),
+                                              address.isDefault == true
+                                                  ? Text(
+                                                      "Default".tr,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              fontSize: 15,
+                                                              color:
+                                                                  Colors.grey),
+                                                    )
+                                                  : const SizedBox.shrink(),
+                                              SizedBox(
+                                                width: 30,
+                                                child: address.isDefault == true
+                                                    ? PopupMenuButton(
+                                                        color: Colors.white,
+                                                        iconSize: 20,
+                                                        icon: const Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.more_vert,
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.zero,
+                                                        onSelected: (value) {
+                                                          setState(() {});
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              value.toString());
+                                                        },
+                                                        itemBuilder: (ac) {
+                                                          return [
+                                                            PopupMenuItem(
+                                                              onTap: () {
+                                                                bottomSheet(
+                                                                    addressData:
+                                                                        address);
+                                                              },
+                                                              // value: '/Edit',
+                                                              child: Text(
+                                                                  "Edit".tr),
+                                                            ),
+                                                            PopupMenuItem(
+                                                              onTap: () {
+                                                                cartController
+                                                                        .selectedAddress =
+                                                                    address;
+                                                                cartController
+                                                                        .completeAddress =
+                                                                    address
+                                                                        .getCompleteAddressInFormat;
+                                                                print("complete" +
+                                                                    cartController
+                                                                        .completeAddress);
+                                                                defaultAddressApi();
+                                                                locationController
+                                                                    .getAddress();
+                                                                setState(() {});
+                                                              },
+                                                              // value: '/slotViewScreen',
+                                                              child: Text(
+                                                                  "Default Address"
+                                                                      .tr),
+                                                            ),
+                                                          ];
+                                                        })
+                                                    : PopupMenuButton(
+                                                        color: Colors.white,
+                                                        iconSize: 20,
+                                                        icon: const Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .start,
+                                                          children: [
+                                                            Icon(
+                                                              Icons.more_vert,
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        padding:
+                                                            EdgeInsets.zero,
+                                                        onSelected: (value) {
+                                                          setState(() {});
+                                                          Navigator.pushNamed(
+                                                              context,
+                                                              value.toString());
+                                                        },
+                                                        itemBuilder: (ac) {
+                                                          return [
+                                                            PopupMenuItem(
+                                                              onTap: () {
+                                                                bottomSheet(
+                                                                    addressData:
+                                                                        address);
+                                                              },
+                                                              // value: '/Edit',
+                                                              child: Text(
+                                                                  "Edit".tr),
+                                                            ),
+                                                            PopupMenuItem(
+                                                              onTap: () {
+                                                                cartController
+                                                                        .selectedAddress =
+                                                                    address;
+                                                                cartController
+                                                                        .completeAddress =
+                                                                    address
+                                                                        .getCompleteAddressInFormat;
+                                                                print("complete" +
+                                                                    cartController
+                                                                        .completeAddress);
+                                                                defaultAddressApi();
+                                                                locationController
+                                                                    .getAddress();
+                                                                setState(() {});
+                                                              },
+                                                              // value: '/slotViewScreen',
+                                                              child: Text(
+                                                                  "Default Address"
+                                                                      .tr),
+                                                            ),
+                                                            PopupMenuItem(
+                                                              onTap: () {
+                                                                cartController
+                                                                    .deleteAddress(
+                                                                  context:
+                                                                      context,
+                                                                  id: address.id
+                                                                      .toString(),
+                                                                )
+                                                                    .then(
+                                                                        (value) {
+                                                                  if (value ==
+                                                                      true) {
+                                                                    cartController
+                                                                        .addressListModel
+                                                                        .address!
+                                                                        .shipping!
+                                                                        .removeWhere((element) =>
+                                                                            element.id.toString() ==
+                                                                            address.id.toString());
+                                                                    cartController
+                                                                        .updateUI();
+                                                                  }
+                                                                });
+                                                              },
+                                                              // value: '/deactivate',
+                                                              child: Text(
+                                                                  "Delete".tr),
+                                                            ),
+                                                          ];
+                                                        }),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                              );
+                            },
+                          )
+                        : const SizedBox(),
+                    // GestureDetector(
+                    //   onTap: (){
+                    //
+                    //     if (formKey1.currentState!.validate()) {
+                    //       editAddressApi();
+                    //     }
+                    //     setState(() {});
+                    //   },
+                    //   child: Container(
+                    //     margin: const EdgeInsets.only(left: 20, right: 20),
+                    //     width: Get.width,
+                    //     height: 50,
+                    //     decoration: BoxDecoration(
+                    //       border: Border.all(
+                    //         color: Colors.black, // Border color
+                    //         width: 1.0, // Border width
+                    //       ),
+                    //       borderRadius: BorderRadius.circular(10), // Border radius
+                    //     ),
+                    //     padding: const EdgeInsets.all(10), // Padding inside the container
+                    //     child: const Center(
+                    //       child: Text(
+                    //         'Confirm Your Location',
+                    //         style: TextStyle(
+                    //           fontSize: 16,
+                    //           fontWeight: FontWeight.bold,
+                    //           color: Colors.black, // Text color
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
+                    // SizedBox(
+                    //   height: size.height * .02,
+                    // ),
+                  ],
+                ))
             : const LoadingAnimation();
       }),
     );
   }
+
   Future bottomSheet({required AddressData addressData}) {
     return showModalBottomSheet(
         context: context,
@@ -486,7 +600,10 @@ List<Widget> commonField({
     ),
     Text(
       title.tr,
-      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16, color: const Color(0xff0D5877)),
+      style: GoogleFonts.poppins(
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+          color: const Color(0xff0D5877)),
     ),
     const SizedBox(
       height: 8,

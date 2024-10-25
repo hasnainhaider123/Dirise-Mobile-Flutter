@@ -248,10 +248,10 @@ class _LocationwherecustomerwilljoinState
                           city = addressList.city.toString();
                           id = addressList.id.toString();
                           state = addressList.state.toString();
-                          zip_code = addressList.zipCode.toString();
+                          zip_code = addressList.zipCode ?? '';
                           country = addressList.country.toString();
-                          street = addressList.address.toString();
-                          town = addressList.town.toString();
+                          street = addressList.address ?? '';
+                          town = addressList.town ?? '';
 
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
