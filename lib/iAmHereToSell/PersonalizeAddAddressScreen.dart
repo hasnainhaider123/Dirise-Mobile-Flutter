@@ -23,7 +23,6 @@ import '../widgets/common_button.dart';
 import '../widgets/common_textfield.dart';
 import 'PersonalizeChooseLocationScreen.dart';
 
-
 class PersonalizeAddAddressScreen extends StatefulWidget {
   final String? street;
   final String? city;
@@ -33,30 +32,32 @@ class PersonalizeAddAddressScreen extends StatefulWidget {
   final String? town;
   final int? id;
 
-
-  PersonalizeAddAddressScreen({
-    Key? key,
-    this.street,
-    this.city,
-    this.state,
-    this.country,
-    this.zipcode,
-    this.town,
-    this.id
-  }) : super(key: key);
+  PersonalizeAddAddressScreen(
+      {Key? key,
+      this.street,
+      this.city,
+      this.state,
+      this.country,
+      this.zipcode,
+      this.town,
+      this.id})
+      : super(key: key);
 
   @override
-  State<PersonalizeAddAddressScreen> createState() => _PersonalizeAddAddressScreenState();
+  State<PersonalizeAddAddressScreen> createState() =>
+      _PersonalizeAddAddressScreenState();
 }
 
-class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScreen> {
+class _PersonalizeAddAddressScreenState
+    extends State<PersonalizeAddAddressScreen> {
   final TextEditingController streetController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
   final TextEditingController stateController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController zipcodeController = TextEditingController();
   final TextEditingController townController = TextEditingController();
-  final TextEditingController specialInstructionController = TextEditingController();
+  final TextEditingController specialInstructionController =
+      TextEditingController();
   RxBool hide = true.obs;
   RxBool hide1 = true.obs;
   bool showValidation = false;
@@ -86,15 +87,18 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
     map['special_instruction'] = specialInstructionController.text.trim();
 
     FocusManager.instance.primaryFocus!.unfocus();
-    repositories.postApi(url: ApiUrls.editAddressUrl, context: context, mapData: map).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(url: ApiUrls.editAddressUrl, context: context, mapData: map)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       showToast(response.message.toString());
+     
       if (response.status == true) {
         Get.to(AddAddressScreen());
       }
     });
   }
-
 
   @override
   void initState() {
@@ -107,7 +111,7 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
       zipcodeController.text = widget.zipcode ?? '';
       townController.text = widget.town ?? '';
     }
-    log('ffffff'+widget.city.toString());
+    log('ffffff' + widget.city.toString());
   }
 
   final profileController = Get.put(ProfileController());
@@ -120,24 +124,24 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
         surfaceTintColor: Colors.white,
         elevation: 0,
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.back();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileController.selectedLAnguage.value != 'English' ?
-              Image.asset(
-                'assets/images/forward_icon.png',
-                height: 19,
-                width: 19,
-              ) :
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 19,
-                width: 19,
-              ),
+              profileController.selectedLAnguage.value != 'English'
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 19,
+                      width: 19,
+                    )
+                  : Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 19,
+                      width: 19,
+                    ),
             ],
           ),
         ),
@@ -147,7 +151,10 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
           children: [
             Text(
               'Edit your address'.tr,
-              style: GoogleFonts.poppins(color: Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 20),
+              style: GoogleFonts.poppins(
+                  color: Color(0xff292F45),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20),
             ),
           ],
         ),
@@ -166,29 +173,42 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
                 ),
                 Text(
                   "Where do you want to receive your orders".tr,
-                  style: GoogleFonts.poppins(color: Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 16),
+                  style: GoogleFonts.poppins(
+                      color: Color(0xff292F45),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16),
                 ),
                 SizedBox(
                   height: size.height * .02,
                 ),
                 InkWell(
-                  onTap: (){
+                  onTap: () {
                     Get.to(PersonalizeChooseLocation());
                   },
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
                       "Select your location on the map".tr,
-                      style: GoogleFonts.poppins(color: Color(0xff044484), fontWeight: FontWeight.w400, fontSize: 14),
+                      style: GoogleFonts.poppins(
+                          color: Color(0xff044484),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14),
                     ),
                   ),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(
+                  height: 20,
+                ),
                 Text(
                   "Street*".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 CommonTextField(
                   controller: streetController,
                   obSecure: false,
@@ -199,14 +219,20 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
                     }
                     return null; // Return null if validation passes
                   },
-
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
                   "City*".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 CommonTextField(
                   controller: cityController,
                   obSecure: false,
@@ -218,12 +244,19 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
                     return null; // Return null if validation passes
                   },
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
                   "State*".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 CommonTextField(
                   controller: stateController,
                   obSecure: false,
@@ -234,14 +267,20 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
                     }
                     return null; // Return null if validation passes
                   },
-
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
                   "Zip Code".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 CommonTextField(
                   controller: zipcodeController,
                   obSecure: false,
@@ -253,12 +292,19 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
                     return null; // Return null if validation passes
                   },
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
                   "Town*".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 CommonTextField(
                   controller: townController,
                   obSecure: false,
@@ -270,20 +316,27 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
                     return null; // Return null if validation passes
                   },
                 ),
-                const SizedBox(height: 10,),
-
+                const SizedBox(
+                  height: 10,
+                ),
                 Text(
                   "Special instruction".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 CommonTextField(
                   controller: specialInstructionController,
                   obSecure: false,
                   hintText: 'Special instruction'.tr,
-
                 ),
-                const SizedBox(height: 10,),
+                const SizedBox(
+                  height: 10,
+                ),
                 SizedBox(
                   height: size.height * .02,
                 ),
@@ -292,11 +345,9 @@ class _PersonalizeAddAddressScreenState extends State<PersonalizeAddAddressScree
                   borderRadius: 11,
                   onPressed: () {
                     if (formKey1.currentState!.validate()) {
-
                       sellingPickupAddressApi();
                     }
                     setState(() {});
-
                   },
                 ),
                 SizedBox(
@@ -324,7 +375,10 @@ List<Widget> commonField({
     ),
     Text(
       title.tr,
-      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16, color: const Color(0xff0D5877)),
+      style: GoogleFonts.poppins(
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+          color: const Color(0xff0D5877)),
     ),
     const SizedBox(
       height: 8,

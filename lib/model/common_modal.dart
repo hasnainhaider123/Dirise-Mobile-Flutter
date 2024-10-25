@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class ModelCommonResponse {
   dynamic status;
   dynamic message;
@@ -23,5 +24,10 @@ class ModelCommonResponse {
     data['otp'] = otp;
     data['URL'] = uRL;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'ModelCommonResponse(status: $status, message: $message, addressId: $addressId, otp: $otp, uRL: $uRL)';
   }
 }

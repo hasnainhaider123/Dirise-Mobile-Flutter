@@ -89,6 +89,7 @@ class AddressData {
   dynamic countryId;
   dynamic phoneCountryCode;
   dynamic town;
+  dynamic street;
 
   AddressData(
       {this.id,
@@ -113,6 +114,7 @@ class AddressData {
       this.landmark,
       this.createdAt,
       this.cityId,
+      this.street,
       this.stateId,
       this.phoneCountryCode,
         this.town,
@@ -268,6 +270,7 @@ class AddressData {
     town = json['town'];
     stateId = json['state_id'];
     cityId = json['city_id'];
+    street=json['street'];
     phoneCountryCode = json['phone_country_code'];
   }
 
@@ -298,6 +301,7 @@ class AddressData {
     data['country_id'] = countryId;
     data['state_id'] = stateId;
     data['city_id'] = cityId;
+    data['street']=street;
     data['phone_country_code'] = phoneCountryCode ;
 
     return data;

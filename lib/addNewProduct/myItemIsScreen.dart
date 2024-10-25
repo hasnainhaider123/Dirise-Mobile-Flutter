@@ -63,10 +63,15 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
         Get.to(const JobTellusaboutyourselfScreen());
       } else {
         final snackBar = SnackBar(
-          content:  Text(
-           'Register as a vendor to start "selling “'.tr),
+          backgroundColor:
+              Colors.black.withOpacity(0.8), // Adjust color and transparency
+          content: Text(
+            'Register as a vendor to start "selling"'.tr,
+            style:const TextStyle(color: Colors.white), // Optional: Set text color
+          ),
           action: SnackBarAction(
             label: 'Click here'.tr,
+            textColor: Colors.blueAccent, // Optional: Set action text color
             onPressed: () {
               Get.to(() => const WhichplantypedescribeyouScreen());
             },
@@ -116,7 +121,8 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
         centerTitle: true,
         title: Text(
           'Item Type'.tr,
-          style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20),
+          style: GoogleFonts.poppins(
+              color: Colors.black, fontWeight: FontWeight.w600, fontSize: 20),
         ),
       ),
       body: Container(
@@ -144,7 +150,10 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
               Center(
                 child: Text(
                   'What describes your item best?'.tr,
-                  style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18),
+                  style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18),
                 ),
               ),
               20.spaceY,
@@ -156,8 +165,8 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
                     setState(() {});
                   },
                   child: profileController.selectedLAnguage.value == "English"
-                      ?Image.asset('assets/images/product_img.png')
-                      :Image.asset('assets/images/productarabic.png')),
+                      ? Image.asset('assets/images/product_img.png')
+                      : Image.asset('assets/images/productarabic.png')),
               15.spaceY,
               GestureDetector(
                   onTap: () {
@@ -167,8 +176,8 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
                     setState(() {});
                   },
                   child: profileController.selectedLAnguage.value == "English"
-                      ?Image.asset('assets/images/service-bg.png')
-                      :Image.asset('assets/images/servicearabic.png')),
+                      ? Image.asset('assets/images/service-bg.png')
+                      : Image.asset('assets/images/servicearabic.png')),
               15.spaceY,
               GestureDetector(
                   onTap: () {
@@ -178,8 +187,8 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
                     setState(() {});
                   },
                   child: profileController.selectedLAnguage.value == "English"
-                      ?Image.asset('assets/images/virtual_bg.png')
-                      :Image.asset('assets/images/virtualarabic.png')),
+                      ? Image.asset('assets/images/virtual_bg.png')
+                      : Image.asset('assets/images/virtualarabic.png')),
               15.spaceY,
               GestureDetector(
                   onTap: () {
@@ -189,8 +198,8 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
                     setState(() {});
                   },
                   child: profileController.selectedLAnguage.value == "English"
-                      ?Image.asset('assets/images/giveaway_img.png')
-                      :Image.asset('assets/images/giveawayarabic.png')),
+                      ? Image.asset('assets/images/giveaway_img.png')
+                      : Image.asset('assets/images/giveawayarabic.png')),
               15.spaceY,
               GestureDetector(
                   onTap: () {
@@ -200,8 +209,8 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
                     setState(() {});
                   },
                   child: profileController.selectedLAnguage.value == "English"
-                      ?Image.asset('assets/images/job-img.png')
-                      :Image.asset('assets/images/jobarabic.png')),
+                      ? Image.asset('assets/images/job-img.png')
+                      : Image.asset('assets/images/jobarabic.png')),
 
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

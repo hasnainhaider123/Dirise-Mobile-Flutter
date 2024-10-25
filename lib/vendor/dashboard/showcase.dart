@@ -139,10 +139,10 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                   boxShadow: [
                                     BoxShadow(
                                         color: Colors.grey.withOpacity(
-                                            0.6), // Shadow color with opacity
+                                            0.2), // Shadow color with opacity
                                         spreadRadius:
-                                            4, // How far the shadow spreads
-                                        blurRadius: 6, // Softness of the shadow
+                                            2, // How far the shadow spreads
+                                        blurRadius: 2, // Softness of the shadow
                                         offset: const Offset(0,
                                             0) // Changes position of shadow (horizontal, vertical)
                                         ),
@@ -159,7 +159,7 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const SizedBox(
-                                      height: 20,
+                                      height: 10,
                                     ),
                                     Row(
                                       crossAxisAlignment:
@@ -167,33 +167,15 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Container(
-                                          padding: const EdgeInsets.all(10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Colors.grey.withOpacity(
-                                                      0.6), // Shadow color with opacity
-                                                  spreadRadius:
-                                                      3, // How far the shadow spreads
-                                                  blurRadius:
-                                                      5, // Softness of the shadow
-                                                  offset: const Offset(0,
-                                                      0) // Changes position of shadow (horizontal, vertical)
-                                                  ),
-                                            ],
-                                          ),
-                                          child: CachedNetworkImage(
-                                              imageUrl:
-                                                  item.featuredImage.toString(),
-                                              height: 150,
-                                              width: 150,
-                                              fit: BoxFit.cover,
-                                              errorWidget: (_, __, ___) =>
-                                                  Image.asset(
-                                                      'assets/images/new_logo.png')),
-                                        ),
+                                        CachedNetworkImage(
+                                            imageUrl:
+                                                item.featuredImage.toString(),
+                                            height: 150,
+                                            width: 150,
+                                            fit: BoxFit.cover,
+                                            errorWidget: (_, __, ___) =>
+                                                Image.asset(
+                                                    'assets/images/new_logo.png')),
                                         const SizedBox(
                                           width: 20,
                                         ),
@@ -202,9 +184,9 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              const SizedBox(
-                                                height: 15,
-                                              ),
+                                              // const SizedBox(
+                                              //   height: 10,
+                                              // ),
                                               Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -673,20 +655,20 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                       "English"
                                   ? Positioned(
                                       right: 0,
-                                      top: 0,
+                                      bottom: 0,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            boxShadow: [
-                                              const BoxShadow(
-                                                // blurStyle: BlurStyle.outer,
-                                                offset: Offset(2, 3),
-                                                color: Colors.black26,
-                                                blurRadius: 3,
-                                              )
-                                            ],
+                                            // boxShadow: [
+                                            //   const BoxShadow(
+                                            //     // blurStyle: BlurStyle.outer,
+                                            //     offset: Offset(2, 3),
+                                            //     color: Colors.black26,
+                                            //     blurRadius: 3,
+                                            //   )
+                                            // ],
                                             borderRadius:
                                                 const BorderRadius.only(
-                                                    topRight:
+                                                    topLeft:
                                                         Radius.circular(8)),
                                             color: const Color(0xFF27D6FF)
                                                 .withOpacity(0.6)),
