@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:dirise/utils/helper.dart';
 
 class ProductElement {
@@ -348,6 +349,11 @@ isShowcase = json['is_showcase'];
     'local_shipping' : localShipping,
     'item_type' : itemType
   };
+
+  @override
+  String toString() {
+    return 'ProductElement(userId: $userId, id: $id, vendorId: $vendorId, catId: $catId, catId2: $catId2, catId3: $catId3, brandSlug: $brandSlug, slug: $slug, pName: $pName, vendor_city: $vendor_city, addToCart: $addToCart, arabPname: $arabPname, productType: $productType, virtualProductType: $virtualProductType, skuId: $skuId, virtualProductFile: $virtualProductFile, virtualProductFileType: $virtualProductFileType, pPrice: $pPrice, sPrice: $sPrice, commission: $commission, productNew: $productNew, bestSaller: $bestSaller, featured: $featured, showcaseProduct: $showcaseProduct, taxApply: $taxApply, taxType: $taxType, shortDescription: $shortDescription, arabShortDescription: $arabShortDescription, longDescription: $longDescription, arabLongDescription: $arabLongDescription, featuredImage: $featuredImage, galleryImage: $galleryImage, inStock: $inStock, stockAlert: $stockAlert, shippingType: $shippingType, shippingCharge: $shippingCharge, avgRating: $avgRating, metaTitle: $metaTitle, metaKeyword: $metaKeyword, metaDescription: $metaDescription, parentId: $parentId, serviceStartTime: $serviceStartTime, serviceEndTime: $serviceEndTime, serviceDuration: $serviceDuration, createdAt: $createdAt, updatedAt: $updatedAt, topHunderd: $topHunderd, returnDays: $returnDays, isPublish: $isPublish, inOffer: $inOffer, forAuction: $forAuction, returnPolicyDesc: $returnPolicyDesc, discountPercentage: $discountPercentage, inCart: $inCart, inWishlist: $inWishlist, startDate: $startDate, endDate: $endDate, startTime: $startTime, endTime: $endTime, minBidPrice: $minBidPrice, stepPrice: $stepPrice, currentBid: $currentBid, featureImageApp: $featureImageApp, isShowcase: $isShowcase, beforePurchase: $beforePurchase, alreadyReview: $alreadyReview, isShipping: $isShipping, localShipping: $localShipping, serviceTimeSloat: $serviceTimeSloat, productAvailability: $productAvailability, variants: $variants, lowestDeliveryPrice: $lowestDeliveryPrice, shippingDate: $shippingDate, bidStatus: $bidStatus, discountPrice: $discountPrice, discountOff: $discountOff, rating: $rating, itemType: $itemType)';
+  }
 }
 
 class Attributes {

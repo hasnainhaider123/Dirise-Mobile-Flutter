@@ -202,7 +202,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
       "key": 'fedexRate',
       "is_def_address": homeController.defaultAddressId.toString()
     }).then((value) {
-      //log('value of data${jsonDecode(value)}');
+      log('value of data simpleModel${jsonDecode(value)}');
       modelSingleProduct.value = SimpleProductModel.fromJson(jsonDecode(value));
       if (modelSingleProduct.value.simpleProduct != null) {
         log("modelSingleProduct.product!.toJson().....${modelSingleProduct.value.simpleProduct!.toJson()}");
@@ -1488,34 +1488,44 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           height: 16,
                         ),
 
-                        Row(
-                          children: [
-                            Text(
-                              'SKU :'.tr,
-                              style: GoogleFonts.poppins(
-                                  color: Colors.black,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500),
-                            ),
-
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            // const Icon(Icons.circle, color: Colors.grey, size: 6,),
-                            const SizedBox(
-                              width: 7,
-                            ),
-                            Text(
+                        specsItems(
+                            'SKU :'.tr,
+                            modelSingleProduct
+                                    .value.simpleProduct!.serialNumber ??
+                                'N/A'),
+                        if (modelSingleProduct
+                                .value.simpleProduct!.productNumber !=
+                            null)
+                          specsItems(
+                              'Product Number :'.tr,
                               modelSingleProduct
-                                      .value.simpleProduct!.serialNumber ??
-                                  '',
-                              style: GoogleFonts.poppins(
-                                  color: Colors.grey,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ],
-                        ),
+                                      .value.simpleProduct!.productNumber ??
+                                  'N/A'),
+                        if (modelSingleProduct
+                                .value.simpleProduct!.productCode !=
+                            null)
+                          specsItems(
+                              'Product Code :'.tr,
+                              modelSingleProduct
+                                      .value.simpleProduct!.productCode ??
+                                  'N/A'),
+                        if (modelSingleProduct
+                                .value.simpleProduct!.promotionCode !=
+                            null)
+                          specsItems(
+                              'Promotio Code :'.tr,
+                              modelSingleProduct
+                                      .value.simpleProduct!.promotionCode ??
+                                  'N/A'),
+                        if (modelSingleProduct
+                                .value.simpleProduct!.packageDetail !=
+                            null)
+                          specsItems(
+                              'Package Details :'.tr,
+                              modelSingleProduct
+                                      .value.simpleProduct!.packageDetail??
+                                  'N/A'),
+
                         // SizedBox(height: 10,),
                         // Row(
                         //   // mainAxisAlignment: MainAxisAlignment.start,
@@ -2043,6 +2053,9 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                     var item = modelRelated
                                         .value.relatedProduct!.product![index];
                                     var similarcounter = 1;
+                                    if(item.id==modelSingleProduct.value.simpleProduct!.id){
+                                      return Container();
+                                    }
                                     return StatefulBuilder(
                                       builder: (context, setState) {
                                         return GestureDetector(
@@ -2947,6 +2960,31 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
               )
             : const Center(child: CircularProgressIndicator());
       }),
+    );
+  }
+
+  Row specsItems(String title, String value) {
+    return Row(
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.poppins(
+              color: Colors.black, fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+
+        const SizedBox(
+          width: 20,
+        ),
+        // const Icon(Icons.circle, color: Colors.grey, size: 6,),
+        const SizedBox(
+          width: 7,
+        ),
+        Text(
+          value,
+          style: GoogleFonts.poppins(
+              color: Colors.grey, fontSize: 14, fontWeight: FontWeight.w500),
+        ),
+      ],
     );
   }
 }

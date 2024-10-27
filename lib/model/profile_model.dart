@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class ProfileModel {
   bool? status;
   dynamic message;
@@ -247,6 +248,11 @@ class User {
       data['roles'] = roles!.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'User(id: $id, name: $name, firstName: $firstName, lastName: $lastName, email: $email, dob: $dob, countryCode: $countryCode, phone: $phone, storeName: $storeName, storeBusinessId: $storeBusinessId, storeAboutUs: $storeAboutUs, storeAboutMe: $storeAboutMe, storeAddress: $storeAddress, storeLogo: $storeLogo, storeImage: $storeImage, description: $description, categoryId: $categoryId, bio: $bio, socialId: $socialId, apiToken: $apiToken, deviceId: $deviceId, deviceToken: $deviceToken, emailVerifiedAt: $emailVerifiedAt, newSocialUser: $newSocialUser, customerId: $customerId, defaultCard: $defaultCard, userWallet: $userWallet, isMobileVerified: $isMobileVerified, otpVerified: $otpVerified, isApproved: $isApproved, vendorWallet: $vendorWallet, profileImage: $profileImage, bannerProfile: $bannerProfile, categoryImage: $categoryImage, address: $address, block: $block, stripeId: $stripeId, street_name: $street_name, town: $town, currency: $currency, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, city_name: $city_name, state_name: $state_name, country_name: $country_name, state_id: $state_id, country_id: $country_id, city: $city, referralEmail: $referralEmail, subscriptionStatus: $subscriptionStatus, phoneCountryCode: $phoneCountryCode, isVendor: $isVendor, roles: $roles)';
   }
 }
 

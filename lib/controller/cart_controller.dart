@@ -549,6 +549,8 @@ class CartController extends GetxController {
   String zipCode = '';
   String zipCode1 = '';
   TextEditingController addressController = TextEditingController();
+
+  
   Future getCart({bool? isTrue}) async {
     // if (cartModel.cart != null) {
     //   for (var element in cartModel.cart!) {
@@ -578,6 +580,7 @@ class CartController extends GetxController {
       updateUI();
     });
   }
+
   Rx<MyDefaultAddressModel> myDefaultAddressModel = MyDefaultAddressModel().obs;
   myDefaultAddressData() {
     repositories.getApi(url: ApiUrls.myDefaultAddressStatus).then((value) {

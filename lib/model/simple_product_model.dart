@@ -58,6 +58,7 @@ class SimpleProduct {
   dynamic discountPrice;
   dynamic discountOff;
   dynamic shippingPolicy;
+  dynamic packageDetail;
 
   VendorInformation? vendorInformation;
   SimpleProduct(
@@ -94,6 +95,7 @@ class SimpleProduct {
         this.discountOff,
         this.shippingPolicy,
         this.vendorInformation,
+        this.packageDetail,
   
       });
 
@@ -108,6 +110,7 @@ class SimpleProduct {
       });
     }
     pname = json['pname'];
+    
 
     productType = json['product_type'];
     itemType = json['item_type'];
@@ -141,6 +144,7 @@ class SimpleProduct {
     discountPrice = json['discount_price'];
     discountOff = json['discount_off'];
     shippingPolicy = json['shipping_policy'];
+    packageDetail=json['package_detail'];
   }
 
   Map<String, dynamic> toJson() {
@@ -184,12 +188,13 @@ class SimpleProduct {
     data['discount_price'] = discountPrice;
     data['discount_off'] = discountOff;
     data['shipping_policy'] = shippingPolicy;
+    data['package_detail']=packageDetail;
     return data;
   }
 
   @override
   String toString() {
-    return 'SimpleProduct(id: $id, vendorId: $vendorId, addressId: $addressId, catId: ${catId.toString()}, pname: $pname, productType: $productType, itemType: $itemType, featuredImage: $featuredImage, featureImageApp: $featureImageApp, featureImageWeb: $featureImageWeb, galleryImage: $galleryImage, serialNumber: $serialNumber, productNumber: $productNumber, productCode: $productCode, promotionCode: $promotionCode, inStock: $inStock, pPrice: $pPrice, returnPolicyDesc: $returnPolicyDesc, shortDescription: $shortDescription, longDescription: $longDescription, isComplete: $isComplete, virtualProductFile: $virtualProductFile, views: $views, rating: $rating, inWishlist: $inWishlist, alreadyReview: $alreadyReview, storemeta: $storemeta, lowestDeliveryPrice: $lowestDeliveryPrice, shippingDate: $shippingDate, discountPrice: $discountPrice, discountOff: $discountOff, shippingPolicy: $shippingPolicy ,';
+    return 'SimpleProduct(id: $id, vendorId: $vendorId, addressId: $addressId, catId: ${catId.toString()}, pname: $pname, productType: $productType, itemType: $itemType, featuredImage: $featuredImage, featureImageApp: $featureImageApp, featureImageWeb: $featureImageWeb, galleryImage: $galleryImage, serialNumber: $serialNumber, productNumber: $productNumber, productCode: $productCode, promotionCode: $promotionCode, inStock: $inStock, pPrice: $pPrice, returnPolicyDesc: $returnPolicyDesc, shortDescription: $shortDescription, longDescription: $longDescription, isComplete: $isComplete, virtualProductFile: $virtualProductFile, views: $views, rating: $rating, inWishlist: $inWishlist, alreadyReview: $alreadyReview, storemeta: $storemeta, lowestDeliveryPrice: $lowestDeliveryPrice, shippingDate: $shippingDate, discountPrice: $discountPrice, discountOff: $discountOff, shippingPolicy: $shippingPolicy ,packageDetail $packageDetail';
   }
 }
 class VendorInformation {

@@ -152,7 +152,7 @@ class ProfileController extends GetxController {
     if (userLoggedIn) {
       await repositories.postApi(url: ApiUrls.userProfile).then((value) {
         model = ProfileModel.fromJson(jsonDecode(value));
-        if (kDebugMode) print(model.user!.firstName);
+        if (kDebugMode) log('MyProfile ${model.user!.toString()}');
         apiLoaded = true;
         updateUI();
       });

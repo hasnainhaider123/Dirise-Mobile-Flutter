@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dirise/language/app_strings.dart';
@@ -48,9 +49,10 @@ class _WishListScreenState extends State<WishListScreen> {
             },
             context: context)
         .then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       showToast(response.message);
-      if(response.status == true){
+      if (response.status == true) {
         _wishListController.model.value.wishlist!.removeAt(index);
         _wishListController.getYourWishList();
       }
@@ -69,7 +71,8 @@ class _WishListScreenState extends State<WishListScreen> {
           padding: const EdgeInsets.only(left: 20),
           child: Text(
             AppStrings.myFavourite.tr,
-            style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+            style: GoogleFonts.poppins(
+                color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
           ),
         ),
         actions: const [
@@ -81,12 +84,13 @@ class _WishListScreenState extends State<WishListScreen> {
           _wishListController.getYourWishList();
         },
         child: Obx(() {
-          if(_wishListController.refreshInt.value > 0){}
+          if (_wishListController.refreshInt.value > 0) {}
           return _wishListController.apiLoaded
               ? SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 15, vertical: 10),
                     child: _wishListController.model.value.wishlist!.isEmpty
                         ? Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,10 +105,14 @@ class _WishListScreenState extends State<WishListScreen> {
                               Center(
                                 child: Text(
                                   AppStrings.whishlistEmpty.tr,
-                                  style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 22),
+                                  style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 22),
                                 ),
                               ),
-                              const SizedBox(height: 20,),
+                              const SizedBox(
+                                height: 20,
+                              ),
                               // ElevatedButton(
                               //     onPressed: () {
                               //       // Get.toNamed(editprofileScreen);
@@ -124,78 +132,170 @@ class _WishListScreenState extends State<WishListScreen> {
                         : GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: _wishListController.model.value.wishlist!.length,
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                crossAxisSpacing: 10,
-                                mainAxisSpacing: 10,
-                                childAspectRatio:
-                                MediaQuery.of(context).size.width / (MediaQuery.of(context).size.height / 1.2)),
-                                itemBuilder: (BuildContext context, int index) {
+                            itemCount: _wishListController
+                                .model.value.wishlist!.length,
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                    crossAxisSpacing: 10,
+                                    mainAxisSpacing: 10,
+                                    childAspectRatio: MediaQuery.of(context)
+                                            .size
+                                            .width /
+                                        (MediaQuery.of(context).size.height /
+                                            1.2)),
+                            itemBuilder: (BuildContext context, int index) {
                               return GestureDetector(
                                 onTap: () {
-                                  print(_wishListController.model.value.wishlist![index].id);
-                                  if (_wishListController.model.value.wishlist![index].itemType == 'giveaway') {
-                                    Get.to(() => const GiveAwayProduct(), arguments: _wishListController.model.value.wishlist![index].id.toString());
-                                  } else if (_wishListController.model.value.wishlist![index].productType == 'variants'&& _wishListController.model.value.wishlist![index].itemType == 'product') {
-                                    Get.to(() => const VarientsProductScreen(), arguments: _wishListController.model.value.wishlist![index].id.toString());
-                                  } else if (_wishListController.model.value.wishlist![index].productType == 'booking'&& _wishListController.model.value.wishlist![index].itemType == 'product') {
-                                    Get.to(() => const BookableProductScreen(), arguments: _wishListController.model.value.wishlist![index].id.toString());
-                                  } else if (_wishListController.model.value.wishlist![index].productType == 'virtual_product'&& _wishListController.model.value.wishlist![index].itemType == 'virtual_product') {
-                                    Get.to(() =>  VritualProductScreen(), arguments: _wishListController.model.value.wishlist![index].id.toString());
-                                  } else if (_wishListController.model.value.wishlist![index].itemType == 'product' && _wishListController.model.value.wishlist![index].showcaseProduct != true) {
-                                    Get.to(() => const SimpleProductScreen(), arguments: _wishListController.model.value.wishlist![index].id.toString());
-                                  }else if(_wishListController.model.value.wishlist![index].itemType =='service'){
-                                    Get.to(() => const ServiceProductScreen(), arguments: _wishListController.model.value.wishlist![index].id.toString());
-                                  }else if(_wishListController.model.value.wishlist![index].itemType == 'product' &&  _wishListController.model.value.wishlist![index].showcaseProduct == true){
-                                    Get.to(()=>const AdvirtismentProductScreen(),arguments: _wishListController.model.value.wishlist![index].id.toString());
+                                  if (_wishListController.model.value.wishlist![index].itemType ==
+                                      'giveaway') {
+                                    log('move sir 1');
+                                    Get.to(() => const GiveAwayProduct(),
+                                        arguments: _wishListController
+                                            .model.value.wishlist![index].id
+                                            .toString());
+                                  } else if (_wishListController.model.value
+                                              .wishlist![index].productType ==
+                                          'variants' &&
+                                      _wishListController.model.value.wishlist![index].itemType ==
+                                          'product') {
+                                    log('move sir 2');
+                                    Get.to(() => const VarientsProductScreen(),
+                                        arguments: _wishListController
+                                            .model.value.wishlist![index].id
+                                            .toString());
+                                  } else if (_wishListController.model.value.wishlist![index].productType == 'booking' &&
+                                      _wishListController.model.value.wishlist![index].itemType ==
+                                          'product') {
+                                    log('move sir 3');
+                                    Get.to(() => const BookableProductScreen(),
+                                        arguments: _wishListController
+                                            .model.value.wishlist![index].id
+                                            .toString());
+                                  } else if (_wishListController.model.value
+                                              .wishlist![index].productType ==
+                                          'virtual_product' &&
+                                      _wishListController.model.value
+                                              .wishlist![index].itemType ==
+                                          'virtual_product') {
+                                    log('move sir 4');
+                                    Get.to(() => const VritualProductScreen(),
+                                        arguments: _wishListController
+                                            .model.value.wishlist![index].id
+                                            .toString());
+                                  } else if (_wishListController.model.value.wishlist![index].itemType == 'product' &&
+                                      _wishListController
+                                              .model
+                                              .value
+                                              .wishlist![index]
+                                              .showcaseProduct !=
+                                          true) {
+                                    log('move sir 5');
+                                    log('wishlistthing ${_wishListController.model.value.wishlist![index].toString()}');
+                                    if (_wishListController.model.value
+                                            .wishlist![index].isShowcase ==
+                                        1) {
+                                      Get.to(
+                                          () =>
+                                              const AdvirtismentProductScreen(),
+                                          arguments: _wishListController
+                                              .model.value.wishlist![index].id
+                                              .toString());
+                                    } else {
+                                      Get.to(() => const SimpleProductScreen(),
+                                          arguments: _wishListController
+                                              .model.value.wishlist![index].id
+                                              .toString());
+                                    }
+                                  } else if (_wishListController.model.value
+                                          .wishlist![index].itemType ==
+                                      'service') {
+                                    log('move sir 6');
+                                    Get.to(() => const ServiceProductScreen(),
+                                        arguments: _wishListController
+                                            .model.value.wishlist![index].id
+                                            .toString());
+                                  } else if (_wishListController.model.value.wishlist![index].itemType == 'product' &&
+                                      _wishListController.model.value.wishlist![index].showcaseProduct == true) {
+                                    log('move sir 7');
+                                    Get.to(
+                                        () => const AdvirtismentProductScreen(),
+                                        arguments: _wishListController
+                                            .model.value.wishlist![index].id
+                                            .toString());
                                   }
                                 },
                                 child: Container(
-                                  height: MediaQuery.of(context).size.height*1,
+                                  height:
+                                      MediaQuery.of(context).size.height * 1,
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Colors.grey),
                                     borderRadius: BorderRadius.circular(8),
                                     color: Colors.white,
                                   ),
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 4),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 4),
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
-                                            _wishListController.model.value.wishlist![index].discountOff != '0.00'
+                                            _wishListController
+                                                        .model
+                                                        .value
+                                                        .wishlist![index]
+                                                        .discountOff !=
+                                                    '0.00'
                                                 ? Container(
-                                              padding: const EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                  color: const Color(0xFFFF6868),
-                                                  borderRadius: BorderRadius.circular(10)),
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    " SALE".tr,
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.w700,
-                                                        color: const Color(0xFFFFDF33)),
-                                                  ),
-                                                  Text(
-                                                    " ${_wishListController.model.value.wishlist![index].discountOff}${'%'}  ",
-                                                    style: GoogleFonts.poppins(
-                                                        fontSize: 12,
-                                                        fontWeight: FontWeight.w700,
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
-                                              ),
-                                            )
+                                                    padding:
+                                                        const EdgeInsets.all(4),
+                                                    decoration: BoxDecoration(
+                                                        color: const Color(
+                                                            0xFFFF6868),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10)),
+                                                    child: Row(
+                                                      children: [
+                                                        Text(
+                                                          " SALE".tr,
+                                                          style: GoogleFonts.poppins(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              color: const Color(
+                                                                  0xFFFFDF33)),
+                                                        ),
+                                                        Text(
+                                                          " ${_wishListController.model.value.wishlist![index].discountOff}${'%'}  ",
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                                  fontSize: 12,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w700,
+                                                                  color: Colors
+                                                                      .white),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  )
                                                 : const SizedBox.shrink(),
                                             IconButton(
                                               onPressed: () {
                                                 removeFromWishList(
-                                                    _wishListController.model.value.wishlist![index].id.toString(), index);
+                                                    _wishListController
+                                                        .model
+                                                        .value
+                                                        .wishlist![index]
+                                                        .id
+                                                        .toString(),
+                                                    index);
                                               },
                                               icon: const Icon(
                                                 Icons.favorite_rounded,
@@ -208,209 +308,328 @@ class _WishListScreenState extends State<WishListScreen> {
                                         const SizedBox(height: 10),
                                         Center(
                                           child: Image.network(
-                                            _wishListController.model.value.wishlist![index].featuredImage.toString(),
+                                            _wishListController.model.value
+                                                .wishlist![index].featuredImage
+                                                .toString(),
                                             height: 100,
                                             fit: BoxFit.cover,
-                                            errorBuilder: (context, error, stackTrace) {
-                                              return Image.asset("assets/images/new_logo.png");
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Image.asset(
+                                                  "assets/images/new_logo.png");
                                             },
                                           ),
                                         ),
                                         const SizedBox(height: 10),
                                         Text(
-                                          _wishListController.model.value.wishlist![index].pName.toString(),
-                                          style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16),
+                                          _wishListController.model.value
+                                              .wishlist![index].pName
+                                              .toString(),
+                                          style: GoogleFonts.poppins(
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16),
                                           maxLines: 1,
                                           overflow: TextOverflow.ellipsis,
                                           softWrap: true,
                                         ),
                                         Text(
-                                          _wishListController.model.value.wishlist![index].shortDescription != null ?
-                                          _wishListController.model.value.wishlist![index].shortDescription ?? ''
-                                              :   _wishListController.model.value.wishlist![index].longDescription ?? '',
+                                          _wishListController
+                                                      .model
+                                                      .value
+                                                      .wishlist![index]
+                                                      .shortDescription !=
+                                                  null
+                                              ? _wishListController
+                                                      .model
+                                                      .value
+                                                      .wishlist![index]
+                                                      .shortDescription ??
+                                                  ''
+                                              : _wishListController
+                                                      .model
+                                                      .value
+                                                      .wishlist![index]
+                                                      .longDescription ??
+                                                  '',
                                           maxLines: 2,
-                                          style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w400, color: const Color(0xFF19313C)),
+                                          style: GoogleFonts.poppins(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400,
+                                              color: const Color(0xFF19313C)),
                                         ),
-                                        if (_wishListController.model.value.wishlist![index].inStock != '-1')
+                                        if (_wishListController.model.value
+                                                .wishlist![index].inStock !=
+                                            '-1')
                                           Text(
-                                            _wishListController.model.value.wishlist![index].inStock.toString(),
+                                            _wishListController.model.value
+                                                .wishlist![index].inStock
+                                                .toString(),
                                             style: GoogleFonts.poppins(
-                                                color: const Color(0xff858484), fontSize: 16),
+                                                color: const Color(0xff858484),
+                                                fontSize: 16),
                                           ),
-                                        if (_wishListController.model.value.wishlist![index].inStock != '-1')
+                                        if (_wishListController.model.value
+                                                .wishlist![index].inStock !=
+                                            '-1')
                                           const SizedBox(height: 5),
                                         Spacer(),
                                         Row(
                                           children: [
-                                            if (_wishListController.model.value.wishlist![index].discountPrice.toString() !=
-                                                _wishListController.model.value.wishlist![index].pPrice.toString())
+                                            if (_wishListController
+                                                    .model
+                                                    .value
+                                                    .wishlist![index]
+                                                    .discountPrice
+                                                    .toString() !=
+                                                _wishListController.model.value
+                                                    .wishlist![index].pPrice
+                                                    .toString())
                                               Flexible(
                                                 child: Text.rich(
-                                                  profileController.selectedLAnguage.value == "English"
+                                                  profileController
+                                                              .selectedLAnguage
+                                                              .value ==
+                                                          "English"
                                                       ? TextSpan(
-                                                    text:
-                                                    '${_wishListController.model.value.wishlist![index].pPrice.toString().split('.')[0]}.',
-                                                    style: GoogleFonts.poppins(
-                                                        decorationColor: Colors.red,
-                                                        decorationThickness: 2,
-                                                        decoration: TextDecoration.lineThrough,
-                                                        color: const Color(0xff19313B),
-                                                        fontSize: 24,
-                                                        fontWeight: FontWeight.w600),
-                                                    children: [
-                                                      WidgetSpan(
-                                                        alignment: PlaceholderAlignment.middle,
-                                                        child: Column(
-                                                          mainAxisAlignment: MainAxisAlignment.start,
+                                                          text:
+                                                              '${_wishListController.model.value.wishlist![index].pPrice.toString().split('.')[0]}.',
+                                                          style: GoogleFonts.poppins(
+                                                              decorationColor:
+                                                                  Colors.red,
+                                                              decorationThickness:
+                                                                  2,
+                                                              decoration:
+                                                                  TextDecoration
+                                                                      .lineThrough,
+                                                              color: const Color(
+                                                                  0xff19313B),
+                                                              fontSize: 24,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w600),
                                                           children: [
-                                                            const Text(
-                                                              'KWD',
-                                                              style: TextStyle(
-                                                                fontSize: 8,
-                                                                fontWeight: FontWeight.w500,
-                                                                color: Color(0xFF19313B),
-                                                              ),
-                                                            ),
-                                                            InkWell(
-                                                              onTap: () {},
-                                                              child: Text(
-                                                                '${_wishListController.model.value.wishlist![index].pPrice.toString().split('.')[1]}',
-                                                                style: GoogleFonts.poppins(
-                                                                    decorationColor: Colors.red,
-                                                                    decorationThickness: 2,
-                                                                    color: const Color(0xff19313B),
-                                                                    fontSize: 8,
-                                                                    fontWeight: FontWeight.w600),
+                                                            WidgetSpan(
+                                                              alignment:
+                                                                  PlaceholderAlignment
+                                                                      .middle,
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  const Text(
+                                                                    'KWD',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          8,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Color(
+                                                                          0xFF19313B),
+                                                                    ),
+                                                                  ),
+                                                                  InkWell(
+                                                                    onTap:
+                                                                        () {},
+                                                                    child: Text(
+                                                                      '${_wishListController.model.value.wishlist![index].pPrice.toString().split('.')[1]}',
+                                                                      style: GoogleFonts.poppins(
+                                                                          decorationColor: Colors
+                                                                              .red,
+                                                                          decorationThickness:
+                                                                              2,
+                                                                          color: const Color(
+                                                                              0xff19313B),
+                                                                          fontSize:
+                                                                              8,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ),
                                                           ],
-                                                        ),
-                                                      ),
-                                                    ],
-                                                  )
+                                                        )
                                                       : TextSpan(
-                                                    children: [
-                                                      WidgetSpan(
-                                                        alignment: PlaceholderAlignment.bottom,
-                                                        child: Column(
-                                                          mainAxisAlignment: MainAxisAlignment.start,
                                                           children: [
-                                                            const Text(
-                                                              'KWD',
-                                                              style: TextStyle(
-                                                                fontSize: 8,
-                                                                fontWeight: FontWeight.w500,
-                                                                color: Color(0xFF19313B),
+                                                            WidgetSpan(
+                                                              alignment:
+                                                                  PlaceholderAlignment
+                                                                      .bottom,
+                                                              child: Column(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  const Text(
+                                                                    'KWD',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          8,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      color: Color(
+                                                                          0xFF19313B),
+                                                                    ),
+                                                                  ),
+                                                                  InkWell(
+                                                                    onTap:
+                                                                        () {},
+                                                                    child: Text(
+                                                                      '${_wishListController.model.value.wishlist![index].pPrice.toString().split('.')[1]}',
+                                                                      style: GoogleFonts.poppins(
+                                                                          decorationColor: Colors
+                                                                              .red,
+                                                                          decorationThickness:
+                                                                              2,
+                                                                          color: const Color(
+                                                                              0xff19313B),
+                                                                          fontSize:
+                                                                              8,
+                                                                          fontWeight:
+                                                                              FontWeight.w600),
+                                                                    ),
+                                                                  ),
+                                                                ],
                                                               ),
                                                             ),
-                                                            InkWell(
-                                                              onTap: () {},
-                                                              child: Text(
-                                                                '${_wishListController.model.value.wishlist![index].pPrice.toString().split('.')[1]}',
-                                                                style: GoogleFonts.poppins(
-                                                                    decorationColor: Colors.red,
-                                                                    decorationThickness: 2,
-                                                                    color: const Color(0xff19313B),
-                                                                    fontSize: 8,
-                                                                    fontWeight: FontWeight.w600),
-                                                              ),
-                                                            ),
+                                                            TextSpan(
+                                                              text:
+                                                                  '.${_wishListController.model.value.wishlist![index].pPrice.toString().split('.')[0]}',
+                                                              style: GoogleFonts.poppins(
+                                                                  decorationColor:
+                                                                      Colors
+                                                                          .red,
+                                                                  decorationThickness:
+                                                                      2,
+                                                                  decoration:
+                                                                      TextDecoration
+                                                                          .lineThrough,
+                                                                  color: const Color(
+                                                                      0xff19313B),
+                                                                  fontSize: 24,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600),
+                                                            )
                                                           ],
                                                         ),
-                                                      ),
-                                                      TextSpan(
-                                                        text:
-                                                        '.${_wishListController.model.value.wishlist![index].pPrice.toString().split('.')[0]}',
-                                                        style: GoogleFonts.poppins(
-                                                            decorationColor: Colors.red,
-                                                            decorationThickness: 2,
-                                                            decoration: TextDecoration.lineThrough,
-                                                            color: const Color(0xff19313B),
-                                                            fontSize: 24,
-                                                            fontWeight: FontWeight.w600),
-                                                      )
-                                                    ],
-                                                  ),
                                                 ),
                                               ),
                                             const SizedBox(width: 6),
                                             Flexible(
                                               child: Text.rich(
-                                                profileController.selectedLAnguage.value == "English"
+                                                profileController
+                                                            .selectedLAnguage
+                                                            .value ==
+                                                        "English"
                                                     ? TextSpan(
-                                                  text:
-                                                  '${_wishListController.model.value.wishlist![index].discountPrice.toString().split('.')[0]}.',
-                                                  style: GoogleFonts.poppins(
-                                                      color: const Color(0xff19313B),
-                                                      fontSize: 24,
-                                                      fontWeight: FontWeight.w600),
-                                                  children: [
-                                                    WidgetSpan(
-                                                      alignment: PlaceholderAlignment.middle,
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        text:
+                                                            '${_wishListController.model.value.wishlist![index].discountPrice.toString().split('.')[0]}.',
+                                                        style: GoogleFonts.poppins(
+                                                            color: const Color(
+                                                                0xff19313B),
+                                                            fontSize: 24,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .w600),
                                                         children: [
-                                                          const Text(
-                                                            'KWD',
-                                                            style: TextStyle(
-                                                              fontSize: 8,
-                                                              fontWeight: FontWeight.w500,
-                                                              color: Color(0xFF19313B),
-                                                            ),
-                                                          ),
-                                                          InkWell(
-                                                            onTap: () {},
-                                                            child: Text(
-                                                              '${_wishListController.model.value.wishlist![index].discountPrice.toString().split('.')[1]}',
-                                                              style: GoogleFonts.poppins(
-                                                                  color: const Color(0xff19313B),
-                                                                  fontSize: 8,
-                                                                  fontWeight: FontWeight.w600),
+                                                          WidgetSpan(
+                                                            alignment:
+                                                                PlaceholderAlignment
+                                                                    .middle,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                const Text(
+                                                                  'KWD',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize: 8,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Color(
+                                                                        0xFF19313B),
+                                                                  ),
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () {},
+                                                                  child: Text(
+                                                                    '${_wishListController.model.value.wishlist![index].discountPrice.toString().split('.')[1]}',
+                                                                    style: GoogleFonts.poppins(
+                                                                        color: const Color(
+                                                                            0xff19313B),
+                                                                        fontSize:
+                                                                            8,
+                                                                        fontWeight:
+                                                                            FontWeight.w600),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
                                                         ],
-                                                      ),
-                                                    ),
-                                                  ],
-                                                )
+                                                      )
                                                     : TextSpan(
-                                                  children: [
-                                                    WidgetSpan(
-                                                      alignment: PlaceholderAlignment.bottom,
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
                                                         children: [
-                                                          const Text(
-                                                            'KWD',
-                                                            style: TextStyle(
-                                                              fontSize: 8,
-                                                              fontWeight: FontWeight.w500,
-                                                              color: Color(0xFF19313B),
+                                                          WidgetSpan(
+                                                            alignment:
+                                                                PlaceholderAlignment
+                                                                    .bottom,
+                                                            child: Column(
+                                                              mainAxisAlignment:
+                                                                  MainAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                const Text(
+                                                                  'KWD',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize: 8,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w500,
+                                                                    color: Color(
+                                                                        0xFF19313B),
+                                                                  ),
+                                                                ),
+                                                                InkWell(
+                                                                  onTap: () {},
+                                                                  child: Text(
+                                                                    '${_wishListController.model.value.wishlist![index].discountPrice.toString().split('.')[1]}',
+                                                                    style: GoogleFonts.poppins(
+                                                                        color: const Color(
+                                                                            0xff19313B),
+                                                                        fontSize:
+                                                                            8,
+                                                                        fontWeight:
+                                                                            FontWeight.w600),
+                                                                  ),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
-                                                          InkWell(
-                                                            onTap: () {},
-                                                            child: Text(
-                                                              '${_wishListController.model.value.wishlist![index].discountPrice.toString().split('.')[1]}',
-                                                              style: GoogleFonts.poppins(
-                                                                  color: const Color(0xff19313B),
-                                                                  fontSize: 8,
-                                                                  fontWeight: FontWeight.w600),
-                                                            ),
-                                                          ),
+                                                          TextSpan(
+                                                            text:
+                                                                '.${_wishListController.model.value.wishlist![index].discountPrice.toString().split('.')[0]}',
+                                                            style: GoogleFonts.poppins(
+                                                                color: const Color(
+                                                                    0xff19313B),
+                                                                fontSize: 24,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600),
+                                                          )
                                                         ],
                                                       ),
-                                                    ),
-                                                    TextSpan(
-                                                      text:
-                                                      '.${_wishListController.model.value.wishlist![index].discountPrice.toString().split('.')[0]}',
-                                                      style: GoogleFonts.poppins(
-                                                          color: const Color(0xff19313B),
-                                                          fontSize: 24,
-                                                          fontWeight: FontWeight.w600),
-                                                    )
-                                                  ],
-                                                ),
                                               ),
                                             ),
                                           ],

@@ -605,9 +605,9 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           centerTitle: true,
-          actions: [
+          actions: const[
             // ...vendorPartner(),
-            const CartBagCard(),
+           CartBagCard(),
           ],
           bottom: PreferredSize(
             preferredSize: search.value == true ? Size.fromHeight(50.0) : Size.fromHeight(0.0),

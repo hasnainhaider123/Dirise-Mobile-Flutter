@@ -56,7 +56,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               .trim();
       map['phone'] = phoneController.text.trim();
       map['referral_email'] = referralEmailController.text.trim();
-      map['country_id'] = profileController.selectedCountry!.id.toString();
+      map['country_id'] = profileController.selectedCountry!.name.toString();
       map['state_id'] = profileController.selectedState!.stateId.toString();
       map['phone_country_code'] = code12.toString();
       if (profileController.selectedCity != null) {
@@ -66,6 +66,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
       map['street_name'] = addressController.text.trim();
       // log('dsgsfhdfgh${profileController.selectedCity!.cityId.toString()}');
+      log('Controller Values: First Name: ${firstNameController.text.trim()}, Last Name: ${lastNameController.text.trim()}, Phone: ${phoneController.text.trim()}, Referral Email: ${referralEmailController.text.trim()}, Country ID: ${profileController.selectedCountry!.id}, State ID: ${profileController.selectedState!.stateId}, Phone Country Code: $code12, City ID: ${map['city_id']}, Street Name: ${addressController.text.trim()}');
+
       Map<String, File> gg = {};
       if (image.path.isNotEmpty) {
         gg["profile_image"] = image;
@@ -89,7 +91,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           // log('dsgsfhdfgh${profileController.selectedCity!.cityId.toString()}');
           // Get.offNamed(ProfileScreen.route);
           Get.back();
-          Get.back();
+       //   Get.back();
         } else {
           Get.back();
         }
