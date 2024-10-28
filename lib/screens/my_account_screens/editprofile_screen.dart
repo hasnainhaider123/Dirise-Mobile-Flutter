@@ -56,9 +56,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               .trim();
       map['phone'] = phoneController.text.trim();
       map['referral_email'] = referralEmailController.text.trim();
-      map['country_id'] = profileController.selectedCountry!.name.toString();
+      map['country_id'] = profileController.selectedCountry!.id.toString();
       map['state_id'] = profileController.selectedState!.stateId.toString();
-      map['phone_country_code'] = code12.toString();
+      map['phone_country_code'] =
+          code12 ?? profileController.model.user!.phoneCountryCode ?? '';
       if (profileController.selectedCity != null) {
         map['city_id'] = profileController.selectedCity!.cityId.toString();
       } else {
@@ -66,8 +67,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
       map['street_name'] = addressController.text.trim();
       // log('dsgsfhdfgh${profileController.selectedCity!.cityId.toString()}');
-      log('Controller Values: First Name: ${firstNameController.text.trim()}, Last Name: ${lastNameController.text.trim()}, Phone: ${phoneController.text.trim()}, Referral Email: ${referralEmailController.text.trim()}, Country ID: ${profileController.selectedCountry!.id}, State ID: ${profileController.selectedState!.stateId}, Phone Country Code: $code12, City ID: ${map['city_id']}, Street Name: ${addressController.text.trim()}');
-
       Map<String, File> gg = {};
       if (image.path.isNotEmpty) {
         gg["profile_image"] = image;
@@ -91,7 +90,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           // log('dsgsfhdfgh${profileController.selectedCity!.cityId.toString()}');
           // Get.offNamed(ProfileScreen.route);
           Get.back();
-       //   Get.back();
+          Get.back();
         } else {
           Get.back();
         }
@@ -301,6 +300,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   String code = "";
   String code12 = '';
+
   @override
   void initState() {
     super.initState();
@@ -321,7 +321,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           profileController.model.user!.countryCode.toString();
       profileController.code1 =
           profileController.model.user!.countryCode.toString();
-      print("Phone Country Code-----: ${code.toString()}");
+      print("Phone Country Code-----: ${profileController.code}");
       print("Country Code-----: ${profileController.code}");
       if (profileController.model.user!.country_id != null) {
         profileController.selectedCountry = Country(
@@ -594,7 +594,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     focusedBorder: const OutlineInputBorder(
                         borderSide: BorderSide(color: AppTheme.shadowColor))),
                 initialCountryCode:
-                    profileController.model.user!.phoneCountryCode ?? 'AF',
+                    profileController.model.user!.phoneCountryCode ?? 'PK',
                 initialValue: phoneController.text.isNotEmpty
                     ? phoneController.text
                     : profileController.model.user!.phone,

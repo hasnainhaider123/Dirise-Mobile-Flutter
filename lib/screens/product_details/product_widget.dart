@@ -538,7 +538,7 @@ class _ProductUIState extends State<ProductUI> {
                             isLiked: wishListController.favoriteItems
                                 .contains(widget.productElement.id.toString()),
                           );
-                        }),
+                        },),
                       ],
                     ),
                     const SizedBox(

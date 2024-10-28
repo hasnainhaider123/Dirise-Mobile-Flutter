@@ -50,15 +50,16 @@ class _MyAppState extends State<MyApp> {
         child: child!,
       ),
       theme: ThemeData(
-          fontFamily: GoogleFonts.poppins().fontFamily,
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(
-            seedColor: AppTheme.buttonColor,
-            surfaceTint: Colors.white,
-            background: Colors.white,
-          ),
-          cardTheme: const CardTheme(
-              color: Colors.white, surfaceTintColor: Colors.white)),
+        fontFamily: GoogleFonts.poppins().fontFamily,
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: AppTheme.buttonColor,
+          surfaceTint: Colors.white,
+          background: Colors.white,
+        ),
+        cardTheme: const CardTheme(
+            color: Colors.white, surfaceTintColor: Colors.white),
+      ),
       themeMode: ThemeMode.light,
       debugShowCheckedModeBanner: false,
       initialRoute: "/",
