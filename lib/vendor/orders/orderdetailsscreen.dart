@@ -58,12 +58,24 @@ class _OrderDetailsState extends State<OrderDetails> {
     }).then((value) {
       singleOrder = ModelSingleOrderResponse.fromJson(jsonDecode(value));
       log('valueee${singleOrder.toJson()}');
+      if (singleOrder.status == false) {
+        setState(() {
+          orderExist = false;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          orderExist = true;
+        });
+      }
       statusValue = order.status;
       print('valala ${statusValue.toString()}');
       setState(() {});
     });
   }
 
+  bool orderExist = false;
+  bool isLoading = true;
   _makingPhoneCall(call) async {
     var url = Uri.parse(call);
     if (await canLaunchUrl(url)) {
@@ -144,14 +156,11 @@ class _OrderDetailsState extends State<OrderDetails> {
           CreateShipmentModel.fromJson(jsonDecode(value));
       if (createShipmentModel.value.status == true) {
         showToastCenter(createShipmentModel.value.message.toString());
-        
       } else {
         // createShipmentModelError.value = CreateShipmentModelError.fromJson(jsonDecode(value));
         createShipmentModel.value =
             CreateShipmentModel.fromJson(jsonDecode(value));
         showToastCenter(createShipmentModel.value.message.toString());
-      
-      
       }
     });
   }
@@ -463,6 +472,7 @@ class _OrderDetailsState extends State<OrderDetails> {
   final profileController = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
+    print('status value ' + statusValue);
     return Scaffold(
         appBar: AppBar(
           elevation: 0,
@@ -494,511 +504,19 @@ class _OrderDetailsState extends State<OrderDetails> {
                       )),
           ),
         ),
-        body: singleOrder.order != null
-            ? Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: AddSize.padding16, vertical: AddSize.padding10),
-                child: SingleChildScrollView(
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color(0xFF37C666).withOpacity(0.10),
-                                  offset: const Offset(
-                                    .1,
-                                    .1,
-                                  ),
-                                  blurRadius: 20.0,
-                                  spreadRadius: 1.0,
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                                padding: const EdgeInsets.all(18.0)
-                                    .copyWith(bottom: 8),
-                                child: Column(children: [
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/orderdetails.png',
-                                        height: 18,
-                                      ),
-                                      addWidth(15),
-                                      Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              '${'Order ID'.tr}: ${order.id.toString()}',
-                                              style: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 15,
-                                                  color: AppTheme.buttonColor),
-                                            ),
-                                            Text(
-                                              order.createdDate ?? '',
-                                              style: GoogleFonts.poppins(
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 12,
-                                                  color: Colors.grey.shade800),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      DropdownButton<String>(
-                                        icon: const Icon(
-                                            Icons.keyboard_arrow_down),
-                                        iconDisabledColor:
-                                            const Color(0xff97949A),
-                                        iconEnabledColor: AppTheme.buttonColor,
-                                        value: statusValue,
-                                        isDense: true,
-                                        onChanged: (String? value) {
-                                          if (value == null) return;
-                                          statusValue = value;
-                                          setState(() {});
-                                        },
-                                        items: productTypes
-                                            .map((label) => DropdownMenuItem(
-                                                  value: label,
-                                                  child: Text(
-                                                    label.toString(),
-                                                    style: GoogleFonts.poppins(
-                                                      color: const Color(
-                                                          0xff463B57),
-                                                    ),
-                                                  ),
-                                                ))
-                                            .toList(),
-                                        // alignment: Alignment.topLeft,
-                                      ),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 13,
-                                  ),
-                                  ...order.orderItem!
-                                      .map((e) => Column(
-                                            children: [
-                                              Padding(
-                                                padding: const EdgeInsets.only(
-                                                    bottom: 2),
-                                                child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                              e.productName
-                                                                  .toString(),
-                                                              style: GoogleFonts.poppins(
-                                                                  color: const Color(
-                                                                      0xFF303C5E),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  fontSize: 16),
-                                                            ),
-                                                            addHeight(5),
-                                                            Text(
-                                                              '${e.quantity.toString()} ${'piece'.tr}',
-                                                              style: GoogleFonts.poppins(
-                                                                  color: const Color(
-                                                                      0xFF6A8289),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w500,
-                                                                  fontSize: 14),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Text(
-                                                        "${(e.productPrice.toString().toNum * e.quantity.toString().toNum).toStringAsFixed(2)} KWD",
-                                                        style:
-                                                            GoogleFonts.poppins(
-                                                                color: AppTheme
-                                                                    .primaryColor,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 16),
-                                                      ),
-                                                    ]),
-                                              ),
-                                              const Divider(),
-                                              const SizedBox(
-                                                height: 10,
-                                              )
-                                            ],
-                                          ))
-                                      .toList(),
-                                ]))),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Text(
-                          'Customer Detail'.tr,
-                          style: GoogleFonts.poppins(
-                              color: const Color(0xff303C5E),
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color(0xFF37C666).withOpacity(0.10),
-                                  offset: const Offset(
-                                    .1,
-                                    .1,
-                                  ),
-                                  blurRadius: 20.0,
-                                  spreadRadius: 1.0,
-                                ),
-                              ],
-                            ),
-                            child: Column(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: AddSize.screenWidth * 0.02,
-                                      vertical: AddSize.screenHeight * .005),
-                                  child: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: AddSize.padding15,
-                                        vertical: AddSize.padding15),
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Customer Name".tr,
-                                                    style: GoogleFonts.poppins(
-                                                        color: const Color(
-                                                            0xff486769),
-                                                        fontWeight:
-                                                            FontWeight.w300,
-                                                        fontSize: 14),
-                                                  ),
-                                                  Text(
-                                                    order.user != null
-                                                        ? order.user!.firstName
-                                                            .toString()
-                                                        : order.orderMeta!
-                                                                .billingFirstName ??
-                                                            order.orderMeta!
-                                                                .billingLastName ??
-                                                            "",
-                                                    style: GoogleFonts.poppins(
-                                                        height: 1.5,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 16),
-                                                  ),
-                                                ],
-                                              ),
-                                            ]),
-                                            Container(
-                                              height: 37,
-                                              width: 37,
-                                              decoration: const ShapeDecoration(
-                                                  color: Color(0xFFFE7E73),
-                                                  shape: CircleBorder()),
-                                              child: const Center(
-                                                  child: Icon(
-                                                Icons.person_rounded,
-                                                color: Colors.white,
-                                                size: 20,
-                                              )),
-                                            ),
-                                          ],
-                                        ),
-                                        const Divider(),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Row(children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Customer Number".tr,
-                                                    style: GoogleFonts.poppins(
-                                                        color: const Color(
-                                                            0xff486769),
-                                                        fontWeight:
-                                                            FontWeight.w300,
-                                                        fontSize: 14),
-                                                  ),
-                                                  Text(
-                                                    order.orderMeta!
-                                                            .billingPhone ??
-                                                        order.user!.phone ??
-                                                        '',
-                                                    style: GoogleFonts.poppins(
-                                                        height: 1.5,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 16),
-                                                  ),
-                                                ],
-                                              ),
-                                            ]),
-                                            GestureDetector(
-                                              onTap: () {
-                                                if (order.orderMeta!
-                                                            .billingPhone !=
-                                                        null &&
-                                                    order
-                                                        .orderMeta!.billingPhone
-                                                        .toString()
-                                                        .isNotEmpty) {
-                                                  _makingPhoneCall(
-                                                      "tel:${order.orderMeta!.billingPhone}");
-                                                } else {
-                                                  _makingPhoneCall(
-                                                      "tel:${order.user!.phone}");
-                                                }
-                                              },
-                                              child: Container(
-                                                  height: 37,
-                                                  width: 37,
-                                                  decoration:
-                                                      const ShapeDecoration(
-                                                          color:
-                                                              Color(0xFF71E189),
-                                                          shape:
-                                                              CircleBorder()),
-                                                  child: const Center(
-                                                      child: Icon(
-                                                    Icons.phone,
-                                                    color: Colors.white,
-                                                    size: 20,
-                                                  ))),
-                                            ),
-                                          ],
-                                        ),
-                                        const Divider(),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    "Customer Address".tr,
-                                                    style: GoogleFonts.poppins(
-                                                        color: const Color(
-                                                            0xff486769),
-                                                        fontWeight:
-                                                            FontWeight.w300,
-                                                        fontSize: 14),
-                                                  ),
-                                                  Text(
-                                                    '${order.orderMeta!.shippingCity ?? order.orderMeta!.billingCity ?? ''}, ${order.orderMeta!.shippingState ?? '' ?? order.orderMeta!.billingState ?? ''}, ${order.orderMeta!.shippingCountry ?? order.orderMeta!.billingCountry ?? ''}, ${order.orderMeta!.shippingZipCode ?? order.orderMeta!.billingZipCode ?? ''}',
-                                                    style: GoogleFonts.poppins(
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 15),
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 5,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: Container(
-                                                height: 37,
-                                                width: 37,
-                                                decoration:
-                                                    const ShapeDecoration(
-                                                        color:
-                                                            Color(0xFF7ED957),
-                                                        shape: CircleBorder()),
-                                                child: const Center(
-                                                    child: Icon(
-                                                  Icons.location_on,
-                                                  color: Colors.white,
-                                                  size: 20,
-                                                )),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 15),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5),
-                              boxShadow: [
-                                BoxShadow(
-                                  color:
-                                      const Color(0xFF37C666).withOpacity(0.10),
-                                  offset: const Offset(
-                                    .1,
-                                    .1,
-                                  ),
-                                  blurRadius: 20.0,
-                                  spreadRadius: 1.0,
-                                ),
-                              ],
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 15, vertical: 15),
-                              child: Column(
-                                children: [
-                                  // order.couponCode
-                                  if (order.couponCode != null) ...[
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
-                                            'Coupon Code:'.tr,
-                                            style: GoogleFonts.poppins(
-                                              color: const Color(0xFF293044),
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ),
-                                        Text(
-                                          order.couponCode.toString(),
-                                          style: GoogleFonts.poppins(
-                                            color: const Color(0xFF797F90),
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      height: 12,
-                                    ),
-                                  ],
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'Subtotal:'.tr,
-                                          style: GoogleFonts.poppins(
-                                            color: const Color(0xFF293044),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        "KWD ${order.orderMeta!.subtotalPrice}",
-                                        style: GoogleFonts.poppins(
-                                          color: const Color(0xFF797F90),
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 12,
-                                  ),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'Total:'.tr,
-                                          style: GoogleFonts.poppins(
-                                            color: const Color(0xFF293044),
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        "KWD ${order.orderMeta!.totalPrice}",
-                                        style: GoogleFonts.poppins(
-                                          color: const Color(0xFF797F90),
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w400,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        singleOrder.order!.orderShipping == null
-                            ? const SizedBox.shrink()
-                            : Text(
-                                'Shipping Detail'.tr,
-                                style: GoogleFonts.poppins(
-                                    color: const Color(0xff303C5E),
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                        const SizedBox(
-                          height: 16,
-                        ),
-                        singleOrder.order!.orderShipping != null
-                            ? Container(
+        body: singleOrder.order == null && isLoading
+            ? LoadingAnimation()
+            : !orderExist
+                ? Center(child: Text('Order does not exist'))
+                : Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: AddSize.padding16,
+                        vertical: AddSize.padding10),
+                    child: SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12),
@@ -1015,513 +533,1042 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     ),
                                   ],
                                 ),
-                                child: Obx(() {
-                                  return Column(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal:
-                                                AddSize.screenWidth * 0.02,
-                                            vertical:
-                                                AddSize.screenHeight * .005),
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: AddSize.padding15,
-                                              vertical: AddSize.padding15),
-                                          child: Column(
-                                            children: [
-                                              10.spaceY,
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Name".tr,
-                                                    style: GoogleFonts.poppins(
-                                                      color: const Color(
-                                                          0xFF293044),
-                                                      fontSize: 15,
+                                child: Padding(
+                                    padding: const EdgeInsets.all(18.0)
+                                        .copyWith(bottom: 8),
+                                    child: Column(children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Image.asset(
+                                            'assets/images/orderdetails.png',
+                                            height: 18,
+                                          ),
+                                          addWidth(15),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  '${'Order ID'.tr}: ${order!.id.toString()}',
+                                                  style: GoogleFonts.poppins(
                                                       fontWeight:
                                                           FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                  singleOrder.order!
-                                                              .orderShipping !=
-                                                          null
-                                                      ? Text(
-                                                          singleOrder
-                                                              .order!
-                                                              .orderShipping!
-                                                              .shippingTitle!
-                                                              .toString(),
-                                                          style: GoogleFonts.poppins(
-                                                              color: const Color(
-                                                                  0xff486769),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w300,
-                                                              fontSize: 14),
-                                                        )
-                                                      : Text(
-                                                          '',
-                                                          style: GoogleFonts.poppins(
-                                                              color: const Color(
-                                                                  0xff486769),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w300,
-                                                              fontSize: 14),
-                                                        ),
-                                                ],
-                                              ),
-                                              10.spaceY,
-                                              const Divider(),
-                                              10.spaceY,
-                                              Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
-                                                children: [
-                                                  Text(
-                                                    "Price".tr,
-                                                    style: GoogleFonts.poppins(
-                                                      color: const Color(
-                                                          0xFF293044),
                                                       fontSize: 15,
+                                                      color:
+                                                          AppTheme.buttonColor),
+                                                ),
+                                                Text(
+                                                  order!.createdDate ?? '',
+                                                  style: GoogleFonts.poppins(
                                                       fontWeight:
-                                                          FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                  singleOrder.order!
-                                                              .orderShipping !=
-                                                          null
-                                                      ? Text(
-                                                          'KWD ${singleOrder.order!.orderShipping!.shippingPrice!.toString()}',
-                                                          style: GoogleFonts.poppins(
-                                                              color: const Color(
-                                                                  0xff486769),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w300,
-                                                              fontSize: 14),
-                                                        )
-                                                      : Text(
-                                                          '',
-                                                          style: GoogleFonts.poppins(
-                                                              color: const Color(
-                                                                  0xff486769),
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w300,
-                                                              fontSize: 14),
+                                                          FontWeight.w500,
+                                                      fontSize: 12,
+                                                      color:
+                                                          Colors.grey.shade800),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          DropdownButton<String>(
+                                            icon: const Icon(
+                                                Icons.keyboard_arrow_down),
+                                            iconDisabledColor:
+                                                const Color(0xff97949A),
+                                            iconEnabledColor:
+                                                AppTheme.buttonColor,
+                                            value: statusValue,
+                                            isDense: true,
+                                            onChanged: (String? value) {
+                                              if (value == null) return;
+                                              statusValue = value;
+                                              setState(() {});
+                                            },
+                                            items: productTypes
+                                                .map((label) =>
+                                                    DropdownMenuItem(
+                                                      value: label,
+                                                      child: Text(
+                                                        label.toString(),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: const Color(
+                                                              0xff463B57),
                                                         ),
-                                                ],
-                                              ),
-                                              10.spaceY,
-                                              const Divider(),
-                                              if (createShipmentModel
-                                                      .value.data !=
-                                                  null)
-                                                Obx(() {
-                                                  return Column(
-                                                    children: [
-                                                      10.spaceY,
-                                                      Row(
+                                                      ),
+                                                    ))
+                                                .toList(),
+                                            // alignment: Alignment.topLeft,
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 13,
+                                      ),
+                                      ...order!.orderItem!
+                                          .map((e) => Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            bottom: 2),
+                                                    child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .spaceBetween,
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
-                                                          Text(
-                                                            "Tracking ID".tr,
-                                                            style: GoogleFonts
-                                                                .poppins(
-                                                              color: const Color(
-                                                                  0xFF293044),
-                                                              fontSize: 15,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w600,
+                                                          Expanded(
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Text(
+                                                                  e.productName
+                                                                      .toString(),
+                                                                  style: GoogleFonts.poppins(
+                                                                      color: const Color(
+                                                                          0xFF303C5E),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w600,
+                                                                      fontSize:
+                                                                          16),
+                                                                ),
+                                                                addHeight(5),
+                                                                Text(
+                                                                  '${e.quantity.toString()} ${'piece'.tr}',
+                                                                  style: GoogleFonts.poppins(
+                                                                      color: const Color(
+                                                                          0xFF6A8289),
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w500,
+                                                                      fontSize:
+                                                                          14),
+                                                                ),
+                                                              ],
                                                             ),
                                                           ),
                                                           Text(
-                                                            createShipmentModel
-                                                                .value
-                                                                .data!
-                                                                .trackingNo
-                                                                .toString(),
+                                                            "${(e.productPrice.toString().toNum * e.quantity.toString().toNum).toStringAsFixed(2)} KWD",
                                                             style: GoogleFonts.poppins(
-                                                                color: const Color(
-                                                                    0xff486769),
+                                                                color: AppTheme
+                                                                    .primaryColor,
                                                                 fontWeight:
                                                                     FontWeight
-                                                                        .w300,
-                                                                fontSize: 14),
+                                                                        .w600,
+                                                                fontSize: 16),
                                                           ),
-                                                        ],
+                                                        ]),
+                                                  ),
+                                                  const Divider(),
+                                                  const SizedBox(
+                                                    height: 10,
+                                                  )
+                                                ],
+                                              ))
+                                          .toList(),
+                                    ]))),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              'Customer Detail'.tr,
+                              style: GoogleFonts.poppins(
+                                  color: const Color(0xff303C5E),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF37C666)
+                                          .withOpacity(0.10),
+                                      offset: const Offset(
+                                        .1,
+                                        .1,
+                                      ),
+                                      blurRadius: 20.0,
+                                      spreadRadius: 1.0,
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal:
+                                              AddSize.screenWidth * 0.02,
+                                          vertical:
+                                              AddSize.screenHeight * .005),
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: AddSize.padding15,
+                                            vertical: AddSize.padding15),
+                                        child: Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Customer Name".tr,
+                                                        style: GoogleFonts.poppins(
+                                                            color: const Color(
+                                                                0xff486769),
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                            fontSize: 14),
                                                       ),
-                                                      20.spaceY,
+                                                      Text(
+                                                        order!.user != null
+                                                            ? order!
+                                                                .user!.firstName
+                                                                .toString()
+                                                            : order!.orderMeta!
+                                                                    .billingFirstName ??
+                                                                order!
+                                                                    .orderMeta!
+                                                                    .billingLastName ??
+                                                                "",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                height: 1.5,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 16),
+                                                      ),
                                                     ],
-                                                  );
-                                                }),
-                                              createShipmentModel.value.data ==
-                                                      null
-                                                  ? Column(
-                                                      children: [
-                                                        containerShow1.value ==
-                                                                false
-                                                            ? Row(
-                                                                children: [
-                                                                  Expanded(
-                                                                    child: ElevatedButton(
-                                                                        onPressed: () {
-                                                                          // createShipment(orderId);
-                                                                          createShipment12121(
-                                                                              orderId);
-                                                                        },
-                                                                        style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
-                                                                        child: FittedBox(
-                                                                          fit: BoxFit
-                                                                              .scaleDown,
-                                                                          child:
-                                                                              Text(
-                                                                            "Create Shipment".tr,
-                                                                            style:
-                                                                                GoogleFonts.poppins(
-                                                                              color: Colors.white,
-                                                                              fontWeight: FontWeight.w600,
-                                                                              fontSize: 16,
-                                                                            ),
-                                                                            textAlign:
-                                                                                TextAlign.center,
-                                                                          ),
-                                                                        )),
-                                                                  ),
-                                                                  SizedBox(
-                                                                    width: 10,
-                                                                  ),
-                                                                  Expanded(
-                                                                    child: ElevatedButton(
-                                                                        onPressed: () {
-                                                                          // createShipment(orderId);
+                                                  ),
+                                                ]),
+                                                Container(
+                                                  height: 37,
+                                                  width: 37,
+                                                  decoration:
+                                                      const ShapeDecoration(
+                                                          color:
+                                                              Color(0xFFFE7E73),
+                                                          shape:
+                                                              CircleBorder()),
+                                                  child: const Center(
+                                                      child: Icon(
+                                                    Icons.person_rounded,
+                                                    color: Colors.white,
+                                                    size: 20,
+                                                  )),
+                                                ),
+                                              ],
+                                            ),
+                                            const Divider(),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Row(children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Customer Number".tr,
+                                                        style: GoogleFonts.poppins(
+                                                            color: const Color(
+                                                                0xff486769),
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                            fontSize: 14),
+                                                      ),
+                                                      Text(
+                                                        order!.orderMeta!
+                                                                .billingPhone ??
+                                                            order!
+                                                                .user!.phone ??
+                                                            '',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                height: 1.5,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 16),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ]),
+                                                GestureDetector(
+                                                  onTap: () {
+                                                    if (order!.orderMeta!
+                                                                .billingPhone !=
+                                                            null &&
+                                                        order!.orderMeta!
+                                                            .billingPhone
+                                                            .toString()
+                                                            .isNotEmpty) {
+                                                      _makingPhoneCall(
+                                                          "tel:${order!.orderMeta!.billingPhone}");
+                                                    } else {
+                                                      _makingPhoneCall(
+                                                          "tel:${order!.user!.phone}");
+                                                    }
+                                                  },
+                                                  child: Container(
+                                                      height: 37,
+                                                      width: 37,
+                                                      decoration:
+                                                          const ShapeDecoration(
+                                                              color: Color(
+                                                                  0xFF71E189),
+                                                              shape:
+                                                                  CircleBorder()),
+                                                      child: const Center(
+                                                          child: Icon(
+                                                        Icons.phone,
+                                                        color: Colors.white,
+                                                        size: 20,
+                                                      ))),
+                                                ),
+                                              ],
+                                            ),
+                                            const Divider(),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Expanded(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        "Customer Address".tr,
+                                                        style: GoogleFonts.poppins(
+                                                            color: const Color(
+                                                                0xff486769),
+                                                            fontWeight:
+                                                                FontWeight.w300,
+                                                            fontSize: 14),
+                                                      ),
+                                                      Text(
+                                                        '${order!.orderMeta!.shippingCity ?? order!.orderMeta!.billingCity ?? ''}, ${order!.orderMeta!.shippingState ?? '' ?? order!.orderMeta!.billingState ?? ''}, ${order!.orderMeta!.shippingCountry ?? order!.orderMeta!.billingCountry ?? ''}, ${order!.orderMeta!.shippingZipCode ?? order!.orderMeta!.billingZipCode ?? ''}',
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w600,
+                                                                fontSize: 15),
+                                                      ),
+                                                      const SizedBox(
+                                                        width: 5,
+                                                      ),
+                                                    ],
+                                                  ),
+                                                ),
+                                                GestureDetector(
+                                                  onTap: () {},
+                                                  child: Container(
+                                                    height: 37,
+                                                    width: 37,
+                                                    decoration:
+                                                        const ShapeDecoration(
+                                                            color: Color(
+                                                                0xFF7ED957),
+                                                            shape:
+                                                                CircleBorder()),
+                                                    child: const Center(
+                                                        child: Icon(
+                                                      Icons.location_on,
+                                                      color: Colors.white,
+                                                      size: 20,
+                                                    )),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                )),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 15),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: const Color(0xFF37C666)
+                                          .withOpacity(0.10),
+                                      offset: const Offset(
+                                        .1,
+                                        .1,
+                                      ),
+                                      blurRadius: 20.0,
+                                      spreadRadius: 1.0,
+                                    ),
+                                  ],
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 15),
+                                  child: Column(
+                                    children: [
+                                      // order.couponCode
+                                      if (order!.couponCode != null) ...[
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Expanded(
+                                              child: Text(
+                                                'Coupon Code:'.tr,
+                                                style: GoogleFonts.poppins(
+                                                  color:
+                                                      const Color(0xFF293044),
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                ),
+                                              ),
+                                            ),
+                                            Text(
+                                              order!.couponCode.toString(),
+                                              style: GoogleFonts.poppins(
+                                                color: const Color(0xFF797F90),
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 12,
+                                        ),
+                                      ],
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Subtotal:'.tr,
+                                              style: GoogleFonts.poppins(
+                                                color: const Color(0xFF293044),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            "KWD ${order!.orderMeta!.subtotalPrice}",
+                                            style: GoogleFonts.poppins(
+                                              color: const Color(0xFF797F90),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 12,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              'Total:'.tr,
+                                              style: GoogleFonts.poppins(
+                                                color: const Color(0xFF293044),
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w600,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            "KWD ${order!.orderMeta!.totalPrice}",
+                                            style: GoogleFonts.poppins(
+                                              color: const Color(0xFF797F90),
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          )
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            singleOrder.order!.orderShipping == null
+                                ? const SizedBox.shrink()
+                                : Text(
+                                    'Shipping Detail'.tr,
+                                    style: GoogleFonts.poppins(
+                                        color: const Color(0xff303C5E),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                            const SizedBox(
+                              height: 16,
+                            ),
+                            singleOrder.order!.orderShipping != null
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color(0xFF37C666)
+                                              .withOpacity(0.10),
+                                          offset: const Offset(
+                                            .1,
+                                            .1,
+                                          ),
+                                          blurRadius: 20.0,
+                                          spreadRadius: 1.0,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Obx(() {
+                                      return Column(
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.symmetric(
+                                                horizontal:
+                                                    AddSize.screenWidth * 0.02,
+                                                vertical: AddSize.screenHeight *
+                                                    .005),
+                                            child: Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: AddSize.padding15,
+                                                  vertical: AddSize.padding15),
+                                              child: Column(
+                                                children: [
+                                                  10.spaceY,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Name".tr,
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: const Color(
+                                                              0xFF293044),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                      singleOrder.order!
+                                                                  .orderShipping !=
+                                                              null
+                                                          ? Text(
+                                                              singleOrder
+                                                                  .order!
+                                                                  .orderShipping!
+                                                                  .shippingTitle!
+                                                                  .toString(),
+                                                              style: GoogleFonts.poppins(
+                                                                  color: const Color(
+                                                                      0xff486769),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300,
+                                                                  fontSize: 14),
+                                                            )
+                                                          : Text(
+                                                              '',
+                                                              style: GoogleFonts.poppins(
+                                                                  color: const Color(
+                                                                      0xff486769),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300,
+                                                                  fontSize: 14),
+                                                            ),
+                                                    ],
+                                                  ),
+                                                  10.spaceY,
+                                                  const Divider(),
+                                                  10.spaceY,
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "Price".tr,
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          color: const Color(
+                                                              0xFF293044),
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
+                                                      ),
+                                                      singleOrder.order!
+                                                                  .orderShipping !=
+                                                              null
+                                                          ? Text(
+                                                              'KWD ${singleOrder.order!.orderShipping!.shippingPrice!.toString()}',
+                                                              style: GoogleFonts.poppins(
+                                                                  color: const Color(
+                                                                      0xff486769),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300,
+                                                                  fontSize: 14),
+                                                            )
+                                                          : Text(
+                                                              '',
+                                                              style: GoogleFonts.poppins(
+                                                                  color: const Color(
+                                                                      0xff486769),
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w300,
+                                                                  fontSize: 14),
+                                                            ),
+                                                    ],
+                                                  ),
+                                                  10.spaceY,
+                                                  const Divider(),
+                                                  if (createShipmentModel
+                                                          .value.data !=
+                                                      null)
+                                                    Obx(() {
+                                                      return Column(
+                                                        children: [
+                                                          10.spaceY,
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .spaceBetween,
+                                                            children: [
+                                                              Text(
+                                                                "Tracking ID"
+                                                                    .tr,
+                                                                style:
+                                                                    GoogleFonts
+                                                                        .poppins(
+                                                                  color: const Color(
+                                                                      0xFF293044),
+                                                                  fontSize: 15,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                ),
+                                                              ),
+                                                              Text(
+                                                                createShipmentModel
+                                                                    .value
+                                                                    .data!
+                                                                    .trackingNo
+                                                                    .toString(),
+                                                                style: GoogleFonts.poppins(
+                                                                    color: const Color(
+                                                                        0xff486769),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w300,
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          20.spaceY,
+                                                        ],
+                                                      );
+                                                    }),
+                                                  createShipmentModel
+                                                              .value.data ==
+                                                          null
+                                                      ? Column(
+                                                          children: [
+                                                            containerShow1
+                                                                        .value ==
+                                                                    false
+                                                                ? Row(
+                                                                    children: [
+                                                                      Expanded(
+                                                                        child: ElevatedButton(
+                                                                            onPressed: () {
+                                                                              // createShipment(orderId);
+                                                                              createShipment12121(orderId);
+                                                                            },
+                                                                            style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
+                                                                            child: FittedBox(
+                                                                              fit: BoxFit.scaleDown,
+                                                                              child: Text(
+                                                                                "Create Shipment".tr,
+                                                                                style: GoogleFonts.poppins(
+                                                                                  color: Colors.white,
+                                                                                  fontWeight: FontWeight.w600,
+                                                                                  fontSize: 16,
+                                                                                ),
+                                                                                textAlign: TextAlign.center,
+                                                                              ),
+                                                                            )),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width:
+                                                                            10,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: ElevatedButton(
+                                                                            onPressed: () {
+                                                                              // createShipment(orderId);
 
-                                                                          setState(
-                                                                              () {
-                                                                            containerShow.value =
-                                                                                true;
-                                                                            containerShow1.value =
-                                                                                true;
-                                                                          });
-                                                                          print(
-                                                                              containerShow.value);
-                                                                        },
-                                                                        style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
-                                                                        child: Text(
-                                                                          "Edit Shipment"
-                                                                              .tr,
-                                                                          style:
-                                                                              GoogleFonts.poppins(
-                                                                            color:
-                                                                                Colors.white,
-                                                                            fontWeight:
-                                                                                FontWeight.w600,
-                                                                            fontSize:
-                                                                                16,
-                                                                          ),
-                                                                          textAlign:
-                                                                              TextAlign.center,
-                                                                        )),
-                                                                  ),
-                                                                ],
-                                                              )
-                                                            : ElevatedButton(
-                                                                onPressed: () {
-                                                                  // createShipment(orderId);
+                                                                              setState(() {
+                                                                                containerShow.value = true;
+                                                                                containerShow1.value = true;
+                                                                              });
+                                                                              print(containerShow.value);
+                                                                            },
+                                                                            style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
+                                                                            child: Text(
+                                                                              "Edit Shipment".tr,
+                                                                              style: GoogleFonts.poppins(
+                                                                                color: Colors.white,
+                                                                                fontWeight: FontWeight.w600,
+                                                                                fontSize: 16,
+                                                                              ),
+                                                                              textAlign: TextAlign.center,
+                                                                            )),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                : ElevatedButton(
+                                                                    onPressed:
+                                                                        () {
+                                                                      // createShipment(orderId);
 
-                                                                  // setState(() {
-                                                                  //   containerShow.value = true;
-                                                                  //   containerShow1.value = false;
-                                                                  // });
-                                                                  print(containerShow
-                                                                      .value);
-                                                                },
-                                                                style: ElevatedButton.styleFrom(
-                                                                    minimumSize:
-                                                                        const Size(
+                                                                      // setState(() {
+                                                                      //   containerShow.value = true;
+                                                                      //   containerShow1.value = false;
+                                                                      // });
+                                                                      print(containerShow
+                                                                          .value);
+                                                                    },
+                                                                    style: ElevatedButton.styleFrom(
+                                                                        minimumSize: const Size(
                                                                             double
                                                                                 .maxFinite,
                                                                             50),
-                                                                    backgroundColor:
-                                                                        AppTheme
-                                                                            .buttonColor,
-                                                                    elevation:
-                                                                        0,
-                                                                    shape: RoundedRectangleBorder(
-                                                                        borderRadius:
-                                                                            BorderRadius.circular(AddSize
+                                                                        backgroundColor:
+                                                                            AppTheme
+                                                                                .buttonColor,
+                                                                        elevation:
+                                                                            0,
+                                                                        shape: RoundedRectangleBorder(
+                                                                            borderRadius: BorderRadius.circular(AddSize
                                                                                 .size10)),
-                                                                    textStyle: GoogleFonts.poppins(
-                                                                        fontSize:
-                                                                            AddSize
-                                                                                .font20,
+                                                                        textStyle: GoogleFonts.poppins(
+                                                                            fontSize:
+                                                                                AddSize.font20,
+                                                                            fontWeight: FontWeight.w600)),
+                                                                    child: Text(
+                                                                      "Edit Shipment"
+                                                                          .tr,
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        color: Colors
+                                                                            .white,
                                                                         fontWeight:
-                                                                            FontWeight.w600)),
-                                                                child: Text(
-                                                                  "Edit Shipment"
-                                                                      .tr,
-                                                                  style: GoogleFonts
-                                                                      .poppins(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .w600,
-                                                                    fontSize:
-                                                                        16,
-                                                                  ),
-                                                                )),
-                                                      ],
-                                                    )
-                                                  : const SizedBox.shrink(),
-                                              if (createShipmentModel
-                                                      .value.data !=
-                                                  null)
-                                                ElevatedButton(
-                                                    onPressed: () async {
-                                                      String? url =
-                                                          createShipmentModel
-                                                              .value.data?.url
-                                                              ?.toString();
-                                                      log("(sdfgsdgf${url.toString()})");
-
-                                                      if (url == null ||
-                                                          url.isEmpty) {
-                                                        showToast(
-                                                            "Invalid URL provided"
-                                                                .tr);
-                                                      }
-                                                      if (url != null &&
-                                                          !url.startsWith(
-                                                              'http')) {
-                                                        url =
-                                                            'https://$url'; // or 'http://', depending on your use case
-                                                      }
-                                                      // try {
-                                                      OverlayEntry loader =
-                                                          Helpers.overlayLoader(
-                                                              context);
-                                                      Overlay.of(context)!
-                                                          .insert(loader);
-
-                                                      // Use http package instead of HttpClient for simplicity
-                                                      var response = await http
-                                                          .get(Uri.parse(
+                                                                            FontWeight.w600,
+                                                                        fontSize:
+                                                                            16,
+                                                                      ),
+                                                                    )),
+                                                          ],
+                                                        )
+                                                      : const SizedBox.shrink(),
+                                                  if (createShipmentModel
+                                                          .value.data !=
+                                                      null)
+                                                    ElevatedButton(
+                                                        onPressed: () async {
+                                                          String? url =
                                                               createShipmentModel
                                                                   .value
-                                                                  .data!
-                                                                  .url
-                                                                  .toString()));
-                                                      if (response.statusCode ==
-                                                          200) {
-                                                        var bytes =
-                                                            response.bodyBytes;
+                                                                  .data
+                                                                  ?.url
+                                                                  ?.toString();
+                                                          log("(sdfgsdgf${url.toString()})");
 
-                                                        // Get the application documents directory to save the PDF
-                                                        String dir =
-                                                            (await getApplicationDocumentsDirectory())
-                                                                .path;
-                                                        File file = File(
-                                                            '$dir/certificate.pdf');
-                                                        await file.writeAsBytes(
-                                                            bytes);
+                                                          if (url == null ||
+                                                              url.isEmpty) {
+                                                            showToast(
+                                                                "Invalid URL provided"
+                                                                    .tr);
+                                                          }
+                                                          if (url != null &&
+                                                              !url.startsWith(
+                                                                  'http')) {
+                                                            url =
+                                                                'https://$url'; // or 'http://', depending on your use case
+                                                          }
+                                                          // try {
+                                                          OverlayEntry loader =
+                                                              Helpers
+                                                                  .overlayLoader(
+                                                                      context);
+                                                          Overlay.of(context)!
+                                                              .insert(loader);
 
-                                                        Helpers.hideLoader(
-                                                            loader);
+                                                          // Use http package instead of HttpClient for simplicity
+                                                          var response = await http
+                                                              .get(Uri.parse(
+                                                                  createShipmentModel
+                                                                      .value
+                                                                      .data!
+                                                                      .url
+                                                                      .toString()));
+                                                          if (response
+                                                                  .statusCode ==
+                                                              200) {
+                                                            var bytes = response
+                                                                .bodyBytes;
 
-                                                        // Open the saved PDF file
-                                                        OpenFilex.open(
-                                                            file.path);
-                                                      } else {
-                                                        Helpers.hideLoader(
-                                                            loader);
-                                                        showToast(
-                                                            "Failed to download PDF"
-                                                                .tr);
-                                                      }
-                                                      // }
-                                                      // catch (e) {
-                                                      //   Helpers.hideLoader(loader);
-                                                      //   showToast("Error downloading PDF: $e");
-                                                      //   throw Exception(e);
-                                                      // }
-                                                    },
-                                                    style: ElevatedButton.styleFrom(
-                                                        minimumSize: const Size(
-                                                            double.maxFinite,
-                                                            50),
-                                                        backgroundColor:
-                                                            AppTheme
-                                                                .buttonColor,
-                                                        elevation: 0,
-                                                        shape: RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        AddSize
+                                                            // Get the application documents directory to save the PDF
+                                                            String dir =
+                                                                (await getApplicationDocumentsDirectory())
+                                                                    .path;
+                                                            File file = File(
+                                                                '$dir/certificate.pdf');
+                                                            await file
+                                                                .writeAsBytes(
+                                                                    bytes);
+
+                                                            Helpers.hideLoader(
+                                                                loader);
+
+                                                            // Open the saved PDF file
+                                                            OpenFilex.open(
+                                                                file.path);
+                                                          } else {
+                                                            Helpers.hideLoader(
+                                                                loader);
+                                                            showToast(
+                                                                "Failed to download PDF"
+                                                                    .tr);
+                                                          }
+                                                          // }
+                                                          // catch (e) {
+                                                          //   Helpers.hideLoader(loader);
+                                                          //   showToast("Error downloading PDF: $e");
+                                                          //   throw Exception(e);
+                                                          // }
+                                                        },
+                                                        style: ElevatedButton.styleFrom(
+                                                            minimumSize: const Size(
+                                                                double
+                                                                    .maxFinite,
+                                                                50),
+                                                            backgroundColor:
+                                                                AppTheme
+                                                                    .buttonColor,
+                                                            elevation: 0,
+                                                            shape: RoundedRectangleBorder(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(AddSize
                                                                             .size10)),
-                                                        textStyle:
-                                                            GoogleFonts.poppins(
+                                                            textStyle: GoogleFonts.poppins(
                                                                 fontSize:
                                                                     AddSize
                                                                         .font20,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w600)),
-                                                    child: Text(
-                                                      'Download Label'.tr,
-                                                      style:
-                                                          GoogleFonts.poppins(
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.w600,
-                                                        fontSize: 16,
-                                                      ),
-                                                    ))
+                                                        child: Text(
+                                                          'Download Label'.tr,
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight.w600,
+                                                            fontSize: 16,
+                                                          ),
+                                                        ))
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ],
+                                      );
+                                    }))
+                                : const SizedBox.shrink(),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            containerShow.value == true
+                                ? Column(
+                                    children: [
+                                      for (var containerState in containers)
+                                        Container(
+                                          padding: EdgeInsets.all(8),
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: const Color(0xFF37C666)
+                                                    .withOpacity(0.10),
+                                                offset: const Offset(.1, .1),
+                                                blurRadius: 20.0,
+                                                spreadRadius: 1.0,
+                                              ),
                                             ],
                                           ),
+                                          child: buildDynamicContainer(
+                                              containerState),
                                         ),
-                                      )
-                                    ],
-                                  );
-                                }))
-                            : const SizedBox.shrink(),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        containerShow.value == true
-                            ? Column(
-                                children: [
-                                  for (var containerState in containers)
-                                    Container(
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(12),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: const Color(0xFF37C666)
-                                                .withOpacity(0.10),
-                                            offset: const Offset(.1, .1),
-                                            blurRadius: 20.0,
-                                            spreadRadius: 1.0,
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            onTap: removeContainer,
+                                            child: Container(
+                                              padding: EdgeInsets.all(9),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.red),
+                                              child: Text(
+                                                "-",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 15,
+                                          ),
+                                          GestureDetector(
+                                            onTap: addContainer,
+                                            child: Container(
+                                              padding: EdgeInsets.all(8),
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  color: Colors.green),
+                                              child: Text(
+                                                "+",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      child:
-                                          buildDynamicContainer(containerState),
-                                    ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: removeContainer,
-                                        child: Container(
-                                          padding: EdgeInsets.all(9),
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.red),
-                                          child: Text(
-                                            "-",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      GestureDetector(
-                                        onTap: addContainer,
-                                        child: Container(
-                                          padding: EdgeInsets.all(8),
-                                          decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              color: Colors.green),
-                                          child: Text(
-                                            "+",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 20,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ),
-                                      ),
+                                      containerShow1.value == true
+                                          ? ElevatedButton(
+                                              onPressed: () {
+                                                createShipment(
+                                                    orderId, containers);
+                                                // containerShow.value == true;
+                                                // containerShow1.value == false;
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                  minimumSize: const Size(
+                                                      double.maxFinite, 50),
+                                                  backgroundColor:
+                                                      AppTheme.buttonColor,
+                                                  elevation: 0,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              AddSize.size10)),
+                                                  textStyle:
+                                                      GoogleFonts.poppins(
+                                                          fontSize:
+                                                              AddSize.font20,
+                                                          fontWeight:
+                                                              FontWeight.w600)),
+                                              child: Text(
+                                                "Create Shipment".tr,
+                                                style: GoogleFonts.poppins(
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: 16,
+                                                ),
+                                              ))
+                                          : SizedBox.shrink(),
                                     ],
+                                  )
+                                : SizedBox(),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ElevatedButton(
+                                onPressed: () {
+                                  updateStatus(orderId, statusValue);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    minimumSize:
+                                        const Size(double.maxFinite, 60),
+                                    backgroundColor: AppTheme.buttonColor,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            AddSize.size10)),
+                                    textStyle: GoogleFonts.poppins(
+                                        fontSize: AddSize.font20,
+                                        fontWeight: FontWeight.w600)),
+                                child: Text(
+                                  "Update Status".tr,
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 16,
                                   ),
-                                  containerShow1.value == true
-                                      ? ElevatedButton(
-                                          onPressed: () {
-                                            createShipment(orderId, containers);
-                                            // containerShow.value == true;
-                                            // containerShow1.value == false;
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                              minimumSize: const Size(
-                                                  double.maxFinite, 50),
-                                              backgroundColor:
-                                                  AppTheme.buttonColor,
-                                              elevation: 0,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          AddSize.size10)),
-                                              textStyle: GoogleFonts.poppins(
-                                                  fontSize: AddSize.font20,
-                                                  fontWeight: FontWeight.w600)),
-                                          child: Text(
-                                            "Create Shipment".tr,
-                                            style: GoogleFonts.poppins(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 16,
-                                            ),
-                                          ))
-                                      : SizedBox.shrink(),
-                                ],
-                              )
-                            : SizedBox(),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        ElevatedButton(
-                            onPressed: () {
-                              updateStatus(orderId, statusValue);
-                            },
-                            style: ElevatedButton.styleFrom(
-                                minimumSize: const Size(double.maxFinite, 60),
-                                backgroundColor: AppTheme.buttonColor,
-                                elevation: 0,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(AddSize.size10)),
-                                textStyle: GoogleFonts.poppins(
-                                    fontSize: AddSize.font20,
-                                    fontWeight: FontWeight.w600)),
-                            child: Text(
-                              "Update Status".tr,
-                              style: GoogleFonts.poppins(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                                fontSize: 16,
-                              ),
-                            )),
-                      ]
-                          .animate(interval: 80.ms, autoPlay: true)
-                          .fade(duration: 160.ms)),
-                ))
-            : const LoadingAnimation());
+                                )),
+                          ]
+                              .animate(interval: 80.ms, autoPlay: true)
+                              .fade(duration: 160.ms)),
+                    ),
+                  ));
   }
 }
 
