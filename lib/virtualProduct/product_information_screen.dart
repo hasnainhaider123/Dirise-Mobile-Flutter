@@ -7,6 +7,7 @@ import 'package:dirise/controller/vendor_controllers/add_product_controller.dart
 import 'package:dirise/singleproductScreen/singleProductPriceScreen.dart';
 import 'package:dirise/utils/helper.dart';
 import 'package:dirise/virtualProduct/singleProductPriceScreen.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -41,10 +42,12 @@ class VirtualProductInformationScreens extends StatefulWidget {
   VirtualProductInformationScreens({super.key, this.id, this.name, this.catid});
 
   @override
-  State<VirtualProductInformationScreens> createState() => _VirtualProductInformationScreensState();
+  State<VirtualProductInformationScreens> createState() =>
+      _VirtualProductInformationScreensState();
 }
 
-class _VirtualProductInformationScreensState extends State<VirtualProductInformationScreens> {
+class _VirtualProductInformationScreensState
+    extends State<VirtualProductInformationScreens> {
   ProductCategoryData? selectedSubcategory;
   SubProductData? selectedProductSubcategory;
   bool showFilters = false;
@@ -66,12 +69,16 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
 
     final Repositories repositories = Repositories();
     FocusManager.instance.primaryFocus!.unfocus();
-    repositories.postApi(url: ApiUrls.giveawayProductAddress, context: context, mapData: map).then((value) {
+    repositories
+        .postApi(
+            url: ApiUrls.giveawayProductAddress, context: context, mapData: map)
+        .then((value) {
       AddProductModel response = AddProductModel.fromJson(jsonDecode(value));
       print('API Response Status Code: ${response.status}');
       showToast(response.message.toString());
       if (response.status == true) {
-        addProductController.idProduct.value = response.productDetails!.product!.id.toString();
+        addProductController.idProduct.value =
+            response.productDetails!.product!.id.toString();
         print(addProductController.idProduct.value.toString());
         if (widget.id != null) {
           Get.to(VirtualReviewandPublishScreen());
@@ -97,12 +104,15 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
 
   void getVendorCategories() {
     vendorCategoryStatus.value = RxStatus.loading();
-    repositories.getApi(url: ApiUrls.vendorCategoryListUrl, showResponse: false).then((value) {
+    repositories
+        .getApi(url: ApiUrls.vendorCategoryListUrl, showResponse: false)
+        .then((value) {
       modelVendorCategory = ModelVendorCategory.fromJson(jsonDecode(value));
       vendorCategoryStatus.value = RxStatus.success();
 
       for (var element in vendorInfo.vendorCategory!) {
-        allSelectedCategory[element.id.toString()] = VendorCategoriesData.fromJson(element.toJson());
+        allSelectedCategory[element.id.toString()] =
+            VendorCategoriesData.fromJson(element.toJson());
       }
       setState(() {});
     }).catchError((e) {
@@ -116,7 +126,8 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
   void fetchDataBasedOnId(int id) async {
     String apiUrl = 'https://admin.diriseapp.com/api/product-category?id=$id';
     await repositories.getApi(url: apiUrl).then((value) {
-      productCategoryModel.value = ModelCategoryList.fromJson(jsonDecode(value));
+      productCategoryModel.value =
+          ModelCategoryList.fromJson(jsonDecode(value));
       // setState(() {
       //   fetchedDropdownItems = productCategoryModel.productdata ?? [];
       // });
@@ -126,7 +137,8 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
   SubCategoryModel subProductCategoryModel = SubCategoryModel();
 
   void fetchSubCategoryBasedOnId(int id1) async {
-    String apiUrl1 = 'https://admin.diriseapp.com/api/product-subcategory?category_id=$id1';
+    String apiUrl1 =
+        'https://admin.diriseapp.com/api/product-subcategory?category_id=$id1';
     await repositories.getApi(url: apiUrl1).then((value) {
       subProductCategoryModel = SubCategoryModel.fromJson(jsonDecode(value));
       setState(() {
@@ -144,15 +156,18 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
   bool isItemDetailsVisible2 = false;
   bool isItemDetailsVisible3 = false;
   final productController = Get.put(AddProductController());
-  Rx<CarsSubCateGoryModel> carsSubCateGoryModel =  CarsSubCateGoryModel().obs;
+  Rx<CarsSubCateGoryModel> carsSubCateGoryModel = CarsSubCateGoryModel().obs;
   String subCategory = '';
   Future getSubCategory() async {
     Map<String, dynamic> map = {};
     map['category_id'] = subCategory.toString();
-    repositories.postApi(url: ApiUrls.subCategory, mapData: map, showResponse: true).then((value) {
+    repositories
+        .postApi(url: ApiUrls.subCategory, mapData: map, showResponse: true)
+        .then((value) {
       var responseJson = jsonDecode(value);
       if (responseJson['data']['sub_categories'].isNotEmpty) {
-        carsSubCateGoryModel.value = CarsSubCateGoryModel.fromJson(responseJson);
+        carsSubCateGoryModel.value =
+            CarsSubCateGoryModel.fromJson(responseJson);
         model.add(carsSubCateGoryModel.value);
       }
       if (responseJson['data']['sub_categories'].isEmpty) {
@@ -161,6 +176,7 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
       setState(() {});
     });
   }
+
   List<CarsSubCateGoryModel> model = <CarsSubCateGoryModel>[];
   @override
   void initState() {
@@ -171,7 +187,8 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
     if (productController.modelCategoryList != null &&
         productController.modelCategoryList!.data != null &&
         productController.modelCategoryList!.data!.isNotEmpty) {
-      fetchDataBasedOnId(productController.modelCategoryList!.data![0].vendorCategory);
+      fetchDataBasedOnId(
+          productController.modelCategoryList!.data![0].vendorCategory);
     }
 
     fetchSubCategoryBasedOnId(ProductID);
@@ -212,7 +229,10 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
           children: [
             Text(
               'Product Information'.tr,
-              style: GoogleFonts.poppins(color: const Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 20),
+              style: GoogleFonts.poppins(
+                  color: const Color(0xff292F45),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20),
             ),
           ],
         ),
@@ -226,7 +246,10 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
             children: [
               Text(
                 'Product name'.tr,
-                style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+                style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18),
               ),
               CommonTextField(
                   controller: ProductNameController,
@@ -239,11 +262,16 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
                 height: 10,
               ),
               if (productController.modelCategoryList != null)
-               Text(
-                 profileController.selectedLAnguage.value == "English"
-                     ? productController.modelCategoryList!.vendorCategoryName.toString()
-                     : homeController.vendorCategory.usphone!.first.arabName.toString(),
-                  style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18),
+                Text(
+                  profileController.selectedLAnguage.value == "English"
+                      ? productController.modelCategoryList!.vendorCategoryName
+                          .toString()
+                      : homeController.vendorCategory.usphone!.first.arabName
+                          .toString(),
+                  style: GoogleFonts.poppins(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18),
                 ),
               const SizedBox(
                 height: 10,
@@ -374,294 +402,490 @@ class _VirtualProductInformationScreensState extends State<VirtualProductInforma
 
               Obx(() {
                 bool showButton = productCategoryModel.value.data != null &&
-                    productCategoryModel.value.data!.any((value) => value.childCategory != null);
+                    productCategoryModel.value.data!
+                        .any((value) => value.childCategory != null);
 
                 return showButton
                     ? GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      showFilters = !showFilters;
-                    });
-                  },
-                  child: Container(
-                    padding: EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                        color: Color(0xff292F45),
-                        borderRadius: BorderRadius.circular(11)),
-                    child: Text(
-                      'Filters(Optional)'.tr,
-                      style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16),
-                    ),
-                  ),
-                )
+                        onTap: () {
+                          setState(() {
+                            showFilters = !showFilters;
+                          });
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              color: Color(0xff292F45),
+                              borderRadius: BorderRadius.circular(11)),
+                          child: Text(
+                            'Filters(Optional)'.tr,
+                            style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 16),
+                          ),
+                        ),
+                      )
                     : const SizedBox();
               }),
               const SizedBox(
                 height: 15,
               ),
-              showFilters ?
-              Wrap(
-                  alignment: WrapAlignment.start,
-                  crossAxisAlignment: WrapCrossAlignment.start,
-                  runAlignment: WrapAlignment.start,
-                  spacing: 6,
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: carsSubCateGoryModel.value.data != null
-                          ? Row(
-                        children: [
-                          if ( carsSubCateGoryModel.value.data!.subCategories!.isNotEmpty)
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10),
-                              child: StatefulBuilder(builder: (c, newState) {
-                                return  SizedBox(
-                                  height: 40,
-                                  child: ListView.builder(
-                                      itemCount: model.length,
-                                      shrinkWrap: true,
-                                      scrollDirection: Axis.horizontal,
-                                      itemBuilder: (c,i){
-                                        return ListView.builder(
-                                          itemCount: 1,
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.horizontal,
-                                          itemBuilder: (context, index) {
-                                            //   final subCategorys = carsSubCateGoryModel.value.data!.subCategories![index];
-                                            return PopupMenuButton(
-                                              position: PopupMenuPosition.under,
-                                              child: Container(
-                                                height: 36,
-                                                constraints: BoxConstraints(maxWidth: context.getSize.width * .75),
-                                                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(color: const Color(0xff014E70)),
-                                                  color: const Color(0xffEBF1F4),
-                                                  borderRadius: BorderRadius.circular(22),
-                                                ),
-                                                child: Row(
-                                                  mainAxisSize: MainAxisSize.min,
-                                                  children: [
-                                                    Flexible(
-                                                      child: Padding(
-                                                        padding: const EdgeInsets.only(left: 8, right: 10),
-                                                        child: Text(
-
-                                                          model[i].data!.subCategories![index].title.toString(),
-                                                          //     carsSubCateGoryModel.value.data!.subCategories![index].title.toString(),
-                                                          style: GoogleFonts.poppins(
-                                                            fontSize: 14,
-                                                            fontWeight: FontWeight.w500,
-                                                            color: const Color(0xff014E70),
+              showFilters
+                  ? Wrap(
+                      alignment: WrapAlignment.start,
+                      crossAxisAlignment: WrapCrossAlignment.start,
+                      runAlignment: WrapAlignment.start,
+                      spacing: 6,
+                      children: [
+                          SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            child: carsSubCateGoryModel.value.data != null
+                                ? Row(
+                                    children: [
+                                      if (carsSubCateGoryModel.value.data!
+                                          .subCategories!.isNotEmpty)
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 10),
+                                          child: StatefulBuilder(
+                                              builder: (c, newState) {
+                                            return SizedBox(
+                                              height: 40,
+                                              child: ListView.builder(
+                                                  itemCount: model.length,
+                                                  shrinkWrap: true,
+                                                  scrollDirection:
+                                                      Axis.horizontal,
+                                                  itemBuilder: (c, i) {
+                                                    return ListView.builder(
+                                                      itemCount: 1,
+                                                      shrinkWrap: true,
+                                                      scrollDirection:
+                                                          Axis.horizontal,
+                                                      itemBuilder:
+                                                          (context, index) {
+                                                        //   final subCategorys = carsSubCateGoryModel.value.data!.subCategories![index];
+                                                        return PopupMenuButton(
+                                                          position:
+                                                              PopupMenuPosition
+                                                                  .under,
+                                                          child: Container(
+                                                            height: 36,
+                                                            constraints: BoxConstraints(
+                                                                maxWidth: context
+                                                                        .getSize
+                                                                        .width *
+                                                                    .75),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .fromLTRB(
+                                                                    10,
+                                                                    0,
+                                                                    10,
+                                                                    0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              border: Border.all(
+                                                                  color: const Color(
+                                                                      0xff014E70)),
+                                                              color: const Color(
+                                                                  0xffEBF1F4),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          22),
+                                                            ),
+                                                            child: Row(
+                                                              mainAxisSize:
+                                                                  MainAxisSize
+                                                                      .min,
+                                                              children: [
+                                                                Flexible(
+                                                                  child:
+                                                                      Padding(
+                                                                    padding: const EdgeInsets
+                                                                        .only(
+                                                                        left: 8,
+                                                                        right:
+                                                                            10),
+                                                                    child: Text(
+                                                                      model[i]
+                                                                          .data!
+                                                                          .subCategories![
+                                                                              index]
+                                                                          .title
+                                                                          .toString(),
+                                                                      //     carsSubCateGoryModel.value.data!.subCategories![index].title.toString(),
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontWeight:
+                                                                            FontWeight.w500,
+                                                                        color: const Color(
+                                                                            0xff014E70),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                const Icon(
+                                                                    Icons
+                                                                        .keyboard_arrow_down_outlined,
+                                                                    color: Color(
+                                                                        0xff014E70)),
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                    const Icon(Icons.keyboard_arrow_down_outlined, color: Color(0xff014E70)),
-                                                  ],
-                                                ),
-                                              ),
-                                              itemBuilder: (c) {
-                                                return  model[i].data!.subCategories!.map((ee) =>
-                                                    PopupMenuItem(
-                                                      child: Text(ee.title.toString()),
-                                                      onTap: () {
-                                                        subCategory = ee.id.toString();
-                                                        idForChild.clear();
-                                                        idForChild.add(int.tryParse(subCategory));
-                                                        getSubCategory();
-                                                        newState(() {});
+                                                          itemBuilder: (c) {
+                                                            return model[i]
+                                                                .data!
+                                                                .subCategories!
+                                                                .map((ee) =>
+                                                                    PopupMenuItem(
+                                                                      child: Text(ee
+                                                                          .title
+                                                                          .toString()),
+                                                                      onTap:
+                                                                          () {
+                                                                        subCategory = ee
+                                                                            .id
+                                                                            .toString();
+                                                                        idForChild
+                                                                            .clear();
+                                                                        idForChild
+                                                                            .add(int.tryParse(subCategory));
+                                                                        getSubCategory();
+                                                                        newState(
+                                                                            () {});
+                                                                      },
+                                                                    ))
+                                                                .toList();
+                                                          },
+                                                        );
                                                       },
-                                                    )).toList();
-                                              },
+                                                    );
+                                                  }),
                                             );
-                                          },
-                                        );
-                                      }),
-                                );
-                              }),
-                            ),
-                          // Row(
-                          //   children: subCategoryModel.value.data!.map((e) => Padding(
-                          //     padding: const EdgeInsets.only(right: 10),
-                          //     child: StatefulBuilder(builder: (c, newState) {
-                          //       return PopupMenuButton(
-                          //         position: PopupMenuPosition.under,
-                          //         child: Container(
-                          //           height: 36,
-                          //           constraints: BoxConstraints(maxWidth: context.getSize.width * .75),
-                          //           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                          //           decoration: BoxDecoration(
-                          //               border: Border.all(color: const Color(0xff014E70)),
-                          //               color: const Color(0xffEBF1F4),
-                          //               borderRadius: BorderRadius.circular(22)),
-                          //           child: Row(
-                          //             mainAxisSize: MainAxisSize.min,
-                          //             children: [
-                          //               // Flexible(
-                          //               //   child: Padding(
-                          //               //     padding: const EdgeInsets.only(left: 8, right: 10),
-                          //               //     child: Text(
-                          //               //       e.selectedCategory != null
-                          //               //           ? e.selectedCategory!.title.toString()
-                          //               //           : e.title.toString(),
-                          //               //       style: GoogleFonts.poppins(
-                          //               //           fontSize: 14,
-                          //               //           fontWeight: FontWeight.w500,
-                          //               //           color: const Color(0xff014E70)),
-                          //               //     ),
-                          //               //   ),
-                          //               // ),
-                          //               const Icon(Icons.keyboard_arrow_down_outlined, color: Color(0xff014E70))
-                          //             ],
-                          //           ),
-                          //         ),
-                          //         itemBuilder: (c) {
-                          //           return e.childCategory!
-                          //               .map((ee) => PopupMenuItem(
-                          //             child: Text(ee.title.toString()),
-                          //             onTap: () {
-                          //               e.selectedCategory = ee;
-                          //               getCategoryStores(page: 1, resetAll: true);
-                          //               getSubCategory();
-                          //               isSelect = true;
-                          //               newState(() {});
-                          //             },
-                          //           ))
-                          //               .toList();
-                          //         },
-                          //       );
-                          //     }),
-                          //   ))
-                          //       .toList(),
-                          // ),
-                        ],
-                      )
-                          : const SizedBox(),
-                    ),
-                  ]
-
-              ) : const SizedBox(),
-              showFilters ?
-              Obx(() {
-                return productCategoryModel.value.data != null
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: productCategoryModel.value.data!
-                            .map((e) => Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Filters(Optional)'.tr,
-                                      style: GoogleFonts.poppins(
-                                          color: Colors.black, fontWeight: FontWeight.w600, fontSize: 16),
-                                    ),
-                                    const SizedBox(
-                                      height: 15,
-                                    ),
-                                    Text(
-                                      e.title.toString(),
-                                      style: normalStyle,
-                                    ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                    DropdownButtonFormField<int>(
-                                      isExpanded: true,
-                                      icon: const Icon(Icons.keyboard_arrow_down),
-                                      iconDisabledColor: const Color(0xff97949A),
-                                      iconEnabledColor: const Color(0xff97949A),
-                                      decoration: InputDecoration(
-                                        border: InputBorder.none,
-                                        filled: true,
-                                        fillColor: const Color(0xffE2E2E2).withOpacity(.35),
-                                        contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
-                                        focusedErrorBorder: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                                            borderSide: BorderSide(color: AppTheme.secondaryColor)),
-                                        errorBorder: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                                            borderSide: BorderSide(color: Color(0xffE2E2E2))),
-                                        focusedBorder: const OutlineInputBorder(
-                                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                                            borderSide: BorderSide(color: AppTheme.secondaryColor)),
-                                        disabledBorder: const OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                                          borderSide: BorderSide(color: AppTheme.secondaryColor),
+                                          }),
                                         ),
-                                        enabledBorder: const OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(Radius.circular(8)),
-                                          borderSide: BorderSide(color: AppTheme.secondaryColor),
-                                        ),
-                                      ),
-                                      items: e.childCategory!
-                                          .asMap()
-                                          .entries
-                                          .map((ee) => DropdownMenuItem(
-                                                value: ee.key,
-                                                child: Text(
-                                                  ee.value.title.toString(),
-                                                  overflow: TextOverflow.ellipsis,
-                                                  style: GoogleFonts.poppins(
-                                                    color: const Color(0xff463B57),
+                                      // Row(
+                                      //   children: subCategoryModel.value.data!.map((e) => Padding(
+                                      //     padding: const EdgeInsets.only(right: 10),
+                                      //     child: StatefulBuilder(builder: (c, newState) {
+                                      //       return PopupMenuButton(
+                                      //         position: PopupMenuPosition.under,
+                                      //         child: Container(
+                                      //           height: 36,
+                                      //           constraints: BoxConstraints(maxWidth: context.getSize.width * .75),
+                                      //           padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                      //           decoration: BoxDecoration(
+                                      //               border: Border.all(color: const Color(0xff014E70)),
+                                      //               color: const Color(0xffEBF1F4),
+                                      //               borderRadius: BorderRadius.circular(22)),
+                                      //           child: Row(
+                                      //             mainAxisSize: MainAxisSize.min,
+                                      //             children: [
+                                      //               // Flexible(
+                                      //               //   child: Padding(
+                                      //               //     padding: const EdgeInsets.only(left: 8, right: 10),
+                                      //               //     child: Text(
+                                      //               //       e.selectedCategory != null
+                                      //               //           ? e.selectedCategory!.title.toString()
+                                      //               //           : e.title.toString(),
+                                      //               //       style: GoogleFonts.poppins(
+                                      //               //           fontSize: 14,
+                                      //               //           fontWeight: FontWeight.w500,
+                                      //               //           color: const Color(0xff014E70)),
+                                      //               //     ),
+                                      //               //   ),
+                                      //               // ),
+                                      //               const Icon(Icons.keyboard_arrow_down_outlined, color: Color(0xff014E70))
+                                      //             ],
+                                      //           ),
+                                      //         ),
+                                      //         itemBuilder: (c) {
+                                      //           return e.childCategory!
+                                      //               .map((ee) => PopupMenuItem(
+                                      //             child: Text(ee.title.toString()),
+                                      //             onTap: () {
+                                      //               e.selectedCategory = ee;
+                                      //               getCategoryStores(page: 1, resetAll: true);
+                                      //               getSubCategory();
+                                      //               isSelect = true;
+                                      //               newState(() {});
+                                      //             },
+                                      //           ))
+                                      //               .toList();
+                                      //         },
+                                      //       );
+                                      //     }),
+                                      //   ))
+                                      //       .toList(),
+                                      // ),
+                                    ],
+                                  )
+                                : const SizedBox(),
+                          ),
+                        ])
+                  : const SizedBox(),
+              showFilters
+                  ? Obx(() {
+                      return productCategoryModel.value.data != null
+                          ? Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: productCategoryModel.value.data!
+                                  .map((e) => Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            'Filters(Optional)'.tr,
+                                            style: GoogleFonts.poppins(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: 16),
+                                          ),
+                                          const SizedBox(
+                                            height: 15,
+                                          ),
+                                          Text(
+                                            e.title.toString(),
+                                            style: normalStyle,
+                                          ),
+                                          const SizedBox(
+                                            height: 4,
+                                          ),
+                                          // DropdownButtonFormField<int>(
+                                          //   isExpanded: true,
+                                          //   icon: const Icon(Icons.keyboard_arrow_down),
+                                          //   iconDisabledColor: const Color(0xff97949A),
+                                          //   iconEnabledColor: const Color(0xff97949A),
+                                          //   decoration: InputDecoration(
+                                          //     border: InputBorder.none,
+                                          //     filled: true,
+                                          //     fillColor: const Color(0xffE2E2E2).withOpacity(.35),
+                                          //     contentPadding: const EdgeInsets.symmetric(horizontal: 15, vertical: 14),
+                                          //     focusedErrorBorder: const OutlineInputBorder(
+                                          //         borderRadius: BorderRadius.all(Radius.circular(8)),
+                                          //         borderSide: BorderSide(color: AppTheme.secondaryColor)),
+                                          //     errorBorder: const OutlineInputBorder(
+                                          //         borderRadius: BorderRadius.all(Radius.circular(8)),
+                                          //         borderSide: BorderSide(color: Color(0xffE2E2E2))),
+                                          //     focusedBorder: const OutlineInputBorder(
+                                          //         borderRadius: BorderRadius.all(Radius.circular(8)),
+                                          //         borderSide: BorderSide(color: AppTheme.secondaryColor)),
+                                          //     disabledBorder: const OutlineInputBorder(
+                                          //       borderRadius: BorderRadius.all(Radius.circular(8)),
+                                          //       borderSide: BorderSide(color: AppTheme.secondaryColor),
+                                          //     ),
+                                          //     enabledBorder: const OutlineInputBorder(
+                                          //       borderRadius: BorderRadius.all(Radius.circular(8)),
+                                          //       borderSide: BorderSide(color: AppTheme.secondaryColor),
+                                          //     ),
+                                          //   ),
+                                          //   items: e.childCategory!
+                                          //       .asMap()
+                                          //       .entries
+                                          //       .map((ee) => DropdownMenuItem(
+                                          //             value: ee.key,
+                                          //             child: Text(
+                                          //               ee.value.title.toString(),
+                                          //               overflow: TextOverflow.ellipsis,
+                                          //               style: GoogleFonts.poppins(
+                                          //                 color: const Color(0xff463B57),
+                                          //               ),
+                                          //             ),
+                                          //           ))
+                                          //       .toList(),
+                                          //   validator: (value) {
+                                          //     if (!e.childCategory!.map((k) => k.selected).toList().contains(true)) {
+                                          //       return "Please select any one category".tr;
+                                          //     }
+                                          //     return null;
+                                          //   },
+                                          //   hint: Text('Select Category'.tr),
+                                          //   onChanged: (value) {
+                                          //     e.childCategory![value!].selected = true;
+                                          //     idForChild.add(e.childCategory![value].id);
+                                          //     idChild = idForChild.join(',');
+                                          //     getSubCategory();
+                                          //     print('vafjdfhdjf ${idForChild.toString()}');
+                                          //     print('vafjdfhdjf ${idChild.toString()}');
+                                          //     setState(() {});
+                                          //   },
+                                          // ),
+                                          DropdownSearch<int>(
+                                            popupProps: PopupProps.menu(
+                                              showSearchBox:
+                                                  true, // Enable the search box
+                                              searchDelay: Duration(
+                                                  milliseconds:
+                                                      300), // Optional: Add debounce delay
+                                              searchFieldProps: TextFieldProps(
+                                                decoration: InputDecoration(
+                                                  labelText: "Search Category",
+                                                  filled: true,
+                                                  fillColor:
+                                                      const Color(0xffE2E2E2)
+                                                          .withOpacity(.35),
+                                                  contentPadding:
+                                                      const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 15,
+                                                          vertical: 14),
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                    borderSide: BorderSide(
+                                                        color: AppTheme
+                                                            .secondaryColor),
                                                   ),
                                                 ),
-                                              ))
-                                          .toList(),
-                                      validator: (value) {
-                                        if (!e.childCategory!.map((k) => k.selected).toList().contains(true)) {
-                                          return "Please select any one category".tr;
-                                        }
-                                        return null;
-                                      },
-                                      hint: Text('Select Category'.tr),
-                                      onChanged: (value) {
-                                        e.childCategory![value!].selected = true;
-                                        idForChild.add(e.childCategory![value].id);
-                                        idChild = idForChild.join(',');
-                                        getSubCategory();
-                                        print('vafjdfhdjf ${idForChild.toString()}');
-                                        print('vafjdfhdjf ${idChild.toString()}');
-                                        setState(() {});
-                                      },
-                                    ),
-                                    const SizedBox(
-                                      height: 8,
-                                    ),
-                                    Wrap(
-                                      alignment: WrapAlignment.start,
-                                      crossAxisAlignment: WrapCrossAlignment.start,
-                                      runAlignment: WrapAlignment.start,
-                                      spacing: 6,
-                                      children: e.childCategory!
-                                          .where((element) => element.selected == true)
-                                          .map((ee) => Chip(
-                                              visualDensity: const VisualDensity(vertical: -2, horizontal: -4),
-                                              label: Text(
-                                                ee.title.toString(),
-                                                style: normalStyle,
                                               ),
-                                              onDeleted: () {
-                                                ee.selected = false;
-                                                idForChild.remove(ee.id);
-                                                print('after remove ${idForChild.toString()}');
-                                                print('after remove ${idChild.toString()}');
-                                                setState(() {});
-                                              }))
-                                          .toList(),
-                                    ),
-                                    const SizedBox(
-                                      height: 4,
-                                    ),
-                                  ],
-                                ))
-                            .toList(),
-                      )
-                    : const SizedBox();
-              }) : SizedBox(),
+                                            ),
+                                            dropdownDecoratorProps:
+                                                DropDownDecoratorProps(
+                                              dropdownSearchDecoration:
+                                                  InputDecoration(
+                                                filled: true,
+                                                fillColor:
+                                                    const Color(0xffE2E2E2)
+                                                        .withOpacity(.35),
+                                                contentPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 15,
+                                                        vertical: 14),
+                                                focusedErrorBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: BorderSide(
+                                                      color: AppTheme
+                                                          .secondaryColor),
+                                                ),
+                                                errorBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: BorderSide(
+                                                      color: const Color(
+                                                          0xffE2E2E2)),
+                                                ),
+                                                focusedBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: BorderSide(
+                                                      color: AppTheme
+                                                          .secondaryColor),
+                                                ),
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  borderSide: BorderSide(
+                                                      color: AppTheme
+                                                          .secondaryColor),
+                                                ),
+                                                hintText: 'Select Category'.tr,
+                                              ),
+                                            ),
+                                            items: e.childCategory!
+                                                .asMap()
+                                                .entries
+                                                .map((ee) => ee.key)
+                                                .toList(),
+                                            itemAsString: (int? item) {
+                                              if (item == null) return '';
+                                              return e
+                                                  .childCategory![item].title
+                                                  .toString();
+                                            },
+                                            validator: (value) {
+                                              if (!e.childCategory!
+                                                  .map((k) => k.selected)
+                                                  .toList()
+                                                  .contains(true)) {
+                                                return "Please select any one category"
+                                                    .tr;
+                                              }
+                                              return null;
+                                            },
+                                            compareFn:
+                                                (int? item, int? selectedItem) {
+                                              return item ==
+                                                  selectedItem; // Comparison logic for non-String types
+                                            },
+                                            filterFn:
+                                                (int? item, String? query) {
+                                              // Filters the list of items based on the search query
+                                              if (query == null ||
+                                                  query.isEmpty) return true;
+                                              return e
+                                                  .childCategory![item!].title
+                                                  .toLowerCase()
+                                                  .contains(
+                                                      query.toLowerCase());
+                                            },
+                                            onChanged: (value) {
+                                              e.childCategory![value!]
+                                                  .selected = true;
+                                              idForChild.add(
+                                                  e.childCategory![value].id);
+                                              idChild = idForChild.join(',');
+                                              getSubCategory();
+                                              print(
+                                                  'Selected Categories: ${idForChild.toString()}');
+                                              print(
+                                                  'Child Category ID: ${idChild.toString()}');
+                                              setState(() {});
+                                            },
+                                            selectedItem:
+                                                null, // Set this if you want to have an initially selected value
+                                          ),
+                                          const SizedBox(
+                                            height: 8,
+                                          ),
+                                          Wrap(
+                                            alignment: WrapAlignment.start,
+                                            crossAxisAlignment:
+                                                WrapCrossAlignment.start,
+                                            runAlignment: WrapAlignment.start,
+                                            spacing: 6,
+                                            children: e.childCategory!
+                                                .where((element) =>
+                                                    element.selected == true)
+                                                .map((ee) => Chip(
+                                                    visualDensity:
+                                                        const VisualDensity(
+                                                            vertical: -2,
+                                                            horizontal: -4),
+                                                    label: Text(
+                                                      ee.title.toString(),
+                                                      style: normalStyle,
+                                                    ),
+                                                    onDeleted: () {
+                                                      ee.selected = false;
+                                                      idForChild.remove(ee.id);
+                                                      print(
+                                                          'after remove ${idForChild.toString()}');
+                                                      print(
+                                                          'after remove ${idChild.toString()}');
+                                                      setState(() {});
+                                                    }))
+                                                .toList(),
+                                          ),
+                                          const SizedBox(
+                                            height: 4,
+                                          ),
+                                        ],
+                                      ))
+                                  .toList(),
+                            )
+                          : const SizedBox();
+                    })
+                  : SizedBox(),
               const SizedBox(
                 height: 20,
               ),

@@ -158,6 +158,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         showToastCenter(createShipmentModel.value.message.toString());
       } else {
         // createShipmentModelError.value = CreateShipmentModelError.fromJson(jsonDecode(value));
+        log('inside else ${createShipmentModel.value.status}');
         createShipmentModel.value =
             CreateShipmentModel.fromJson(jsonDecode(value));
         showToastCenter(createShipmentModel.value.message.toString());
@@ -1228,7 +1229,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                         child: ElevatedButton(
                                                                             onPressed: () {
                                                                               // createShipment(orderId);
-                                                                              createShipment12121(orderId);
+                                                                             createShipment12121(orderId);
                                                                             },
                                                                             style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
                                                                             child: FittedBox(
