@@ -49,20 +49,32 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
   File payment_certificate = File("");
   File commercial_license = File("");
   File memorandum_of_association = File("");
-  File ministy_of_commerce = File("");
+  File commercialLicense  = File("");
   File original_civil_information = File("");
-  File signature_approval = File("");
+  File authorizedSignature = File("");
   File company_bank_account = File("");
+  File idCardFront = File("");
+  File idCardBack = File("");
+
   Map<String, File> images = {};
   void updateProfile() {
     Map<String, String> map = {};
-    images["payment_certificate"] = payment_certificate;
-    images["commercial_license"] = commercial_license;
-    images["memorandum_of_association"] = memorandum_of_association;
-    images["ministy_of_commerce"] = ministy_of_commerce;
+    images["id_card_front"] = idCardFront;
+    // images["commercial_license"] = commercial_license;
+    images["id_card_back"] = idCardBack;
+    images["commercial_license"] = commercialLicense ;
     images["original_civil_information"] = original_civil_information;
-    images["signature_approval"] = signature_approval;
+    images["signature_approval"] = authorizedSignature;
     images["company_bank_account"] = company_bank_account;
+
+
+    // images["payment_certificate"] = payment_certificate;
+    // images["commercial_license"] = commercial_license;
+    // images["memorandum_of_association"] = memorandum_of_association;
+    // images["ministy_of_commerce"] = ministy_of_commerce;
+    // images["original_civil_information"] = original_civil_information;
+    // images["signature_approval"] = signature_approval;
+    // images["company_bank_account"] = company_bank_account;
 
     repositories
         .multiPartApi(
@@ -145,28 +157,28 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                   ImageWidget(
                     // key: paymentReceiptCertificateKey,
                     title: "Id Card Front".tr,
-                    file: commercial_license,
-                    validation: checkValidation(showValidation.value, commercial_license.path.isEmpty),
+                    file: idCardFront,
+                    validation: checkValidation(showValidation.value,idCardFront.path.isEmpty),
                     filePicked: (File g) {
-                      commercial_license = g;
+                      idCardFront = g;
                     },
                   ),
                   ImageWidget(
                     // key: paymentReceiptCertificateKey,
                     title: "Id Card Back".tr,
-                    file: memorandum_of_association,
-                    validation: checkValidation(showValidation.value, memorandum_of_association.path.isEmpty),
+                    file: idCardBack,
+                    validation: checkValidation(showValidation.value, idCardBack.path.isEmpty),
                     filePicked: (File g) {
                       memorandum_of_association = g;
                     },
                   ),
                   ImageWidget(
                     // key: paymentReceiptCertificateKey,
-                    title: "Bank Statement".tr,
-                    file: ministy_of_commerce,
-                    validation: checkValidation(showValidation.value, ministy_of_commerce.path.isEmpty),
+                    title: "Commercial License ".tr,
+                    file: commercialLicense ,
+                    validation: checkValidation(showValidation.value, commercialLicense .path.isEmpty),
                     filePicked: (File g) {
-                      ministy_of_commerce = g;
+                      commercialLicense  = g;
                     },
                   ),
                   ImageWidget(
@@ -180,11 +192,11 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                   ),
                   ImageWidget(
                     // key: paymentReceiptCertificateKey,
-                    title: "Other".tr,
-                    file: signature_approval,
-                    validation: checkValidation(showValidation.value, signature_approval.path.isEmpty),
+                    title: "Authorized Signatory".tr,
+                    file: authorizedSignature,
+                    validation: checkValidation(showValidation.value, authorizedSignature.path.isEmpty),
                     filePicked: (File g) {
-                      signature_approval = g;
+                      authorizedSignature = g;
                     },
                   ),
                   ImageWidget(

@@ -755,7 +755,7 @@ class _ProductInformationScreensState extends State<ProductInformationScreens> {
                                           //         'vafjdfhdjf ${idChild.toString()}');
                                           //     setState(() {});
                                           //   },
-                                          // ),
+                                          // ), 
                                           DropdownSearch<int>(
                                             popupProps: PopupProps.menu(
                                               showSearchBox:
