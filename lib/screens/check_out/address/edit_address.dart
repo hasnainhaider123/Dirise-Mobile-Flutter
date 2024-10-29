@@ -52,11 +52,11 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
     }
     stateRefresh.value = -5;
     final map = {'country_id': countryId};
-    await repositories.postApi(url: ApiUrls.allStatesUrl, mapData: map).then((value) {
+    await repositories
+        .postApi(url: ApiUrls.allStatesUrl, mapData: map)
+        .then((value) {
       modelStateList = ModelStateList.fromJson(jsonDecode(value));
-      setState(() {
-
-      });
+      setState(() {});
       stateRefresh.value = DateTime.now().millisecondsSinceEpoch;
     }).catchError((e) {
       stateRefresh.value = DateTime.now().millisecondsSinceEpoch;
@@ -72,7 +72,9 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
     }
     cityRefresh.value = -5;
     final map = {'state_id': stateId};
-    await repositories.postApi(url: ApiUrls.allCityUrl, mapData: map).then((value) {
+    await repositories
+        .postApi(url: ApiUrls.allCityUrl, mapData: map)
+        .then((value) {
       modelCityList = ModelCityList.fromJson(jsonDecode(value));
       setState(() {});
       cityRefresh.value = DateTime.now().millisecondsSinceEpoch;
@@ -95,6 +97,13 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
   TextEditingController countryController = TextEditingController();
   TextEditingController stateController = TextEditingController();
   TextEditingController cityController = TextEditingController();
+  TextEditingController unitController = TextEditingController();
+  TextEditingController blockController = TextEditingController();
+  TextEditingController areaController = TextEditingController();
+  TextEditingController townController = TextEditingController();
+  TextEditingController provinceController = TextEditingController();
+  TextEditingController governateController = TextEditingController();
+  TextEditingController streetController = TextEditingController();
 
   final formKeyAddress = GlobalKey<FormState>();
 
@@ -114,8 +123,10 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
               padding: const EdgeInsets.all(18.0),
               child: StatefulBuilder(builder: (context, newState) {
                 String gg = searchController.text.trim().toLowerCase();
-                List<CommonAddressRelatedClass> filteredList =
-                    addressList.where((element) => element.title.toString().toLowerCase().contains(gg)).toList();
+                List<CommonAddressRelatedClass> filteredList = addressList
+                    .where((element) =>
+                        element.title.toString().toLowerCase().contains(gg))
+                    .toList();
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -128,13 +139,16 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.buttonColor, width: 1.2)),
+                              borderSide: const BorderSide(
+                                  color: AppTheme.buttonColor, width: 1.2)),
                           enabled: true,
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.buttonColor, width: 1.2)),
+                              borderSide: const BorderSide(
+                                  color: AppTheme.buttonColor, width: 1.2)),
                           suffixIcon: const Icon(Icons.search),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12)),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 12)),
                     ),
                     Flexible(
                         child: ListView.builder(
@@ -142,38 +156,48 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                // dense: true,
-                                onTap: () {
-                                  selectedAddressIdPicked(filteredList[index].addressId);
-                                  FocusManager.instance.primaryFocus!.unfocus();
-                                  Get.back();
-                                },
-                                leading: filteredList[index].flagUrl != null
-                                    ? SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: filteredList[index].flagUrl.toString().contains("svg")
-                                            ? SvgPicture.network(
-                                                filteredList[index].flagUrl.toString(),
-                                              )
-                                            : Image.network(
-                                                filteredList[index].flagUrl.toString(),
-                                                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                                              ))
-                                    : null,
-                                visualDensity: VisualDensity.compact,
-                                title: Text(filteredList[index].title),
-                                trailing: selectedAddressId == filteredList[index].addressId
-                                    ? const Icon(
-                                        Icons.check,
-                                        color: Colors.purple,
-                                      )
-                                    :  Image.asset(
-                                  'assets/images/forward_icon.png',
-                                  height: 17,
-                                  width: 17,
-                                )
-                              );
+                                  // dense: true,
+                                  onTap: () {
+                                    selectedAddressIdPicked(
+                                        filteredList[index].addressId);
+                                    FocusManager.instance.primaryFocus!
+                                        .unfocus();
+                                    Get.back();
+                                  },
+                                  leading: filteredList[index].flagUrl != null
+                                      ? SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: filteredList[index]
+                                                  .flagUrl
+                                                  .toString()
+                                                  .contains("svg")
+                                              ? SvgPicture.network(
+                                                  filteredList[index]
+                                                      .flagUrl
+                                                      .toString(),
+                                                )
+                                              : Image.network(
+                                                  filteredList[index]
+                                                      .flagUrl
+                                                      .toString(),
+                                                  errorBuilder: (_, __, ___) =>
+                                                      const SizedBox.shrink(),
+                                                ))
+                                      : null,
+                                  visualDensity: VisualDensity.compact,
+                                  title: Text(filteredList[index].title),
+                                  trailing: selectedAddressId ==
+                                          filteredList[index].addressId
+                                      ? const Icon(
+                                          Icons.check,
+                                          color: Colors.purple,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/forward_icon.png',
+                                          height: 17,
+                                          width: 17,
+                                        ));
                             }))
                   ],
                 );
@@ -189,21 +213,27 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
       modelCountryList = ModelCountryList.fromString(value);
     });
   }
-   String countryIddd = '';
+
+  String countryIddd = '';
   String code = 'KW';
   @override
   void initState() {
     super.initState();
     getCountryList();
-    firstNameController = TextEditingController(text: addressData.firstName ?? "");
-    lastNameController = TextEditingController(text: addressData.lastName ?? "");
+    firstNameController =
+        TextEditingController(text: addressData.firstName ?? "");
+    lastNameController =
+        TextEditingController(text: addressData.lastName ?? "");
     phoneController = TextEditingController(text: addressData.phone ?? "");
     emailController = TextEditingController(text: addressData.email ?? "");
-    alternatePhoneController = TextEditingController(text: addressData.alternatePhone ?? "");
+    alternatePhoneController =
+        TextEditingController(text: addressData.alternatePhone ?? "");
     addressController = TextEditingController(text: addressData.address ?? "");
-    address2Controller = TextEditingController(text: addressData.address2 ?? "");
+    address2Controller =
+        TextEditingController(text: addressData.address2 ?? "");
     zipCodeController = TextEditingController(text: addressData.zipCode ?? "");
-    landmarkController = TextEditingController(text: addressData.landmark ?? "");
+    landmarkController =
+        TextEditingController(text: addressData.landmark ?? "");
     titleController = TextEditingController(text: addressData.type ?? "");
     countryController = TextEditingController(text: addressData.country ?? "");
     stateController = TextEditingController(text: addressData.state ?? "");
@@ -216,6 +246,7 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
       setState(() {});
     });
   }
+
   final profileController = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
@@ -265,36 +296,44 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                       return null;
                     }),
                 ...commonField(
-                    textController: emailController,
-                    title: "Email *".tr,
-                    hintText: "Enter your email".tr,
-                    keyboardType: TextInputType.emailAddress,
-                    validator: (value) {
+                  textController: emailController,
+                  title: "Email *".tr,
+                  hintText: "Enter your email".tr,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
                     if (value!.trim().isEmpty) {
                       return "Please enter your email".tr;
-                    } else if (value.trim().contains('+') || value.trim().contains(' ')) {
+                    } else if (value.trim().contains('+') ||
+                        value.trim().contains(' ')) {
                       return "Email is invalid";
-                    } else if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                    } else if (RegExp(
+                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                         .hasMatch(value.trim())) {
                       return null;
                     } else {
                       return 'Please type a valid email address'.tr;
                     }
                   },
-                    ),
+                ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
-                 'Phone *'.tr,
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16, color: const Color(0xff585858)),
+                  'Phone *'.tr,
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: const Color(0xff585858)),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
 
                 IntlPhoneField(
-                  textAlign: profileController.selectedLAnguage.value == 'English' ? TextAlign.left  : TextAlign.right,
+                  textAlign:
+                      profileController.selectedLAnguage.value == 'English'
+                          ? TextAlign.left
+                          : TextAlign.right,
                   // key: ValueKey(profileController.code),
                   flagsButtonPadding: const EdgeInsets.all(8),
                   dropdownIconPosition: IconPosition.trailing,
@@ -302,11 +341,9 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                   cursorColor: Colors.black,
                   textInputAction: TextInputAction.next,
                   dropdownTextStyle: const TextStyle(color: Colors.black),
-                  style: const TextStyle(
-                      color: AppTheme.textColor
-                  ),
+                  style: const TextStyle(color: AppTheme.textColor),
                   controller: phoneController,
-                  decoration:  InputDecoration(
+                  decoration: InputDecoration(
                       contentPadding: EdgeInsets.zero,
                       hintStyle: TextStyle(color: AppTheme.textColor),
                       hintText: 'Enter your phone number'.tr,
@@ -314,13 +351,16 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                       border: OutlineInputBorder(
                         borderSide: BorderSide(),
                       ),
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor)),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppTheme.shadowColor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppTheme.shadowColor))),
                   initialCountryCode: profileController.code1.toString(),
                   languageCode: profileController.code,
-                  invalidNumberMessage: profileController.selectedLAnguage.value == 'English'
-                      ? 'Invalid phone number'
-                      : 'رقم الهاتف غير صالح',
+                  invalidNumberMessage:
+                      profileController.selectedLAnguage.value == 'English'
+                          ? 'Invalid phone number'
+                          : 'رقم الهاتف غير صالح',
                   onCountryChanged: (phone) {
                     profileController.code = phone.code;
                     print(phone.code);
@@ -338,13 +378,19 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                 ),
                 Text(
                   'Alternate Phone *'.tr,
-                  style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16, color: const Color(0xff585858)),
+                  style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: const Color(0xff585858)),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
                 IntlPhoneField(
-                  textAlign: profileController.selectedLAnguage.value == 'English' ? TextAlign.left  : TextAlign.right,
+                  textAlign:
+                      profileController.selectedLAnguage.value == 'English'
+                          ? TextAlign.left
+                          : TextAlign.right,
                   // key: ValueKey(code),
                   flagsButtonPadding: const EdgeInsets.all(8),
                   dropdownIconPosition: IconPosition.trailing,
@@ -352,9 +398,7 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                   cursorColor: Colors.black,
                   textInputAction: TextInputAction.next,
                   dropdownTextStyle: const TextStyle(color: Colors.black),
-                  style: const TextStyle(
-                      color: AppTheme.textColor
-                  ),
+                  style: const TextStyle(color: AppTheme.textColor),
                   controller: alternatePhoneController,
                   decoration: InputDecoration(
                       contentPadding: EdgeInsets.zero,
@@ -364,13 +408,16 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                       border: OutlineInputBorder(
                         borderSide: BorderSide(),
                       ),
-                      enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor)),
-                      focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor))),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppTheme.shadowColor)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: AppTheme.shadowColor))),
                   initialCountryCode: code.toString(),
-                  languageCode:  profileController.code,
-                  invalidNumberMessage: profileController.selectedLAnguage.value == 'English'
-                      ? 'Invalid phone number'
-                      : 'رقم الهاتف غير صالح',
+                  languageCode: profileController.code,
+                  invalidNumberMessage:
+                      profileController.selectedLAnguage.value == 'English'
+                          ? 'Invalid phone number'
+                          : 'رقم الهاتف غير صالح',
                   onCountryChanged: (phone) {
                     code = phone.code;
                     print(phone.code);
@@ -475,18 +522,42 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                       // }
                       return null;
                     }),
-
-                // ...commonField(
-                //     textController: cityController,
-                //     title: "City*",
-                //     hintText: "Enter your city",
-                //     keyboardType: TextInputType.streetAddress,
-                //     validator: (value) {
-                //       if (value!.trim().isEmpty) {
-                //         return "Please enter City*";
-                //       }
-                //       return null;
-                //     }),
+                10.spaceY,
+                ...commonField(
+                    textController: unitController,
+                    title: "Unit*",
+                    hintText: "Unit".tr,
+                    keyboardType: TextInputType.streetAddress,
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return "Unit is required*".tr;
+                      }
+                      return null;
+                    }),
+                10.spaceY,
+                ...commonField(
+                    textController: streetController,
+                    title: "Street*".tr,
+                    hintText: "Enter your street".tr,
+                    keyboardType: TextInputType.streetAddress,
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return "Street is required*".tr;
+                      }
+                      return null;
+                    }),
+                10.spaceY,
+                ...commonField(
+                    textController: blockController,
+                    title: "Block*".tr,
+                    hintText: "Enter your Block".tr,
+                    keyboardType: TextInputType.streetAddress,
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return "Block is required*".tr;
+                      }
+                      return null;
+                    }),
                 10.spaceY,
                 ...fieldWithName(
                   title: 'Country/Region'.tr,
@@ -496,28 +567,45 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                     showAddressSelectorDialog(
                         addressList: modelCountryList!.country!
                             .map((e) => CommonAddressRelatedClass(
-                                title: e.name.toString(), addressId: e.id.toString(), flagUrl: e.icon.toString()))
+                                title: e.name.toString(),
+                                addressId: e.id.toString(),
+                                flagUrl: e.icon.toString()))
                             .toList(),
                         selectedAddressIdPicked: (String gg) {
-                          String previous = ((selectedCountry ?? Country()).id ?? "").toString();
-                          selectedCountry = modelCountryList!.country!.firstWhere((element) => element.id.toString() == gg);
+                          String previous =
+                              ((selectedCountry ?? Country()).id ?? "")
+                                  .toString();
+                          selectedCountry = modelCountryList!.country!
+                              .firstWhere(
+                                  (element) => element.id.toString() == gg);
                           cartController.countryCode = gg.toString();
-                          cartController.countryName.value = selectedCountry!.name.toString();
-                          print('countrrtr ${cartController.countryName.toString()}');
-                          print('countrrtr ${cartController.countryCode.toString()}');
+                          cartController.countryName.value =
+                              selectedCountry!.name.toString();
+                          print(
+                              'countrrtr ${cartController.countryName.toString()}');
+                          print(
+                              'countrrtr ${cartController.countryCode.toString()}');
                           if (previous != selectedCountry!.id.toString()) {
                             countryIddd = gg.toString();
                             cartController.countryId = gg.toString();
-                            print('country idd changed...${cartController.countryId.toString()}');
-                            getStateList(countryId: countryIddd.toString(), reset: true).then((value) {
+                            print(
+                                'country idd changed...${cartController.countryId.toString()}');
+                            getStateList(
+                                    countryId: countryIddd.toString(),
+                                    reset: true)
+                                .then((value) {
                               setState(() {});
                             });
                             setState(() {});
                           }
                         },
-                        selectedAddressId: ((selectedCountry ?? Country()).id ?? "").toString());
+                        selectedAddressId:
+                            ((selectedCountry ?? Country()).id ?? "")
+                                .toString());
                   },
-                  controller: TextEditingController(text: (selectedCountry ?? Country()).name ?? countryController.text),
+                  controller: TextEditingController(
+                      text: (selectedCountry ?? Country()).name ??
+                          countryController.text),
                   validator: (v) {
                     if (v!.trim().isEmpty) {
                       return "Please select country".tr;
@@ -528,10 +616,12 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                 ...fieldWithName(
                   title: 'State'.tr,
                   hintText: 'Select State'.tr,
-                  controller: TextEditingController(text: (selectedState ?? CountryState()).stateName ??  stateController.text),
+                  controller: TextEditingController(
+                      text: (selectedState ?? CountryState()).stateName ??
+                          stateController.text),
                   readOnly: true,
                   onTap: () {
-                    if(countryIddd == 'null'){
+                    if (countryIddd == 'null') {
                       showToast("Select Country First".tr);
                       return;
                     }
@@ -544,26 +634,42 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                     }
                     if (modelStateList!.state!.isEmpty) return;
                     showAddressSelectorDialog(
-                        addressList: profileController.selectedLAnguage.value == 'English' ?
-                        modelStateList!.state!.map((e) => CommonAddressRelatedClass(title: e.stateName.toString(), addressId: e.stateId.toString())).toList() :
-                        modelStateList!.state!.map((e) => CommonAddressRelatedClass(title: e.arabStateName.toString(), addressId: e.stateId.toString())).toList(),
+                        addressList: profileController.selectedLAnguage.value ==
+                                'English'
+                            ? modelStateList!.state!
+                                .map((e) => CommonAddressRelatedClass(
+                                    title: e.stateName.toString(),
+                                    addressId: e.stateId.toString()))
+                                .toList()
+                            : modelStateList!.state!
+                                .map((e) => CommonAddressRelatedClass(
+                                    title: e.arabStateName.toString(),
+                                    addressId: e.stateId.toString()))
+                                .toList(),
                         selectedAddressIdPicked: (String gg) {
-                          String previous = ((selectedState ?? CountryState()).stateId ?? "").toString();
-                          selectedState = modelStateList!.state!.firstWhere((element) => element.stateId.toString() == gg);
+                          String previous =
+                              ((selectedState ?? CountryState()).stateId ?? "")
+                                  .toString();
+                          selectedState = modelStateList!.state!.firstWhere(
+                              (element) => element.stateId.toString() == gg);
                           cartController.stateCode = gg.toString();
-                          cartController.stateName.value = selectedState!.stateName.toString();
+                          cartController.stateName.value =
+                              selectedState!.stateName.toString();
                           print('state ${cartController.stateCode.toString()}');
-                          print('stateNameee ${cartController.stateName.toString()}');
+                          print(
+                              'stateNameee ${cartController.stateName.toString()}');
                           if (previous != selectedState!.stateId.toString()) {
                             stateIddd = gg.toString();
                             getCityList(stateId: gg, reset: true).then((value) {
-                              cityController.text= '';
+                              cityController.text = '';
                               setState(() {});
                             });
                             setState(() {});
                           }
                         },
-                        selectedAddressId: ((selectedState ?? CountryState()).stateId ?? "").toString());
+                        selectedAddressId:
+                            ((selectedState ?? CountryState()).stateId ?? "")
+                                .toString());
                   },
                   suffixIcon: Obx(() {
                     if (stateRefresh.value > 0) {
@@ -593,7 +699,9 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                     readOnly: true,
                     title: 'City'.tr,
                     hintText: 'Select City'.tr,
-                    controller: TextEditingController(text: (selectedCity ?? City()).cityName ?? cityController.text),
+                    controller: TextEditingController(
+                        text: (selectedCity ?? City()).cityName ??
+                            cityController.text),
                     onTap: () {
                       if (modelCityList == null && cityRefresh.value > 0) {
                         showToast("Select State First".tr);
@@ -604,17 +712,34 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                       }
                       if (modelCityList!.city!.isEmpty) return;
                       showAddressSelectorDialog(
-                          addressList:  profileController.selectedLAnguage.value == 'English' ? modelCityList!.city!.map((e) => CommonAddressRelatedClass(title: e.cityName.toString(), addressId: e.cityId.toString())).toList() :
-                          modelCityList!.city!.map((e) => CommonAddressRelatedClass(title: e.arabCityName.toString(), addressId: e.cityId.toString())).toList(),
+                          addressList:
+                              profileController.selectedLAnguage.value ==
+                                      'English'
+                                  ? modelCityList!.city!
+                                      .map((e) => CommonAddressRelatedClass(
+                                          title: e.cityName.toString(),
+                                          addressId: e.cityId.toString()))
+                                      .toList()
+                                  : modelCityList!.city!
+                                      .map((e) => CommonAddressRelatedClass(
+                                          title: e.arabCityName.toString(),
+                                          addressId: e.cityId.toString()))
+                                      .toList(),
                           selectedAddressIdPicked: (String gg) {
-                            selectedCity = modelCityList!.city!.firstWhere((element) => element.cityId.toString() == gg);
+                            selectedCity = modelCityList!.city!.firstWhere(
+                                (element) => element.cityId.toString() == gg);
                             cartController.cityCode = gg.toString();
-                            cartController.cityName.value = selectedCity!.cityName.toString();
-                            print('state ${cartController.cityName.toString()}');
-                            print('state Nameee ${cartController.cityCode.toString()}');
+                            cartController.cityName.value =
+                                selectedCity!.cityName.toString();
+                            print(
+                                'state ${cartController.cityName.toString()}');
+                            print(
+                                'state Nameee ${cartController.cityCode.toString()}');
                             setState(() {});
                           },
-                          selectedAddressId: ((selectedCity ?? City()).cityId ?? "").toString());
+                          selectedAddressId:
+                              ((selectedCity ?? City()).cityId ?? "")
+                                  .toString());
                     },
                     suffixIcon: Obx(() {
                       if (cityRefresh.value > 0) {
@@ -639,7 +764,52 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                       return null;
                     },
                   ),
-                if(cartController.countryName.value != 'Kuwait')
+                ...commonField(
+                    textController: areaController,
+                    title: "Area*".tr,
+                    hintText: "Enter your Area".tr,
+                    keyboardType: TextInputType.streetAddress,
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return "Area is required*".tr;
+                      }
+                      return null;
+                    }),
+                10.spaceY,
+                ...commonField(
+                    textController: townController,
+                    title: "Town*".tr,
+                    hintText: "Enter your Town".tr,
+                    keyboardType: TextInputType.streetAddress,
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return "Town is required*".tr;
+                      }
+                      return null;
+                    }),
+                ...commonField(
+                    textController: provinceController,
+                    title: "Province*".tr,
+                    hintText: "Enter your Province".tr,
+                    keyboardType: TextInputType.streetAddress,
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return "Province is required*".tr;
+                      }
+                      return null;
+                    }),
+                ...commonField(
+                    textController: governateController,
+                    title: "Governate*".tr,
+                    hintText: "Enter your Governate".tr,
+                    keyboardType: TextInputType.streetAddress,
+                    validator: (value) {
+                      if (value!.trim().isEmpty) {
+                        return "Governate is required*".tr;
+                      }
+                      return null;
+                    }),
+                if (cartController.countryName.value != 'Kuwait')
                   ...commonField(
                       textController: landmarkController,
                       title: "Landmark".tr,
@@ -651,18 +821,18 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                         // }
                         return null;
                       }),
-                if(cartController.countryName.value != 'Kuwait')
-                ...commonField(
-                    textController: zipCodeController,
-                    title: "Zip-Code*".tr,
-                    hintText: "Enter location Zip-Code".tr,
-                    keyboardType: TextInputType.number,
-                    validator: (value) {
-                      if (value!.trim().isEmpty) {
-                        return "Please enter Zip-Code*".tr;
-                      }
-                      return null;
-                    }),
+                if (cartController.countryName.value != 'Kuwait')
+                  ...commonField(
+                      textController: zipCodeController,
+                      title: "Zip-Code*".tr,
+                      hintText: "Enter location Zip-Code".tr,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return "Please enter Zip-Code*".tr;
+                        }
+                        return null;
+                      }),
                 // ...commonField(
                 //     textController: stateController,
                 //     title: "State*",
@@ -713,13 +883,13 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                           cityId: cartController.cityCode.toString(),
                           stateId: cartController.stateCode.toString(),
                           phoneCountryCode: profileController.code.toString(),
-                          type : 'checkout',
+                          type: 'checkout',
                           id: addressData.id);
                     }
-                      if(addressData.id != null){
-                        Get.back();
-                      }
-                      cartController.getCart();
+                    if (addressData.id != null) {
+                      Get.back();
+                    }
+                    cartController.getCart();
                   },
                   child: Container(
                     decoration: const BoxDecoration(color: Color(0xff014E70)),
@@ -728,7 +898,10 @@ class _EditAddressSheetState extends State<EditAddressSheet> {
                     child: Align(
                         alignment: Alignment.center,
                         child: Text("Save".tr,
-                            style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 19, color: Colors.white))),
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 19,
+                                color: Colors.white))),
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).viewInsets.bottom),

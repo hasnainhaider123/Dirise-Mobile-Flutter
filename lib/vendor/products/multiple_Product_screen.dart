@@ -14,13 +14,12 @@ import '../../widgets/common_button.dart';
 import '../authentication/image_widget.dart';
 import 'multiple_product_review.dart';
 
-
-
 class AddMultipleProductScreen extends StatefulWidget {
   const AddMultipleProductScreen({super.key});
 
   @override
-  State<AddMultipleProductScreen> createState() => _AddMultipleProductScreenState();
+  State<AddMultipleProductScreen> createState() =>
+      _AddMultipleProductScreenState();
 }
 
 class _AddMultipleProductScreenState extends State<AddMultipleProductScreen> {
@@ -35,6 +34,7 @@ class _AddMultipleProductScreenState extends State<AddMultipleProductScreen> {
       return false;
     }
   }
+
   int productID = 0;
   final addProductController = Get.put(AddProductController());
   Map<String, File> images = {};
@@ -46,21 +46,21 @@ class _AddMultipleProductScreenState extends State<AddMultipleProductScreen> {
     final Repositories repositories = Repositories();
     repositories
         .multiPartApi(
-        mapData: map,
-        images: images,
-        context: context,
-        url: ApiUrls.addMultipleProduct,
-        onProgress: (int bytes, int totalBytes) {
-
-        })
+            mapData: map,
+            images: images,
+            context: context,
+            url: ApiUrls.addMultipleProduct,
+            onProgress: (int bytes, int totalBytes) {})
         .then((value) {
       AddMultipleModel response = AddMultipleModel.fromJson(jsonDecode(value));
       // addProductController.idProduct.value = response.data!.product!.id.toString();
       // profileController.productID = productID;
-   Get.to(MultipleReviewAndPublishScreen(),arguments: [response.data.toString()]);
+      Get.to(MultipleReviewAndPublishScreen(),
+          arguments: [response.data.toString()]);
       showToast(response.message.toString());
     });
   }
+
   Rx<SampleCsvModel> sampleCsvModel = SampleCsvModel().obs;
   final Repositories repositories = Repositories();
 
@@ -71,59 +71,68 @@ class _AddMultipleProductScreenState extends State<AddMultipleProductScreen> {
       });
     });
   }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getSampleData();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title:  Text('Multiple Products'.tr),
+        title: Text('Multiple Products'.tr),
         centerTitle: true,
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.back();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileController.selectedLAnguage.value != 'English' ?
-              Image.asset(
-                'assets/images/forward_icon.png',
-                height: 19,
-                width: 19,
-              ) :
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 19,
-                width: 19,
-              ),
+              profileController.selectedLAnguage.value != 'English'
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 19,
+                      width: 19,
+                    )
+                  : Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 19,
+                      width: 19,
+                    ),
             ],
           ),
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: const EdgeInsets.only(left: 30,right: 30,top: 30),
+          margin: const EdgeInsets.only(left: 30, right: 30, top: 30),
           child: Column(
             children: [
-               Text("Kindly download the following templates to conveniently upload all your products at once\nCopy and paste your products accordingly upload it in the next step.".tr),
-              const SizedBox(height: 10,),
+              Text(
+                  "Kindly download the following templates to conveniently upload all your products at once\nCopy and paste your products accordingly upload it in the next step."
+                      .tr),
+              const SizedBox(
+                height: 10,
+              ),
               ImageWidget1(
                 // key: paymentReceiptCertificateKey,
                 title: "Upload multiple product".tr,
                 file: featuredImage,
-                validation: checkValidation(showValidation.value, featuredImage.path.isEmpty),
+                validation: checkValidation(
+                    showValidation.value, featuredImage.path.isEmpty),
                 filePicked: (File g) {
                   featuredImage = g;
                 },
               ),
-              const SizedBox(height: 20,),
+              const SizedBox(
+                height: 20,
+              ),
               // ImageWidget(
               //   // key: paymentReceiptCertificateKey,
               //   title: "Click To Edit Uploaded  Image".tr,
@@ -133,31 +142,36 @@ class _AddMultipleProductScreenState extends State<AddMultipleProductScreen> {
               //     galleryImage = g;
               //   },
               // ),
-              SizedBox(height: 50,),
+              SizedBox(
+                height: 50,
+              ),
               CustomOutlineButton(
                 title: 'Next'.tr,
                 onPressed: () {
-                  if(featuredImage.path.isNotEmpty){
+                  if (featuredImage.path.isNotEmpty) {
                     addProduct();
-                  }else{
+                  } else {
                     showToast('Please upload file'.tr);
                   }
                 },
               ),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               CustomOutlineButton(
                 backgroundColor: Colors.red,
                 title: 'Download demo file'.tr,
                 onPressed: () async {
-    final csvUrl = sampleCsvModel.value.data!.csvFile.toString();
-    if (await canLaunch(csvUrl)) {
-    await launch(csvUrl);
-    } else {
-    print('Could not launch $csvUrl');
-    }
-    },
-
-
+                  // print(sampleCsvModel.value.data!.csvFile.toString());
+                  // final csvUrl =
+                  //     'https://docs.google.com/spreadsheets/d/1tHDp9nfgd8_g7CeW5jO3DTJrPTNywLYY/edit?usp=sharing&ouid=109450384128062986143&rtpof=true&sd=true';
+                  final csvUrl = sampleCsvModel.value.data!.csvFile.toString();
+                  if (await canLaunch(csvUrl)) {
+                    await launch(csvUrl);
+                  } else {
+                    print('Could not launch $csvUrl');
+                  }
+                },
               ),
             ],
           ),

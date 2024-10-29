@@ -18,11 +18,17 @@ class _StatusWidgetState extends State<StatusWidget> {
   final vendorProfileController = Get.put(VendorProfileController());
   final profileController = Get.put(ProfileController());
 
-  bool get paymentDone => vendorProfileController.model.user!.subscription_status.toString() == "pending";
-  bool get profileComplete => vendorProfileController.model.user!.vendorProfile!.is_complete == "false";
+  bool get paymentDone =>
+      vendorProfileController.model.user!.subscription_status.toString() ==
+      "pending";
+  bool get profileComplete =>
+      vendorProfileController.model.user!.vendorProfile!.is_complete == "false";
 
   @override
   Widget build(BuildContext context) {
+    print(
+        "Vendor Publish Status: '${vendorProfileController.model.user?.vendorPublishStatus.toString() ?? 'null or empty'}'");
+
     return SliverToBoxAdapter(
       child: Obx(() {
         if (vendorProfileController.refreshInt.value > 0) {}
@@ -38,40 +44,97 @@ class _StatusWidgetState extends State<StatusWidget> {
                   child: Padding(
                     padding: const EdgeInsets.all(6.0),
                     child: Theme(
-                      data: ThemeData(useMaterial3: true, dividerColor: Colors.transparent),
+                      data: ThemeData(
+                          useMaterial3: true, dividerColor: Colors.transparent),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 12.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text("Vendor Publish Status".tr),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            vendorProfileController.model.user!.vendorPublishStatus.toString() == 'pending'
-                                ? Text(
-                                    profileController.selectedLAnguage.value == "English"
-                                    ?'Pre-approved: You must upload the required documents to be approved and able to receive your payments.'
-                                    :'Pre-approved: You must upload the required documents to be approved and able to receive your payments'.tr,
-                                    style: titleStyle.copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.red
-                                    ),
-                                  )
-                                : Text(
-                                    profileController.selectedLAnguage.value =="English"
-                                    ?vendorProfileController.model.user!.vendorPublishStatus.toString().capitalizeFirst.toString()
-                                    :"Approved".tr,
-                                    style: titleStyle.copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.red
-                                    ),
-                                  )
-                            /*== 'approved' ?
-                          Text( vendorProfileController.model.user!.vendorPublishStatus.toString().capitalizeFirst.toString(),style: titleStyle,) :
-                      const SizedBox(),*/
+                            const SizedBox(height: 5),
+                            if (vendorProfileController
+                                    .model.user?.vendorPublishStatus?.isEmpty ??
+                                true)
+                              Text(
+                                "Status unavailable",
+                                style: titleStyle.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.grey,
+                                ),
+                              )
+                            else if (vendorProfileController
+                                    .model.user!.vendorPublishStatus ==
+                                'pending')
+                              Text(
+                                profileController.selectedLAnguage.value ==
+                                        "English"
+                                    ? 'Pre-approved: You must upload the required documents to be approved and able to receive your payments.'
+                                    : 'Pre-approved: You must upload the required documents to be approved and able to receive your payments'
+                                        .tr,
+                                style: titleStyle.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.red,
+                                ),
+                              )
+                            else if (vendorProfileController
+                                    .model.user!.vendorPublishStatus ==
+                                'approved')
+                              Text(
+                                profileController.selectedLAnguage.value ==
+                                        "English"
+                                    ? vendorProfileController.model.user!
+                                        .vendorPublishStatus!.capitalizeFirst!
+                                    : "Approved".tr,
+                                style: titleStyle.copyWith(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors
+                                      .green, // Different color for approved status
+                                ),
+                              ),
                           ],
                         ),
+
+                        //   Column(
+                        //     crossAxisAlignment: CrossAxisAlignment.start,
+                        //     children: [
+                        //       Text("Vendor Publish Status".tr),
+                        //       const SizedBox(
+                        //         height: 5,
+                        //       ),
+                        //       vendorProfileController
+                        //                   .model.user!.vendorPublishStatus
+                        //                   .toString() ==
+                        //               'pending'
+                        //           ? Text(
+                        //               profileController.selectedLAnguage.value ==
+                        //                       "English"
+                        //                   ? 'Pre-approved: You must upload the required documents to be approved and able to receive your payments.'
+                        //                   : 'Pre-approved: You must upload the required documents to be approved and able to receive your payments'
+                        //                       .tr,
+                        //               style: titleStyle.copyWith(
+                        //                   fontWeight: FontWeight.w500,
+                        //                   color: Colors.red),
+                        //             )
+                        //           : Text(
+                        //               profileController.selectedLAnguage.value ==
+                        //                       "English"
+                        //                   ? vendorProfileController
+                        //                       .model.user!.vendorPublishStatus
+                        //                       .toString()
+                        //                       .capitalizeFirst
+                        //                       .toString()
+                        //                   : "Approved".tr,
+                        //               style: titleStyle.copyWith(
+                        //                   fontWeight: FontWeight.w500,
+                        //                   color: Colors.red),
+                        //             )
+                        //       /*== 'approved' ?
+                        //     Text( vendorProfileController.model.user!.vendorPublishStatus.toString().capitalizeFirst.toString(),style: titleStyle,) :
+                        // const SizedBox(),*/
+                        //     ],
+                        //   ),
                       ),
                     ),
                   ),
