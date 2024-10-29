@@ -51,14 +51,20 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
   final Repositories repositories = Repositories();
   final formKey1 = GlobalKey<FormState>();
   String code = "+91";
+  final TextEditingController unitController = TextEditingController();
   final TextEditingController streetController = TextEditingController();
+  final TextEditingController blockController = TextEditingController();
   final TextEditingController countryController = TextEditingController();
   final TextEditingController cityController = TextEditingController();
+  final TextEditingController areaController = TextEditingController();
   final TextEditingController stateController = TextEditingController();
+  final TextEditingController provinceController = TextEditingController();
+  final TextEditingController governateController = TextEditingController();
   final TextEditingController zipcodeController = TextEditingController();
   final TextEditingController townController = TextEditingController();
   // final TextEditingController countryController = TextEditingController();
-  final TextEditingController specialInstructionController = TextEditingController();
+  final TextEditingController specialInstructionController =
+      TextEditingController();
   final addProductController = Get.put(AddProductController());
   editAddressApi() {
     Map<String, dynamic> map = {};
@@ -91,23 +97,26 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
     }
 
     FocusManager.instance.primaryFocus!.unfocus();
-    repositories.postApi(url: ApiUrls.giveawayProductAddress, context: context, mapData: map).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(
+            url: ApiUrls.giveawayProductAddress, context: context, mapData: map)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       print('API Response Status Code: ${response.status}');
       showToast(response.message.toString());
       if (response.status == true) {
         if (widget.id != null) {
-
           Get.to(const ReviewPublishServiceScreen());
         } else {
           // Get.to(ServiceInternationalShippingService());
-          Get.to(()=> ServiceOptionalScreen());
-
+          Get.to(() => ServiceOptionalScreen());
         }
       }
     });
   }
- String countryCode = '';
+
+  String countryCode = '';
   @override
   void initState() {
     // TODO: implement initState
@@ -133,24 +142,24 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
         surfaceTintColor: Colors.white,
         elevation: 0,
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.back();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileController.selectedLAnguage.value != 'English' ?
-              Image.asset(
-                'assets/images/forward_icon.png',
-                height: 19,
-                width: 19,
-              ) :
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 19,
-                width: 19,
-              ),
+              profileController.selectedLAnguage.value != 'English'
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 19,
+                      width: 19,
+                    )
+                  : Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 19,
+                      width: 19,
+                    ),
             ],
           ),
         ),
@@ -160,7 +169,10 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
           children: [
             Text(
               'Pick up address'.tr,
-              style: GoogleFonts.poppins(color: const Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 20),
+              style: GoogleFonts.poppins(
+                  color: const Color(0xff292F45),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20),
             ),
           ],
         ),
@@ -179,7 +191,10 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
                 ),
                 Text(
                   "Where do you want to receive your orders".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 16),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff292F45),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16),
                 ),
                 SizedBox(
                   height: size.height * .02,
@@ -193,7 +208,9 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
                     child: Text(
                       "Select your location on the map".tr,
                       style: GoogleFonts.poppins(
-                          color: const Color(0xff044484), fontWeight: FontWeight.w400, fontSize: 14),
+                          color: const Color(0xff044484),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14),
                     ),
                   ),
                 ),
@@ -201,8 +218,35 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
                   height: 20,
                 ),
                 Text(
+                  "Unit*".tr,
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CommonTextField(
+                  controller: unitController,
+                  obSecure: false,
+                  hintText: 'Unit'.tr,
+                  validator: (value) {
+                    if (value!.trim().isEmpty) {
+                      return 'Unit is required'.tr;
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
                   "Street*".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
                 const SizedBox(
                   height: 5,
@@ -211,19 +255,46 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
                   controller: streetController,
                   obSecure: false,
                   hintText: 'Street'.tr,
-                  // validator: (value) {
-                  //   if (value!.trim().isEmpty) {
-                  //     return 'Street is required'.tr;
-                  //   }
-                  //   return null; // Return null if validation passes
-                  // },
+                  validator: (value) {
+                    if (value!.trim().isEmpty) {
+                      return 'Street is required'.tr;
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Block*".tr,
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CommonTextField(
+                  controller: blockController,
+                  obSecure: false,
+                  hintText: 'Block'.tr,
+                  validator: (value) {
+                    if (value!.trim().isEmpty) {
+                      return 'Block is required'.tr;
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(
                   height: 10,
                 ),
                 Text(
                   "Country*".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
                 const SizedBox(
                   height: 5,
@@ -244,7 +315,10 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
                 ),
                 Text(
                   "City*".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
                 const SizedBox(
                   height: 5,
@@ -264,8 +338,59 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
                   height: 10,
                 ),
                 Text(
+                  "Area*".tr,
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CommonTextField(
+                  controller: countryController,
+                  obSecure: false,
+                  hintText: 'Area'.tr,
+                  validator: (value) {
+                    if (value!.trim().isEmpty) {
+                      return 'Area is required'.tr;
+                    }
+                    return null; // Return null if validation passes
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Town*".tr,
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CommonTextField(
+                  controller: townController,
+                  obSecure: false,
+                  hintText: 'Town'.tr,
+                  validator: (value) {
+                    if (value!.trim().isEmpty) {
+                      return 'Town is required'.tr;
+                    }
+                    return null; // Return null if validation passes
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
                   "State*".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
                 const SizedBox(
                   height: 5,
@@ -285,8 +410,59 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
                   height: 10,
                 ),
                 Text(
+                  "Province*".tr,
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CommonTextField(
+                  controller: provinceController,
+                  obSecure: false,
+                  hintText: 'Province'.tr,
+                  validator: (value) {
+                    if (value!.trim().isEmpty) {
+                      return 'Province is required'.tr;
+                    }
+                    return null; // Return null if validation passes
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  "Governate*".tr,
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
+                ),
+                const SizedBox(
+                  height: 5,
+                ),
+                CommonTextField(
+                  controller: provinceController,
+                  obSecure: false,
+                  hintText: 'Governate'.tr,
+                  validator: (value) {
+                    if (value!.trim().isEmpty) {
+                      return 'Governate is required'.tr;
+                    }
+                    return null; // Return null if validation passes
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
                   "Zip Code*".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
                 const SizedBox(
                   height: 5,
@@ -306,30 +482,36 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  "Town*".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
-                ),
-                const SizedBox(
-                  height: 5,
-                ),
-                CommonTextField(
-                  controller: townController,
-                  obSecure: false,
-                  hintText: 'Town'.tr,
-                  // validator: (value) {
-                  //   if (value!.trim().isEmpty) {
-                  //     return 'Town is required'.tr;
-                  //   }
-                  //   return null; // Return null if validation passes
-                  // },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                // Text(
+                //   "Town*".tr,
+                //   style: GoogleFonts.poppins(
+                //       color: const Color(0xff044484),
+                //       fontWeight: FontWeight.w600,
+                //       fontSize: 14),
+                // ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
+                // CommonTextField(
+                //   controller: townController,
+                //   obSecure: false,
+                //   hintText: 'Town'.tr,
+                //   // validator: (value) {
+                //   //   if (value!.trim().isEmpty) {
+                //   //     return 'Town is required'.tr;
+                //   //   }
+                //   //   return null; // Return null if validation passes
+                //   // },
+                // ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
                 Text(
                   "Special instruction".tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff044484), fontWeight: FontWeight.w600, fontSize: 14),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff044484),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14),
                 ),
                 const SizedBox(
                   height: 5,
@@ -358,19 +540,20 @@ class _PickUpAddressServiceState extends State<PickUpAddressService> {
                     height: 50,
                     decoration: BoxDecoration(
                       border: Border.all(
-                        color:Color(0xFF014E70), // Border color
+                        color: Color(0xFF014E70), // Border color
                         width: 1.0, // Border width
                       ),
                       borderRadius: BorderRadius.circular(10), // Border radius
                     ),
-                    padding: const EdgeInsets.all(10), // Padding inside the container
-                    child:  Center(
+                    padding: const EdgeInsets.all(
+                        10), // Padding inside the container
+                    child: Center(
                       child: Text(
                         'Confirm Your Location'.tr,
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF014E70),  // Text color
+                          color: Color(0xFF014E70), // Text color
                         ),
                       ),
                     ),
@@ -401,7 +584,10 @@ List<Widget> commonField({
     ),
     Text(
       title.tr,
-      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16, color: const Color(0xff0D5877)),
+      style: GoogleFonts.poppins(
+          fontWeight: FontWeight.w500,
+          fontSize: 16,
+          color: const Color(0xff0D5877)),
     ),
     const SizedBox(
       height: 8,
