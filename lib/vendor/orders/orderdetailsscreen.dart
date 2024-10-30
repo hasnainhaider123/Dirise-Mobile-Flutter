@@ -131,11 +131,13 @@ class _OrderDetailsState extends State<OrderDetails> {
           CreateShipmentModel.fromJson(jsonDecode(value));
       if (createShipmentModel.value.status == true) {
         showToastCenter(createShipmentModel.value.message.toString());
+        log('backend issue ${createShipmentModel.value.message.toString()}');
       } else {
         // createShipmentModelError.value = CreateShipmentModelError.fromJson(jsonDecode(value));
         createShipmentModel.value =
             CreateShipmentModel.fromJson(jsonDecode(value));
         showToastCenter(createShipmentModel.value.message.toString());
+          log('backend issue ${createShipmentModel.value.message.toString()}');
       }
     });
   }
@@ -158,7 +160,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         showToastCenter(createShipmentModel.value.message.toString());
       } else {
         // createShipmentModelError.value = CreateShipmentModelError.fromJson(jsonDecode(value));
-        log('inside else ${createShipmentModel.value.status}');
+        log('inside else ${createShipmentModel.value.message}');
         createShipmentModel.value =
             CreateShipmentModel.fromJson(jsonDecode(value));
         showToastCenter(createShipmentModel.value.message.toString());

@@ -116,7 +116,8 @@ class _ItemDetailsScreensState extends State<ItemDetailsScreens> {
 
   int tappedIndex = -1;
   String selectedValue = "choose";
-  ModelVendorCategory modelVendorCategory = ModelVendorCategory(usphone: []);
+  Rx<ModelVendorCategory> modelVendorCategory =
+      ModelVendorCategory(usphone: []).obs;
   Rx<ModelCategoryList> productCategoryModel = ModelCategoryList().obs;
   Rx<RxStatus> vendorCategoryStatus = RxStatus.empty().obs;
   final GlobalKey categoryKey = GlobalKey();
@@ -129,12 +130,13 @@ class _ItemDetailsScreensState extends State<ItemDetailsScreens> {
   VendorUser get vendorInfo => vendorProfileController.model.user!;
   final vendorProfileController = Get.put(VendorProfileController());
 
-  void getVendorCategories() {
+  getVendorCategories() async {
     vendorCategoryStatus.value = RxStatus.loading();
     repositories
         .getApi(url: ApiUrls.vendorCategoryListUrl, showResponse: false)
         .then((value) {
-      modelVendorCategory = ModelVendorCategory.fromJson(jsonDecode(value));
+      modelVendorCategory.value =
+          ModelVendorCategory.fromJson(jsonDecode(value));
       vendorCategoryStatus.value = RxStatus.success();
 
       for (var element in vendorInfo.vendorCategory!) {
@@ -206,12 +208,23 @@ class _ItemDetailsScreensState extends State<ItemDetailsScreens> {
   bool isItemDetailsVisible2 = false;
   bool isItemDetailsVisible3 = false;
   TextEditingController searchController = TextEditingController();
+  bool isloading = true;
+
+  _loadCategories() async {
+    // Simulate a network request or data loading
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      isloading = false;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     getVendorCategories();
     fetchDataBasedOnId(vendorID);
+    _loadCategories();
     fetchSubCategoryBasedOnId(ProductID);
     if (widget.id != null) {
       ProductNameController.text = widget.name.toString();
@@ -400,85 +413,113 @@ class _ItemDetailsScreensState extends State<ItemDetailsScreens> {
               //     ),
               //   ],
               // ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Search Vendor Category'.tr,
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 5),
-                  DropdownSearch<ProductCategoryData>(
-                    popupProps: PopupProps.menu(
-                      showSearchBox: true,
-                      searchDelay: const Duration(milliseconds: 300),
-                      searchFieldProps: TextFieldProps(
-                        decoration: InputDecoration(
-                          labelText: 'Search Category'.tr,
-                          filled: true,
-                          fillColor: const Color(0xffE2E2E2).withOpacity(.35),
-                          contentPadding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 14),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            borderSide:
-                                BorderSide(color: AppTheme.secondaryColor),
-                          ),
+              isloading
+                  ? const Center(
+                      child: CupertinoActivityIndicator(),
+                    )
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Search Vendor Category'.tr,
+                          style: TextStyle(fontWeight: FontWeight.bold),
                         ),
-                      ),
+                        const SizedBox(height: 5),
+                        Obx(() {
+                          return DropdownSearch<ProductCategoryData>(
+                            popupProps: PopupProps.menu(
+                              showSearchBox: true,
+                              searchDelay: const Duration(milliseconds: 300),
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                  labelText: 'Search Category'.tr,
+                                  filled: true,
+                                  fillColor:
+                                      const Color(0xffE2E2E2).withOpacity(.35),
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 15, vertical: 14),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    borderSide: const BorderSide(
+                                        color: AppTheme.secondaryColor),
+                                  ),
+                                ),
+                              ),
+                              emptyBuilder: (context, searchEntry) =>
+                                  const Center(
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.info_outline,
+                                        color: Colors.grey, size: 50),
+                                    SizedBox(height: 8),
+                                    Text(
+                                      "Looking For categories ... ",
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 16),
+                                    ),
+                                    Text(
+                                      "Tap again ",
+                                      style: TextStyle(
+                                          color: Colors.grey, fontSize: 16),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                              dropdownSearchDecoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.white,
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 14),
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: BorderSide(
+                                      color: AppTheme.secondaryColor),
+                                ),
+                                hintText: 'Select Category'.tr,
+                              ),
+                            ),
+                            items: modelVendorCategory.value.usphone!
+                                .map((vendorCategory) => ProductCategoryData(
+                                      id: vendorCategory.id,
+                                      title: vendorCategory.name,
+                                    ))
+                                .toList(),
+                            itemAsString: (ProductCategoryData? item) =>
+                                item?.title ?? '',
+                            onChanged: (ProductCategoryData? selectedItem) {
+                              if (selectedItem != null) {
+                                fetchDataBasedOnId(selectedItem.id);
+                                isItemDetailsVisible = !isItemDetailsVisible;
+                                categoryName.value = selectedItem.title;
+                                id.value = selectedItem.id.toString();
+                                idForChild.clear();
+                                setState(() {
+                                  selectedValue = selectedItem.title;
+                                });
+                              }
+                            },
+                            selectedItem: null,
+                          );
+                        }),
+                        const SizedBox(height: 10),
+                        //  if (selectedValue.isNotEmpty)
+                        //     Container(
+                        //       padding: const EdgeInsets.all(10),
+                        //       height: 50,
+                        //       width: double.infinity,
+                        //       decoration: BoxDecoration(
+                        //         color: Colors.grey.shade200,
+                        //         borderRadius: BorderRadius.circular(10),
+                        //         border:
+                        //             Border.all(color: AppTheme.buttonColor, width: 2),
+                        //       ),
+                        //       child: Text(selectedValue),
+                        //     ),
+                      ],
                     ),
-                    dropdownDecoratorProps: DropDownDecoratorProps(
-                      dropdownSearchDecoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 15, vertical: 14),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          borderSide:
-                              BorderSide(color: AppTheme.secondaryColor),
-                        ),
-                        hintText: 'Select Category'.tr,
-                      ),
-                    ),
-                    items: modelVendorCategory.usphone!
-                        .map((vendorCategory) => ProductCategoryData(
-                              id: vendorCategory.id,
-                              title: vendorCategory.name,
-                            ))
-                        .toList(),
-                    itemAsString: (ProductCategoryData? item) =>
-                        item?.title ?? '',
-                    onChanged: (ProductCategoryData? selectedItem) {
-                      if (selectedItem != null) {
-                        fetchDataBasedOnId(selectedItem.id);
-                        isItemDetailsVisible = !isItemDetailsVisible;
-                        categoryName.value = selectedItem.title;
-                        id.value = selectedItem.id.toString();
-                        idForChild.clear();
-                        setState(() {
-                          selectedValue = selectedItem.title;
-                        });
-                      }
-                    },
-                    selectedItem: null,
-                  ),
-                  const SizedBox(height: 10),
-                //  if (selectedValue.isNotEmpty)
-                //     Container(
-                //       padding: const EdgeInsets.all(10),
-                //       height: 50,
-                //       width: double.infinity,
-                //       decoration: BoxDecoration(
-                //         color: Colors.grey.shade200,
-                //         borderRadius: BorderRadius.circular(10),
-                //         border:
-                //             Border.all(color: AppTheme.buttonColor, width: 2),
-                //       ),
-                //       child: Text(selectedValue),
-                //     ),
-                ],
-              ),
 
               const SizedBox(
                 height: 15,
@@ -917,18 +958,18 @@ class _ItemDetailsScreensState extends State<ItemDetailsScreens> {
                 title: 'Confirm'.tr,
                 borderRadius: 11,
                 onPressed: () {
-                  if (ProductNameController.text.trim().isEmpty) {
-                    showToast("Please enter product name".tr);
-                  } else if (categoryName.value == "") {
-                    showToast("Please select vendor category".tr);
-                  } else if (categoryName.value == "") {
-                    showToast("Please select vendor category".tr);
-                  } else if (categoryName.value == "") {
-                    showToast("Please select vendor category".tr);
-                  } else {
-                    deliverySizeApi();
-                    profileController.thankYouValue = 'Giveaway';
-                  }
+                  // if (ProductNameController.text.trim().isEmpty) {
+                  //   showToast("Please enter product name".tr);
+                  // } else if (categoryName.value == "") {
+                  //   showToast("Please select vendor category".tr);
+                  // } else if (categoryName.value == "") {
+                  //   showToast("Please select vendor category".tr);
+                  // } else if (categoryName.value == "") {
+                  //   showToast("Please select vendor category".tr);
+                  // } else {
+                  //   deliverySizeApi();
+                  //   profileController.thankYouValue = 'Giveaway';
+                  // }
                 },
               ),
             ],

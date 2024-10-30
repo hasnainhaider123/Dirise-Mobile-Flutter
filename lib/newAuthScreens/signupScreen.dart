@@ -73,6 +73,7 @@ class _CreateAccountNewScreenState extends State<CreateAccountNewScreen> {
       ? showToast(response.message.toString())
       : showToast("يرجى التحقق من كلمة المرور");
       print("Toast----: ${response.message.toString()}");
+      log('map data of SU is ${map.toString()}');
       if (response.status == true) {
         print(response.otp.toString());
         Get.toNamed(NewOtpScreen.route, arguments: [_emailController.text, true, map]);
@@ -303,8 +304,9 @@ class _CreateAccountNewScreenState extends State<CreateAccountNewScreen> {
                   onCountryChanged: (phone) {
                     log('search 1111 ${phone.code}');
                     profileController.code = phone.code;
-                    code = phone.dialCode.toString();
-                    print(phone.code);
+                   // code = phone.dialCode.toString();
+                    code=phone.code;
+                    print('phone codeis ${code}');
                     print(profileController.code.toString());
                   },
                   validator: (value) {

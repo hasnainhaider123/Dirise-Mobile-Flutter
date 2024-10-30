@@ -45,6 +45,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController referralEmailController = TextEditingController();
+  String? initialValue;
+  bool isloading = true;
 
   updateProfile() {
     if (_formKey.currentState!.validate()) {
@@ -59,7 +61,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       map['country_id'] = profileController.selectedCountry!.id.toString();
       map['state_id'] = profileController.selectedState!.stateId.toString();
       map['phone_country_code'] =
-          code12 ?? profileController.model.user!.phoneCountryCode ?? '';
+          code12 ;
       if (profileController.selectedCity != null) {
         map['city_id'] = profileController.selectedCity!.cityId.toString();
       } else {
@@ -67,6 +69,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       }
       map['street_name'] = addressController.text.trim();
       // log('dsgsfhdfgh${profileController.selectedCity!.cityId.toString()}');
+      log('Map Data is ${map.toString()}');
       Map<String, File> gg = {};
       if (image.path.isNotEmpty) {
         gg["profile_image"] = image;
@@ -84,7 +87,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         profileController.selectedLAnguage.value == "English"
             ? showToast(response.message.toString())
             : showToast("تم تحديث الملف الشخصي بنجاح.");
-        print("Toast-----: ${response.message.toString()}");
+        print("Toast-----: ${value.toString()}");
         if (response.status == true) {
           profileController.getDataProfile();
           // log('dsgsfhdfgh${profileController.selectedCity!.cityId.toString()}');
@@ -301,11 +304,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   String code = "";
   String code12 = '';
 
+  _loadCategories() async {
+    // Simulate a network request or data loading
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      isloading = false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     profileController.getDataProfile();
     SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+      profileController.code =
+          profileController.model.user!.countryCode.toString();
       firstNameController.text =
           profileController.model.user!.firstName.toString();
       lastNameController.text =
@@ -317,12 +330,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       addressController.text =
           profileController.model.user!.street_name.toString();
       code = profileController.model.user!.phoneCountryCode.toString();
-      profileController.code =
-          profileController.model.user!.countryCode.toString();
+      initialValue = profileController.code;
+
       profileController.code1 =
           profileController.model.user!.countryCode.toString();
-      print("Phone Country Code-----: ${profileController.code}");
-      print("Country Code-----: ${profileController.code}");
+      print(
+          "Phone Country Code-----: ${profileController.model.user!.phoneCountryCode}");
+      print("Country Code-----: ${initialValue}");
       if (profileController.model.user!.country_id != null) {
         profileController.selectedCountry = Country(
           name: profileController.model.user!.country_name.toString(),
@@ -355,6 +369,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           cityName: profileController.model.user!.city_name.toString(),
         );
       }
+      _loadCategories();
       setState(() {});
     });
   }
@@ -568,64 +583,74 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     fontSize: 15, fontWeight: FontWeight.w500),
               ),
               5.spaceY,
-              IntlPhoneField(
-                textAlign: profileController.selectedLAnguage.value == 'English'
-                    ? TextAlign.left
-                    : TextAlign.right,
-                // key: ValueKey(code),
-                flagsButtonPadding: const EdgeInsets.all(8),
-                dropdownIconPosition: IconPosition.trailing,
-                showDropdownIcon: true,
-                cursorColor: Colors.black,
-                textInputAction: TextInputAction.next,
-                dropdownTextStyle: const TextStyle(color: Colors.black),
-                style: const TextStyle(color: AppTheme.textColor),
-                controller: phoneController,
-                decoration: InputDecoration(
-                    contentPadding: EdgeInsets.zero,
-                    hintStyle: const TextStyle(color: AppTheme.textColor),
-                    hintText: 'Phone Number'.tr,
-                    labelStyle: const TextStyle(color: AppTheme.textColor),
-                    border: const OutlineInputBorder(
-                      borderSide: BorderSide(),
+              isloading
+                  ? const Center(
+                      child: CupertinoActivityIndicator(),
+                    )
+                  : IntlPhoneField(
+                      textAlign:
+                          profileController.selectedLAnguage.value == 'English'
+                              ? TextAlign.left
+                              : TextAlign.right,
+                      // key: ValueKey(code),
+                      flagsButtonPadding: const EdgeInsets.all(8),
+                      dropdownIconPosition: IconPosition.trailing,
+                      showDropdownIcon: true,
+                      cursorColor: Colors.black,
+                      textInputAction: TextInputAction.next,
+                      dropdownTextStyle: const TextStyle(color: Colors.black),
+                      style: const TextStyle(color: AppTheme.textColor),
+                      controller: phoneController,
+                      decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          hintStyle: const TextStyle(color: AppTheme.textColor),
+                          hintText: 'Phone Number'.tr,
+                          labelStyle:
+                              const TextStyle(color: AppTheme.textColor),
+                          border: const OutlineInputBorder(
+                            borderSide: BorderSide(),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: AppTheme.shadowColor)),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: AppTheme.shadowColor))),
+                      initialCountryCode:
+                          initialValue ?? profileController.code,
+                      initialValue: phoneController.text.isNotEmpty
+                          ? phoneController.text
+                          : profileController.model.user!.phone,
+                      languageCode: profileController
+                          .model.user!.phoneCountryCode
+                          .toString(),
+                      invalidNumberMessage:
+                          profileController.selectedLAnguage.value == 'English'
+                              ? 'Invalid phone number'
+                              : 'رقم الهاتف غير صالح',
+                      onCountryChanged: (phone) {
+                        code12 = phone.code;
+                        print('Phone Code----: ${phone.code}');
+                        print('Language Code----: ${profileController.code}');
+                        print(
+                            'InitialCountry Code----: ${profileController.model.user!.phoneCountryCode.toString()}');
+                        print('12.dfghdfjgdfkg   ${profileController.code}');
+                      },
+                      validator: (value) {
+                        if (value == null || phoneController.text.isEmpty) {
+                          return AppStrings.pleaseenterphonenumber.tr;
+                        }
+                        return null;
+                      },
+                      onChanged: (phone) {
+                        profileController.code =
+                            phone.countryISOCode.toString();
+                        print('dfghdfjgdfkg${phone.countryCode}');
+                        print(phone.countryCode);
+                        code12 = phone.countryCode;
+                        // print(profileController.code.toString());
+                      },
                     ),
-                    enabledBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: AppTheme.shadowColor)),
-                    focusedBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: AppTheme.shadowColor))),
-                initialCountryCode:
-                    profileController.model.user!.phoneCountryCode ?? 'PK',
-                initialValue: phoneController.text.isNotEmpty
-                    ? phoneController.text
-                    : profileController.model.user!.phone,
-                languageCode:
-                    profileController.model.user!.phoneCountryCode.toString(),
-                invalidNumberMessage:
-                    profileController.selectedLAnguage.value == 'English'
-                        ? 'Invalid phone number'
-                        : 'رقم الهاتف غير صالح',
-                onCountryChanged: (phone) {
-                  code12 = phone.code;
-                  print('Phone Code----: ${phone.code}');
-                  print('Language Code----: ${profileController.code}');
-                  print(
-                      'InitialCountry Code----: ${profileController.model.user!.phoneCountryCode.toString()}');
-                  print('12.dfghdfjgdfkg   ${profileController.code}');
-                },
-                validator: (value) {
-                  if (value == null || phoneController.text.isEmpty) {
-                    return AppStrings.pleaseenterphonenumber.tr;
-                  }
-                  return null;
-                },
-                onChanged: (phone) {
-                  profileController.code = phone.countryISOCode.toString();
-                  print('dfghdfjgdfkg${phone.countryCode}');
-                  print(phone.countryCode);
-                  code12 = phone.countryCode;
-                  // print(profileController.code.toString());
-                },
-              ),
               4.spaceY,
               ...fieldWithName(
                 title: AppStrings.country.tr,

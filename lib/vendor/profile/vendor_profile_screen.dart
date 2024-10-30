@@ -357,11 +357,11 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
     }
     if (selectedPlan == PlansType.personal) {
       // Payment receipt certificate
-      if (paymentReceiptCertificate.path.isEmpty) {
-        showToast("Please Select Payment Receipt Certificate".tr);
-        paymentReceiptCertificateKey.currentContext!.navigate;
-        return;
-      }
+      // if (paymentReceiptCertificate.path.isEmpty) {
+      //   showToast("Please Select Payment Receipt Certificate".tr);
+      //   paymentReceiptCertificateKey.currentContext!.navigate;
+      //   return;
+      // }
       // store Logo
       // if (storeLogo.path.isEmpty) {
       //   showToast("Please Select Store Logo");
