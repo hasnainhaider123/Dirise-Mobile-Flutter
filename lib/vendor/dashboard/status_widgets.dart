@@ -26,8 +26,8 @@ class _StatusWidgetState extends State<StatusWidget> {
 
   @override
   Widget build(BuildContext context) {
-    print(
-        "Vendor Publish Status: '${vendorProfileController.model.user?.vendorPublishStatus.toString() ?? 'null or empty'}'");
+    // print(
+    //     "Vendor Publish Status: '${vendorProfileController.model.user?.vendorPublishStatus.toString() ?? 'null or empty'}'");
 
     return SliverToBoxAdapter(
       child: Obx(() {
