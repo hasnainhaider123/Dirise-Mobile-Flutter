@@ -330,12 +330,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       addressController.text =
           profileController.model.user!.street_name.toString();
       code = profileController.model.user!.phoneCountryCode.toString();
-      initialValue = profileController.code;
+      initialValue = code;
 
       profileController.code1 =
           profileController.model.user!.countryCode.toString();
       print(
-          "Phone Country Code-----: ${profileController.model.user!.phoneCountryCode}");
+          "Phone Country Code-----: ${code }");
       print("Country Code-----: ${initialValue}");
       if (profileController.model.user!.country_id != null) {
         profileController.selectedCountry = Country(
@@ -839,12 +839,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 title: AppStrings.streetAddress.tr,
                 hintText: AppStrings.enterstreetAddress.tr,
                 controller: addressController,
-                // validator: (v) {
-                //   if (v!.trim().isEmpty) {
-                //     return AppStrings.pleaseenteraddress;
-                //   }
-                //   return null;
-                // },
+                validator: (v) {
+                  if (v!.trim().isEmpty) {
+                    return AppStrings.pleaseenteraddress;
+                  }
+                  return null;
+                },
               ),
             ]),
           ),

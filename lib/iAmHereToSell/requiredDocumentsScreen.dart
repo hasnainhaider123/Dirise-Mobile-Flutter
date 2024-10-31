@@ -151,7 +151,66 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                 'You can set later, but your experience will be limited untill you submit all'.tr,
                 style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 13),
               ),
-              profileController.selectedPlan == '1' ?
+              // profileController.selectedPlan == '1' ?
+              // Column(
+              //   children: [
+              //     ImageWidget(
+              //       // key: paymentReceiptCertificateKey,
+              //       title: "Id Card Front".tr,
+              //       file: idCardFront,
+              //       validation: checkValidation(showValidation.value,idCardFront.path.isEmpty),
+              //       filePicked: (File g) {
+              //         idCardFront = g;
+              //       },
+              //     ),
+              //     ImageWidget(
+              //       // key: paymentReceiptCertificateKey,
+              //       title: "Id Card Back".tr,
+              //       file: idCardBack,
+              //       validation: checkValidation(showValidation.value, idCardBack.path.isEmpty),
+              //       filePicked: (File g) {
+              //         memorandum_of_association = g;
+              //       },
+              //     ),
+              //     ImageWidget(
+              //       // key: paymentReceiptCertificateKey,
+              //       title: "Commercial License ".tr,
+              //       file: commercialLicense ,
+              //       validation: checkValidation(showValidation.value, commercialLicense .path.isEmpty),
+              //       filePicked: (File g) {
+              //         commercialLicense  = g;
+              //       },
+              //     ),
+              //     ImageWidget(
+              //       // key: paymentReceiptCertificateKey,
+              //       title: "Original civil information ".tr,
+              //       file: original_civil_information,
+              //       validation: checkValidation(showValidation.value, original_civil_information.path.isEmpty),
+              //       filePicked: (File g) {
+              //         original_civil_information = g;
+              //       },
+              //     ),
+              //     ImageWidget(
+              //       // key: paymentReceiptCertificateKey,
+              //       title: "Authorized Signatory".tr,
+              //       file: authorizedSignature,
+              //       validation: checkValidation(showValidation.value, authorizedSignature.path.isEmpty),
+              //       filePicked: (File g) {
+              //         authorizedSignature = g;
+              //       },
+              //     ),
+              //     ImageWidget(
+              //       // key: paymentReceiptCertificateKey,
+              //       title: "Company bank account".tr,
+              //       file: company_bank_account,
+              //       validation: checkValidation(showValidation.value, company_bank_account.path.isEmpty),
+              //       filePicked: (File g) {
+              //         company_bank_account = g;
+              //       },
+              //     ),
+
+              //   ],
+              // ):const SizedBox(),
               Column(
                 children: [
                   ImageWidget(
@@ -210,29 +269,29 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                   ),
 
                 ],
-              ):const SizedBox(),
-              profileController.selectedPlan == '2' ?
-              ImageWidget(
-                // key: paymentReceiptCertificateKey,
-                title: "Payment certificate".tr,
-                file: payment_certificate,
-                validation: checkValidation(showValidation.value, payment_certificate.path.isEmpty),
-                filePicked: (File g) {
-                  payment_certificate = g;
-                },
-              )
-                  :const SizedBox(),
-              profileController.selectedPlan == '3' ?
-              ImageWidget(
-                // key: paymentReceiptCertificateKey,
-                title: "Payment certificate".tr,
-                file: payment_certificate,
-                validation: checkValidation(showValidation.value, payment_certificate.path.isEmpty),
-                filePicked: (File g) {
-                  payment_certificate = g;
-                },
-              )
-                  :const SizedBox(),
+              ),
+              // profileController.selectedPlan == '2' ?
+              // ImageWidget(
+              //   // key: paymentReceiptCertificateKey,
+              //   title: "Payment certificate".tr,
+              //   file: payment_certificate,
+              //   validation: checkValidation(showValidation.value, payment_certificate.path.isEmpty),
+              //   filePicked: (File g) {
+              //     payment_certificate = g;
+              //   },
+              // )
+              //     :const SizedBox(),
+              // profileController.selectedPlan == '3' ?
+              // ImageWidget(
+              //   // key: paymentReceiptCertificateKey,
+              //   title: "Payment certificate".tr,
+              //   file: payment_certificate,
+              //   validation: checkValidation(showValidation.value, payment_certificate.path.isEmpty),
+              //   filePicked: (File g) {
+              //     payment_certificate = g;
+              //   },
+              // )
+              //     :const SizedBox(),
               const SizedBox(
                 height: 20,
               ),

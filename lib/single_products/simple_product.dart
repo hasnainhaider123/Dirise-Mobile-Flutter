@@ -1621,7 +1621,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                               child: Text(
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                locationController.city.toString(),
+                                '${locationController.countryName.toString()} ${locationController.state.toString()} ${locationController.city.toString()}',
                                 style: GoogleFonts.poppins(
                                     color: const Color(0xFF014E70),
                                     fontSize: 14,

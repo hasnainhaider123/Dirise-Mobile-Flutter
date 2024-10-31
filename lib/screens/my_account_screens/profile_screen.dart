@@ -202,6 +202,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         imagePath: "assets/svgs/location.svg",
                         title: AppStrings.streetAddress.tr,
                         value: profileController.model.user!.street_name.toString(),
+                        
                       ),
 
                       SizedBox(

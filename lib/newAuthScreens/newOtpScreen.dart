@@ -55,21 +55,28 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
     Map<String, dynamic> map = {};
     map['email'] = email;
     map['otp'] = _otpController.text.trim();
-    map['fcm_token'] = Platform.isAndroid ? token.toString() : token1.toString();
+    map['fcm_token'] =
+        Platform.isAndroid ? token.toString() : token1.toString();
     map['key'] = 'forget';
-    repositories.postApi(url: ApiUrls.verifyOtpEmail, context: context, mapData: map).then((value) async {
+    repositories
+        .postApi(
+            url: ApiUrls.verifyOtpEmail,
+            context: context,
+            mapData: map,
+            showResponse: true)
+        .then((value) async {
       LoginModal response = LoginModal.fromJson(jsonDecode(value));
       profileController.selectedLAnguage.value == "English"
-      ?showToast(response.message)
-      :showToast("تم تسجيل الدخول إلى حسابك بنجاح");
+          ? showToast(response.message)
+          : showToast("تم تسجيل الدخول إلى حسابك بنجاح");
       print("Toast---: ${response.message}");
       if (response.status == true) {
         if (check == true) {
           repositories.saveLoginDetails(jsonEncode(response));
 
-           Get.to(const TellUsAboutYourSelf());
+          Get.to(const TellUsAboutYourSelf());
         } else {
-           Get.offNamed(NewPasswordScreen.route, arguments: [email]);
+          Get.offNamed(NewPasswordScreen.route, arguments: [email]);
         }
       }
     });
@@ -82,8 +89,11 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
     // map['phone'] = _mobileNumberController.text.trim();
     // map['password'] = _passwordController.text.trim();
     FocusManager.instance.primaryFocus!.unfocus();
-    await repositories.postApi(url: ApiUrls.signInUrl, context: context, mapData: tempMap).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    await repositories
+        .postApi(url: ApiUrls.signInUrl, context: context, mapData: tempMap)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       // showToast(response.message.toString());
       log(response.toString());
       if (response.status == true) {
@@ -101,8 +111,11 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
     // map['phone'] = _mobileNumberController.text.trim();
     // map['password'] = _passwordController.text.trim();
     FocusManager.instance.primaryFocus!.unfocus();
-    await repositories.postApi(url: ApiUrls.resendOtpUrl, context: context, mapData: map).then((value) {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    await repositories
+        .postApi(url: ApiUrls.resendOtpUrl, context: context, mapData: map)
+        .then((value) {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       // showToast(response.message.toString());
       log(response.otp.toString());
       if (response.status == true) {
@@ -122,7 +135,8 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
       HttpHeaders.acceptHeader: "application/json",
     };
     FocusManager.instance.primaryFocus!.unfocus();
-    final response = await http.post(Uri.parse(ApiUrls.forgotPasswordUrl), body: jsonEncode(tempMap), headers: header);
+    final response = await http.post(Uri.parse(ApiUrls.forgotPasswordUrl),
+        body: jsonEncode(tempMap), headers: header);
     if (response.statusCode == 200 || response.statusCode == 400) {
       log(response.body);
       Helpers.hideLoader(loader);
@@ -184,27 +198,27 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppTheme.buttonColor,
-        leading:GestureDetector(
-          onTap: (){
+        leading: GestureDetector(
+          onTap: () {
             Get.back();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileController.selectedLAnguage.value != 'English' ?
-              Image.asset(
-                'assets/images/forward_icon.png',
-                height: 19,
-                width: 19,
-                color: Colors.white,
-              ) :
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 19,
-                width: 19,
-                color: Colors.white,
-              ),
+              profileController.selectedLAnguage.value != 'English'
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 19,
+                      width: 19,
+                      color: Colors.white,
+                    )
+                  : Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 19,
+                      width: 19,
+                      color: Colors.white,
+                    ),
             ],
           ),
         ),
@@ -218,23 +232,29 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
                 height: size.height,
                 width: size.width,
                 decoration: const BoxDecoration(color: AppTheme.buttonColor),
-                padding: EdgeInsets.symmetric(horizontal: size.width * .02, vertical: size.height * .06),
+                padding: EdgeInsets.symmetric(
+                    horizontal: size.width * .02, vertical: size.height * .06),
                 child: Column(
                   children: [
-                    Image.asset(height: size.height * .15, 'assets/images/otplogo.png'),
+                    Image.asset(
+                        height: size.height * .15, 'assets/images/otplogo.png'),
                     const SizedBox(
                       height: 13,
                     ),
                     Text(
                       AppStrings.otpVerification.tr,
-                      style: GoogleFonts.poppins(fontSize: 23, fontWeight: FontWeight.w700, color: Colors.white),
+                      style: GoogleFonts.poppins(
+                          fontSize: 23,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white),
                     ),
                     const SizedBox(
                       height: 8,
                     ),
                     Text(
                       AppStrings.resendOTP.tr,
-                      style: GoogleFonts.poppins(fontSize: 16, color: Colors.white),
+                      style: GoogleFonts.poppins(
+                          fontSize: 16, color: Colors.white),
                     )
                   ],
                 ),
@@ -250,7 +270,8 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
                       // borderRadius: BorderRadius.only(topLeft: Radius.circular(100))
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 60, left: 10, right: 10),
+                      padding:
+                          const EdgeInsets.only(top: 60, left: 10, right: 10),
                       child: Column(
                         children: [
                           Pinput(
@@ -265,7 +286,8 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
                           ),
                           Text(
                             AppStrings.notReceive.tr,
-                            style: GoogleFonts.poppins(color: const Color(0xff3D4260), fontSize: 17),
+                            style: GoogleFonts.poppins(
+                                color: const Color(0xff3D4260), fontSize: 17),
                           ),
                           SizedBox(
                             height: size.height * .03,
@@ -291,7 +313,9 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
                                 '${timerInt.value > 0 ? "In ${timerInt.value > 9 ? timerInt.value : "0${timerInt.value}"}" : ""}',
                                 textAlign: TextAlign.center,
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w600, color: const Color(0xff578AE8), fontSize: 16),
+                                    fontWeight: FontWeight.w600,
+                                    color: const Color(0xff578AE8),
+                                    fontSize: 16),
                               );
                             }),
                           ),
@@ -311,7 +335,8 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.buttonColor,
-                shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(2))),
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(2))),
                 textStyle: GoogleFonts.poppins(
                   fontWeight: FontWeight.bold,
                 )),
@@ -322,7 +347,10 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 'Verify OTP'.tr,
-                style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white),
+                style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
               ),
             ),
           ),
