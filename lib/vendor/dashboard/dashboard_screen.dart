@@ -39,6 +39,7 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print("Vendor DashBoard: ${controller.modelVendorDashboard.dashboard}");
     return Container(
       color: Colors.grey.shade100,
       child: SafeArea(
@@ -70,9 +71,11 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
                             const LatestSalesAppBar(),
                             controller.modelVendorDashboard.order!.isNotEmpty
                                 ? SliverList.builder(
-                                    itemCount: controller.modelVendorDashboard.order!.length,
+                                    itemCount: controller
+                                        .modelVendorDashboard.order!.length,
                                     itemBuilder: (context, index) {
-                                      final order = controller.modelVendorDashboard.order![index];
+                                      final order = controller
+                                          .modelVendorDashboard.order![index];
                                       if (kDebugMode) {
                                         // print(jsonEncode(order));
                                         // print("SliverList....    $index");
@@ -81,44 +84,63 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
                                         behavior: HitTestBehavior.translucent,
                                         onTap: () {
                                           Get.to(() => OrderDetails(
-                                                orderId: order.orderId.toString(),
+                                                orderId:
+                                                    order.orderId.toString(),
                                               ));
                                         },
                                         child: Container(
                                           color: Colors.white,
-                                          padding: const EdgeInsets.symmetric(horizontal: 15),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 15),
                                           child: Column(
                                             children: [
                                               SizedBox(
                                                 height: AddSize.size5,
                                               ),
                                               Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
                                                 children: [
                                                   Expanded(
                                                     flex: 5,
                                                     child: Column(
-                                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                                      crossAxisAlignment:
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Text(
                                                           "#${order.orderId.toString()}",
                                                           style: GoogleFonts.poppins(
-                                                              color: const Color(0xFF454B5C),
+                                                              color: const Color(
+                                                                  0xFF454B5C),
                                                               height: 1.5,
-                                                              fontWeight: FontWeight.w500,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
                                                               fontSize: 15),
                                                         ),
                                                         const SizedBox(
                                                           height: 5,
                                                         ),
-                                                        if (DateTime.tryParse(order.updatedAt.toString()) != null)
+                                                        if (DateTime.tryParse(order
+                                                                .updatedAt
+                                                                .toString()) !=
+                                                            null)
                                                           Text(
-                                                            DateFormat("HH:mm a - dd MMM, yyyy")
-                                                                .format(DateTime.tryParse(order.updatedAt.toString())!),
+                                                            DateFormat(
+                                                                    "HH:mm a - dd MMM, yyyy")
+                                                                .format(DateTime
+                                                                    .tryParse(order
+                                                                        .updatedAt
+                                                                        .toString())!),
                                                             style: GoogleFonts.poppins(
-                                                                fontWeight: FontWeight.w500,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w500,
                                                                 fontSize: 13,
-                                                                color: const Color(0xFF8C9BB2)),
+                                                                color: const Color(
+                                                                    0xFF8C9BB2)),
                                                           ),
                                                       ],
                                                     ),
@@ -129,47 +151,56 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
                                                   Expanded(
                                                     flex: 3,
                                                     child: Text(
-                                                      profileController.selectedLAnguage.value == 'English' ?
-                                                     order.status.toString().capitalize! :
-                                                      (order.status == 'order placed')
-                                                          ? 'تم تقديم الطلب'
-                                                          : (order.status == 'in process')
-                                                          ? 'قيد المعالجة'
-                                                          : (order.status == 'packed')
-                                                          ? 'تم التغليف'
-                                                          : (order.status == 'ready to ship')
-                                                          ? 'جاهز للشحن'
-                                                          : (order.status == 'shipped')
-                                                          ? 'تم الشحن'
-                                                          : (order.status == 'out of delivery')
-                                                          ? 'خرج للتسليم'
-                                                          : (order.status == 'delivered')
-                                                          ? 'تم التسليم'
-                                                          : (order.status == 'cancel requested')
-                                                          ? 'تم طلب الإلغاء'
-                                                          : (order.status == 'cancelled')
-                                                          ? 'تم الإلغاء'
-                                                          : (order.status == 'return')
-                                                          ? 'تم الإرجاع'
-                                                          : (order.status == 'refunded')
-                                                          ? 'تم استرداد الأموال'
-                                                          : (order.status == 'out for reach')
-                                                          ? 'خارج التغطية'
-                                                          : (order.status == 'order incomplete')
-                                                          ? 'الطلب غير مكتمل'
-                                                          : (order.status == 'payment pending')
-                                                          ? 'الدفع معلق'
-                                                          : (order.status == 'payment failed')
-                                                          ? 'فشل الدفع'
-                                                          : (order.status == 'request return order')
-                                                          ? 'طلب إرجاع الطلب'
-                                                          : order.status
-                                                          .toString()
-                                                          .capitalize!,
+                                                      profileController
+                                                                  .selectedLAnguage
+                                                                  .value ==
+                                                              'English'
+                                                          ? order.status
+                                                              .toString()
+                                                              .capitalize!
+                                                          : (order.status ==
+                                                                  'order placed')
+                                                              ? 'تم تقديم الطلب'
+                                                              : (order.status ==
+                                                                      'in process')
+                                                                  ? 'قيد المعالجة'
+                                                                  : (order.status ==
+                                                                          'packed')
+                                                                      ? 'تم التغليف'
+                                                                      : (order.status ==
+                                                                              'ready to ship')
+                                                                          ? 'جاهز للشحن'
+                                                                          : (order.status == 'shipped')
+                                                                              ? 'تم الشحن'
+                                                                              : (order.status == 'out of delivery')
+                                                                                  ? 'خرج للتسليم'
+                                                                                  : (order.status == 'delivered')
+                                                                                      ? 'تم التسليم'
+                                                                                      : (order.status == 'cancel requested')
+                                                                                          ? 'تم طلب الإلغاء'
+                                                                                          : (order.status == 'cancelled')
+                                                                                              ? 'تم الإلغاء'
+                                                                                              : (order.status == 'return')
+                                                                                                  ? 'تم الإرجاع'
+                                                                                                  : (order.status == 'refunded')
+                                                                                                      ? 'تم استرداد الأموال'
+                                                                                                      : (order.status == 'out for reach')
+                                                                                                          ? 'خارج التغطية'
+                                                                                                          : (order.status == 'order incomplete')
+                                                                                                              ? 'الطلب غير مكتمل'
+                                                                                                              : (order.status == 'payment pending')
+                                                                                                                  ? 'الدفع معلق'
+                                                                                                                  : (order.status == 'payment failed')
+                                                                                                                      ? 'فشل الدفع'
+                                                                                                                      : (order.status == 'request return order')
+                                                                                                                          ? 'طلب إرجاع الطلب'
+                                                                                                                          : order.status.toString().capitalize!,
                                                       style: GoogleFonts.poppins(
-                                                          fontWeight: FontWeight.w600,
+                                                          fontWeight:
+                                                              FontWeight.w600,
                                                           fontSize: 14,
-                                                          color: const Color(0xFFFFB26B)),
+                                                          color: const Color(
+                                                              0xFFFFB26B)),
                                                     ),
                                                   ),
                                                   const SizedBox(
@@ -182,9 +213,11 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
                                                       textAlign: TextAlign.end,
                                                       style: GoogleFonts.poppins(
                                                           height: 1.5,
-                                                          fontWeight: FontWeight.w500,
+                                                          fontWeight:
+                                                              FontWeight.w500,
                                                           fontSize: 15,
-                                                          color: const Color(0xFF454B5C)),
+                                                          color: const Color(
+                                                              0xFF454B5C)),
                                                     ),
                                                   ),
                                                 ],
@@ -202,7 +235,8 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
                                     })
                                 : SliverToBoxAdapter(
                                     child: Padding(
-                                      padding: const EdgeInsets.only(top: 10, bottom: 30),
+                                      padding: const EdgeInsets.only(
+                                          top: 10, bottom: 30),
                                       child: Text(
                                         AppStrings.salesNotAvailable.tr,
                                         style: normalStyle,
@@ -215,14 +249,13 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
                       )
                     : const LoadingAnimation();
               }),
-            )
-        ),
+            )),
       ),
     );
   }
 
   SliverToBoxAdapter thisMonth() {
-    return  SliverToBoxAdapter(
+    return SliverToBoxAdapter(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -231,7 +264,10 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
           ),
           Text(
             "This Month Report".tr,
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16, color: Color(0xFF292F45)),
+            style: const TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+                color: Color(0xFF292F45)),
           ),
           const SizedBox(
             height: 10,
