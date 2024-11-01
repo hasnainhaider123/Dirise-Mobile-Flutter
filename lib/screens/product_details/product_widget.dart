@@ -519,26 +519,29 @@ class _ProductUIState extends State<ProductUI> {
                                 ),
                               )
                             : const SizedBox.shrink(),
-                        Obx(() {
-                          if (wishListController.refreshFav.value > 0) {}
-                          return LikeButtonCat(
-                            onPressed: () {
-                              if (wishListController.favoriteItems.contains(
-                                  widget.productElement.id.toString())) {
-                                removeFromWishList();
-                              } else {
-                                if (profileController.userLoggedIn) {
-                                  addToWishList();
-                                  setState(() {});
+                        Obx(
+                          () {
+                            if (wishListController.refreshFav.value > 0) {}
+                            return LikeButtonCat(
+                              onPressed: () {
+                                if (wishListController.favoriteItems.contains(
+                                    widget.productElement.id.toString())) {
+                                  removeFromWishList();
                                 } else {
-                                  Get.to(const LoginScreen());
+                                  if (profileController.userLoggedIn) {
+                                    addToWishList();
+                                    setState(() {});
+                                  } else {
+                                    Get.to(const LoginScreen());
+                                  }
                                 }
-                              }
-                            },
-                            isLiked: wishListController.favoriteItems
-                                .contains(widget.productElement.id.toString()),
-                          );
-                        },),
+                              },
+                              isLiked: wishListController.favoriteItems
+                                  .contains(
+                                      widget.productElement.id.toString()),
+                            );
+                          },
+                        ),
                       ],
                     ),
                     const SizedBox(
@@ -896,42 +899,95 @@ class _ProductUIState extends State<ProductUI> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
+                                              Text.rich(
+                                                TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: "Shipping: ",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontSize: 13,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    if (widget.productElement
+                                                            .lowestDeliveryPrice !=
+                                                        null)
+                                                      TextSpan(
+                                                        text:
+                                                            "${widget.productElement.lowestDeliveryPrice.toString()} KWD",
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontSize: 13,
+                                                          color: const Color(
+                                                              0xff858484),
+                                                        ),
+                                                      ),
+                                                  ],
+                                                ),
+                                              ),
+
+                                              // Text(
+                                              //   "Shipping  ${widget.productElement.lowestDeliveryPrice.toString()} KWD",
+                                              //   style: GoogleFonts.poppins(
+                                              //       color:
+                                              //           const Color(0xff858484),
+                                              //       fontSize: 13,
+                                              //       fontWeight:
+                                              //           FontWeight.w500),
+                                              // ),
+                                              // if (widget.productElement
+                                              //         .lowestDeliveryPrice !=
+                                              //     null)
+                                              //   Text(
+                                              //     'KWD ${widget.productElement.lowestDeliveryPrice.toString()}',
+                                              //     maxLines: 2,
+                                              //     style: GoogleFonts.poppins(
+                                              //       color:
+                                              //           const Color(0xff858484),
+                                              //       fontSize: 13,
+                                              //       fontWeight: FontWeight.w500,
+                                              //     ),
+                                              //   ),
                                               Text(
-                                                'shipping'.tr,
+                                                '& Estimated arrival by ',
                                                 style: GoogleFonts.poppins(
                                                     color:
                                                         const Color(0xff858484),
-                                                    fontSize: 13,
+                                                    fontSize: 11,
                                                     fontWeight:
                                                         FontWeight.w500),
+                                                // TextStyle(
+                                                //   fontSize: 9,
+                                                //   fontWeight: FontWeight.w500,
+                                                //   color: Color(0xFF19313B),
+                                                // ),
                                               ),
-                                              if (widget.productElement
-                                                      .lowestDeliveryPrice !=
-                                                  null)
-                                                Text(
-                                                  'KWD ${widget.productElement.lowestDeliveryPrice.toString()}',
-                                                  maxLines: 2,
-                                                  style: GoogleFonts.poppins(
-                                                    color:
-                                                        const Color(0xff858484),
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w500,
-                                                  ),
-                                                ),
                                               if (widget.productElement
                                                       .shippingDate !=
                                                   null)
                                                 Text(
                                                   widget.productElement
-                                                      .shippingDate
-                                                      .toString(),
+                                                          .shippingDate
+                                                          .toString()
+                                                          .toLowerCase()
+                                                          .contains(
+                                                              'next day delivery')
+                                                      ? 'Tomorrow'
+                                                      : widget.productElement
+                                                          .shippingDate
+                                                          .toString(),
                                                   maxLines: 2,
                                                   style: GoogleFonts.poppins(
                                                       color: const Color(
                                                           0xff858484),
                                                       fontSize: 13,
                                                       fontWeight:
-                                                          FontWeight.w500),
+                                                          FontWeight.w700),
                                                 ),
                                             ],
                                           )

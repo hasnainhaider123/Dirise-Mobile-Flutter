@@ -1523,7 +1523,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                           specsItems(
                               'Package Details :'.tr,
                               modelSingleProduct
-                                      .value.simpleProduct!.packageDetail??
+                                      .value.simpleProduct!.packageDetail ??
                                   'N/A'),
 
                         // SizedBox(height: 10,),
@@ -1607,7 +1607,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                   fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(
-                              width: 20,
+                              width: 10,
                             ),
                             // const Icon(
                             //   Icons.circle,
@@ -1620,8 +1620,13 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                             Expanded(
                               child: Text(
                                 maxLines: 1,
+                                "${locationController.addressListModel.value.defaultAddress!.city ?? ''},"
+                                " ${locationController.addressListModel.value.defaultAddress!.state ?? ''},"
+                                " ${locationController.addressListModel.value.defaultAddress!.country ?? ''}",
                                 overflow: TextOverflow.ellipsis,
-                                '${locationController.countryName.toString()} ${locationController.state.toString()} ${locationController.city.toString()}',
+                                softWrap: true,
+                                // overflow: TextOverflow.ellipsis,
+                                // '${locationController.countryName.toString()} ${locationController.state.toString()} ${locationController.city.toString()}',
                                 style: GoogleFonts.poppins(
                                     color: const Color(0xFF014E70),
                                     fontSize: 14,
@@ -2053,7 +2058,9 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                     var item = modelRelated
                                         .value.relatedProduct!.product![index];
                                     var similarcounter = 1;
-                                    if(item.id==modelSingleProduct.value.simpleProduct!.id){
+                                    if (item.id ==
+                                        modelSingleProduct
+                                            .value.simpleProduct!.id) {
                                       return Container();
                                     }
                                     return StatefulBuilder(

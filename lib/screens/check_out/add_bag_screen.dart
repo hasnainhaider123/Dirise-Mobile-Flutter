@@ -1,3 +1,7 @@
+import 'package:dirise/model/filter_by_price_model.dart';
+import 'package:dirise/model/model_store_products.dart';
+import 'package:dirise/screens/product_details/single_product.dart';
+import 'package:dirise/single_products/simple_product.dart';
 import 'package:dirise/utils/helper.dart';
 import 'package:dirise/utils/styles.dart';
 import 'package:dirise/widgets/common_colour.dart';
@@ -27,6 +31,8 @@ class BagsScreen extends StatefulWidget {
 class _BagsScreenState extends State<BagsScreen> {
   final cartController = Get.put(CartController());
   final profileController = Get.put(ProfileController());
+  ModelStoreProducts modelProductsList =
+      ModelStoreProducts(vendorProducts: VendorProducts(data: []));
   @override
   void initState() {
     super.initState();
