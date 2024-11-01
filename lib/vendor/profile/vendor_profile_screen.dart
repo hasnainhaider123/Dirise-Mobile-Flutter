@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:dirise/utils/helper.dart';
 import 'package:dirise/widgets/loading_animation.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -22,6 +23,7 @@ import '../../model/vendor_models/model_vendor_registration.dart';
 import '../../model/vendor_models/vendor_category_model.dart';
 import '../../repository/repository.dart';
 import '../../utils/api_constant.dart';
+import '../../utils/countrycode.dart';
 import '../../utils/notification_service.dart';
 import '../../utils/styles.dart';
 import '../../widgets/common_colour.dart';
@@ -187,7 +189,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
     homeAddress.text = vendorInfo.address ?? "";
     phoneNumber.text = vendorInfo.phone ?? "";
     emailAddress.text = vendorInfo.email ?? "";
-    profileController.code = vendorInfo.countryCode;
+    profileController.code = profileController.model.user!.phoneCountryCode;
     profileController.code1 = vendorInfo.countryCode;
     log(':::::::::::::::::${profileController.code}');
     getCategoryFilter();
@@ -641,11 +643,23 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
     });
   }
 
+  bool isloading = true;
+  _loadCategories() async {
+    // Simulate a network request or data loading
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {
+      isloading = false;
+    });
+  }
+
   @override
   void initState() {
+
     super.initState();
+      _loadCategories();
     getBankList();
     getVendorCategories();
+  
     // getCountryList();
   }
 
@@ -1206,69 +1220,88 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                                             fontWeight: FontWeight.w500),
                                       ),
                                       5.spaceY,
-                                      IntlPhoneField(
-                                        textAlign: profileController
-                                                    .selectedLAnguage.value ==
-                                                'English'
-                                            ? TextAlign.left
-                                            : TextAlign.right,
-                                        // key: ValueKey(profileController.code),
-                                        flagsButtonPadding:
-                                            const EdgeInsets.all(8),
-                                        dropdownIconPosition:
-                                            IconPosition.trailing,
-                                        showDropdownIcon: true,
-                                        cursorColor: Colors.black,
-                                        textInputAction: TextInputAction.next,
-                                        dropdownTextStyle: const TextStyle(
-                                            color: Colors.black),
-                                        style: const TextStyle(
-                                            color: AppTheme.textColor),
-                                        controller: phoneNumber,
-                                        decoration: const InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            hintStyle: TextStyle(
-                                                color: AppTheme.textColor),
-                                            hintText: 'Phone Number',
-                                            labelStyle: TextStyle(
-                                                color: AppTheme.textColor),
-                                            border: OutlineInputBorder(
-                                              borderSide: BorderSide(),
+                                      isloading
+                                          ? const Center(
+                                              child:
+                                                  CupertinoActivityIndicator(),
+                                            )
+                                          : IntlPhoneField(
+                                              textAlign: profileController
+                                                          .selectedLAnguage
+                                                          .value ==
+                                                      'English'
+                                                  ? TextAlign.left
+                                                  : TextAlign.right,
+                                              // key: ValueKey(profileController.code),
+                                              flagsButtonPadding:
+                                                  const EdgeInsets.all(8),
+                                              dropdownIconPosition:
+                                                  IconPosition.trailing,
+                                              showDropdownIcon: true,
+                                              cursorColor: Colors.black,
+                                              textInputAction:
+                                                  TextInputAction.next,
+                                              dropdownTextStyle:
+                                                  const TextStyle(
+                                                      color: Colors.black),
+                                              style: const TextStyle(
+                                                  color: AppTheme.textColor),
+                                              controller: phoneNumber,
+                                              decoration: const InputDecoration(
+                                                  contentPadding: EdgeInsets
+                                                      .zero,
+                                                  hintStyle: TextStyle(
+                                                      color: AppTheme
+                                                          .textColor),
+                                                  hintText: 'Phone Number',
+                                                  labelStyle: TextStyle(
+                                                      color: AppTheme
+                                                          .textColor),
+                                                  border: OutlineInputBorder(
+                                                    borderSide: BorderSide(),
+                                                  ),
+                                                  enabledBorder:
+                                                      OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppTheme
+                                                                  .shadowColor)),
+                                                  focusedBorder:
+                                                      OutlineInputBorder(
+                                                          borderSide: BorderSide(
+                                                              color: AppTheme
+                                                                  .shadowColor))),
+                                              initialCountryCode:
+                                                  countryCodeToISO[
+                                                          profileController
+                                                              .code] ??
+                                                      'US',
+
+                                              languageCode: profileController
+                                                  .code1
+                                                  .toString(),
+                                              onCountryChanged: (phone) {
+                                                print(phone.code);
+                                                print(
+                                                    'fdsfdsfdsffs${phone.code.toString()}');
+                                                // print(profileController.code.toString());
+                                              },
+                                              validator: (value) {
+                                                if (value == null ||
+                                                    phoneNumber.text.isEmpty) {
+                                                  return AppStrings
+                                                      .pleaseenterphonenumber
+                                                      .tr;
+                                                }
+                                                return null;
+                                              },
+                                              onChanged: (phone) {
+                                                code12 = phone.countryCode;
+                                                print(phone.countryCode);
+                                                print(
+                                                    'fdsfdsfdsffs${phone.countryISOCode.toString()}');
+                                                // print(profileController.code.toString());
+                                              },
                                             ),
-                                            enabledBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color:
-                                                        AppTheme.shadowColor)),
-                                            focusedBorder: OutlineInputBorder(
-                                                borderSide: BorderSide(
-                                                    color:
-                                                        AppTheme.shadowColor))),
-                                        initialCountryCode:
-                                            profileController.code.toString(),
-                                        languageCode:
-                                            profileController.code1.toString(),
-                                        onCountryChanged: (phone) {
-                                          print(phone.code);
-                                          print(
-                                              'fdsfdsfdsffs${phone.code.toString()}');
-                                          // print(profileController.code.toString());
-                                        },
-                                        validator: (value) {
-                                          if (value == null ||
-                                              phoneNumber.text.isEmpty) {
-                                            return AppStrings
-                                                .pleaseenterphonenumber.tr;
-                                          }
-                                          return null;
-                                        },
-                                        onChanged: (phone) {
-                                          code12 = phone.countryCode;
-                                          print(phone.countryCode);
-                                          print(
-                                              'fdsfdsfdsffs${phone.countryISOCode.toString()}');
-                                          // print(profileController.code.toString());
-                                        },
-                                      ),
                                       // VendorCommonTextfield(
                                       //     controller: phoneNumber,
                                       //     key: phoneNumber.getKey,

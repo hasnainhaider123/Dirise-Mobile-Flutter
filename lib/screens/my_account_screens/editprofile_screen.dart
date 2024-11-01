@@ -23,6 +23,7 @@ import '../../model/customer_profile/model_city_list.dart';
 import '../../model/customer_profile/model_state_list.dart';
 import '../../repository/repository.dart';
 import '../../utils/api_constant.dart';
+import '../../utils/countrycode.dart';
 import '../../widgets/common_colour.dart';
 import '../../widgets/common_textfield.dart';
 
@@ -60,8 +61,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       map['referral_email'] = referralEmailController.text.trim();
       map['country_id'] = profileController.selectedCountry!.id.toString();
       map['state_id'] = profileController.selectedState!.stateId.toString();
-      map['phone_country_code'] =
-          code12 ;
+      map['phone_country_code'] = code12 ;
       if (profileController.selectedCity != null) {
         map['city_id'] = profileController.selectedCity!.cityId.toString();
       } else {
@@ -93,7 +93,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           // log('dsgsfhdfgh${profileController.selectedCity!.cityId.toString()}');
           // Get.offNamed(ProfileScreen.route);
           Get.back();
-          Get.back();
+         Get.back();
         } else {
           Get.back();
         }
@@ -330,13 +330,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       addressController.text =
           profileController.model.user!.street_name.toString();
       code = profileController.model.user!.phoneCountryCode.toString();
-      initialValue = code;
+      initialValue =profileController.model.user!.phoneCountryCode.toString();
 
       profileController.code1 =
           profileController.model.user!.countryCode.toString();
       print(
-          "Phone Country Code-----: ${code }");
-      print("Country Code-----: ${initialValue}");
+          "Phone Country Code-----: 1 ${code }");
+      print("Country Code-----: ${profileController.code1}");
+       print("Phone Country Code-----: ${profileController.code}");
+      print("Country Code-----: 2 ${profileController.code}");
+    
       if (profileController.model.user!.country_id != null) {
         profileController.selectedCountry = Country(
           name: profileController.model.user!.country_name.toString(),
@@ -617,7 +620,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               borderSide:
                                   BorderSide(color: AppTheme.shadowColor))),
                       initialCountryCode:
-                          initialValue ?? profileController.code,
+                           countryCodeToISO[initialValue ?? profileController.code] ?? 'US', // Default to 'US' if no match
+  
                       initialValue: phoneController.text.isNotEmpty
                           ? phoneController.text
                           : profileController.model.user!.phone,
@@ -630,7 +634,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               : 'رقم الهاتف غير صالح',
                       onCountryChanged: (phone) {
                         code12 = phone.code;
-                        print('Phone Code----: ${phone.code}');
+                        print('Phone Code----: ${phone.code} and $code12');
                         print('Language Code----: ${profileController.code}');
                         print(
                             'InitialCountry Code----: ${profileController.model.user!.phoneCountryCode.toString()}');

@@ -264,7 +264,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
     //   map["variation"] = selectedVariant!.id.toString();
     // }
     repositories
-        .postApi(url: ApiUrls.addToCartUrl, mapData: map, context: context)
+        .postApi(url: ApiUrls.addToCartUrl, mapData: map, context: context,showResponse: true)
         .then((value) {
       ModelCommonResponse response =
           ModelCommonResponse.fromJson(jsonDecode(value));
