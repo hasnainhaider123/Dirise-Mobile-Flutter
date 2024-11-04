@@ -22,7 +22,7 @@ class _OrderTileState extends State<OrderTile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Get.to(() => OrderDetails(orderId: widget.order.orderId.toString()));
+        Get.to(() => OrderDetails(orderId: widget.order.orderId.toString(),orderId2: widget.order.id.toString(),));
         log('order details: ${widget.order.toJson()}');
       },
       child: Container(
@@ -41,8 +41,9 @@ class _OrderTileState extends State<OrderTile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // we have to change intp widget.order.orderid
                       Text(
-                        "#${widget.order.orderId.toString()}",
+                        "#${widget.order.id.toString()}",
                         style: GoogleFonts.poppins(
                             color: const Color(0xFF454B5C),
                             height: 1.5,

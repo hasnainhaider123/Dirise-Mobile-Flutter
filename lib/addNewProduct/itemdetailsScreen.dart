@@ -958,18 +958,18 @@ class _ItemDetailsScreensState extends State<ItemDetailsScreens> {
                 title: 'Confirm'.tr,
                 borderRadius: 11,
                 onPressed: () {
-                  // if (ProductNameController.text.trim().isEmpty) {
-                  //   showToast("Please enter product name".tr);
-                  // } else if (categoryName.value == "") {
-                  //   showToast("Please select vendor category".tr);
-                  // } else if (categoryName.value == "") {
-                  //   showToast("Please select vendor category".tr);
-                  // } else if (categoryName.value == "") {
-                  //   showToast("Please select vendor category".tr);
-                  // } else {
-                  //   deliverySizeApi();
-                  //   profileController.thankYouValue = 'Giveaway';
-                  // }
+                  if (ProductNameController.text.trim().isEmpty) {
+                    showToast("Please enter product name".tr);
+                  } else if (categoryName.value == "") {
+                    showToast("Please select vendor category".tr);
+                  } else if (categoryName.value == "") {
+                    showToast("Please select vendor category".tr);
+                  } else if (categoryName.value == "") {
+                    showToast("Please select vendor category".tr);
+                  } else {
+                    deliverySizeApi();
+                    profileController.thankYouValue = 'Giveaway';
+                  }
                 },
               ),
             ],

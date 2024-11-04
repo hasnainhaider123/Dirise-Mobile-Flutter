@@ -409,11 +409,15 @@ class AddProductController extends GetxController {
       if (modelCommonResponse.status == true) {
         // productController.getProductList();
         productController.getProductList1(context: context);
+        
         // productListController.getProductList();
+ 
         Get.back();
       }
       productController.getProductList1(context: context);
+      
     });
+   
   }
 
   addProduct({required BuildContext context}) {

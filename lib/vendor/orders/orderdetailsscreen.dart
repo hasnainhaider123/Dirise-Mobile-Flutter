@@ -27,8 +27,9 @@ import 'package:pdf/widgets.dart' as pw;
 
 class OrderDetails extends StatefulWidget {
   final String orderId;
+  String? orderId2;
 
-  const OrderDetails({Key? key, required this.orderId}) : super(key: key);
+  OrderDetails({Key? key, required this.orderId, this.orderId2}) : super(key: key);
 
   @override
   State<OrderDetails> createState() => _OrderDetailsState();
@@ -52,29 +53,80 @@ class _OrderDetailsState extends State<OrderDetails> {
     "payment pending",
     'payment failed'
   ];
+  // Future getOrderDetails() async {
+  //   await repositories.postApi(url: ApiUrls.orderDetailsUrl, mapData: {
+  //     "order_id": widget.orderId,
+  //   }).then((value) {
+  //     singleOrder = ModelSingleOrderResponse.fromJson(jsonDecode(value));
+  //     log('valueee${singleOrder.toJson()}');
+  //     if (singleOrder.status == false) {
+  //       setState(() {
+  //         orderExist = false;
+  //         isLoading = false;
+  //       });
+  //     } else {
+  //       setState(() {
+  //         orderExist = true;
+  //       });
+  //     }
+  //     statusValue = order.status;
+  //     print('valala ${statusValue.toString()}');
+  //     setState(() {});
+  //   });
+  // }
+bool orderExist = false;
   Future getOrderDetails() async {
-    await repositories.postApi(url: ApiUrls.orderDetailsUrl, mapData: {
-      "order_id": widget.orderId,
-    }).then((value) {
-      singleOrder = ModelSingleOrderResponse.fromJson(jsonDecode(value));
-      log('valueee${singleOrder.toJson()}');
-      if (singleOrder.status == false) {
-        setState(() {
-          orderExist = false;
-          isLoading = false;
-        });
-      } else {
-        setState(() {
-          orderExist = true;
-        });
-      }
-      statusValue = order.status;
-      print('valala ${statusValue.toString()}');
-      setState(() {});
-    });
-  }
+   
+  await repositories.postApi(url: ApiUrls.orderDetailsUrl, mapData: {
+    "order_id": widget.orderId,
+  }).then((value) async {
+    singleOrder = ModelSingleOrderResponse.fromJson(jsonDecode(value));
+    log('Response: ${singleOrder.toJson()}');
 
-  bool orderExist = false;
+    if (singleOrder.status == false && singleOrder.message == "Invaild Order ID") {
+      // If the order ID is invalid, try again with orderId2
+   
+      await repositories.postApi(url: ApiUrls.orderDetailsUrl, mapData: {
+        "order_id": widget.orderId2,
+      }).then((secondValue) {
+        singleOrder = ModelSingleOrderResponse.fromJson(jsonDecode(secondValue));
+        log('Second attempt response: ${singleOrder.toJson()}');
+
+        if (singleOrder.status == false) {
+          // If it's still invalid
+          setState(() {
+            orderExist = false;
+            isLoading = false;
+          });
+        } else {
+          // Valid response on the second attempt
+          setState(() {
+            orderExist = true;
+          });
+        }
+      });
+    } else if (singleOrder.status == false) {
+          log('orderid 2 is given by ${widget.orderId2}');
+      // If the first attempt fails and the message is not "Invalid Order ID"
+      setState(() {
+        orderExist = false;
+        isLoading = false;
+      });
+    } else {
+      // Successful response on the first attempt
+      setState(() {
+        orderExist = true;
+      });
+    }
+
+    statusValue = order.status;
+    print('Order Status: ${statusValue.toString()}');
+    setState(() {});
+  });
+}
+
+
+  
   bool isLoading = true;
   _makingPhoneCall(call) async {
     var url = Uri.parse(call);
@@ -137,7 +189,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         createShipmentModel.value =
             CreateShipmentModel.fromJson(jsonDecode(value));
         showToastCenter(createShipmentModel.value.message.toString());
-          log('backend issue ${createShipmentModel.value.message.toString()}');
+        log('backend issue ${createShipmentModel.value.message.toString()}');
       }
     });
   }
@@ -806,18 +858,24 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                             fontSize: 14),
                                                       ),
                                                       Text(
-                                                        order!.orderMeta!
-                                                                .billingPhone ??
-                                                            order!
-                                                                .user!.phone ??
-                                                            '',
+                                                        (order.orderMeta?.billingPhone ??
+                                                                    order.user
+                                                                        ?.phone ??
+                                                                    '')
+                                                                .isNotEmpty
+                                                            ? (order.orderMeta
+                                                                    ?.billingPhone ??
+                                                                order.user
+                                                                    ?.phone ??
+                                                                '')
+                                                            : 'No phone number available', // Default message if both are null
                                                         style:
                                                             GoogleFonts.poppins(
-                                                                height: 1.5,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600,
-                                                                fontSize: 16),
+                                                          height: 1.5,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                          fontSize: 16,
+                                                        ),
                                                       ),
                                                     ],
                                                   ),
@@ -1231,7 +1289,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                         child: ElevatedButton(
                                                                             onPressed: () {
                                                                               // createShipment(orderId);
-                                                                             createShipment12121(orderId);
+                                                                
+                                                                              createShipment12121(widget.orderId);
                                                                             },
                                                                             style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
                                                                             child: FittedBox(
