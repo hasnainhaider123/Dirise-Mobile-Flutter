@@ -21,7 +21,6 @@ import '../../widgets/common_textfield.dart';
 import '../../widgets/customsize.dart';
 import '../../widgets/dimension_screen.dart';
 import '../../widgets/loading_animation.dart';
-import '../payment_info/bank_account_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:pdf/widgets.dart' as pw;
 
@@ -137,7 +136,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         createShipmentModel.value =
             CreateShipmentModel.fromJson(jsonDecode(value));
         showToastCenter(createShipmentModel.value.message.toString());
-          log('backend issue ${createShipmentModel.value.message.toString()}');
+        log('backend issue ${createShipmentModel.value.message.toString()}');
       }
     });
   }
@@ -509,7 +508,7 @@ class _OrderDetailsState extends State<OrderDetails> {
         ),
         body: singleOrder.order == null && isLoading
             ? LoadingAnimation()
-            : !orderExist
+            : orderExist
                 ? Center(child: Text('Order does not exist'))
                 : Padding(
                     padding: EdgeInsets.symmetric(
@@ -557,7 +556,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                  '${'Order ID'.tr}: ${order!.id.toString()}',
+                                                  '${'Order ID'.tr}: ${order.id.toString()}',
                                                   style: GoogleFonts.poppins(
                                                       fontWeight:
                                                           FontWeight.w600,
@@ -566,7 +565,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                           AppTheme.buttonColor),
                                                 ),
                                                 Text(
-                                                  order!.createdDate ?? '',
+                                                  order.createdDate ?? '',
                                                   style: GoogleFonts.poppins(
                                                       fontWeight:
                                                           FontWeight.w500,
@@ -612,7 +611,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                       const SizedBox(
                                         height: 13,
                                       ),
-                                      ...order!.orderItem!
+                                      ...order.orderItem!
                                           .map((e) => Column(
                                                 children: [
                                                   Padding(
@@ -745,14 +744,13 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                             fontSize: 14),
                                                       ),
                                                       Text(
-                                                        order!.user != null
-                                                            ? order!
+                                                        order.user != null
+                                                            ? order
                                                                 .user!.firstName
                                                                 .toString()
-                                                            : order!.orderMeta!
+                                                            : order.orderMeta!
                                                                     .billingFirstName ??
-                                                                order!
-                                                                    .orderMeta!
+                                                                order.orderMeta!
                                                                     .billingLastName ??
                                                                 "",
                                                         style:
@@ -806,10 +804,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                             fontSize: 14),
                                                       ),
                                                       Text(
-                                                        order!.orderMeta!
+                                                        order.orderMeta!
                                                                 .billingPhone ??
-                                                            order!
-                                                                .user!.phone ??
+                                                            order.user!.phone ??
                                                             '',
                                                         style:
                                                             GoogleFonts.poppins(
@@ -824,18 +821,18 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                 ]),
                                                 GestureDetector(
                                                   onTap: () {
-                                                    if (order!.orderMeta!
+                                                    if (order.orderMeta!
                                                                 .billingPhone !=
                                                             null &&
-                                                        order!.orderMeta!
+                                                        order.orderMeta!
                                                             .billingPhone
                                                             .toString()
                                                             .isNotEmpty) {
                                                       _makingPhoneCall(
-                                                          "tel:${order!.orderMeta!.billingPhone}");
+                                                          "tel:${order.orderMeta!.billingPhone}");
                                                     } else {
                                                       _makingPhoneCall(
-                                                          "tel:${order!.user!.phone}");
+                                                          "tel:${order.user!.phone}");
                                                     }
                                                   },
                                                   child: Container(
@@ -878,7 +875,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                             fontSize: 14),
                                                       ),
                                                       Text(
-                                                        '${order!.orderMeta!.shippingCity ?? order!.orderMeta!.billingCity ?? ''}, ${order!.orderMeta!.shippingState ?? '' ?? order!.orderMeta!.billingState ?? ''}, ${order!.orderMeta!.shippingCountry ?? order!.orderMeta!.billingCountry ?? ''}, ${order!.orderMeta!.shippingZipCode ?? order!.orderMeta!.billingZipCode ?? ''}',
+                                                        '${order.orderMeta!.shippingCity ?? order.orderMeta!.billingCity ?? ''}, ${order.orderMeta!.shippingState ?? '' ?? order.orderMeta!.billingState ?? ''}, ${order.orderMeta!.shippingCountry ?? order.orderMeta!.billingCountry ?? ''}, ${order.orderMeta!.shippingZipCode ?? order.orderMeta!.billingZipCode ?? ''}',
                                                         style:
                                                             GoogleFonts.poppins(
                                                                 fontWeight:
@@ -944,7 +941,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                   child: Column(
                                     children: [
                                       // order.couponCode
-                                      if (order!.couponCode != null) ...[
+                                      if (order.couponCode != null) ...[
                                         Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
@@ -961,7 +958,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                               ),
                                             ),
                                             Text(
-                                              order!.couponCode.toString(),
+                                              order.couponCode.toString(),
                                               style: GoogleFonts.poppins(
                                                 color: const Color(0xFF797F90),
                                                 fontSize: 14,
@@ -989,7 +986,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                             ),
                                           ),
                                           Text(
-                                            "KWD ${order!.orderMeta!.subtotalPrice}",
+                                            "KWD ${order.orderMeta!.subtotalPrice}",
                                             style: GoogleFonts.poppins(
                                               color: const Color(0xFF797F90),
                                               fontSize: 14,
@@ -1016,7 +1013,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                             ),
                                           ),
                                           Text(
-                                            "KWD ${order!.orderMeta!.totalPrice}",
+                                            "KWD ${order.orderMeta!.totalPrice}",
                                             style: GoogleFonts.poppins(
                                               color: const Color(0xFF797F90),
                                               fontSize: 14,
@@ -1231,7 +1228,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                         child: ElevatedButton(
                                                                             onPressed: () {
                                                                               // createShipment(orderId);
-                                                                             createShipment12121(orderId);
+                                                                              createShipment12121(orderId);
                                                                             },
                                                                             style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
                                                                             child: FittedBox(
@@ -1350,7 +1347,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                               Helpers
                                                                   .overlayLoader(
                                                                       context);
-                                                          Overlay.of(context)!
+                                                          Overlay.of(context)
                                                               .insert(loader);
 
                                                           // Use http package instead of HttpClient for simplicity

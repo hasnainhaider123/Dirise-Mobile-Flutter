@@ -5404,10 +5404,13 @@ class _ShopProductScreenState extends State<ShopProductScreen> {
                             }
                           },
                         ))
-                      : const SizedBox(
+                      : SizedBox(
                           height: 100,
                           width: 100,
-                          child: Center(child: CircularProgressIndicator()));
+                          child: Center(
+                            child: Text("Product not found".tr),
+                          ),
+                        );
                 }),
               ),
               const SliverToBoxAdapter(

@@ -61,9 +61,10 @@ class CustomDrawer extends StatefulWidget {
 
 class _CustomDrawerState extends State<CustomDrawer> {
   final profileController = Get.put(ProfileController());
-  updateLanguage(String gg) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString("app_language", gg);
+
+  Future<void> updateLanguage(String language) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('app_language', language);
   }
 
   @override
@@ -852,11 +853,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                             value: "English",
                                             groupValue: profileController
                                                 .selectedLAnguage.value,
-                                            onChanged: (value) {
+                                            onChanged: (value) async {
                                               locale = const Locale('en', 'US');
                                               profileController.selectedLAnguage
                                                   .value = value!;
-                                              updateLanguage("English");
+                                              await updateLanguage("English");
                                               setState(() {});
                                             },
                                           )),
@@ -881,11 +882,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                             value: "عربي",
                                             groupValue: profileController
                                                 .selectedLAnguage.value,
-                                            onChanged: (value) {
+                                            onChanged: (value) async {
                                               locale = const Locale('ar', 'AR');
                                               profileController.selectedLAnguage
                                                   .value = value!;
-                                              updateLanguage("عربي");
+                                              await updateLanguage("عربي");
                                               setState(() {});
                                             },
                                           )),
