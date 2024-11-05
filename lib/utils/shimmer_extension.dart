@@ -6,7 +6,7 @@ extension ConvertToShimmer on Widget {
     return Shimmer.fromColors(baseColor: Colors.grey.shade400, highlightColor: Colors.white, child: this);
   }
   Widget get convertToShimmerRed {
-    return Shimmer.fromColors(baseColor: Colors.redAccent,period: Duration(seconds: 3), highlightColor: Colors.white, child: this);
+    return Shimmer.fromColors(baseColor: Colors.green,period: Duration(seconds: 3), highlightColor: Colors.white, child: this);
   }
 
   Widget get convertToShimmerWithContainer {

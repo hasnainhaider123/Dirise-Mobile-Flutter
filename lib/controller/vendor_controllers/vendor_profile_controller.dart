@@ -3,6 +3,7 @@ import 'package:dirise/repository/repository.dart';
 import 'package:dirise/utils/api_constant.dart';
 import 'package:get/get.dart';
 import '../../model/vendor_models/model_vendor_details.dart';
+import 'dart:developer';
 
 class VendorProfileController extends GetxController {
   final Repositories repositories = Repositories();
@@ -14,6 +15,7 @@ class VendorProfileController extends GetxController {
 
   Future getVendorDetails() async {
     await repositories.getApi(url: ApiUrls.getVendorDetailUrl,showResponse: true).then((value) {
+      log('vendor data is ${jsonDecode(value)}');
       model = ModelVendorDetails.fromJson(jsonDecode(value));
       if (model.user != null) {
         apiLoaded = true;

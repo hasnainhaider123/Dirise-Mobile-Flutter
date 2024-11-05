@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class ModelVendorDetails {
   bool? status;
   dynamic message;
@@ -330,6 +331,11 @@ class VendorUser {
       data['vendor_profile'] = vendorProfile!.toJson();
     }
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'VendorUser(id: $id, name: $name, firstName: $firstName, lastName: $lastName, email: $email, country_id: $country_id, phone_country_code: $phone_country_code, dob: $dob, countryCode: $countryCode, earnedBalance: $earnedBalance, phone: $phone, storeName: $storeName, storeBusinessId: $storeBusinessId, storeAboutUs: $storeAboutUs, storeAboutMe: $storeAboutMe, storeAddress: $storeAddress, storeLogo: $storeLogo, storeImage: $storeImage, storePhone: $storePhone, shippingAddress: $shippingAddress, shippingStoreAddress: $shippingStoreAddress, shippingStreet1: $shippingStreet1, shippingStreet2: $shippingStreet2, description: $description, categoryId: $categoryId, bio: $bio, socialId: $socialId, apiToken: $apiToken, deviceId: $deviceId, deviceToken: $deviceToken, emailVerifiedAt: $emailVerifiedAt, newSocialUser: $newSocialUser, customerId: $customerId, defaultCard: $defaultCard, userWallet: $userWallet, isMobileVerified: $isMobileVerified, otpVerified: $otpVerified, isApproved: $isApproved, vendorWallet: $vendorWallet, profileImage: $profileImage, bannerProfile: $bannerProfile, categoryImage: $categoryImage, address: $address, countryId: $countryId, stateId: $stateId, city: $city, streetName: $streetName, block: $block, stripeId: $stripeId, currency: $currency, storeOn: $storeOn, storeBannerDesccription: $storeBannerDesccription, storeUrl: $storeUrl, readyForOrder: $readyForOrder, isVendor: $isVendor, vendorType: $vendorType, subscription_status: $subscription_status, taxNumber: $taxNumber, companyName: $companyName, vendorPublishStatus: $vendorPublishStatus, activePlanId: $activePlanId, planStartDate: $planStartDate, planExpireDate: $planExpireDate, createdAt: $createdAt, updatedAt: $updatedAt, deletedAt: $deletedAt, vendorCategory: $vendorCategory, venderCategory: $venderCategory, vendorProfile: $vendorProfile, vendorSub: $vendorSub)';
   }
 }
 

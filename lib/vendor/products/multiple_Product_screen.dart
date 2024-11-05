@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import '../../controller/vendor_controllers/add_product_controller.dart';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
@@ -162,15 +163,27 @@ class _AddMultipleProductScreenState extends State<AddMultipleProductScreen> {
                 backgroundColor: Colors.red,
                 title: 'Download demo file'.tr,
                 onPressed: () async {
-                  // print(sampleCsvModel.value.data!.csvFile.toString());
-                  // final csvUrl =
-                  //     'https://docs.google.com/spreadsheets/d/1tHDp9nfgd8_g7CeW5jO3DTJrPTNywLYY/edit?usp=sharing&ouid=109450384128062986143&rtpof=true&sd=true';
                   final csvUrl = sampleCsvModel.value.data!.csvFile.toString();
                   if (await canLaunch(csvUrl)) {
-                    await launch(csvUrl);
+                    await launch(
+                      csvUrl,
+                      forceSafariVC: false, // Don't use in-app WebView for iOS
+                      forceWebView:
+                          false, // Don't use in-app WebView for Android
+                    );
                   } else {
                     print('Could not launch $csvUrl');
                   }
+                  // final url =
+                  //     'https://docs.google.com/spreadsheets/d/1tHDp9nfgd8_g7CeW5jO3DTJrPTNywLYY/export?format=csv';
+
+                  // // Open Safari for iOS and default browser for Android
+                  // if (await canLaunch(url)) {
+                  //   await launch(url,
+                  //       forceSafariVC: false, forceWebView: false);
+                  // } else {
+                  //   throw 'Could not launch $url';
+                  // }
                 },
               ),
             ],

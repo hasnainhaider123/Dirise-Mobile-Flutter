@@ -63,6 +63,7 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
       timer!.cancel();
     }
   }
+
   String publish = '';
   final addProductController = Get.put(AddProductController());
   final profileController = Get.put(ProfileController());
@@ -77,10 +78,9 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
               fontWeight: FontWeight.w600,
               color: const Color(0xff423E5E),
             )),
-
         leading: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment : MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
               onTap: () {
@@ -88,24 +88,25 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
               },
               child: Padding(
                 padding: const EdgeInsets.all(15),
-                child:    profileController.selectedLAnguage.value != 'English' ?
-                Image.asset(
-                  'assets/images/forward_icon.png',
-                  height: 19,
-                  width: 19,
-                ) :
-                Image.asset(
-                  'assets/images/back_icon_new.png',
-                  height: 19,
-                  width: 19,
-                ),
+                child: profileController.selectedLAnguage.value != 'English'
+                    ? Image.asset(
+                        'assets/images/forward_icon.png',
+                        height: 19,
+                        width: 19,
+                      )
+                    : Image.asset(
+                        'assets/images/back_icon_new.png',
+                        height: 19,
+                        width: 19,
+                      ),
               ),
             ),
           ],
         ),
       ),
       body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.padding10),
+          padding: EdgeInsets.symmetric(
+              horizontal: AddSize.padding16, vertical: AddSize.padding10),
           child: Column(children: [
             IntrinsicHeight(
               child: Row(
@@ -113,13 +114,15 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
                 children: [
                   Expanded(
                     child: Container(
-                      decoration:
-                          BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(10), boxShadow: [
-                        BoxShadow(
-                            color: Colors.grey.shade300,
-                            // offset: Offset(2, 2),
-                            blurRadius: 05)
-                      ]),
+                      decoration: BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.circular(10),
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.grey.shade300,
+                                // offset: Offset(2, 2),
+                                blurRadius: 05)
+                          ]),
                       child: TextField(
                         controller: productController.textEditingController,
                         maxLines: 1,
@@ -140,13 +143,18 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
                               ),
                             ),
                             border: const OutlineInputBorder(
-                                borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(10))),
+                                borderSide: BorderSide.none,
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10))),
                             fillColor: Colors.white,
-                            contentPadding:
-                                EdgeInsets.symmetric(horizontal: AddSize.padding20, vertical: AddSize.padding10),
+                            contentPadding: EdgeInsets.symmetric(
+                                horizontal: AddSize.padding20,
+                                vertical: AddSize.padding10),
                             hintText: 'Search Products'.tr,
                             hintStyle: GoogleFonts.poppins(
-                                fontSize: AddSize.font16, color: Colors.black, fontWeight: FontWeight.w400)),
+                                fontSize: AddSize.font16,
+                                color: Colors.black,
+                                fontWeight: FontWeight.w400)),
                       ),
                     ),
                   ),
@@ -178,71 +186,81 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
             const SizedBox(
               height: 20,
             ),
-
-            profileController.selectedLAnguage.value == 'English' ?
-        Align(
-          alignment: Alignment.centerRight,
-          child: Container(
-            width: 200,
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-            decoration: BoxDecoration(
-              color: Color(0xffEBF1F4),
-              border: Border.all(color: Color(0xff014E70)),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: DropdownButton<String>(
-              isExpanded: true,
-              hint: Text('All',style: TextStyle(color:  Colors.black),),
-              value:productController.selectedValue,
-              onChanged: (String? newValue) {
-                setState(() {
-                  productController.selectedValue = newValue;
-                  print("value"+productController .selectedValue.toString());
-                  productController.getProductList1(context: context);
-                });
-              },
-              items:productController.dropdownItems.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              underline: SizedBox(), // Removes the default underline
-            ),
-          ),
-        ) :
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                width: 200,
-                padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-                decoration: BoxDecoration(
-                  color: Color(0xffEBF1F4),
-                  border: Border.all(color: Color(0xff014E70)),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  hint: Text('الجميع',style: TextStyle(color:  Colors.black),),
-                  value:productController.selectedValue,
-                  onChanged: (String? newValue) {
-                    setState(() {
-
-                      productController.selectedValue = newValue;
-                      print("value"+productController .selectedValue.toString());
-                      productController.getProductList1(context: context);
-                    });
-                  },
-                  items:productController.dropdownItems1Arab.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  underline: SizedBox(), // Removes the default underline
-                ),
-              ),
-            ),
+            profileController.selectedLAnguage.value == 'English'
+                ? Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      width: 200,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Color(0xffEBF1F4),
+                        border: Border.all(color: Color(0xff014E70)),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        hint: Text(
+                          'All',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        value: productController.selectedValue,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            productController.selectedValue = newValue;
+                            print("value" +
+                                productController.selectedValue.toString());
+                            productController.getProductList1(context: context);
+                          });
+                        },
+                        items: productController.dropdownItems
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        underline: SizedBox(), // Removes the default underline
+                      ),
+                    ),
+                  )
+                : Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      width: 200,
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Color(0xffEBF1F4),
+                        border: Border.all(color: Color(0xff014E70)),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: DropdownButton<String>(
+                        isExpanded: true,
+                        hint: Text(
+                          'الجميع',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        value: productController.selectedValue,
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            productController.selectedValue = newValue;
+                            print("value" +
+                                productController.selectedValue.toString());
+                            productController.getProductList1(context: context);
+                          });
+                        },
+                        items: productController.dropdownItems1Arab
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        underline: SizedBox(), // Removes the default underline
+                      ),
+                    ),
+                  ),
             const SizedBox(
               height: 20,
             ),
@@ -255,7 +273,7 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
                   if (productController.refreshInt.value > 0) {}
                   return ListView.builder(
                     itemCount: productController.apiLoaded1
-                    ? productController.model1.approveProduct!.isEmpty
+                        ? productController.model1.approveProduct!.isEmpty
                             ? 1
                             : productController.model1.approveProduct!.length
                         : 5,
@@ -269,7 +287,8 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
                           child: Text("No Product Added".tr),
                         );
                       }
-                      final item = productController.model1.approveProduct![index];
+                      final item =
+                          productController.model1.approveProduct![index];
                       return Column(
                         children: [
                           Container(
@@ -278,164 +297,286 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Padding(
-                                padding:
-                                    EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.padding10),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AddSize.padding16,
+                                    vertical: AddSize.padding10),
                                 child: Row(children: [
                                   SizedBox(
                                       height: AddSize.size80,
                                       width: AddSize.size80,
-                                      child: Image.network(item.featuredImage ?? "",
-                                          errorBuilder: (_, __, ___) => Image.asset('assets/images/new_logo.png')
-                                      )),
+                                      child: Image.network(
+                                          item.featuredImage ?? "",
+                                          errorBuilder: (_, __, ___) =>
+                                              Image.asset(
+                                                  'assets/images/new_logo.png'))),
                                   SizedBox(
                                     width: AddSize.size10,
                                   ),
                                   Expanded(
                                     child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
                                           children: [
                                             Expanded(
                                               child: Text(
-                                                item.pname ?? "${'Product'.tr} ${item.id}",
-                                                style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
+                                                item.pname ??
+                                                    "${'Product'.tr} ${item.id}",
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w500),
                                               ),
                                             ),
-                                            item.itemType == "giveaway"&& item.inStock == "0"?
-                                                Text("Sold Out",  style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500,color: Colors.red),):
-                                           Row(
-                                             children: [
-                                               profileController.selectedLAnguage.value =="English"
-                                               ?GestureDetector(
-                                                 onTap: () {
-                                                   // log('dadad${item.itemType.toString()}');
-                                                   log(item.itemType);
-                                                   if (item.itemType == "giveaway") {
-                                                     addProductController.idProduct.value = item.id.toString();
-                                                     Get.to(ReviewPublishScreen());
-                                                   }
-                                                   if (item.itemType == "product") {
-                                                     addProductController.idProduct.value = item.id.toString();
-                                                     Get.to(ProductReviewPublicScreen());
-                                                   }
-                                                   if (item.itemType == "job") {
-                                                     addProductController.idProduct.value = item.id.toString();
-                                                     Get.to(JobReviewPublishScreen());
-                                                   }
-                                                   if (item.itemType == "service") {
-                                                     addProductController.idProduct.value = item.id.toString();
-                                                     Get.to(ReviewPublishServiceScreen());
-                                                   }
-                                                   if (item.itemType == "virtual_product") {
-                                                     addProductController.idProduct.value = item.id.toString();
-                                                     Get.to(VirtualReviewandPublishScreen());
-                                                   }
-                                                 },
-                                                 child: Container(
-                                                     height: AddSize.size25,
-                                                     width: AddSize.size25,
-                                                     decoration: BoxDecoration(
-                                                         borderRadius: BorderRadius.circular(40),
-                                                         border: Border.all(color: AppTheme.buttonColor)),
-                                                     child: Center(
-                                                       child: Icon(
-                                                         Icons.edit,
-                                                         color: AppTheme.buttonColor,
-                                                         size: AddSize.size15,
-                                                       ),
-                                                     )),
-                                               )
-                                               :GestureDetector(
-                                                 onTap: () {
-                                                   // log('dadad${item.itemType.toString()}');
-                                                   log(item.itemType);
-                                                   if (item.itemType == "giveaway") {
-                                                     addProductController.idProduct.value = item.id.toString();
-                                                     Get.to(ReviewPublishScreen());
-                                                   }
-                                                   if (item.itemType == "product") {
-                                                     addProductController.idProduct.value = item.id.toString();
-                                                     Get.to(ProductReviewPublicScreen());
-                                                   }
-                                                   if (item.itemType == "job") {
-                                                     addProductController.idProduct.value = item.id.toString();
-                                                     Get.to(JobReviewPublishScreen());
-                                                   }
-                                                   if (item.itemType == "service") {
-                                                     addProductController.idProduct.value = item.id.toString();
-                                                     Get.to(ReviewPublishServiceScreen());
-                                                   }
-                                                   if (item.itemType == "virtual_product") {
-                                                     addProductController.idProduct.value = item.id.toString();
-                                                     Get.to(VirtualReviewandPublishScreen());
-                                                   }
-                                                 },
-                                                 child: Container(
-                                                     height: AddSize.size25,
-                                                     width: AddSize.size25,
-                                                     decoration: BoxDecoration(
-                                                         borderRadius: BorderRadius.circular(40),
-                                                         border: Border.all(color: AppTheme.buttonColor)),
-                                                     child: Center(
-                                                       child: Icon(
-                                                         Icons.edit,
-                                                         color: AppTheme.buttonColor,
-                                                         size: AddSize.size15,
-                                                       ),
-                                                     )),
-                                               ),
-                                               10.spaceX,
-                                               GestureDetector(
-                                                 onTap: () {
-                                                   showDialog(
-                                                       context: context,
-                                                       builder: (context1) {
-                                                         return AlertDialog(
-                                                           title: Text(
-                                                             "Are you sure you want to delete this product?".tr,
-                                                             style: titleStyle,
-                                                             textAlign: TextAlign.center,
-                                                           ),
-                                                           actions: [
-                                                             Row(
-                                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                               children: [
-                                                                 ElevatedButton(
-                                                                     onPressed: () {
-                                                                       controller.productId = item.id.toString();
-                                                                       controller.deleteProductForAll(context);
-                                                                     },
-                                                                     child: Text("Delete".tr)),
-                                                                 ElevatedButton(
-                                                                     onPressed: () {
-                                                                       Get.back();
-                                                                     },
-                                                                     child: Text("Cancel".tr)),
-                                                               ],
-                                                             )
-                                                           ],
-                                                         );
-                                                       });
-                                                 },
-                                                 child: Container(
-                                                     height: AddSize.size25,
-                                                     width: AddSize.size25,
-                                                     decoration: BoxDecoration(
-                                                         borderRadius: BorderRadius.circular(40),
-                                                         border: Border.all(color: Colors.red)),
-                                                     child: Center(
-                                                       child: Icon(
-                                                         Icons.delete,
-                                                         color: Colors.red,
-                                                         size: AddSize.size15,
-                                                       ),
-                                                     )),
-                                               ),
-                                             ],
-                                           )
+                                            item.itemType == "giveaway" &&
+                                                    item.inStock == "0"
+                                                ? Text(
+                                                    "Sold Out",
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: Colors.red),
+                                                  )
+                                                : Row(
+                                                    children: [
+                                                      profileController
+                                                                  .selectedLAnguage
+                                                                  .value ==
+                                                              "English"
+                                                          ? GestureDetector(
+                                                              onTap: () {
+                                                                // log('dadad${item.itemType.toString()}');
+                                                                log(item
+                                                                    .itemType);
+                                                                if (item.itemType ==
+                                                                    "giveaway") {
+                                                                  addProductController
+                                                                          .idProduct
+                                                                          .value =
+                                                                      item.id
+                                                                          .toString();
+                                                                  Get.to(
+                                                                      ReviewPublishScreen());
+                                                                }
+                                                                if (item.itemType ==
+                                                                    "product") {
+                                                                  addProductController
+                                                                          .idProduct
+                                                                          .value =
+                                                                      item.id
+                                                                          .toString();
+                                                                  Get.to(
+                                                                      ProductReviewPublicScreen());
+                                                                }
+                                                                if (item.itemType ==
+                                                                    "job") {
+                                                                  addProductController
+                                                                          .idProduct
+                                                                          .value =
+                                                                      item.id
+                                                                          .toString();
+                                                                  Get.to(
+                                                                      JobReviewPublishScreen());
+                                                                }
+                                                                if (item.itemType ==
+                                                                    "service") {
+                                                                  addProductController
+                                                                          .idProduct
+                                                                          .value =
+                                                                      item.id
+                                                                          .toString();
+                                                                  Get.to(
+                                                                      ReviewPublishServiceScreen());
+                                                                }
+                                                                if (item.itemType ==
+                                                                    "virtual_product") {
+                                                                  addProductController
+                                                                          .idProduct
+                                                                          .value =
+                                                                      item.id
+                                                                          .toString();
+                                                                  Get.to(
+                                                                      VirtualReviewandPublishScreen());
+                                                                }
+                                                              },
+                                                              child: Container(
+                                                                  height: AddSize
+                                                                      .size25,
+                                                                  width: AddSize
+                                                                      .size25,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              40),
+                                                                      border: Border.all(
+                                                                          color:
+                                                                              AppTheme.buttonColor)),
+                                                                  child: Center(
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .edit,
+                                                                      color: AppTheme
+                                                                          .buttonColor,
+                                                                      size: AddSize
+                                                                          .size15,
+                                                                    ),
+                                                                  )),
+                                                            )
+                                                          : GestureDetector(
+                                                              onTap: () {
+                                                                // log('dadad${item.itemType.toString()}');
+                                                                log(item
+                                                                    .itemType);
+                                                                if (item.itemType ==
+                                                                    "giveaway") {
+                                                                  addProductController
+                                                                          .idProduct
+                                                                          .value =
+                                                                      item.id
+                                                                          .toString();
+                                                                  Get.to(
+                                                                      ReviewPublishScreen());
+                                                                }
+                                                                if (item.itemType ==
+                                                                    "product") {
+                                                                  addProductController
+                                                                          .idProduct
+                                                                          .value =
+                                                                      item.id
+                                                                          .toString();
+                                                                  Get.to(
+                                                                      ProductReviewPublicScreen());
+                                                                }
+                                                                if (item.itemType ==
+                                                                    "job") {
+                                                                  addProductController
+                                                                          .idProduct
+                                                                          .value =
+                                                                      item.id
+                                                                          .toString();
+                                                                  Get.to(
+                                                                      JobReviewPublishScreen());
+                                                                }
+                                                                if (item.itemType ==
+                                                                    "service") {
+                                                                  addProductController
+                                                                          .idProduct
+                                                                          .value =
+                                                                      item.id
+                                                                          .toString();
+                                                                  Get.to(
+                                                                      ReviewPublishServiceScreen());
+                                                                }
+                                                                if (item.itemType ==
+                                                                    "virtual_product") {
+                                                                  addProductController
+                                                                          .idProduct
+                                                                          .value =
+                                                                      item.id
+                                                                          .toString();
+                                                                  Get.to(
+                                                                      VirtualReviewandPublishScreen());
+                                                                }
+                                                              },
+                                                              child: Container(
+                                                                  height: AddSize
+                                                                      .size25,
+                                                                  width: AddSize
+                                                                      .size25,
+                                                                  decoration: BoxDecoration(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              40),
+                                                                      border: Border.all(
+                                                                          color:
+                                                                              AppTheme.buttonColor)),
+                                                                  child: Center(
+                                                                    child: Icon(
+                                                                      Icons
+                                                                          .edit,
+                                                                      color: AppTheme
+                                                                          .buttonColor,
+                                                                      size: AddSize
+                                                                          .size15,
+                                                                    ),
+                                                                  )),
+                                                            ),
+                                                      10.spaceX,
+                                                      GestureDetector(
+                                                        onTap: () {
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (context1) {
+                                                                return AlertDialog(
+                                                                  title: Text(
+                                                                    "Are you sure you want to delete this product?"
+                                                                        .tr,
+                                                                    style:
+                                                                        titleStyle,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                  ),
+                                                                  actions: [
+                                                                    Row(
+                                                                      mainAxisAlignment:
+                                                                          MainAxisAlignment
+                                                                              .spaceBetween,
+                                                                      children: [
+                                                                        ElevatedButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              controller.productId = item.id.toString();
+                                                                              controller.deleteProductForAll(context);
+                                                                              productController.model1.approveProduct!.removeAt(index);
+                                                                            },
+                                                                            child:
+                                                                                Text("Delete".tr)),
+                                                                        ElevatedButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              Get.back();
+                                                                            },
+                                                                            child:
+                                                                                Text("Cancel".tr)),
+                                                                      ],
+                                                                    )
+                                                                  ],
+                                                                );
+                                                              });
+                                                        },
+                                                        child: Container(
+                                                            height:
+                                                                AddSize.size25,
+                                                            width:
+                                                                AddSize.size25,
+                                                            decoration: BoxDecoration(
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            40),
+                                                                border: Border.all(
+                                                                    color: Colors
+                                                                        .red)),
+                                                            child: Center(
+                                                              child: Icon(
+                                                                Icons.delete,
+                                                                color:
+                                                                    Colors.red,
+                                                                size: AddSize
+                                                                    .size15,
+                                                              ),
+                                                            )),
+                                                      ),
+                                                    ],
+                                                  )
                                           ],
                                         ),
                                         Text(
@@ -445,59 +586,63 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
                                         const SizedBox(
                                           height: 3,
                                         ),
-                                        item.inStock == "-1"?SizedBox.shrink():
-                                        Text(
-                                          '${'QTY'.tr}: ${item.inStock} ${'piece'.tr}',
-                                          style: normalStyle,
-                                        ),
-                                        Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                                          Expanded(
-                                            child: Text(
-                                              "KWD ${item.discountPrice ?? "0"}",
-                                              style: GoogleFonts.poppins(
-                                                color: AppTheme.buttonColor,
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 15,
+                                        item.inStock == "-1"
+                                            ? SizedBox.shrink()
+                                            : Text(
+                                                '${'QTY'.tr}: ${item.inStock} ${'piece'.tr}',
+                                                style: normalStyle,
                                               ),
-                                            ),
-                                          ),
-                                          // FlutterSwitch(
-                                          //   showOnOff: true,
-                                          //   width: AddSize.size30 * 2.2,
-                                          //   height: AddSize.size20 * 1.4,
-                                          //   padding: 2,
-                                          //   valueFontSize: AddSize.font12,
-                                          //   activeTextFontWeight: FontWeight.w600,
-                                          //   inactiveText: " Out",
-                                          //   activeText: "  In",
-                                          //   inactiveTextColor: const Color(0xFFEBEBEB),
-                                          //   activeTextColor: const Color(0xFFFFFFFF),
-                                          //   inactiveTextFontWeight: FontWeight.w600,
-                                          //   inactiveColor: Colors.grey.shade400,
-                                          //   activeColor: AppTheme.buttonColor,
-                                          //   onToggle: (val) {
-                                          //     publish = val.toString();
-                                          //     log('in out ${ val}');
-                                          //     productController.updateProductStatus(
-                                          //         changed: (bool value1) {
-                                          //           if (value1 == true) {
-                                          //             productController.model1.approveProduct![index].isPublish =
-                                          //                 !productController.model1.approveProduct![index].isPublish!;
-                                          //             // log('in out ${ productController.model1.approveProduct![index].isPublish.toString()}');
-                                          //
-                                          //             setState(() {
-                                          //
-                                          //             });
-                                          //           }
-                                          //         },
-                                          //         context: context,
-                                          //         productID: item.id.toString(),
-                                          //         IsPublish:  publish
-                                          //     );
-                                          //   },
-                                          //   value: item.isPublish!,
-                                          // )
-                                        ]),
+                                        Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Expanded(
+                                                child: Text(
+                                                  "KWD ${item.discountPrice ?? "0"}",
+                                                  style: GoogleFonts.poppins(
+                                                    color: AppTheme.buttonColor,
+                                                    fontWeight: FontWeight.w500,
+                                                    fontSize: 15,
+                                                  ),
+                                                ),
+                                              ),
+                                              // FlutterSwitch(
+                                              //   showOnOff: true,
+                                              //   width: AddSize.size30 * 2.2,
+                                              //   height: AddSize.size20 * 1.4,
+                                              //   padding: 2,
+                                              //   valueFontSize: AddSize.font12,
+                                              //   activeTextFontWeight: FontWeight.w600,
+                                              //   inactiveText: " Out",
+                                              //   activeText: "  In",
+                                              //   inactiveTextColor: const Color(0xFFEBEBEB),
+                                              //   activeTextColor: const Color(0xFFFFFFFF),
+                                              //   inactiveTextFontWeight: FontWeight.w600,
+                                              //   inactiveColor: Colors.grey.shade400,
+                                              //   activeColor: AppTheme.buttonColor,
+                                              //   onToggle: (val) {
+                                              //     publish = val.toString();
+                                              //     log('in out ${ val}');
+                                              //     productController.updateProductStatus(
+                                              //         changed: (bool value1) {
+                                              //           if (value1 == true) {
+                                              //             productController.model1.approveProduct![index].isPublish =
+                                              //                 !productController.model1.approveProduct![index].isPublish!;
+                                              //             // log('in out ${ productController.model1.approveProduct![index].isPublish.toString()}');
+                                              //
+                                              //             setState(() {
+                                              //
+                                              //             });
+                                              //           }
+                                              //         },
+                                              //         context: context,
+                                              //         productID: item.id.toString(),
+                                              //         IsPublish:  publish
+                                              //     );
+                                              //   },
+                                              //   value: item.isPublish!,
+                                              // )
+                                            ]),
                                         Text(
                                           "${("${item.productType ?? ""}".capitalize!).toString().replaceAll("_product", "").replaceAll("Single", "Simple")} Product",
                                           style: GoogleFonts.poppins(
@@ -533,7 +678,8 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
       ),
       margin: const EdgeInsets.only(bottom: 14),
       child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.padding10),
+          padding: EdgeInsets.symmetric(
+              horizontal: AddSize.padding16, vertical: AddSize.padding10),
           child: Row(children: [
             SizedBox(
                 height: AddSize.size80,
@@ -555,7 +701,8 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
                       Expanded(
                         child: Text(
                           'Testate Book'.tr,
-                          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w500),
+                          style: GoogleFonts.poppins(
+                              fontSize: 14, fontWeight: FontWeight.w500),
                         ).convertToShimmerWithContainer,
                       ),
                       const SizedBox(
@@ -565,7 +712,8 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
                           height: AddSize.size25,
                           width: AddSize.size25,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(40), border: Border.all(color: AppTheme.buttonColor)),
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(color: AppTheme.buttonColor)),
                           child: Center(
                             child: Icon(
                               Icons.edit,
@@ -590,37 +738,39 @@ class _ApproveProductScreenState extends State<ApproveProductScreen> {
                         fontSize: 14,
                       )).convertToShimmerWithContainer,
                   4.spaceY,
-                  Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                    Text(
-                      'KWD 6.350',
-                      style: GoogleFonts.poppins(
-                        color: AppTheme.buttonColor,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                      ),
-                    ).convertToShimmerWithContainer,
-                    FlutterSwitch(
-                      showOnOff: true,
-                      width: AddSize.size30 * 2.2,
-                      height: AddSize.size20 * 1.4,
-                      padding: 2,
-                      valueFontSize: AddSize.font12,
-                      activeTextFontWeight: FontWeight.w600,
-                      inactiveText: " Out",
-                      activeText: "  In",
-                      inactiveTextColor: const Color(0xFFEBEBEB),
-                      activeTextColor: const Color(0xFFFFFFFF),
-                      inactiveTextFontWeight: FontWeight.w600,
-                      inactiveColor: Colors.grey.shade400,
-                      activeColor: AppTheme.buttonColor,
-                      onToggle: (val) {
-                        setState(() {
-                          // state1 = val;
-                        });
-                      },
-                      value: index.isEven,
-                    ).convertToShimmer
-                  ])
+                  Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'KWD 6.350',
+                          style: GoogleFonts.poppins(
+                            color: AppTheme.buttonColor,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                          ),
+                        ).convertToShimmerWithContainer,
+                        FlutterSwitch(
+                          showOnOff: true,
+                          width: AddSize.size30 * 2.2,
+                          height: AddSize.size20 * 1.4,
+                          padding: 2,
+                          valueFontSize: AddSize.font12,
+                          activeTextFontWeight: FontWeight.w600,
+                          inactiveText: " Out",
+                          activeText: "  In",
+                          inactiveTextColor: const Color(0xFFEBEBEB),
+                          activeTextColor: const Color(0xFFFFFFFF),
+                          inactiveTextFontWeight: FontWeight.w600,
+                          inactiveColor: Colors.grey.shade400,
+                          activeColor: AppTheme.buttonColor,
+                          onToggle: (val) {
+                            setState(() {
+                              // state1 = val;
+                            });
+                          },
+                          value: index.isEven,
+                        ).convertToShimmer
+                      ])
                 ],
               ),
             ),

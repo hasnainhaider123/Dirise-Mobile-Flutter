@@ -45,14 +45,15 @@ class _VendorOrderListState extends State<VendorOrderList> {
   debounceSearch() {
     if (timer != null) timer!.cancel();
     timer = Timer(const Duration(milliseconds: 500), () {
-       getOrdersList(reset: true);
+      getOrdersList(reset: true);
       productController.getProductOrderList(context: context);
     });
   }
 
   addListener() {
     scrollController.addListener(() {
-      if (scrollController.offset > (scrollController.position.maxScrollExtent - 10)) {
+      if (scrollController.offset >
+          (scrollController.position.maxScrollExtent - 10)) {
         getOrdersList();
       }
     });
@@ -76,7 +77,8 @@ class _VendorOrderListState extends State<VendorOrderList> {
       }
       loaded = true;
       paginationLoading = false;
-      ModelVendorOrders response = ModelVendorOrders.fromJson(jsonDecode(value));
+      ModelVendorOrders response =
+          ModelVendorOrders.fromJson(jsonDecode(value));
       if (response.order != null) {
         if (response.order!.data != null && response.order!.data!.isNotEmpty) {
           data.addAll(response.order!.data!);
@@ -137,7 +139,8 @@ class _VendorOrderListState extends State<VendorOrderList> {
                       color: AppTheme.newPrimaryColor,
                     ),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: AddSize.padding10),
+                      padding:
+                          EdgeInsets.symmetric(vertical: AddSize.padding10),
                       child: Column(
                         children: [
                           Row(
@@ -147,17 +150,19 @@ class _VendorOrderListState extends State<VendorOrderList> {
                                   onPressed: () {
                                     Get.back();
                                   },
-                                  icon: profileController.selectedLAnguage.value == 'English'
+                                  icon: profileController
+                                              .selectedLAnguage.value ==
+                                          'English'
                                       ? Image.asset(
-                                    'assets/images/back_icon_new.png',
-                                    height: 20,
-                                    width: 20,
-                                  )
+                                          'assets/images/back_icon_new.png',
+                                          height: 20,
+                                          width: 20,
+                                        )
                                       : Image.asset(
-                                    'assets/images/forward_icon.png',
-                                    height: 19,
-                                    width: 19,
-                                  )),
+                                          'assets/images/forward_icon.png',
+                                          height: 19,
+                                          width: 19,
+                                        )),
                               // addWidth(20),
                               Text(
                                 'Orders List'.tr,
@@ -179,30 +184,41 @@ class _VendorOrderListState extends State<VendorOrderList> {
                                 borderRadius: BorderRadius.circular(6),
                                 border: Border.all(color: AppTheme.buttonColor),
                               ),
-                              margin: const EdgeInsets.symmetric(horizontal: 16),
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 16),
                               child: Padding(
-                                padding:
-                                EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.padding16),
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: AddSize.padding16,
+                                    vertical: AddSize.padding16),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Expanded(
                                       child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Obx(() {
-                                            if (vendorProfileController.refreshInt.value > 0) {}
+                                            if (vendorProfileController
+                                                    .refreshInt.value >
+                                                0) {}
 
                                             return Text(
-                                              vendorProfileController.model.user != null
-                                                  ? "kwd${vendorProfileController.model.user!.earnedBalance ?? ' 0'}".tr
+                                              vendorProfileController
+                                                          .model.user !=
+                                                      null
+                                                  ? "kwd${vendorProfileController.model.user!.earnedBalance ?? ' 0'}"
+                                                      .tr
                                                   : "",
-                                              style: Theme
-                                                  .of(context)
+                                              style: Theme.of(context)
                                                   .textTheme
                                                   .headlineSmall!
                                                   .copyWith(
-                                                  fontWeight: FontWeight.w600, fontSize: 28, color: Colors.black),
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 28,
+                                                      color: Colors.black),
                                             );
                                           }),
                                           SizedBox(
@@ -212,14 +228,13 @@ class _VendorOrderListState extends State<VendorOrderList> {
                                             "Your earning this month".tr,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            style: Theme
-                                                .of(context)
+                                            style: Theme.of(context)
                                                 .textTheme
                                                 .headlineSmall!
                                                 .copyWith(
-                                                fontWeight: FontWeight.w400,
-                                                fontSize: AddSize.font14,
-                                                color: Colors.black),
+                                                    fontWeight: FontWeight.w400,
+                                                    fontSize: AddSize.font14,
+                                                    color: Colors.black),
                                           ),
                                         ],
                                       ),
@@ -234,7 +249,8 @@ class _VendorOrderListState extends State<VendorOrderList> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: TextField(
-                              controller: productController.searchOrderController,
+                              controller:
+                                  productController.searchOrderController,
                               maxLines: 1,
                               style: GoogleFonts.poppins(fontSize: 17),
                               textAlignVertical: TextAlignVertical.center,
@@ -243,12 +259,15 @@ class _VendorOrderListState extends State<VendorOrderList> {
                                 log('search order is${productController.searchOrderController.text}');
                                 debounceSearch();
                                 setState(() {});
-                                if(productController.searchOrderController.text == ''){
-                                  productController.modelVendorOrders.value.order!.data!.clear();
+                                if (productController
+                                        .searchOrderController.text ==
+                                    '') {
+                                  productController
+                                      .modelVendorOrders.value.order!.data!
+                                      .clear();
                                   productController.data.clear();
-                                 log('printttt ${  productController.modelVendorOrders.value.order!.data!.toString()}');
+                                  log('printttt ${productController.modelVendorOrders.value.order!.data!.toString()}');
                                 }
-
                               },
                               decoration: InputDecoration(
                                   filled: true,
@@ -261,13 +280,18 @@ class _VendorOrderListState extends State<VendorOrderList> {
                                     ),
                                   ),
                                   border: const OutlineInputBorder(
-                                      borderSide: BorderSide.none, borderRadius: BorderRadius.all(Radius.circular(10))),
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.all(
+                                          Radius.circular(10))),
                                   fillColor: Colors.white,
-                                  contentPadding:
-                                  EdgeInsets.symmetric(horizontal: AddSize.padding20, vertical: AddSize.padding10),
+                                  contentPadding: EdgeInsets.symmetric(
+                                      horizontal: AddSize.padding20,
+                                      vertical: AddSize.padding10),
                                   hintText: 'Search Products'.tr,
                                   hintStyle: GoogleFonts.poppins(
-                                      fontSize: AddSize.font16, color: Colors.black, fontWeight: FontWeight.w400)),
+                                      fontSize: AddSize.font16,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w400)),
                             ),
                           ),
                           SizedBox(
@@ -279,27 +303,39 @@ class _VendorOrderListState extends State<VendorOrderList> {
                   ),
                 ),
                 const LatestSalesAppBar(),
-                if( productController.modelVendorOrders.value.order != null)
+                if (productController.modelVendorOrders.value.order != null)
                   Obx(() {
                     log('callllll');
                     return SliverList.builder(
-                        itemCount: productController.modelVendorOrders.value.order!.data!.length,
+                        itemCount: productController
+                            .modelVendorOrders.value.order!.data!.length,
                         itemBuilder: (context, index) {
-                          final order = productController.modelVendorOrders.value.order!.data![index];
-                          return OrderTile(
-                            order: order,
-                          );
+                          final order = productController
+                              .modelVendorOrders.value.order!.data![index];
+                          if (order.status.toString().toLowerCase() !=
+                              'payment failed') {
+                            return OrderTile(
+                              order: order,
+                            );
+                          } else {
+                            return Container();
+                          }
                         });
                   }),
-                if( productController.modelVendorOrders.value.order == null)
+                if (productController.modelVendorOrders.value.order == null)
                   if (loaded)
                     SliverList.builder(
                         itemCount: data.length,
                         itemBuilder: (context, index) {
                           final order = data[index];
-                          return OrderTile(
-                            order: order,
-                          );
+                          if (order.status.toString().toLowerCase() !=
+                              'payment failed') {
+                            return OrderTile(
+                              order: order,
+                            );
+                          } else {
+                            return Container();
+                          }
                         })
                   else
                     const SliverToBoxAdapter(

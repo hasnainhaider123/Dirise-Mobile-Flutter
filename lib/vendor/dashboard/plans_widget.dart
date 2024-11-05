@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dirise/language/app_strings.dart';
 import 'package:dirise/utils/shimmer_extension.dart';
 import 'package:dirise/utils/styles.dart';
@@ -29,6 +31,8 @@ class _PlanWidgetState extends State<PlanWidget> {
 
   @override
   Widget build(BuildContext context) {
+    log("Vendor user data : ${vendorProfileController
+                                      .model.user.toString()}");
     return SliverToBoxAdapter(
       child: Obx(() {
         if (vendorProfileController.refreshInt.value > 0) {}
@@ -99,9 +103,9 @@ class _PlanWidgetState extends State<PlanWidget> {
                                       ),
                                       Expanded(
                                         child: Text(
-                                          "Pending".tr,
+                                          "Done".tr,
                                           style: titleStyle.copyWith(
-                                              color: Colors.redAccent),
+                                              color: Colors.green),
                                         ).convertToShimmerRed,
                                       )
                                     ],

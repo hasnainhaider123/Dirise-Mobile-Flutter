@@ -12,6 +12,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 import '../repository/repository.dart';
@@ -51,8 +52,12 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
     }else{
       profileController.vendorType = 'company';
     }
+   
     Map<String, String> map = {};
     map["vendor_type"] = profileController.vendorType.toString();
+  // Assign formatted dates to the map
+   
+
     repositories.postApi(url: ApiUrls.vendorRegistrationUrl, context: context, mapData: map).then((value) async {
       if (_selectedOption == 1 || _selectedOption == 2 || _selectedOption == 3 ) {
         if (_isValue == true) {
@@ -65,6 +70,8 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
       }
     });
   }
+ 
+
   final ScrollController _scrollController = ScrollController();
   final GlobalKey _cloudComparisonKey = GlobalKey();
 

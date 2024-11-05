@@ -13,6 +13,7 @@ import 'package:flutter/widgets.dart';
 import 'package:form_field_validator/form_field_validator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:pinput/pinput.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
@@ -105,6 +106,11 @@ class _WhatdoyousellScreenState extends State<WhatdoyousellScreen> {
   Rx<LoginModal> response = LoginModal().obs;
   final profileController = Get.put(ProfileController());
   void vendorregister() {
+     DateTime today = DateTime.now(); // Get today's date
+    DateTime planStartDate = today; // Assign today as plan start date
+    DateTime planExpireDate = DateTime(today.year + 1, today.month, today.day); // Assign next year today as plan expire date
+
+
     Map<String, String> map = {};
     map["store_name"] = storeName.text.trim();
     map["store_email"] = storeEmail.text.trim();
@@ -112,6 +118,8 @@ class _WhatdoyousellScreenState extends State<WhatdoyousellScreen> {
     map["store_number"] = storeNumber.text.trim();
     map["vendor_type"] = profileController.vendorType.toString();
     map["category_id"] = allSelectedCategory.entries.map((e) => e.key).toList().join(",");
+     map["plan_start_date"] = formatDate(planStartDate);
+    map["plan_expire_date"] = formatDate(planExpireDate);
     repositories.postApi(url: ApiUrls.vendorRegistrationUrl, context: context, mapData: map).then((value) async {
       response.value = LoginModal.fromJson(jsonDecode(value));
       LoginModal model = LoginModal();
@@ -132,6 +140,11 @@ class _WhatdoyousellScreenState extends State<WhatdoyousellScreen> {
       }
     });
   }
+   String formatDate(DateTime date) {
+    // Format the date to "MMM d yyyy" (e.g., Nov 5 2023)
+      return DateFormat('yyyy-MM-dd').format(date);
+  }
+
 
   String emailAddress = ""; // Declare email variable
 
