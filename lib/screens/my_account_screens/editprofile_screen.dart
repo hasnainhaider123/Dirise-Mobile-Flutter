@@ -65,7 +65,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       if (profileController.selectedCity != null) {
         map['city_id'] = profileController.selectedCity!.cityId.toString();
       } else {
-        map['city_id'] = '';
+        map['city_id'] = '43591';
       }
       map['street_name'] = addressController.text.trim();
       // log('dsgsfhdfgh${profileController.selectedCity!.cityId.toString()}');
@@ -87,7 +87,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         profileController.selectedLAnguage.value == "English"
             ? showToast(response.message.toString())
             : showToast("تم تحديث الملف الشخصي بنجاح.");
-        print("Toast-----: ${value.toString()}");
+        print("Toast-----: ${response.message.toString()}");
         if (response.status == true) {
           profileController.getDataProfile();
           // log('dsgsfhdfgh${profileController.selectedCity!.cityId.toString()}');

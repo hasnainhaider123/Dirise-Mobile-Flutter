@@ -58,8 +58,8 @@ dependencies:
   scroll_loop_auto_scroll:
   open_filex: ^4.3.4
   lottie: ^2.6.0
-  firebase_core: ^3.3.0
-  firebase_messaging: ^15.0.4
+  firebase_core: ^3.6.0
+  firebase_messaging: ^15.1.3
   flutter_html:
   flutter_animate: ^4.2.0+1
   syncfusion_flutter_pdfviewer: ^26.1.40

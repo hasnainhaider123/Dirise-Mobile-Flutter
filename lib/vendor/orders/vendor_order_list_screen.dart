@@ -299,7 +299,7 @@ class _VendorOrderListState extends State<VendorOrderList> {
                           ),
                         ],
                       ),
-                    ),
+                    ), 
                   ),
                 ),
                 const LatestSalesAppBar(),

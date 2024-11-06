@@ -74,6 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String operatingSystem = '';
   String deviceId = '';
   String location = '';
+
   getDeviveInfo() async {
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
     if (Platform.isAndroid) {
@@ -88,8 +89,7 @@ class _LoginScreenState extends State<LoginScreen> {
       deviceName = info.model;
       deviceId = info.id;
       log("Device details is..${deviceName}");
-    }
-    else if (Platform.isIOS) {
+    } else if (Platform.isIOS) {
       IosDeviceInfo info = await deviceInfo.iosInfo;
       deviceName = info.utsname.machine.toString();
       deviceId = info.localizedModel.toString();
@@ -97,10 +97,15 @@ class _LoginScreenState extends State<LoginScreen> {
     final info = await deviceInfo.deviceInfo;
     print(info.toMap());
   }
+
   loginUserApi() async {
-    String? token1 = await FirebaseMessaging.instance.getAPNSToken();
-    String? token = await FirebaseMessaging.instance.getToken();
-    print('token iss ${token.toString()}');
+    var _firebaseMessaging = FirebaseMessaging.instance;
+    // String? token1 = await _firebasemessagging.getAPNSToken();
+    // String? token = await _firebasemessagging.getToken();
+    // print('token iss ${token.toString()}');
+    token = (Platform.isIOS
+        ? await _firebaseMessaging.getAPNSToken()
+        : await _firebaseMessaging.getToken());
     if (loginFormKey.currentState!.validate()) {
 // if(Platform.isIOS){
 //   String? token = await FirebaseMessaging.instance.getAPNSToken();
@@ -123,7 +128,10 @@ class _LoginScreenState extends State<LoginScreen> {
       map['password'] = passwordController.text.trim();
       // map['fcm_token'] = Platform.isAndroid?token:token1;
       map['fcm_token'] = token;
-      repositories.postApi(url: ApiUrls.loginUrl, context: context, mapData: map).then((value) async {
+
+      repositories
+          .postApi(url: ApiUrls.loginUrl, context: context, mapData: map)
+          .then((value) async {
         LoginModal response = LoginModal.fromJson(jsonDecode(value));
         repositories.saveLoginDetails(jsonEncode(response));
         messageForEmail.value = response.message.toString();
@@ -137,6 +145,72 @@ class _LoginScreenState extends State<LoginScreen> {
       });
     }
   }
+// loginUserApi() async {
+//   try {
+//     String? token;
+
+//     // Platform-specific FCM token retrieval
+//     if (Platform.isIOS) {
+//       token = await FirebaseMessaging.instance.getToken();
+//       if (token == null) {
+//         token = await FirebaseMessaging.instance.getAPNSToken(); // Fallback for iOS
+//       }
+//     } else {
+//       token = await FirebaseMessaging.instance.getToken();
+//     }
+
+//     print('Token is: $token');
+
+//     if (token == null) {
+//       print('Unable to fetch FCM token');
+//       // You may want to retry here or notify the user
+//     }
+
+//     // Validate login form data
+//     if (loginFormKey.currentState!.validate()) {
+//       if (isRemember) {
+//         box1.put('email', emailController.text.trim());
+//         box1.put('pass', passwordController.text.trim());
+//       } else {
+//         box1.delete('email');
+//         box1.delete('pass');
+//       }
+
+//       // Close keyboard
+//       FocusManager.instance.primaryFocus!.unfocus();
+
+//       // Prepare login data
+//       Map<String, dynamic> map = {
+//         'email': emailController.text.trim(),
+//         'password': passwordController.text.trim(),
+//         'fcm_token': token,
+//       };
+
+//       // Call login API
+//       final responseJson = await repositories.postApi(
+//         url: ApiUrls.loginUrl,
+//         context: context,
+//         mapData: map,
+//       );
+
+//       LoginModal response = LoginModal.fromJson(jsonDecode(responseJson));
+//       repositories.saveLoginDetails(jsonEncode(response));
+
+//       messageForEmail.value = response.message.toString();
+//       messageForPass.value = response.message.toString();
+//       print('Message for email: $messageForEmail');
+//       print('Message for password: $messageForPass');
+
+//       if (response.status == true) {
+//         Get.offAllNamed(BottomNavbar.route);
+//       }
+//     }
+//   } catch (e) {
+//     print("Error in loginUserApi: $e");
+//     // Handle the error or show a user-friendly message
+//   }
+// }
+
   // Future<void> _signInWithApple() async {
   //   try {
   //     final credential = await SignInWithApple.getAppleIDCredential(
@@ -198,25 +272,27 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 children: [
                   20.spaceY,
-                   Image.asset('assets/images/new_logo.png',
-                   height: 250,),
+                  Image.asset(
+                    'assets/images/new_logo.png',
+                    height: 250,
+                  ),
                   20.spaceY,
                   CommonTextField(
                     controller: emailController,
                     obSecure: false,
                     hintText: AppStrings.phoneNumber.tr,
                     onChanged: (va) {
-                       messageForEmail.value = '';
-                      setState(() {
-
-                      });
+                      messageForEmail.value = '';
+                      setState(() {});
                     },
                     validator: (value) {
                       if (value!.trim().isEmpty) {
                         return "Please enter your email".tr;
-                      } else if (value.trim().contains('+') || value.trim().contains(' ')) {
+                      } else if (value.trim().contains('+') ||
+                          value.trim().contains(' ')) {
                         return "Email is invalid";
-                      } else if (RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      } else if (RegExp(
+                              r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                           .hasMatch(value.trim())) {
                         return null;
                       } else {
@@ -224,16 +300,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                     },
                   ),
-                  if( profileController.selectedLAnguage.value == 'English' )
-                  messageForEmail.value == 'Email is incorrect' ? Align(
-                      alignment: Alignment.topLeft, child: Text(messageForEmail.toString(), style: const TextStyle(
-                      color: Colors.red
-                  ),)) : const SizedBox.shrink(),
-                  if(    profileController.selectedLAnguage.value != 'English' )
-                    messageForEmail.value == 'Email is incorrect' ? const Align(
-                        alignment: Alignment.topRight, child: Text('البريد الإلكتروني غير صحيح', style: TextStyle(
-                        color: Colors.red
-                    ),)) : const SizedBox.shrink(),
+                  if (profileController.selectedLAnguage.value == 'English')
+                    messageForEmail.value == 'Email is incorrect'
+                        ? Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              messageForEmail.toString(),
+                              style: const TextStyle(color: Colors.red),
+                            ))
+                        : const SizedBox.shrink(),
+                  if (profileController.selectedLAnguage.value != 'English')
+                    messageForEmail.value == 'Email is incorrect'
+                        ? const Align(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              'البريد الإلكتروني غير صحيح',
+                              style: TextStyle(color: Colors.red),
+                            ))
+                        : const SizedBox.shrink(),
                   SizedBox(
                     height: size.height * .01,
                   ),
@@ -245,31 +329,40 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: () {
                           hide.value = !hide.value;
                         },
-                        icon: hide.value ? const Icon(Icons.visibility_off) : const Icon(Icons.visibility),
+                        icon: hide.value
+                            ? const Icon(Icons.visibility_off)
+                            : const Icon(Icons.visibility),
                       ),
                       hintText: AppStrings.password.tr,
-                      onChanged: (va){
+                      onChanged: (va) {
                         messageForPass.value = '';
-                        setState(() {
-
-                        });
+                        setState(() {});
                       },
                       validator: (value) {
-                        if (value!.trim().isEmpty) return AppStrings.passwordRequired.tr;
+                        if (value!.trim().isEmpty)
+                          return AppStrings.passwordRequired.tr;
                         return null;
                       },
                     );
                   }),
-                  if(profileController.selectedLAnguage.value == 'English' )
-                  messageForPass.value == 'Password is incorrect' ? Align(
-                      alignment: Alignment.topLeft, child: Text(messageForPass.toString(), style: const TextStyle(
-                      color: Colors.red
-                  ),)) : const SizedBox.shrink(),
-                  if(    profileController.selectedLAnguage.value != 'English' )
-                    messageForPass.value == 'Password is incorrect' ? const Align(
-                        alignment: Alignment.topRight, child: Text('كلمة المرور غير صحيحة', style: TextStyle(
-                        color: Colors.red
-                    ),)) : const SizedBox.shrink(),
+                  if (profileController.selectedLAnguage.value == 'English')
+                    messageForPass.value == 'Password is incorrect'
+                        ? Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              messageForPass.toString(),
+                              style: const TextStyle(color: Colors.red),
+                            ))
+                        : const SizedBox.shrink(),
+                  if (profileController.selectedLAnguage.value != 'English')
+                    messageForPass.value == 'Password is incorrect'
+                        ? const Align(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              'كلمة المرور غير صحيحة',
+                              style: TextStyle(color: Colors.red),
+                            ))
+                        : const SizedBox.shrink(),
                   const SizedBox(
                     height: 16,
                   ),
@@ -283,13 +376,12 @@ class _LoginScreenState extends State<LoginScreen> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(4)),
                             visualDensity: VisualDensity.comfortable,
-                            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
                             value: isRemember,
                             onChanged: (value) {
                               isRemember = !isRemember;
-                              setState(() {
-
-                              });
+                              setState(() {});
                             }),
                       ),
                       const SizedBox(
@@ -320,7 +412,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: Text(
                           AppStrings.forgotPassword.tr,
-                          style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: AppTheme.buttonColor),
+                          style: GoogleFonts.poppins(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                              color: AppTheme.buttonColor),
                         ),
                       ),
                     ],
@@ -344,7 +439,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {},
                         child: Text(
                           AppStrings.signInWith.tr,
-                          style: GoogleFonts.poppins(color: AppTheme.buttonColor),
+                          style:
+                              GoogleFonts.poppins(color: AppTheme.buttonColor),
                         ),
                       ),
                       const Expanded(
@@ -365,7 +461,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      if(Platform.isIOS)
+                      if (Platform.isIOS)
                         InkWell(
                           onTap: () {
                             loginWithApple();
@@ -398,7 +494,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: 62,
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: const Color(0xffCACACA), width: 2)),
+                              border: Border.all(
+                                  color: const Color(0xffCACACA), width: 2)),
                           child: Center(
                             child: Image.asset(
                               'assets/icons/google.png',
@@ -450,7 +547,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 60,),
+                  SizedBox(
+                    height: 60,
+                  ),
                 ],
               ),
             ),
@@ -461,10 +560,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   signInWithGoogle() async {
-    var fcmToken = await FirebaseMessaging.instance.getToken();
+    var _firebaseMessaging = FirebaseMessaging.instance;
+    token = (Platform.isIOS
+        ? await _firebaseMessaging.getAPNSToken()
+        : await _firebaseMessaging.getToken());
     await GoogleSignIn().signOut();
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
     final credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
       accessToken: googleAuth.accessToken,
@@ -474,13 +577,16 @@ class _LoginScreenState extends State<LoginScreen> {
       map['provider'] = "google";
       map['access_token'] = value.credential!.accessToken!;
       map['keyword'] = 'login';
-      repositories.postApi(url: ApiUrls.socialLoginUrl, context: context, mapData: map).then((value) async {
+      map['fcm_token'] = token;
+      repositories
+          .postApi(url: ApiUrls.socialLoginUrl, context: context, mapData: map)
+          .then((value) async {
         LoginModal response = LoginModal.fromJson(jsonDecode(value));
         repositories.saveLoginDetails(jsonEncode(response));
         if (response.status == true) {
           profileController.selectedLAnguage.value == "English"
-              ?showToast(response.message.toString())
-              :showToast("تم تسجيل الدخول إلى حسابك بنجاح");
+              ? showToast(response.message.toString())
+              : showToast("تم تسجيل الدخول إلى حسابك بنجاح");
           print("Toast---: ${response.message.toString()}");
           profileController.userLoggedIn = true;
           Get.offAllNamed(BottomNavbar.route);
@@ -494,7 +600,8 @@ class _LoginScreenState extends State<LoginScreen> {
   signInWithGoogle1() async {
     await GoogleSignIn().signOut();
     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth = await googleUser!.authentication;
+    final GoogleSignInAuthentication googleAuth =
+        await googleUser!.authentication;
     final credential = GoogleAuthProvider.credential(
       idToken: googleAuth.idToken,
       accessToken: googleAuth.accessToken,
@@ -505,15 +612,17 @@ class _LoginScreenState extends State<LoginScreen> {
     Map<String, dynamic> map = {};
     map['provider'] = "google";
     map['access_token'] = value.credential!.accessToken!;
-    repositories.postApi(url: ApiUrls.socialLoginUrl, context: context, mapData: map).then((value) async {
+    repositories
+        .postApi(url: ApiUrls.socialLoginUrl, context: context, mapData: map)
+        .then((value) async {
       LoginModal response = LoginModal.fromJson(jsonDecode(value));
       repositories.saveLoginDetails(jsonEncode(response));
       if (response.status == true) {
         SharedPreferences pref = await SharedPreferences.getInstance();
         pref.setString('login_user', jsonEncode(value));
         profileController.selectedLAnguage.value == "English"
-            ?showToast(response.message.toString())
-            :showToast("تم تسجيل الدخول إلى حسابك بنجاح");
+            ? showToast(response.message.toString())
+            : showToast("تم تسجيل الدخول إلى حسابك بنجاح");
         print("Toast---: ${response.message.toString()}");
         profileController.userLoggedIn = true;
         Get.offAllNamed(BottomNavbar.route);
@@ -600,25 +709,39 @@ class _LoginScreenState extends State<LoginScreen> {
 // }
 
   loginWithApple() async {
-    var fcmToken = await FirebaseMessaging.instance.getToken();
-    final appleProvider = AppleAuthProvider().addScope("email").addScope("FullName");
-    await FirebaseAuth.instance.signInWithProvider(appleProvider).then((value1) async {
+   
+     var _firebaseMessaging = FirebaseMessaging.instance;
+    token = (Platform.isIOS
+        ? await _firebaseMessaging.getAPNSToken()
+        : await _firebaseMessaging.getToken());
+    final appleProvider =
+        AppleAuthProvider().addScope("email").addScope("FullName");
+    await FirebaseAuth.instance
+        .signInWithProvider(appleProvider)
+        .then((value1) async {
       Map<String, dynamic> map = {};
       map['provider'] = "apple";
       map['access_token'] = value1.credential!.accessToken!;
+      map['fcm_token'] = token;
       log(value1.credential!.accessToken.toString());
-      repositories.postApi(url: ApiUrls.socialLoginUrl, context: context, mapData: map,showResponse: true).then((value)  async {
+      repositories
+          .postApi(
+              url: ApiUrls.socialLoginUrl,
+              context: context,
+              mapData: map,
+              showResponse: true)
+          .then((value) async {
         LoginModal response = LoginModal.fromJson(jsonDecode(value));
         log('value isss${response.toJson()}');
         // repositories.saveLoginDetails(jsonEncode(response));
         if (response.status == true) {
           repositories.saveLoginDetails(jsonEncode(response));
           profileController.selectedLAnguage.value == "English"
-          ?showToast(response.message)
-          :showToast("تم تسجيل الدخول إلى حسابك بنجاحs");
+              ? showToast(response.message)
+              : showToast("تم تسجيل الدخول إلى حسابك بنجاحs");
           print("Toast---: ${response.message}");
           profileController.userLoggedIn = true;
-         Get.offAllNamed(BottomNavbar.route);
+          Get.offAllNamed(BottomNavbar.route);
         } else {
           showToast(response.message);
         }
