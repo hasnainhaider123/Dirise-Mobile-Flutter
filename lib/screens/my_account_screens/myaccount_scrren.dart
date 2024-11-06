@@ -63,7 +63,6 @@ class MyAccountScreen extends StatefulWidget {
 enum SingingCharacter { lafayette, jefferson }
 
 class _MyAccountScreenState extends State<MyAccountScreen> {
-
   whatsapp() async {
     String contact = "+96565556490";
     String text = '';
@@ -82,11 +81,12 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
           await launchUrl(Uri.parse(androidUrl));
         }
       }
-    } catch(e) {
+    } catch (e) {
       print('object');
       await launchUrl(Uri.parse(webUrl), mode: LaunchMode.externalApplication);
     }
   }
+
   updateLanguage(String gg) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("app_language", gg);
@@ -101,20 +101,36 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
     } else {
       isLoggedIn = false;
     }
-    if(mounted){
-      setState(() {
-
-      });
+    if (mounted) {
+      setState(() {});
     }
   }
-  Rx<UserDeleteModel> deleteModal = UserDeleteModel().obs;
 
+  Rx<UserDeleteModel> deleteModal = UserDeleteModel().obs;
 
   RxString language = "".obs;
   final RxBool _isValue = false.obs;
 
-  var vendor = ['Dashboard', 'Sold Orders', 'Pending Products', 'Approved Products','Operating Hours','Social Media','Bank Details', 'Earnings'];
-  var vendorArab = ['لوحة القيادة', 'طلب', 'المنتجات المعلقة', 'المنتجات المعتمدة','ساعات العمل','وسائل التواصل الاجتماعي','التفاصيل المصرفية', 'الأرباح'];
+  var vendor = [
+    'Dashboard',
+    'Sold Orders',
+    'Pending Products',
+    'Approved Products',
+    'Operating Hours',
+    'Social Media',
+    'Bank Details',
+    'Earnings'
+  ];
+  var vendorArab = [
+    'لوحة القيادة',
+    'طلب',
+    'المنتجات المعلقة',
+    'المنتجات المعتمدة',
+    'ساعات العمل',
+    'وسائل التواصل الاجتماعي',
+    'التفاصيل المصرفية',
+    'الأرباح'
+  ];
   var vendor1 = ['Become a vendor', 'Pending Products', 'Approved Products'];
   var vendor1Arab = ['كن بائعًا', 'المنتجات المعلقة', 'المنتجات المعتمدة'];
 
@@ -131,23 +147,26 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
     LoginScreen.route,
     VendorProductScreen.route,
     ApproveProductScreen.route,
-
   ];
   defaultAddressApi() async {
     Map<String, dynamic> map = {};
     map['address_id'] = cartController.selectedAddress.id.toString();
-    repositories.postApi(url: ApiUrls.defaultAddressStatus, context: context, mapData: map).then((value) async {
-      ModelCommonResponse response = ModelCommonResponse.fromJson(jsonDecode(value));
+    repositories
+        .postApi(
+            url: ApiUrls.defaultAddressStatus, context: context, mapData: map)
+        .then((value) async {
+      ModelCommonResponse response =
+          ModelCommonResponse.fromJson(jsonDecode(value));
       if (response.status == true) {
         profileController.selectedLAnguage.value == "English"
-            ?showToast(response.message)
-            :showToast("تم حفظ العنوان الافتراضي بنجاح");
+            ? showToast(response.message)
+            : showToast("تم حفظ العنوان الافتراضي بنجاح");
         print("Toast---: ${response.message}");
         Get.back();
-      }else{
+      } else {
         profileController.selectedLAnguage.value == "English"
-            ?showToast(response.message)
-            :showToast("تم حفظ العنوان الافتراضي بنجاح");
+            ? showToast(response.message)
+            : showToast("تم حفظ العنوان الافتراضي بنجاح");
         print("Toast---: ${response.message}");
       }
     });
@@ -156,7 +175,6 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
   final profileController = Get.put(ProfileController());
   final cartController = Get.put(CartController());
   final homeController = Get.put(TrendingProductsController());
-
 
   showVendorDialog() {
     if (Platform.isAndroid) {
@@ -175,7 +193,8 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                     Text(
                       AppStrings.vendorRegister,
                       textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 16),
+                      style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w600, fontSize: 16),
                     ),
                     10.spaceY,
                     TextButton(
@@ -202,7 +221,8 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                 "${'To register as vendor partner need to '.tr}"
                 "${'create an account first.'.tr}",
                 textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 16),
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w600, fontSize: 16),
               ),
               actions: [
                 CupertinoDialogAction(
@@ -219,7 +239,6 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
       return;
     }
   }
-
 
   ModelCountryList? modelCountryList;
   Country? selectedCountry;
@@ -240,7 +259,9 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
     }
     stateRefresh.value = -5;
     final map = {'country_id': countryId};
-    await repositories.postApi(url: ApiUrls.allStatesUrl, mapData: map).then((value) {
+    await repositories
+        .postApi(url: ApiUrls.allStatesUrl, mapData: map)
+        .then((value) {
       modelStateList = ModelStateList.fromJson(jsonDecode(value));
       setState(() {});
       stateRefresh.value = DateTime.now().millisecondsSinceEpoch;
@@ -258,7 +279,9 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
     }
     cityRefresh.value = -5;
     final map = {'state_id': stateId};
-    await repositories.postApi(url: ApiUrls.allCityUrl, mapData: map).then((value) {
+    await repositories
+        .postApi(url: ApiUrls.allCityUrl, mapData: map)
+        .then((value) {
       modelCityList = ModelCityList.fromJson(jsonDecode(value));
       setState(() {});
       cityRefresh.value = DateTime.now().millisecondsSinceEpoch;
@@ -276,7 +299,6 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
 
   String countryIddd = '';
 
-
   void initState() {
     super.initState();
     profileController.checkLanguage();
@@ -285,9 +307,6 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
     getStateList(countryId: countryIddd.toString());
     getCityList(stateId: stateIddd.toString());
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -324,14 +343,21 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16,vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 10),
                           child: Text(
                             profileController.userLoggedIn
-                                ? profileController.apiLoaded && profileController.model.user != null
-                                    ? "${profileController.model.user!.firstName.toString().capitalize} " + "${profileController.model.user!.lastName.toString().capitalize}" ?? ''
+                                ? profileController.apiLoaded &&
+                                        profileController.model.user != null
+                                    ? "${profileController.model.user!.firstName.toString().capitalize} " +
+                                            "${profileController.model.user!.lastName.toString().capitalize}" ??
+                                        ''
                                     : ""
                                 : AppStrings.guestUser.tr,
-                            style: GoogleFonts.poppins(color: AppTheme.buttonColor, fontSize: 24, fontWeight: FontWeight.w600),
+                            style: GoogleFonts.poppins(
+                                color: AppTheme.buttonColor,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -345,7 +371,10 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             child: profileController.userLoggedIn
                                 ? Image.network(
                                     profileController.apiLoaded
-                                        ? profileController.model.user!.profileImage.toString() : "",
+                                        ? profileController
+                                            .model.user!.profileImage
+                                            .toString()
+                                        : "",
                                     fit: BoxFit.cover,
                                     height: 65,
                                     width: 65,
@@ -374,20 +403,27 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                 //     height: 65,
                                 //     width: 65,
                                 //   ),
-                        :  Image.asset('assets/images/profile-icon.png',  fit: BoxFit.cover,
-                              height: 65,
-                              color: AppTheme.buttonColor,
-                              width: 65,),
+                                : Image.asset(
+                                    'assets/images/profile-icon.png',
+                                    fit: BoxFit.cover,
+                                    height: 65,
+                                    color: AppTheme.buttonColor,
+                                    width: 65,
+                                  ),
                           ),
                         ),
                         5.spaceY,
                         Text(
                           profileController.userLoggedIn
-                              ? profileController.apiLoaded && profileController.model.user != null
+                              ? profileController.apiLoaded &&
+                                      profileController.model.user != null
                                   ? profileController.model.user!.email ?? ""
                                   : ""
                               : "",
-                          style: GoogleFonts.poppins(color: AppTheme.buttonColor, fontSize: 16, fontWeight: FontWeight.w400),
+                          style: GoogleFonts.poppins(
+                              color: AppTheme.buttonColor,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400),
                         ),
                         15.spaceY,
                       ],
@@ -412,10 +448,13 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                               minLeadingWidth: 0,
                               contentPadding: EdgeInsets.zero,
                               minVerticalPadding: 0,
-                              visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
+                              visualDensity: const VisualDensity(
+                                  vertical: -4, horizontal: -4),
                               title: Row(
                                 children: [
-                                  Image.asset(height: 25, 'assets/icons/drawerprofile.png'),
+                                  Image.asset(
+                                      height: 25,
+                                      'assets/icons/drawerprofile.png'),
                                   const SizedBox(
                                     width: 20,
                                   ),
@@ -423,30 +462,35 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                     child: Text(
                                       AppStrings.myProfile.tr,
                                       style: GoogleFonts.poppins(
-                                          color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                          color: const Color(0xFF2A3032),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
-                                  profileController.selectedLAnguage.value == 'English' ?
-                                  Image.asset(
-                                    'assets/images/forward_icon.png',
-                                    height: 17,
-                                    width: 17,
-                                  ) :
-                                  Image.asset(
-                                    'assets/images/back_icon_new.png',
-                                    height: 17,
-                                    width: 17,
-                                  ),
+                                  profileController.selectedLAnguage.value ==
+                                          'English'
+                                      ? Image.asset(
+                                          'assets/images/forward_icon.png',
+                                          height: 17,
+                                          width: 17,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/back_icon_new.png',
+                                          height: 17,
+                                          width: 17,
+                                        ),
                                 ],
                               ),
                             )
                           : const SizedBox.shrink(),
-                        profileController.userLoggedIn ? const Divider(
+                      profileController.userLoggedIn
+                          ? const Divider(
                               thickness: 1,
                               color: Color(0x1A000000),
                             )
                           : const SizedBox.shrink(),
-                      profileController.userLoggedIn ? const SizedBox(
+                      profileController.userLoggedIn
+                          ? const SizedBox(
                               height: 5,
                             )
                           : const SizedBox.shrink(),
@@ -468,20 +512,23 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             Text(
                               AppStrings.eBooks.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -505,27 +552,31 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         },
                         child: Row(
                           children: [
-                            Image.asset(height: 25, 'assets/images/whatsapp_icon.png'),
+                            Image.asset(
+                                height: 25, 'assets/images/whatsapp_icon.png'),
                             const SizedBox(
                               width: 20,
                             ),
                             Text(
                               "WhatsApp Support".tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -556,20 +607,23 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             Text(
                               AppStrings.orders.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -590,27 +644,31 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         },
                         child: Row(
                           children: [
-                            Image.asset(height: 24, 'assets/icons/send_icon.png'),
+                            Image.asset(
+                                height: 24, 'assets/icons/send_icon.png'),
                             const SizedBox(
                               width: 20,
                             ),
                             Text(
                               'News Feed'.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -627,31 +685,35 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                       GestureDetector(
                         behavior: HitTestBehavior.translucent,
                         onTap: () {
-                          Get.to(()=>const GetJobTypeScreen());
+                          Get.to(() => const GetJobTypeScreen());
                         },
                         child: Row(
                           children: [
-                            Image.asset(height: 24, 'assets/images/job_icon.png'),
+                            Image.asset(
+                                height: 24, 'assets/images/job_icon.png'),
                             const SizedBox(
                               width: 20,
                             ),
                             Text(
                               'Jobs'.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -679,20 +741,23 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             Text(
                               AppStrings.faq.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -771,20 +836,23 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             Text(
                               AppStrings.address.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -810,26 +878,38 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                     decoration: const BoxDecoration(
                                         color: Colors.white,
                                         borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20))),
                                     child: Obx(() {
                                       return Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         mainAxisSize: MainAxisSize.min,
                                         children: <Widget>[
                                           Padding(
-                                            padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                                            padding: const EdgeInsets.only(
+                                                left: 20, right: 20, top: 20),
                                             child: Container(
                                                 decoration: BoxDecoration(
-                                                    border: Border.all(color: const Color(0xffDCDCDC)),
-                                                    borderRadius: BorderRadius.circular(15)),
+                                                    border: Border.all(
+                                                        color: const Color(
+                                                            0xffDCDCDC)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
                                                 child: RadioListTile(
                                                   title: const Text('English'),
-                                                  activeColor: const Color(0xff014E70),
+                                                  activeColor:
+                                                      const Color(0xff014E70),
                                                   value: "English",
-                                                  groupValue: profileController.selectedLAnguage.value,
+                                                  groupValue: profileController
+                                                      .selectedLAnguage.value,
                                                   onChanged: (value) {
-                                                    locale = const Locale('en', 'US');
-                                                    profileController.selectedLAnguage.value = value!;
+                                                    locale = const Locale(
+                                                        'en', 'US');
+                                                    profileController
+                                                        .selectedLAnguage
+                                                        .value = value!;
                                                     updateLanguage("English");
                                                     setState(() {});
                                                   },
@@ -839,19 +919,29 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                             height: 10,
                                           ),
                                           Padding(
-                                            padding: const EdgeInsets.only(left: 20, right: 20),
+                                            padding: const EdgeInsets.only(
+                                                left: 20, right: 20),
                                             child: Container(
                                                 decoration: BoxDecoration(
-                                                    border: Border.all(color: const Color(0xffDCDCDC)),
-                                                    borderRadius: BorderRadius.circular(15)),
+                                                    border: Border.all(
+                                                        color: const Color(
+                                                            0xffDCDCDC)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15)),
                                                 child: RadioListTile(
                                                   title: const Text('عربي'),
-                                                  activeColor: const Color(0xff014E70),
+                                                  activeColor:
+                                                      const Color(0xff014E70),
                                                   value: "عربي",
-                                                  groupValue: profileController.selectedLAnguage.value,
+                                                  groupValue: profileController
+                                                      .selectedLAnguage.value,
                                                   onChanged: (value) {
-                                                    locale = const Locale('ar', 'AR');
-                                                    profileController.selectedLAnguage.value = value!;
+                                                    locale = const Locale(
+                                                        'ar', 'AR');
+                                                    profileController
+                                                        .selectedLAnguage
+                                                        .value = value!;
                                                     updateLanguage("عربي");
                                                     setState(() {});
                                                   },
@@ -889,18 +979,28 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                             },
                                             child: Center(
                                               child: Padding(
-                                                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                                                padding: const EdgeInsets.only(
+                                                    left: 20,
+                                                    right: 20,
+                                                    bottom: 20),
                                                 child: Container(
                                                   height: 56,
-                                                  width: MediaQuery.sizeOf(context).width,
-                                                  color: const Color(0xff014E70),
+                                                  width:
+                                                      MediaQuery.sizeOf(context)
+                                                          .width,
+                                                  color:
+                                                      const Color(0xff014E70),
                                                   child: Center(
                                                     child: Text(
                                                       'Apply'.tr,
-                                                      style: GoogleFonts.poppins(
-                                                          fontSize: 18,
-                                                          fontWeight: FontWeight.w500,
-                                                          color: Colors.white),
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500,
+                                                              color:
+                                                                  Colors.white),
                                                     ),
                                                   ),
                                                 ),
@@ -914,27 +1014,31 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         },
                         child: Row(
                           children: [
-                            Image.asset(height: 25, 'assets/icons/language.png'),
+                            Image.asset(
+                                height: 25, 'assets/icons/language.png'),
                             const SizedBox(
                               width: 20,
                             ),
                             Text(
                               AppStrings.language.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -955,27 +1059,31 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         },
                         child: Row(
                           children: [
-                            SvgPicture.asset(height: 24, 'assets/svgs/about.svg'),
+                            SvgPicture.asset(
+                                height: 24, 'assets/svgs/about.svg'),
                             const SizedBox(
                               width: 20,
                             ),
                             Text(
                               AppStrings.aboutUs.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -1009,20 +1117,23 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             Text(
                               AppStrings.contactUs.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -1043,27 +1154,31 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         },
                         child: Row(
                           children: [
-                            Image.asset(height: 25, 'assets/icons/termscondition.png'),
+                            Image.asset(
+                                height: 25, 'assets/icons/termscondition.png'),
                             const SizedBox(
                               width: 20,
                             ),
                             Text(
                               AppStrings.termsCondition.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -1091,20 +1206,23 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             Text(
                               AppStrings.returnPolicy.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -1120,9 +1238,12 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                               onTap: () {
                                 showDialog<String>(
                                   context: context,
-                                  builder: (BuildContext context) => AlertDialog(
+                                  builder: (BuildContext context) =>
+                                      AlertDialog(
                                     title: Text('Delete Account'.tr),
-                                    content: Text('Do you want to delete your account'.tr),
+                                    content: Text(
+                                        'Do you want to delete your account'
+                                            .tr),
                                     actions: <Widget>[
                                       TextButton(
                                         onPressed: () => Get.back(),
@@ -1132,18 +1253,27 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                         onPressed: () {
                                           if (profileController.userLoggedIn) {
                                             repositories
-                                                .postApi(url: ApiUrls.deleteUser, context: context)
+                                                .postApi(
+                                                    url: ApiUrls.deleteUser,
+                                                    context: context)
                                                 .then((value) async {
-                                              deleteModal.value = UserDeleteModel.fromJson(jsonDecode(value));
-                                              if (deleteModal.value.status == true) {
-                                                SharedPreferences shared = await SharedPreferences.getInstance();
+                                              deleteModal.value =
+                                                  UserDeleteModel.fromJson(
+                                                      jsonDecode(value));
+                                              if (deleteModal.value.status ==
+                                                  true) {
+                                                SharedPreferences shared =
+                                                    await SharedPreferences
+                                                        .getInstance();
                                                 await shared.clear();
                                                 Get.back();
                                                 setState(() {});
                                                 Get.toNamed(LoginScreen.route);
-                                                profileController.userLoggedIn = false;
+                                                profileController.userLoggedIn =
+                                                    false;
                                                 profileController.updateUI();
-                                                profileController.getDataProfile();
+                                                profileController
+                                                    .getDataProfile();
                                                 cartController.getCart();
                                                 homeController.getAll();
                                               }
@@ -1163,10 +1293,13 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                               minLeadingWidth: 0,
                               contentPadding: EdgeInsets.zero,
                               minVerticalPadding: 0,
-                              visualDensity: const VisualDensity(vertical: -4, horizontal: -4),
+                              visualDensity: const VisualDensity(
+                                  vertical: -4, horizontal: -4),
                               title: Row(
                                 children: [
-                                  Image.asset(height: 25, 'assets/icons/drawerprofile.png'),
+                                  Image.asset(
+                                      height: 25,
+                                      'assets/icons/drawerprofile.png'),
                                   const SizedBox(
                                     width: 20,
                                   ),
@@ -1174,20 +1307,23 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                     child: Text(
                                       AppStrings.deleteAccount.tr,
                                       style: GoogleFonts.poppins(
-                                          color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                          color: const Color(0xFF2A3032),
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500),
                                     ),
                                   ),
-                                  profileController.selectedLAnguage.value == 'English' ?
-                                  Image.asset(
-                                    'assets/images/forward_icon.png',
-                                    height: 17,
-                                    width: 17,
-                                  ) :
-                                  Image.asset(
-                                    'assets/images/back_icon_new.png',
-                                    height: 17,
-                                    width: 17,
-                                  ),
+                                  profileController.selectedLAnguage.value ==
+                                          'English'
+                                      ? Image.asset(
+                                          'assets/images/forward_icon.png',
+                                          height: 17,
+                                          width: 17,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/back_icon_new.png',
+                                          height: 17,
+                                          width: 17,
+                                        ),
                                 ],
                               ),
                             )
@@ -1214,7 +1350,8 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                               context: context,
                               builder: (BuildContext context) => AlertDialog(
                                 title: Text('Logout Account'.tr),
-                                content: Text('Do you want to logout your account'.tr),
+                                content: Text(
+                                    'Do you want to logout your account'.tr),
                                 actions: <Widget>[
                                   TextButton(
                                     onPressed: () => Get.back(),
@@ -1223,12 +1360,15 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                   TextButton(
                                     onPressed: () async {
                                       if (profileController.userLoggedIn) {
-                                        SharedPreferences shared = await SharedPreferences.getInstance();
+                                        SharedPreferences shared =
+                                            await SharedPreferences
+                                                .getInstance();
                                         await shared.clear();
                                         setState(() {});
                                         Get.back();
                                         Get.toNamed(LoginScreen.route);
-                                        cartController.myDefaultAddressModel.value = MyDefaultAddressModel();
+                                        cartController.myDefaultAddressModel
+                                            .value = MyDefaultAddressModel();
                                         profileController.userLoggedIn = false;
                                         profileController.updateUI();
                                         profileController.getDataProfile();
@@ -1255,22 +1395,27 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                               width: 20,
                             ),
                             Text(
-                              profileController.userLoggedIn ? AppStrings.signOut.tr : AppStrings.login.tr,
+                              profileController.userLoggedIn
+                                  ? AppStrings.signOut.tr
+                                  : AppStrings.login.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                                  color: const Color(0xFF2A3032),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500),
                             ),
                             const Spacer(),
-                            profileController.selectedLAnguage.value == 'English' ?
-                            Image.asset(
-                              'assets/images/forward_icon.png',
-                              height: 17,
-                              width: 17,
-                            ) :
-                            Image.asset(
-                              'assets/images/back_icon_new.png',
-                              height: 17,
-                              width: 17,
-                            ),
+                            profileController.selectedLAnguage.value ==
+                                    'English'
+                                ? Image.asset(
+                                    'assets/images/forward_icon.png',
+                                    height: 17,
+                                    width: 17,
+                                  )
+                                : Image.asset(
+                                    'assets/images/back_icon_new.png',
+                                    height: 17,
+                                    width: 17,
+                                  ),
                           ],
                         ),
                       ),
@@ -1329,7 +1474,9 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                     Expanded(
                       child: Obx(() {
                         if (cartController.refreshInt11.value > 0) {}
-                        List<AddressData> shippingAddress = cartController.addressListModel.address!.shipping ?? [];
+                        List<AddressData> shippingAddress =
+                            cartController.addressListModel.address!.shipping ??
+                                [];
                         return CustomScrollView(
                           shrinkWrap: true,
                           slivers: [
@@ -1339,21 +1486,25 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                   Expanded(
                                     child: Text(
                                       "Shipping Address".tr,
-                                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16),
+                                      style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
                                     ),
                                   ),
                                   TextButton.icon(
                                       onPressed: () {
                                         bottomSheet(addressData: AddressData());
                                       },
-                                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                                      style: TextButton.styleFrom(
+                                          padding: EdgeInsets.zero),
                                       icon: const Icon(
                                         Icons.add,
                                         size: 20,
                                       ),
                                       label: Text(
                                         "Add New".tr,
-                                        style: GoogleFonts.poppins(fontSize: 15),
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 15),
                                       ))
                                 ],
                               ),
@@ -1362,25 +1513,28 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                               child: Row(
                                 children: [
                                   const Expanded(
-                                    child:SizedBox(),
+                                    child: SizedBox(),
                                   ),
                                   TextButton.icon(
                                       onPressed: () {
-                                        Get.to(()=> FindMyLocationAddress());
+                                        Get.to(() => FindMyLocationAddress());
                                       },
-                                      style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                                      style: TextButton.styleFrom(
+                                          padding: EdgeInsets.zero),
                                       icon: const Icon(
                                         Icons.add,
                                         size: 20,
                                       ),
                                       label: Text(
                                         "Find my location".tr,
-                                        style: GoogleFonts.poppins(fontSize: 15),
+                                        style:
+                                            GoogleFonts.poppins(fontSize: 15),
                                       ))
                                 ],
                               ),
                             ),
-                            const SliverPadding(padding: EdgeInsets.only(top: 4)),
+                            const SliverPadding(
+                                padding: EdgeInsets.only(top: 4)),
                             shippingAddress.isNotEmpty
                                 ? SliverList(
                                     delegate: SliverChildBuilderDelegate(
@@ -1390,235 +1544,270 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                       return GestureDetector(
                                         behavior: HitTestBehavior.translucent,
                                         onTap: () {
-                                          cartController.selectedAddress = address;
+                                          cartController.selectedAddress =
+                                              address;
                                           Get.back();
                                           setState(() {});
                                         },
-                                        child: Container(
-                                          width: size.width,
-                                          margin: const EdgeInsets.only(bottom: 15),
-                                          padding: const EdgeInsets.all(15),
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.circular(10),
-                                              border: Border.all(color: const Color(0xffDCDCDC))),
-                                          child: IntrinsicHeight(
-                                            child: Row(
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                const Icon(Icons.location_on_rounded),
-                                                const SizedBox(
-                                                  width: 10,
-                                                ),
-                                                Expanded(
-                                                  child: Text(
-                                                    address.getCompleteAddressInFormat,
-                                                    style: GoogleFonts.poppins(
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 15,
-                                                        color: const Color(0xff585858)),
+                                        child:
+                                            address.getCompleteAddressInFormat
+                                                    .isEmpty
+                                                ? SizedBox()
+                                                : Container(
+                                                    width: size.width,
+                                                    margin:
+                                                        const EdgeInsets.only(
+                                                            bottom: 15),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            15),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                        border: Border.all(
+                                                            color: const Color(
+                                                                0xffDCDCDC))),
+                                                    child: IntrinsicHeight(
+                                                      child: Row(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const Icon(Icons
+                                                              .location_on_rounded),
+                                                          const SizedBox(
+                                                            width: 10,
+                                                          ),
+                                                          Expanded(
+                                                            child: Text(
+                                                              address
+                                                                  .getCompleteAddressInFormat,
+                                                              style: GoogleFonts.poppins(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500,
+                                                                  fontSize: 15,
+                                                                  color: const Color(
+                                                                      0xff585858)),
+                                                            ),
+                                                          ),
+                                                          Column(
+                                                            children: [
+                                                              address.isDefault ==
+                                                                      true
+                                                                  ? PopupMenuButton(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      iconSize:
+                                                                          20,
+                                                                      icon:
+                                                                          const Icon(
+                                                                        Icons
+                                                                            .more_vert,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      ),
+                                                                      padding:
+                                                                          EdgeInsets
+                                                                              .zero,
+                                                                      onSelected:
+                                                                          (value) {
+                                                                        setState(
+                                                                            () {});
+                                                                        Navigator.pushNamed(
+                                                                            context,
+                                                                            value.toString());
+                                                                      },
+                                                                      itemBuilder:
+                                                                          (ac) {
+                                                                        return [
+                                                                          PopupMenuItem(
+                                                                            onTap:
+                                                                                () {
+                                                                              bottomSheet(addressData: address);
+                                                                            },
+                                                                            // value: '/Edit',
+                                                                            child:
+                                                                                Text("Edit".tr),
+                                                                          ),
+                                                                          PopupMenuItem(
+                                                                            onTap:
+                                                                                () {
+                                                                              cartController.selectedAddress = address;
+                                                                              cartController.countryName.value = address.country.toString();
+                                                                              cartController.countryId = address.getCountryId.toString();
+                                                                              cartController.getCart();
+                                                                              print('onTap is....${cartController.countryName.value}');
+                                                                              print('onTap is....${cartController.selectedAddress.id.toString()}');
+                                                                              if (cartController.isDelivery.value == true) {
+                                                                                cartController.addressDeliFirstName.text = cartController.selectedAddress.getFirstName;
+                                                                                cartController.addressDeliLastName.text = cartController.selectedAddress.getLastName;
+                                                                                cartController.addressDeliEmail.text = cartController.selectedAddress.getEmail;
+                                                                                cartController.addressDeliPhone.text = cartController.selectedAddress.getPhone;
+                                                                                cartController.addressDeliAlternate.text = cartController.selectedAddress.getAlternate;
+                                                                                cartController.addressDeliAddress.text = cartController.selectedAddress.getAddress;
+                                                                                cartController.addressDeliZipCode.text = cartController.selectedAddress.getZipCode;
+                                                                                cartController.addressCountryController.text = cartController.selectedAddress.getCountry;
+                                                                                cartController.addressStateController.text = cartController.selectedAddress.getState;
+                                                                                cartController.addressCityController.text = cartController.selectedAddress.getCity;
+                                                                              }
+
+                                                                              defaultAddressApi();
+                                                                              setState(() {});
+                                                                            },
+                                                                            // value: '/slotViewScreen',
+                                                                            child:
+                                                                                Text("Default Address".tr),
+                                                                          ),
+                                                                        ];
+                                                                      })
+                                                                  : PopupMenuButton(
+                                                                      color: Colors
+                                                                          .white,
+                                                                      iconSize:
+                                                                          20,
+                                                                      icon:
+                                                                          const Icon(
+                                                                        Icons
+                                                                            .more_vert,
+                                                                        color: Colors
+                                                                            .black,
+                                                                      ),
+                                                                      padding:
+                                                                          EdgeInsets
+                                                                              .zero,
+                                                                      onSelected:
+                                                                          (value) {
+                                                                        setState(
+                                                                            () {});
+                                                                        Navigator.pushNamed(
+                                                                            context,
+                                                                            value.toString());
+                                                                      },
+                                                                      itemBuilder:
+                                                                          (ac) {
+                                                                        return [
+                                                                          PopupMenuItem(
+                                                                            onTap:
+                                                                                () {
+                                                                              bottomSheet(addressData: address);
+                                                                            },
+                                                                            // value: '/Edit',
+                                                                            child:
+                                                                                Text("Edit".tr),
+                                                                          ),
+                                                                          PopupMenuItem(
+                                                                            onTap:
+                                                                                () {
+                                                                              cartController.selectedAddress = address;
+                                                                              cartController.countryName.value = address.country.toString();
+                                                                              cartController.countryId = address.getCountryId.toString();
+                                                                              cartController.getCart();
+                                                                              print('onTap is....${cartController.countryName.value}');
+                                                                              print('onTap is....${cartController.selectedAddress.id.toString()}');
+                                                                              if (cartController.isDelivery.value == true) {
+                                                                                cartController.addressDeliFirstName.text = cartController.selectedAddress.getFirstName;
+                                                                                cartController.addressDeliLastName.text = cartController.selectedAddress.getLastName;
+                                                                                cartController.addressDeliEmail.text = cartController.selectedAddress.getEmail;
+                                                                                cartController.addressDeliPhone.text = cartController.selectedAddress.getPhone;
+                                                                                cartController.addressDeliAlternate.text = cartController.selectedAddress.getAlternate;
+                                                                                cartController.addressDeliAddress.text = cartController.selectedAddress.getAddress;
+                                                                                cartController.addressDeliZipCode.text = cartController.selectedAddress.getZipCode;
+                                                                                cartController.addressCountryController.text = cartController.selectedAddress.getCountry;
+                                                                                cartController.addressStateController.text = cartController.selectedAddress.getState;
+                                                                                cartController.addressCityController.text = cartController.selectedAddress.getCity;
+                                                                              }
+
+                                                                              defaultAddressApi();
+                                                                              setState(() {});
+                                                                            },
+                                                                            // value: '/slotViewScreen',
+                                                                            child:
+                                                                                Text("Default Address".tr),
+                                                                          ),
+                                                                          PopupMenuItem(
+                                                                            onTap:
+                                                                                () {
+                                                                              cartController
+                                                                                  .deleteAddress(
+                                                                                context: context,
+                                                                                id: address.id.toString(),
+                                                                              )
+                                                                                  .then((value) {
+                                                                                if (value == true) {
+                                                                                  cartController.addressListModel.address!.shipping!.removeWhere((element) => element.id.toString() == address.id.toString());
+                                                                                  cartController.updateUI();
+                                                                                }
+                                                                              });
+                                                                            },
+                                                                            // value: '/deactivate',
+                                                                            child:
+                                                                                Text("Delete".tr),
+                                                                          )
+                                                                        ];
+                                                                      }),
+                                                              address.isDefault ==
+                                                                      true
+                                                                  ? Text(
+                                                                      "Default"
+                                                                          .tr,
+                                                                      style: GoogleFonts.poppins(
+                                                                          fontWeight: FontWeight
+                                                                              .w500,
+                                                                          fontSize:
+                                                                              15,
+                                                                          color:
+                                                                              const Color(0xff585858)),
+                                                                    )
+                                                                  : SizedBox(),
+                                                            ],
+                                                          ),
+                                                          // Column(
+                                                          //   children: [
+                                                          //     Flexible(
+                                                          //       child: IconButton(
+                                                          //           onPressed: () {
+                                                          //             cartController
+                                                          //                 .deleteAddress(
+                                                          //               context: context,
+                                                          //               id: address.id.toString(),
+                                                          //             )
+                                                          //                 .then((value) {
+                                                          //               if (value == true) {
+                                                          //                 cartController.addressListModel.address!.shipping!
+                                                          //                     .removeWhere((element) =>
+                                                          //                         element.id.toString() == address.id.toString());
+                                                          //                 cartController.updateUI();
+                                                          //               }
+                                                          //             });
+                                                          //           },
+                                                          //           icon: const Icon(Icons.delete)),
+                                                          //     ),
+                                                          //     InkWell(
+                                                          //       onTap: () {
+                                                          //         bottomSheet(addressData: address);
+                                                          //       },
+                                                          //       child: Text(
+                                                          //         'Edit',
+                                                          //         style: GoogleFonts.poppins(
+                                                          //             shadows: [
+                                                          //               const Shadow(
+                                                          //                   color: Color(0xff014E70), offset: Offset(0, -4))
+                                                          //             ],
+                                                          //             color: Colors.transparent,
+                                                          //             fontSize: 16,
+                                                          //             fontWeight: FontWeight.w500,
+                                                          //             decoration: TextDecoration.underline,
+                                                          //             decorationColor: const Color(0xff014E70)),
+                                                          //       ),
+                                                          //     ),
+                                                          //   ],
+                                                          // )
+                                                        ],
+                                                      ),
+                                                    ),
                                                   ),
-                                                ),
-                                                Column(
-                                                  children: [
-                                                    address.isDefault == true
-                                                    ?PopupMenuButton(
-                                                        color: Colors.white,
-                                                        iconSize: 20,
-                                                        icon: const Icon(
-                                                          Icons.more_vert,
-                                                          color: Colors.black,
-                                                        ),
-                                                        padding: EdgeInsets.zero,
-                                                        onSelected: (value) {
-                                                          setState(() {});
-                                                          Navigator.pushNamed(context, value.toString());
-                                                        },
-                                                        itemBuilder: (ac) {
-                                                          return [
-                                                            PopupMenuItem(
-                                                              onTap: () {
-                                                                bottomSheet(addressData: address);
-                                                              },
-                                                              // value: '/Edit',
-                                                              child: Text("Edit".tr),
-                                                            ),
-                                                            PopupMenuItem(
-                                                              onTap: () {
-                                                                cartController.selectedAddress = address;
-                                                                cartController.countryName.value =
-                                                                    address.country.toString();
-                                                                cartController.countryId = address.getCountryId.toString();
-                                                                cartController.getCart();
-                                                                print('onTap is....${cartController.countryName.value}');
-                                                                print(
-                                                                    'onTap is....${cartController.selectedAddress.id.toString()}');
-                                                                if (cartController.isDelivery.value == true) {
-                                                                  cartController.addressDeliFirstName.text =
-                                                                      cartController.selectedAddress.getFirstName;
-                                                                  cartController.addressDeliLastName.text =
-                                                                      cartController.selectedAddress.getLastName;
-                                                                  cartController.addressDeliEmail.text =
-                                                                      cartController.selectedAddress.getEmail;
-                                                                  cartController.addressDeliPhone.text =
-                                                                      cartController.selectedAddress.getPhone;
-                                                                  cartController.addressDeliAlternate.text =
-                                                                      cartController.selectedAddress.getAlternate;
-                                                                  cartController.addressDeliAddress.text =
-                                                                      cartController.selectedAddress.getAddress;
-                                                                  cartController.addressDeliZipCode.text =
-                                                                      cartController.selectedAddress.getZipCode;
-                                                                  cartController.addressCountryController.text =
-                                                                      cartController.selectedAddress.getCountry;
-                                                                  cartController.addressStateController.text =
-                                                                      cartController.selectedAddress.getState;
-                                                                  cartController.addressCityController.text =
-                                                                      cartController.selectedAddress.getCity;
-                                                                }
-
-                                                                defaultAddressApi();
-                                                                setState(() {});
-                                                              },
-                                                              // value: '/slotViewScreen',
-                                                              child: Text("Default Address".tr),
-                                                            ),
-                                                          ];
-                                                        })
-                                                    :PopupMenuButton(
-                                                        color: Colors.white,
-                                                        iconSize: 20,
-                                                        icon: const Icon(
-                                                          Icons.more_vert,
-                                                          color: Colors.black,
-                                                        ),
-                                                        padding: EdgeInsets.zero,
-                                                        onSelected: (value) {
-                                                          setState(() {});
-                                                          Navigator.pushNamed(context, value.toString());
-                                                        },
-                                                        itemBuilder: (ac) {
-                                                          return [
-                                                            PopupMenuItem(
-                                                              onTap: () {
-                                                                bottomSheet(addressData: address);
-                                                              },
-                                                              // value: '/Edit',
-                                                              child: Text("Edit".tr),
-                                                            ),
-                                                            PopupMenuItem(
-                                                              onTap: () {
-                                                                cartController.selectedAddress = address;
-                                                                cartController.countryName.value =
-                                                                    address.country.toString();
-                                                                cartController.countryId = address.getCountryId.toString();
-                                                                cartController.getCart();
-                                                                print('onTap is....${cartController.countryName.value}');
-                                                                print(
-                                                                    'onTap is....${cartController.selectedAddress.id.toString()}');
-                                                                if (cartController.isDelivery.value == true) {
-                                                                  cartController.addressDeliFirstName.text =
-                                                                      cartController.selectedAddress.getFirstName;
-                                                                  cartController.addressDeliLastName.text =
-                                                                      cartController.selectedAddress.getLastName;
-                                                                  cartController.addressDeliEmail.text =
-                                                                      cartController.selectedAddress.getEmail;
-                                                                  cartController.addressDeliPhone.text =
-                                                                      cartController.selectedAddress.getPhone;
-                                                                  cartController.addressDeliAlternate.text =
-                                                                      cartController.selectedAddress.getAlternate;
-                                                                  cartController.addressDeliAddress.text =
-                                                                      cartController.selectedAddress.getAddress;
-                                                                  cartController.addressDeliZipCode.text =
-                                                                      cartController.selectedAddress.getZipCode;
-                                                                  cartController.addressCountryController.text =
-                                                                      cartController.selectedAddress.getCountry;
-                                                                  cartController.addressStateController.text =
-                                                                      cartController.selectedAddress.getState;
-                                                                  cartController.addressCityController.text =
-                                                                      cartController.selectedAddress.getCity;
-                                                                }
-
-                                                                defaultAddressApi();
-                                                                setState(() {});
-                                                              },
-                                                              // value: '/slotViewScreen',
-                                                              child: Text("Default Address".tr),
-                                                            ),
-                                                            PopupMenuItem(
-                                                              onTap: () {
-                                                                cartController.deleteAddress(
-                                                                  context: context,
-                                                                  id: address.id.toString(),
-                                                                ).then((value) {
-                                                                  if (value == true) {
-                                                                    cartController.addressListModel.address!.shipping!
-                                                                        .removeWhere((element) =>
-                                                                    element.id.toString() ==
-                                                                        address.id.toString());
-                                                                    cartController.updateUI();
-                                                                  }
-                                                                });
-                                                              },
-                                                              // value: '/deactivate',
-                                                              child: Text("Delete".tr),
-                                                            )
-                                                          ];
-                                                        }),
-                                                    address.isDefault == true
-                                                        ? Text(
-                                                      "Default".tr,
-                                                      style: GoogleFonts.poppins(
-                                                          fontWeight: FontWeight.w500,
-                                                          fontSize: 15,
-                                                          color: const Color(0xff585858)),
-                                                    )
-                                                        : SizedBox(),
-                                                  ],
-                                                ),
-                                                // Column(
-                                                //   children: [
-                                                //     Flexible(
-                                                //       child: IconButton(
-                                                //           onPressed: () {
-                                                //             cartController
-                                                //                 .deleteAddress(
-                                                //               context: context,
-                                                //               id: address.id.toString(),
-                                                //             )
-                                                //                 .then((value) {
-                                                //               if (value == true) {
-                                                //                 cartController.addressListModel.address!.shipping!
-                                                //                     .removeWhere((element) =>
-                                                //                         element.id.toString() == address.id.toString());
-                                                //                 cartController.updateUI();
-                                                //               }
-                                                //             });
-                                                //           },
-                                                //           icon: const Icon(Icons.delete)),
-                                                //     ),
-                                                //     InkWell(
-                                                //       onTap: () {
-                                                //         bottomSheet(addressData: address);
-                                                //       },
-                                                //       child: Text(
-                                                //         'Edit',
-                                                //         style: GoogleFonts.poppins(
-                                                //             shadows: [
-                                                //               const Shadow(
-                                                //                   color: Color(0xff014E70), offset: Offset(0, -4))
-                                                //             ],
-                                                //             color: Colors.transparent,
-                                                //             fontSize: 16,
-                                                //             fontWeight: FontWeight.w500,
-                                                //             decoration: TextDecoration.underline,
-                                                //             decorationColor: const Color(0xff014E70)),
-                                                //       ),
-                                                //     ),
-                                                //   ],
-                                                // )
-                                              ],
-                                            ),
-                                          ),
-                                        ),
                                       );
                                     },
                                   ))
@@ -1626,12 +1815,15 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                     child: Text(
                                       "No Shipping Address Added!".tr,
                                       textAlign: TextAlign.center,
-                                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 16),
+                                      style: GoogleFonts.poppins(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 16),
                                     ),
                                   ),
                             SliverToBoxAdapter(
                               child: SizedBox(
-                                height: MediaQuery.of(context).viewInsets.bottom,
+                                height:
+                                    MediaQuery.of(context).viewInsets.bottom,
                               ),
                             ),
                           ],
@@ -1660,20 +1852,32 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
 
   Future addAddressWithoutLogin({required AddressData addressData}) {
     Size size = MediaQuery.of(context).size;
-    final TextEditingController firstNameController = TextEditingController(text: addressData.firstName ?? "");
-    final TextEditingController emailController = TextEditingController(text: addressData.email ?? "");
-    final TextEditingController lastNameController = TextEditingController(text: addressData.lastName ?? "");
-    final TextEditingController phoneController = TextEditingController(text: addressData.phone ?? "");
+    final TextEditingController firstNameController =
+        TextEditingController(text: addressData.firstName ?? "");
+    final TextEditingController emailController =
+        TextEditingController(text: addressData.email ?? "");
+    final TextEditingController lastNameController =
+        TextEditingController(text: addressData.lastName ?? "");
+    final TextEditingController phoneController =
+        TextEditingController(text: addressData.phone ?? "");
     final TextEditingController alternatePhoneController =
         TextEditingController(text: addressData.alternatePhone ?? "");
-    final TextEditingController addressController = TextEditingController(text: addressData.address ?? "");
-    final TextEditingController address2Controller = TextEditingController(text: addressData.address2 ?? "");
-    final TextEditingController cityController = TextEditingController(text: addressData.city ?? "");
-    final TextEditingController countryController = TextEditingController(text: addressData.country ?? "");
-    final TextEditingController stateController = TextEditingController(text: addressData.state ?? "");
-    final TextEditingController zipCodeController = TextEditingController(text: addressData.zipCode ?? "");
-    final TextEditingController landmarkController = TextEditingController(text: addressData.landmark ?? "");
-    final TextEditingController titleController = TextEditingController(text: addressData.type ?? "");
+    final TextEditingController addressController =
+        TextEditingController(text: addressData.address ?? "");
+    final TextEditingController address2Controller =
+        TextEditingController(text: addressData.address2 ?? "");
+    final TextEditingController cityController =
+        TextEditingController(text: addressData.city ?? "");
+    final TextEditingController countryController =
+        TextEditingController(text: addressData.country ?? "");
+    final TextEditingController stateController =
+        TextEditingController(text: addressData.state ?? "");
+    final TextEditingController zipCodeController =
+        TextEditingController(text: addressData.zipCode ?? "");
+    final TextEditingController landmarkController =
+        TextEditingController(text: addressData.landmark ?? "");
+    final TextEditingController titleController =
+        TextEditingController(text: addressData.type ?? "");
 
     final formKey = GlobalKey<FormState>();
     String code = 'KW';
@@ -1746,13 +1950,18 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                       Text(
                         'Phone *'.tr,
                         style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w500, fontSize: 16, color: const Color(0xff585858)),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: const Color(0xff585858)),
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       IntlPhoneField(
-                        textAlign: profileController.selectedLAnguage.value == 'English' ? TextAlign.left  : TextAlign.right,
+                        textAlign: profileController.selectedLAnguage.value ==
+                                'English'
+                            ? TextAlign.left
+                            : TextAlign.right,
                         // key: ValueKey(profileController.code),
                         flagsButtonPadding: const EdgeInsets.all(8),
                         dropdownIconPosition: IconPosition.trailing,
@@ -1762,7 +1971,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         dropdownTextStyle: const TextStyle(color: Colors.black),
                         style: const TextStyle(color: AppTheme.textColor),
                         controller: phoneController,
-                        decoration:  InputDecoration(
+                        decoration: InputDecoration(
                             contentPadding: EdgeInsets.zero,
                             hintStyle: TextStyle(color: AppTheme.textColor),
                             hintText: 'Enter your phone number'.tr,
@@ -1770,17 +1979,22 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             border: OutlineInputBorder(
                               borderSide: BorderSide(),
                             ),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor)),
-                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor))),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.shadowColor)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.shadowColor))),
                         initialCountryCode: profileController.code.toString(),
-                        languageCode:  profileController.code,
+                        languageCode: profileController.code,
                         onCountryChanged: (phone) {
                           profileController.code = phone.code;
                           print(phone.code);
                           print(profileController.code.toString());
                         },
                         onChanged: (phone) {
-                          profileController.code = phone.countryISOCode.toString();
+                          profileController.code =
+                              phone.countryISOCode.toString();
                           print(phone.countryCode);
                           print(profileController.code.toString());
                         },
@@ -1808,13 +2022,18 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                       Text(
                         'Alternate Phone*'.tr,
                         style: GoogleFonts.poppins(
-                            fontWeight: FontWeight.w500, fontSize: 16, color: const Color(0xff585858)),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16,
+                            color: const Color(0xff585858)),
                       ),
                       const SizedBox(
                         height: 8,
                       ),
                       IntlPhoneField(
-                        textAlign: profileController.selectedLAnguage.value == 'English' ? TextAlign.left  : TextAlign.right,
+                        textAlign: profileController.selectedLAnguage.value ==
+                                'English'
+                            ? TextAlign.left
+                            : TextAlign.right,
                         // key: ValueKey(profileController.code),
                         flagsButtonPadding: const EdgeInsets.all(8),
                         dropdownIconPosition: IconPosition.trailing,
@@ -1825,7 +2044,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         style: const TextStyle(color: AppTheme.textColor),
 
                         controller: alternatePhoneController,
-                        decoration:  InputDecoration(
+                        decoration: InputDecoration(
                             contentPadding: EdgeInsets.zero,
                             hintStyle: TextStyle(color: AppTheme.textColor),
                             hintText: 'Enter your phone number'.tr,
@@ -1833,10 +2052,14 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             border: OutlineInputBorder(
                               borderSide: BorderSide(),
                             ),
-                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor)),
-                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: AppTheme.shadowColor))),
+                            enabledBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.shadowColor)),
+                            focusedBorder: OutlineInputBorder(
+                                borderSide:
+                                    BorderSide(color: AppTheme.shadowColor))),
                         initialCountryCode: code.toString(),
-                        languageCode:  profileController.code,
+                        languageCode: profileController.code,
                         onCountryChanged: (phone) {
                           code = phone.code;
                           print(phone.code);
@@ -1896,28 +2119,43 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                           showAddressSelectorDialog(
                               addressList: modelCountryList!.country!
                                   .map((e) => CommonAddressRelatedClass(
-                                      title: e.name.toString(), addressId: e.id.toString(), flagUrl: e.icon.toString()))
+                                      title: e.name.toString(),
+                                      addressId: e.id.toString(),
+                                      flagUrl: e.icon.toString()))
                                   .toList(),
                               selectedAddressIdPicked: (String gg) {
-                                String previous = ((selectedCountry ?? Country()).id ?? "").toString();
-                                selectedCountry =
-                                    modelCountryList!.country!.firstWhere((element) => element.id.toString() == gg);
+                                String previous =
+                                    ((selectedCountry ?? Country()).id ?? "")
+                                        .toString();
+                                selectedCountry = modelCountryList!.country!
+                                    .firstWhere((element) =>
+                                        element.id.toString() == gg);
                                 cartController.countryCode = gg.toString();
-                                cartController.countryName.value = selectedCountry!.name.toString();
-                                print('countrrtr ${cartController.countryName.toString()}');
-                                print('countrrtr ${cartController.countryCode.toString()}');
-                                if (previous != selectedCountry!.id.toString()) {
+                                cartController.countryName.value =
+                                    selectedCountry!.name.toString();
+                                print(
+                                    'countrrtr ${cartController.countryName.toString()}');
+                                print(
+                                    'countrrtr ${cartController.countryCode.toString()}');
+                                if (previous !=
+                                    selectedCountry!.id.toString()) {
                                   countryIddd = gg.toString();
-                                  getStateList(countryId: countryIddd.toString(), reset: true).then((value) {
+                                  getStateList(
+                                          countryId: countryIddd.toString(),
+                                          reset: true)
+                                      .then((value) {
                                     setState(() {});
                                   });
                                   setState(() {});
                                 }
                               },
-                              selectedAddressId: ((selectedCountry ?? Country()).id ?? "").toString());
+                              selectedAddressId:
+                                  ((selectedCountry ?? Country()).id ?? "")
+                                      .toString());
                         },
-                        controller:
-                            TextEditingController(text: (selectedCountry ?? Country()).name ?? countryController.text),
+                        controller: TextEditingController(
+                            text: (selectedCountry ?? Country()).name ??
+                                countryController.text),
                         validator: (v) {
                           if (v!.trim().isEmpty) {
                             return "Please select country".tr;
@@ -1929,14 +2167,16 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         title: 'State'.tr,
                         hintText: 'Select State'.tr,
                         controller: TextEditingController(
-                            text: (selectedState ?? CountryState()).stateName ?? stateController.text),
+                            text: (selectedState ?? CountryState()).stateName ??
+                                stateController.text),
                         readOnly: true,
                         onTap: () {
                           if (countryIddd == 'null') {
                             showToast("Select Country First".tr);
                             return;
                           }
-                          if (modelStateList == null && stateRefresh.value > 0) {
+                          if (modelStateList == null &&
+                              stateRefresh.value > 0) {
                             showToast("Select Country First".tr);
                             return;
                           }
@@ -1945,36 +2185,56 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                           }
                           if (modelStateList!.state!.isEmpty) return;
                           showAddressSelectorDialog(
-                              addressList: profileController.selectedLAnguage.value == 'English'
-                                  ? modelStateList!.state!
-                                      .map((e) => CommonAddressRelatedClass(
-                                          title: e.stateName.toString(), addressId: e.stateId.toString()))
-                                      .toList()
-                                  : modelStateList!.state!
-                                      .map((e) => CommonAddressRelatedClass(
-                                          title: e.arabStateName.toString(), addressId: e.stateId.toString()))
-                                      .toList(),
+                              addressList:
+                                  profileController.selectedLAnguage.value ==
+                                          'English'
+                                      ? modelStateList!.state!
+                                          .map((e) => CommonAddressRelatedClass(
+                                              title: e.stateName.toString(),
+                                              addressId: e.stateId.toString()))
+                                          .toList()
+                                      : modelStateList!.state!
+                                          .map((e) => CommonAddressRelatedClass(
+                                              title: e.arabStateName.toString(),
+                                              addressId: e.stateId.toString()))
+                                          .toList(),
                               selectedAddressIdPicked: (String gg) {
-                                String previous = ((selectedState ?? CountryState()).stateId ?? "").toString();
-                                selectedState =
-                                    modelStateList!.state!.firstWhere((element) => element.stateId.toString() == gg);
+                                String previous =
+                                    ((selectedState ?? CountryState())
+                                                .stateId ??
+                                            "")
+                                        .toString();
+                                selectedState = modelStateList!.state!
+                                    .firstWhere((element) =>
+                                        element.stateId.toString() == gg);
                                 cartController.stateCode = gg.toString();
-                                cartController.stateName.value = selectedState!.stateName.toString();
-                                print('state ${cartController.stateCode.toString()}');
-                                print('stateNameee ${cartController.stateName.toString()}');
-                                if (previous != selectedState!.stateId.toString()) {
+                                cartController.stateName.value =
+                                    selectedState!.stateName.toString();
+                                print(
+                                    'state ${cartController.stateCode.toString()}');
+                                print(
+                                    'stateNameee ${cartController.stateName.toString()}');
+                                if (previous !=
+                                    selectedState!.stateId.toString()) {
                                   stateIddd = gg.toString();
-                                  getCityList(stateId: stateIddd.toString(), reset: true).then((value) {
+                                  getCityList(
+                                          stateId: stateIddd.toString(),
+                                          reset: true)
+                                      .then((value) {
                                     setState(() {});
                                   });
                                   setState(() {});
                                 }
                               },
-                              selectedAddressId: ((selectedState ?? CountryState()).stateId ?? "").toString());
+                              selectedAddressId:
+                                  ((selectedState ?? CountryState()).stateId ??
+                                          "")
+                                      .toString());
                         },
                         suffixIcon: Obx(() {
                           if (stateRefresh.value > 0) {
-                            return const Icon(Icons.keyboard_arrow_down_rounded);
+                            return const Icon(
+                                Icons.keyboard_arrow_down_rounded);
                           }
                           return const CupertinoActivityIndicator();
                         }),
@@ -1990,8 +2250,9 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                         readOnly: true,
                         title: 'City'.tr,
                         hintText: 'Select City'.tr,
-                        controller:
-                            TextEditingController(text: (selectedCity ?? City()).cityName ?? cityController.text),
+                        controller: TextEditingController(
+                            text: (selectedCity ?? City()).cityName ??
+                                cityController.text),
                         onTap: () {
                           if (modelCityList == null && cityRefresh.value > 0) {
                             showToast("Select State First".tr);
@@ -2002,29 +2263,40 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                           }
                           if (modelCityList!.city!.isEmpty) return;
                           showAddressSelectorDialog(
-                              addressList: profileController.selectedLAnguage.value == 'English'
-                                  ? modelCityList!.city!
-                                      .map((e) => CommonAddressRelatedClass(
-                                          title: e.cityName.toString(), addressId: e.cityId.toString()))
-                                      .toList()
-                                  : modelCityList!.city!
-                                      .map((e) => CommonAddressRelatedClass(
-                                          title: e.arabCityName.toString(), addressId: e.cityId.toString()))
-                                      .toList(),
+                              addressList:
+                                  profileController.selectedLAnguage.value ==
+                                          'English'
+                                      ? modelCityList!.city!
+                                          .map((e) => CommonAddressRelatedClass(
+                                              title: e.cityName.toString(),
+                                              addressId: e.cityId.toString()))
+                                          .toList()
+                                      : modelCityList!.city!
+                                          .map((e) => CommonAddressRelatedClass(
+                                              title: e.arabCityName.toString(),
+                                              addressId: e.cityId.toString()))
+                                          .toList(),
                               selectedAddressIdPicked: (String gg) {
-                                selectedCity =
-                                    modelCityList!.city!.firstWhere((element) => element.cityId.toString() == gg);
+                                selectedCity = modelCityList!.city!.firstWhere(
+                                    (element) =>
+                                        element.cityId.toString() == gg);
                                 cartController.cityCode = gg.toString();
-                                cartController.cityName.value = selectedCity!.cityName.toString();
-                                print('state ${cartController.cityName.toString()}');
-                                print('state Nameee ${cartController.cityCode.toString()}');
+                                cartController.cityName.value =
+                                    selectedCity!.cityName.toString();
+                                print(
+                                    'state ${cartController.cityName.toString()}');
+                                print(
+                                    'state Nameee ${cartController.cityCode.toString()}');
                                 setState(() {});
                               },
-                              selectedAddressId: ((selectedCity ?? City()).cityId ?? "").toString());
+                              selectedAddressId:
+                                  ((selectedCity ?? City()).cityId ?? "")
+                                      .toString());
                         },
                         suffixIcon: Obx(() {
                           if (cityRefresh.value > 0) {
-                            return const Icon(Icons.keyboard_arrow_down_rounded);
+                            return const Icon(
+                                Icons.keyboard_arrow_down_rounded);
                           }
                           return const CupertinoActivityIndicator();
                         }),
@@ -2076,12 +2348,14 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                 city: cityController.text.trim(),
                                 address2: address2Controller.text.trim(),
                                 address: addressController.text.trim(),
-                                alternatePhone: alternatePhoneController.text.trim(),
+                                alternatePhone:
+                                    alternatePhoneController.text.trim(),
                                 landmark: landmarkController.text.trim(),
                                 phone: phoneController.text.trim(),
                                 zipCode: zipCodeController.text.trim(),
                                 email: emailController.text.trim(),
-                                phoneCountryCode: profileController.code.toString());
+                                phoneCountryCode:
+                                    profileController.code.toString());
                             setState(() {});
                             Get.back();
                             // cartController.updateAddressApi(
@@ -2102,17 +2376,21 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                           }
                         },
                         child: Container(
-                          decoration: const BoxDecoration(color: Color(0xff014E70)),
+                          decoration:
+                              const BoxDecoration(color: Color(0xff014E70)),
                           height: 56,
                           alignment: Alignment.bottomCenter,
                           child: Align(
                               alignment: Alignment.center,
                               child: Text("Save".tr,
                                   style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500, fontSize: 19, color: Colors.white))),
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 19,
+                                      color: Colors.white))),
                         ),
                       ),
-                      SizedBox(height: MediaQuery.of(context).viewInsets.bottom),
+                      SizedBox(
+                          height: MediaQuery.of(context).viewInsets.bottom),
                     ],
                   ),
                 ),
@@ -2138,8 +2416,10 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
               padding: const EdgeInsets.all(18.0),
               child: StatefulBuilder(builder: (context, newState) {
                 String gg = searchController.text.trim().toLowerCase();
-                List<CommonAddressRelatedClass> filteredList =
-                    addressList.where((element) => element.title.toString().toLowerCase().contains(gg)).toList();
+                List<CommonAddressRelatedClass> filteredList = addressList
+                    .where((element) =>
+                        element.title.toString().toLowerCase().contains(gg))
+                    .toList();
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -2152,13 +2432,16 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                       decoration: InputDecoration(
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.buttonColor, width: 1.2)),
+                              borderSide: const BorderSide(
+                                  color: AppTheme.buttonColor, width: 1.2)),
                           enabled: true,
                           enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(12),
-                              borderSide: const BorderSide(color: AppTheme.buttonColor, width: 1.2)),
+                              borderSide: const BorderSide(
+                                  color: AppTheme.buttonColor, width: 1.2)),
                           suffixIcon: const Icon(Icons.search),
-                          contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12)),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 14, vertical: 12)),
                     ),
                     Flexible(
                         child: ListView.builder(
@@ -2166,38 +2449,48 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
                               return ListTile(
-                                // dense: true,
-                                onTap: () {
-                                  selectedAddressIdPicked(filteredList[index].addressId);
-                                  FocusManager.instance.primaryFocus!.unfocus();
-                                  Get.back();
-                                },
-                                leading: filteredList[index].flagUrl != null
-                                    ? SizedBox(
-                                        width: 30,
-                                        height: 30,
-                                        child: filteredList[index].flagUrl.toString().contains("svg")
-                                            ? SvgPicture.network(
-                                                filteredList[index].flagUrl.toString(),
-                                              )
-                                            : Image.network(
-                                                filteredList[index].flagUrl.toString(),
-                                                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-                                              ))
-                                    : null,
-                                visualDensity: VisualDensity.compact,
-                                title: Text(filteredList[index].title),
-                                trailing: selectedAddressId == filteredList[index].addressId
-                                    ? const Icon(
-                                        Icons.check,
-                                        color: Colors.purple,
-                                      )
-                                    :  Image.asset(
-                                  'assets/images/forward_icon.png',
-                                  height: 17,
-                                  width: 17,
-                                )
-                              );
+                                  // dense: true,
+                                  onTap: () {
+                                    selectedAddressIdPicked(
+                                        filteredList[index].addressId);
+                                    FocusManager.instance.primaryFocus!
+                                        .unfocus();
+                                    Get.back();
+                                  },
+                                  leading: filteredList[index].flagUrl != null
+                                      ? SizedBox(
+                                          width: 30,
+                                          height: 30,
+                                          child: filteredList[index]
+                                                  .flagUrl
+                                                  .toString()
+                                                  .contains("svg")
+                                              ? SvgPicture.network(
+                                                  filteredList[index]
+                                                      .flagUrl
+                                                      .toString(),
+                                                )
+                                              : Image.network(
+                                                  filteredList[index]
+                                                      .flagUrl
+                                                      .toString(),
+                                                  errorBuilder: (_, __, ___) =>
+                                                      const SizedBox.shrink(),
+                                                ))
+                                      : null,
+                                  visualDensity: VisualDensity.compact,
+                                  title: Text(filteredList[index].title),
+                                  trailing: selectedAddressId ==
+                                          filteredList[index].addressId
+                                      ? const Icon(
+                                          Icons.check,
+                                          color: Colors.purple,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/forward_icon.png',
+                                          height: 17,
+                                          width: 17,
+                                        ));
                             }))
                   ],
                 );
@@ -2217,13 +2510,12 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
         iconColor: AppTheme.primaryColor,
         minLeadingWidth: 0,
         onTap: () {
-          if(userLoggedIn){
+          if (userLoggedIn) {
             _isValue.value = !_isValue.value;
             setState(() {});
-          }else{
+          } else {
             Get.to(const LoginScreen());
           }
-
         },
         title: Row(
           children: [
@@ -2239,36 +2531,39 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
             Expanded(
               child: Text(
                 'Sell Better Dashboard'.tr,
-                style: GoogleFonts.poppins(color: const Color(0xFF2A3032), fontSize: 16, fontWeight: FontWeight.w500),
+                style: GoogleFonts.poppins(
+                    color: const Color(0xFF2A3032),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
               ),
             ),
-            if( profileController.selectedLAnguage.value == 'English')
-            !_isValue.value == true ?   Image.asset(
-              'assets/images/forward_icon.png',
-              height: 17,
-              width: 17,
-            ) :
-            Image.asset(
-              'assets/images/drop_icon.png',
-              height: 17,
-              width: 17,
-            ),
-            if( profileController.selectedLAnguage.value != 'English')
-              !_isValue.value == true ?
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 17,
-                width: 17,
-              ) :
-            Image.asset(
-              'assets/images/drop_icon.png',
-              height: 17,
-              width: 17,
-            ),
+            if (profileController.selectedLAnguage.value == 'English')
+              !_isValue.value == true
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 17,
+                      width: 17,
+                    )
+                  : Image.asset(
+                      'assets/images/drop_icon.png',
+                      height: 17,
+                      width: 17,
+                    ),
+            if (profileController.selectedLAnguage.value != 'English')
+              !_isValue.value == true
+                  ? Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 17,
+                      width: 17,
+                    )
+                  : Image.asset(
+                      'assets/images/drop_icon.png',
+                      height: 17,
+                      width: 17,
+                    ),
           ],
         ),
       ),
-
       _isValue.value == true
           ? Obx(() {
               if (profileController.refreshInt.value > 0) {}
@@ -2288,70 +2583,104 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                         child: TextButton(
                                           onPressed: () {
                                             print("Index---:${vendor[index]}");
-                                           if (vendor[index] == 'Dashboard' && vendorArab[index] == 'لوحة القيادة') {
-                                               Get.toNamed( VendorDashBoardScreen.route);
-                                            }
-                                           else if(vendor[index] == 'Sold Orders' && vendorArab[index] == 'طلب'){
-                                             Get.to(const VendorOrderList());
-                                           }
-                                           else if(vendor[index] == 'Pending Products' && vendorArab[index] == 'المنتجات المعلقة'){
-                                             Get.to(const VendorProductScreen());
-                                           }
-                                           else if(vendor[index] == 'Approved Products' && vendorArab[index] == 'المنتجات المعتمدة'){
-                                             Get.to(const ApproveProductScreen());
-                                           }
-                                           else if(vendor[index] == 'Operating Hours' && vendorArab[index] == 'ساعات العمل'){
-                                             Get.to(const SetTimeScreen());
-                                           }
-                                           else if(vendor[index] == 'Bank Details' && vendorArab[index] == 'التفاصيل المصرفية'){
-                                             Get.to(const BankDetailsScreen());
-                                           }
-                                           else if(vendor[index] == 'Earnings' && vendorArab[index] == 'الأرباح'){
-                                             Get.to(const WithdrawMoney());
-                                           }
-                                           else if(vendor[index] == 'Social Media' && vendorArab[index] == 'وسائل التواصل الاجتماعي'){
-                                             Get.to(const SocialMediaStoreAccount());
-                                           }
-                                           else {
-                                              showToast('Your payment is not successfull'.tr);
+                                            if (vendor[index] == 'Dashboard' &&
+                                                vendorArab[index] ==
+                                                    'لوحة القيادة') {
+                                              Get.toNamed(
+                                                  VendorDashBoardScreen.route);
+                                            } else if (vendor[index] ==
+                                                    'Sold Orders' &&
+                                                vendorArab[index] == 'طلب') {
+                                              Get.to(const VendorOrderList());
+                                            } else if (vendor[index] ==
+                                                    'Pending Products' &&
+                                                vendorArab[index] ==
+                                                    'المنتجات المعلقة') {
+                                              Get.to(
+                                                  const VendorProductScreen());
+                                            } else if (vendor[index] ==
+                                                    'Approved Products' &&
+                                                vendorArab[index] ==
+                                                    'المنتجات المعتمدة') {
+                                              Get.to(
+                                                  const ApproveProductScreen());
+                                            } else if (vendor[index] ==
+                                                    'Operating Hours' &&
+                                                vendorArab[index] ==
+                                                    'ساعات العمل') {
+                                              Get.to(const SetTimeScreen());
+                                            } else if (vendor[index] ==
+                                                    'Bank Details' &&
+                                                vendorArab[index] ==
+                                                    'التفاصيل المصرفية') {
+                                              Get.to(const BankDetailsScreen());
+                                            } else if (vendor[index] ==
+                                                    'Earnings' &&
+                                                vendorArab[index] ==
+                                                    'الأرباح') {
+                                              Get.to(const WithdrawMoney());
+                                            } else if (vendor[index] ==
+                                                    'Social Media' &&
+                                                vendorArab[index] ==
+                                                    'وسائل التواصل الاجتماعي') {
+                                              Get.to(
+                                                  const SocialMediaStoreAccount());
+                                            } else {
+                                              showToast(
+                                                  'Your payment is not successfull'
+                                                      .tr);
                                             }
                                           },
                                           style: TextButton.styleFrom(
-                                              visualDensity: const VisualDensity(vertical: -3, horizontal: -3),
-                                              padding: EdgeInsets.zero.copyWith(left: 16)),
+                                              visualDensity:
+                                                  const VisualDensity(
+                                                      vertical: -3,
+                                                      horizontal: -3),
+                                              padding: EdgeInsets.zero
+                                                  .copyWith(left: 16)),
                                           child: Row(
                                             children: [
-                                              if( profileController.selectedLAnguage.value == 'English')
-                                              Expanded(
-                                                child: Text(
-                                                  vendor[index],
-                                                  style: GoogleFonts.poppins(
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.w400,
-                                                      color: Colors.grey.shade500),
+                                              if (profileController
+                                                      .selectedLAnguage.value ==
+                                                  'English')
+                                                Expanded(
+                                                  child: Text(
+                                                    vendor[index],
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors
+                                                            .grey.shade500),
+                                                  ),
                                                 ),
-                                              ),
-                                              if( profileController.selectedLAnguage.value != 'English')
+                                              if (profileController
+                                                      .selectedLAnguage.value !=
+                                                  'English')
                                                 Expanded(
                                                   child: Text(
                                                     vendorArab[index],
                                                     style: GoogleFonts.poppins(
                                                         fontSize: 16,
-                                                        fontWeight: FontWeight.w400,
-                                                        color: Colors.grey.shade500),
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors
+                                                            .grey.shade500),
                                                   ),
                                                 ),
-                                              profileController.selectedLAnguage.value == 'English' ?
-                                              Image.asset(
-                                                'assets/images/forward_icon.png',
-                                                height: 14,
-                                                width: 14,
-                                              ) :
-                                              Image.asset(
-                                                'assets/images/back_icon_new.png',
-                                                height: 14,
-                                                width: 14,
-                                              ),
+                                              profileController.selectedLAnguage
+                                                          .value ==
+                                                      'English'
+                                                  ? Image.asset(
+                                                      'assets/images/forward_icon.png',
+                                                      height: 14,
+                                                      width: 14,
+                                                    )
+                                                  : Image.asset(
+                                                      'assets/images/back_icon_new.png',
+                                                      height: 14,
+                                                      width: 14,
+                                                    ),
                                             ],
                                           ),
                                         ),
@@ -2359,77 +2688,99 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                                     ],
                                   ))
                           : List.generate(
-                          vendor1.length,
+                              vendor1.length,
                               (index) => Row(
-                            children: [
-                              const SizedBox(
-                                width: 30,
-                              ),
-                              Expanded(
-                                child: TextButton(
-                                  onPressed: () {
-                                    if (vendor1[index] == 'Become a vendor' &&  vendor1Arab[index] == 'كن بائعًا') {
-                                      Get.to(()=> const WhichplantypedescribeyouScreen());
-                                    }
-                                    else if(vendor1[index] == 'Pending Products' && vendor1Arab[index] == 'المنتجات المعلقة'){
-                                      Get.to(const VendorProductScreen());
-                                    }
-                                    else if(vendor1[index] == 'Approved Products' && vendor1Arab[index] == 'المنتجات المعتمدة'){
-                                      Get.to(const ApproveProductScreen());
-                                    }
-                                    else {
-                                      showToast('Your payment is not successfull'.tr);
-                                    }
-                                  },
-                                  style: TextButton.styleFrom(
-                                      visualDensity: const VisualDensity(vertical: -3, horizontal: -3),
-
-                                 padding: EdgeInsets.zero.copyWith(left: 16)),
-                                  child: Row(
                                     children: [
-                                      if( profileController.selectedLAnguage.value != 'English')
-                                        Expanded(
-                                          child: Text(
-                                            vendor1Arab[index],
-                                            style: GoogleFonts.poppins(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.grey.shade500),
+                                      const SizedBox(
+                                        width: 30,
+                                      ),
+                                      Expanded(
+                                        child: TextButton(
+                                          onPressed: () {
+                                            if (vendor1[index] ==
+                                                    'Become a vendor' &&
+                                                vendor1Arab[index] ==
+                                                    'كن بائعًا') {
+                                              Get.to(() =>
+                                                  const WhichplantypedescribeyouScreen());
+                                            } else if (vendor1[index] ==
+                                                    'Pending Products' &&
+                                                vendor1Arab[index] ==
+                                                    'المنتجات المعلقة') {
+                                              Get.to(
+                                                  const VendorProductScreen());
+                                            } else if (vendor1[index] ==
+                                                    'Approved Products' &&
+                                                vendor1Arab[index] ==
+                                                    'المنتجات المعتمدة') {
+                                              Get.to(
+                                                  const ApproveProductScreen());
+                                            } else {
+                                              showToast(
+                                                  'Your payment is not successfull'
+                                                      .tr);
+                                            }
+                                          },
+                                          style: TextButton.styleFrom(
+                                              visualDensity:
+                                                  const VisualDensity(
+                                                      vertical: -3,
+                                                      horizontal: -3),
+                                              padding: EdgeInsets.zero
+                                                  .copyWith(left: 16)),
+                                          child: Row(
+                                            children: [
+                                              if (profileController
+                                                      .selectedLAnguage.value !=
+                                                  'English')
+                                                Expanded(
+                                                  child: Text(
+                                                    vendor1Arab[index],
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors
+                                                            .grey.shade500),
+                                                  ),
+                                                ),
+                                              if (profileController
+                                                      .selectedLAnguage.value ==
+                                                  'English')
+                                                Expanded(
+                                                  child: Text(
+                                                    vendor1[index],
+                                                    style: GoogleFonts.poppins(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                        color: Colors
+                                                            .grey.shade500),
+                                                  ),
+                                                ),
+                                              profileController.selectedLAnguage
+                                                          .value ==
+                                                      'English'
+                                                  ? Image.asset(
+                                                      'assets/images/forward_icon.png',
+                                                      height: 14,
+                                                      width: 14,
+                                                    )
+                                                  : Image.asset(
+                                                      'assets/images/back_icon_new.png',
+                                                      height: 14,
+                                                      width: 14,
+                                                    ),
+                                            ],
                                           ),
                                         ),
-                                      if( profileController.selectedLAnguage.value == 'English')
-                                      Expanded(
-                                        child: Text(
-                                          vendor1[index],
-                                          style: GoogleFonts.poppins(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w400,
-                                              color: Colors.grey.shade500),
-                                        ),
-                                      ),
-                                      profileController.selectedLAnguage.value == 'English' ?
-                                      Image.asset(
-                                        'assets/images/forward_icon.png',
-                                        height: 14,
-                                        width: 14,
-                                      ) :
-                                      Image.asset(
-                                        'assets/images/back_icon_new.png',
-                                        height: 14,
-                                        width: 14,
                                       ),
                                     ],
-                                  ),
-                                ),
-                              ),
-                            ],
-                          )),
+                                  )),
                     )
                   : const SizedBox();
             })
           : SizedBox.shrink()
-
-
     ];
   }
 }

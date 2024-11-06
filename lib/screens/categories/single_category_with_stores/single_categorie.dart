@@ -1200,7 +1200,9 @@ class _SingleCategoriesState extends State<SingleCategories> {
             child: InkWell(
               onTap: () {
                 Get.to(
-                  () => SingleStoreScreen(storeDetails: store),
+                  () => SingleStoreScreen(
+                      category: widget.vendorCategories.name,
+                      storeDetails: store),
                   arguments: mainCategory.name.toString().tr,
                 );
               },
