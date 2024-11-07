@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 import 'package:dirise/controller/profile_controller.dart';
 import 'package:dirise/utils/helper.dart';
@@ -64,6 +65,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
   updateLanguage(String gg) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
     sharedPreferences.setString("app_language", gg);
+    print('update language ' + gg);
   }
 
   @override
@@ -882,10 +884,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                             groupValue: profileController
                                                 .selectedLAnguage.value,
                                             onChanged: (value) {
+                                              updateLanguage("عربي");
                                               locale = const Locale('ar', 'AR');
                                               profileController.selectedLAnguage
                                                   .value = value!;
-                                              updateLanguage("عربي");
+                                              print('33333');
                                               setState(() {});
                                             },
                                           )),
@@ -919,6 +922,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                       onTap: () {
                                         Get.updateLocale(locale);
                                         Get.back();
+                                        log("1111");
                                       },
                                       child: Center(
                                         child: Padding(
@@ -1285,7 +1289,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 if (profileController.userLoggedIn) {
                                   SharedPreferences shared =
                                       await SharedPreferences.getInstance();
+                                  String setLanguage =
+                                      shared.getString('app_language') ?? '';
+                                  print("My Current lanague " + setLanguage);
                                   await shared.clear();
+                                  shared.setString('app_language', setLanguage);
                                   setState(() {});
                                   Get.back();
                                   Get.toNamed(LoginScreen.route);

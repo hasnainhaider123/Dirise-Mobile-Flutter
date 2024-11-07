@@ -38,13 +38,13 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
   final vendorProfileController = Get.put(VendorProfileController());
   final profileController = Get.put(ProfileController());
   final productController = Get.put(ProductsController());
-    bool loaded = false;
+  bool loaded = false;
   bool paginationLoading = false;
   bool allLoaded = false;
   List<OrderData> data = [];
   Timer? timer;
-   int page = 1;
-   final Repositories repositories = Repositories();
+  int page = 1;
+  final Repositories repositories = Repositories();
 
   @override
   void initState() {
@@ -52,10 +52,9 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
     // vendorProfileController.getVendorDetails();
     controller.getVendorDashBoard();
     getOrdersList(reset: true);
-   
   }
 
-   debounceSearch() {
+  debounceSearch() {
     if (timer != null) timer!.cancel();
     timer = Timer(const Duration(milliseconds: 500), () {
       getOrdersList(reset: true);
@@ -63,7 +62,7 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
     });
   }
 
-    Future getOrdersList({
+  Future getOrdersList({
     bool? reset,
   }) async {
     if (reset == true) {
@@ -94,7 +93,6 @@ class _VendorDashBoardScreenState extends State<VendorDashBoardScreen> {
       setState(() {});
     });
   }
-
 
   @override
   Widget build(BuildContext context) {

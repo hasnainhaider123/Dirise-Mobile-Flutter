@@ -24,10 +24,12 @@ class WhichplantypedescribeyouScreen extends StatefulWidget {
   const WhichplantypedescribeyouScreen({super.key});
 
   @override
-  State<WhichplantypedescribeyouScreen> createState() => _WhichplantypedescribeyouScreenState();
+  State<WhichplantypedescribeyouScreen> createState() =>
+      _WhichplantypedescribeyouScreenState();
 }
 
-class _WhichplantypedescribeyouScreenState extends State<WhichplantypedescribeyouScreen> {
+class _WhichplantypedescribeyouScreenState
+    extends State<WhichplantypedescribeyouScreen> {
   bool showValidation = false;
   bool? _isValue = false;
   int _selectedOption = 0;
@@ -45,21 +47,25 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
   }
 
   void vendorregister() {
-    if( _selectedOption == 1){
+    if (_selectedOption == 1) {
       profileController.vendorType = 'advertisement';
-    } else if( _selectedOption == 2){
+    } else if (_selectedOption == 2) {
       profileController.vendorType = 'personal';
-    }else{
+    } else {
       profileController.vendorType = 'company';
     }
-   
+
     Map<String, String> map = {};
     map["vendor_type"] = profileController.vendorType.toString();
-  // Assign formatted dates to the map
-   
+    // Assign formatted dates to the map
 
-    repositories.postApi(url: ApiUrls.vendorRegistrationUrl, context: context, mapData: map).then((value) async {
-      if (_selectedOption == 1 || _selectedOption == 2 || _selectedOption == 3 ) {
+    repositories
+        .postApi(
+            url: ApiUrls.vendorRegistrationUrl, context: context, mapData: map)
+        .then((value) async {
+      if (_selectedOption == 1 ||
+          _selectedOption == 2 ||
+          _selectedOption == 3) {
         if (_isValue == true) {
           Get.to(const WhatdoyousellScreen());
         } else {
@@ -70,13 +76,13 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
       }
     });
   }
- 
 
   final ScrollController _scrollController = ScrollController();
   final GlobalKey _cloudComparisonKey = GlobalKey();
 
   void _scrollToCloudComparison() {
-    final RenderBox renderBox = _cloudComparisonKey.currentContext!.findRenderObject() as RenderBox;
+    final RenderBox renderBox =
+        _cloudComparisonKey.currentContext!.findRenderObject() as RenderBox;
     final position = renderBox.localToGlobal(Offset.zero, ancestor: null).dy;
 
     _scrollController.animateTo(
@@ -85,6 +91,7 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
       curve: Curves.easeInOut,
     );
   }
+
   @override
   void initState() {
     super.initState();
@@ -100,24 +107,24 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
         surfaceTintColor: Colors.white,
         elevation: 0,
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.back();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileController.selectedLAnguage.value != 'English' ?
-              Image.asset(
-                'assets/images/forward_icon.png',
-                height: 19,
-                width: 19,
-              ) :
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 19,
-                width: 19,
-              ),
+              profileController.selectedLAnguage.value != 'English'
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 19,
+                      width: 19,
+                    )
+                  : Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 19,
+                      width: 19,
+                    ),
             ],
           ),
         ),
@@ -127,7 +134,10 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
           children: [
             Text(
               'Which cloud type suits you?'.tr,
-              style: GoogleFonts.poppins(color: const Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 18),
+              style: GoogleFonts.poppins(
+                  color: const Color(0xff292F45),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18),
             ),
           ],
         ),
@@ -144,15 +154,22 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
               Center(
                 child: Text(
                   'Dirise cloud space'.tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff0D5877), fontWeight: FontWeight.w500, fontSize: 19),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff0D5877),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 19),
                 ),
               ),
               30.spaceY,
               Center(
                 child: Text(
-                  'A cloud area is the area that you are going to rent from dirise for a period of 12 months for your business'.tr,
+                  'A cloud area is the area that you are going to rent from dirise for a period of 12 months for your business'
+                      .tr,
                   textAlign: TextAlign.center,
-                  style: GoogleFonts.poppins(color: const Color(0xff514949), fontWeight: FontWeight.w400, fontSize: 13),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff514949),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 13),
                 ),
               ),
               // Text(
@@ -173,14 +190,20 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
               // ),
               const SizedBox(
                 height: 20,
-              ),   
+              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   profileController.selectedLAnguage.value == "English"
-                  ?Image.asset('assets/images/monthtrail.png',width: 120,)
-                  :Image.asset('assets/images/cloudspace.png',width: 120,),
+                      ? Image.asset(
+                          'assets/images/monthtrail.png',
+                          width: 120,
+                        )
+                      : Image.asset(
+                          'assets/images/cloudspace.png',
+                          width: 120,
+                        ),
                 ],
               ),
               const SizedBox(
@@ -188,45 +211,75 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
               ),
               Text(
                 'Showcasing cloud space'.tr,
-                style: GoogleFonts.poppins(color: const Color(0xff0D5877), fontWeight: FontWeight.w600, fontSize: 19),
+                style: GoogleFonts.poppins(
+                    color: const Color(0xff0D5877),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 19),
               ),
               Text(
                 'S-space'.tr,
-                style: GoogleFonts.poppins(color: const Color(0xff0D5877), fontWeight: FontWeight.w600, fontSize: 19),
+                style: GoogleFonts.poppins(
+                    color: const Color(0xff0D5877),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 19),
               ),
               Text(
-                'Limited to showcasing only, any payments will be done outside the platform.'.tr,
-                style: GoogleFonts.poppins(color: const Color(0xff514949), fontWeight: FontWeight.w400, fontSize: 13),
+                'Limited to showcasing only, any payments will be done outside the platform.'
+                    .tr,
+                style: GoogleFonts.poppins(
+                    color: const Color(0xff514949),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13),
               ),
               const SizedBox(
                 height: 20,
               ),
               Text(
                 'Cloud office space'.tr,
-                style: GoogleFonts.poppins(color: const Color(0xff0D5877), fontWeight: FontWeight.w600, fontSize: 19),
+                style: GoogleFonts.poppins(
+                    color: const Color(0xff0D5877),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 19),
               ),
               Text(
                 'C-space'.tr,
-                style: GoogleFonts.poppins(color: const Color(0xff0D5877), fontWeight: FontWeight.w600, fontSize: 19),
+                style: GoogleFonts.poppins(
+                    color: const Color(0xff0D5877),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 19),
               ),
               Text(
-                'For small business that are in the process of becoming an official business'.tr,
-                style: GoogleFonts.poppins(color: const Color(0xff514949), fontWeight: FontWeight.w400, fontSize: 13),
+                'For small business that are in the process of becoming an official business'
+                    .tr,
+                style: GoogleFonts.poppins(
+                    color: const Color(0xff514949),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13),
               ),
-               const SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Text(
                 'Enterprise cloud space'.tr,
-                style: GoogleFonts.poppins(color: const Color(0xff0D5877), fontWeight: FontWeight.w600, fontSize: 19),
+                style: GoogleFonts.poppins(
+                    color: const Color(0xff0D5877),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 19),
               ),
               Text(
                 'E-space'.tr,
-                style: GoogleFonts.poppins(color: const Color(0xff0D5877), fontWeight: FontWeight.w600, fontSize: 19),
+                style: GoogleFonts.poppins(
+                    color: const Color(0xff0D5877),
+                    fontWeight: FontWeight.w600,
+                    fontSize: 19),
               ),
               Text(
-                'For companies with commercial license and corporate bank account'.tr,
-                style: GoogleFonts.poppins(color: const Color(0xff514949), fontWeight: FontWeight.w400, fontSize: 13),
+                'For companies with commercial license and corporate bank account'
+                    .tr,
+                style: GoogleFonts.poppins(
+                    color: const Color(0xff514949),
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13),
               ),
               const SizedBox(
                 height: 20,
@@ -243,15 +296,19 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                       children: [
                         Text(
                           'Full comparison'.tr,
-                          style: GoogleFonts.poppins(color: const Color(0xff0D5877), fontWeight: FontWeight.w500, fontSize: 15,
-                          decoration: TextDecoration.underline
-                          ),
+                          style: GoogleFonts.poppins(
+                              color: const Color(0xff0D5877),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              decoration: TextDecoration.underline),
                         ),
                         Text(
                           'Read more info'.tr,
-                          style: GoogleFonts.poppins(color: const Color(0xff0D5877), fontWeight: FontWeight.w500, fontSize: 15,
-                          decoration: TextDecoration.underline
-                          ),
+                          style: GoogleFonts.poppins(
+                              color: const Color(0xff0D5877),
+                              fontWeight: FontWeight.w500,
+                              fontSize: 15,
+                              decoration: TextDecoration.underline),
                         ),
                       ],
                     ),
@@ -262,7 +319,7 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                 height: 50,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   setState(() {
                     _selectedOption = 1;
                     profileController.selectedPlan = '1';
@@ -270,8 +327,12 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                 },
                 child: Container(
                   width: Get.width,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey.shade200,
-                    border: _selectedOption == 1 ? Border.all(color: const Color(0xff0D5877)) : const Border(),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey.shade200,
+                    border: _selectedOption == 1
+                        ? Border.all(color: const Color(0xff0D5877))
+                        : const Border(),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -284,13 +345,17 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                             Text(
                               'Showcasing cloud space'.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xff0D5877), fontWeight: FontWeight.w600, fontSize: 16),
+                                  color: const Color(0xff0D5877),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
                             ),
                             5.spaceY,
                             Text(
                               'Showcasing only'.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xff111727), fontWeight: FontWeight.w400, fontSize: 13),
+                                  color: const Color(0xff111727),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 13),
                             ),
                           ],
                         ),
@@ -316,14 +381,17 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                 Container(
                     padding: const EdgeInsets.all(10),
                     width: Get.width,
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10), boxShadow: const [
-                      BoxShadow(
-                          offset: Offset(1, 1),
-                          color: Colors.grey,
-                          blurRadius: 1,
-                          blurStyle: BlurStyle.outer,
-                          spreadRadius: 1)
-                    ]),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(
+                              offset: Offset(1, 1),
+                              color: Colors.grey,
+                              blurRadius: 1,
+                              blurStyle: BlurStyle.outer,
+                              spreadRadius: 1)
+                        ]),
                     child: Column(
                       children: [
                         // Text(
@@ -341,7 +409,9 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                                 Text(
                                   "Cloud description  ".tr,
                                   style: GoogleFonts.poppins(
-                                      color: AppTheme.buttonColor, fontWeight: FontWeight.w500, fontSize: 18),
+                                      color: AppTheme.buttonColor,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18),
                                 ),
                                 const SizedBox(
                                   height: 3,
@@ -349,142 +419,187 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                                 Text(
                                   "Limited to showcasing only  ".tr,
                                   style: GoogleFonts.poppins(
-                                      color: const Color(0xff111727), fontWeight: FontWeight.w600, fontSize: 10),
+                                      color: const Color(0xff111727),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 10),
                                 ),
                               ],
                             ),
-                            profileController.selectedLAnguage.value == "English"
-                            ?Image.asset('assets/images/monthtrail.png',width: 80,)
-                            :Image.asset('assets/images/cloudspace.png',width: 80,),
+                            profileController.selectedLAnguage.value ==
+                                    "English"
+                                ? Image.asset(
+                                    'assets/images/monthtrail.png',
+                                    width: 80,
+                                  )
+                                : Image.asset(
+                                    'assets/images/cloudspace.png',
+                                    width: 80,
+                                  ),
                           ],
                         ),
                         const SizedBox(
                           height: 6,
                         ),
                         Text(
-                          "Owners of the showcasing cloud can only showcase their products, all payments will be done outside of the dirise platform. Customers will contact the vendor directly through a phone number or messages".tr,
+                          "Owners of the showcasing cloud can only showcase their products, all payments will be done outside of the dirise platform. Customers will contact the vendor directly through a phone number or messages"
+                              .tr,
                           style: GoogleFonts.poppins(
-                              color: const Color(0xff111727), fontWeight: FontWeight.w400, fontSize: 10),
+                              color: const Color(0xff111727),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 10),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         profileController.selectedLAnguage.value == "English"
-                        ?Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset("assets/images/cart_img_neww.png",height: 80, width: 80),
-                                Text(
-                                  "500 products".tr,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff111727), fontWeight: FontWeight.w500, fontSize: 12),
-                                ),
-                                3.spaceY,
-                                Text(
-                                  "Per 12 months".tr,
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff5AC036), fontWeight: FontWeight.w500, fontSize: 10),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset("assets/images/camera.png",height: 80, width: 80),
-                                Text(
-                                  "Product photography".tr,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff111727), fontWeight: FontWeight.w500, fontSize: 12),
-                                ),
-                                3.spaceY,
-                                Text(
-                                  "Available upon request".tr,
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff5AC036), fontWeight: FontWeight.w500, fontSize: 10),
-                                ),
-                              ],
-                            ),
-                            // SvgPicture.asset(
-                            //         "assets/svgs/product_photography.svg",
-                            //   height: 175,
-                            //   width: 175,
-                            //       ),
-                          ],
-                        )
-                        :Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset("assets/images/product1.png",height: 80, width: 80),
-                                Text(
-                                  "500 products".tr,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff111727), fontWeight: FontWeight.w500, fontSize: 12),
-                                ),
-                                3.spaceY,
-                                Text(
-                                  "Per 12 months".tr,
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff5AC036), fontWeight: FontWeight.w500, fontSize: 10),
-                                ),
-                              ],
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset("assets/images/product2.png",height: 80, width: 80),
-                                Text(
-                                  "Product photography".tr,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff111727), fontWeight: FontWeight.w500, fontSize: 12),
-                                ),
-                                3.spaceY,
-                                Text(
-                                  "Available upon request".tr,
-                                  textAlign: TextAlign.center,
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff5AC036), fontWeight: FontWeight.w500, fontSize: 10),
-                                ),
-                              ],
-                            ),
-                            // SvgPicture.asset(
-                            //         "assets/svgs/product_photography.svg",
-                            //   height: 175,
-                            //   width: 175,
-                            //       ),
-                          ],
-                        ),
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset(
+                                          "assets/images/cart_img_neww.png",
+                                          height: 80,
+                                          width: 80),
+                                      Text(
+                                        "500 products".tr,
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff111727),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12),
+                                      ),
+                                      3.spaceY,
+                                      Text(
+                                        "Per 12 months".tr,
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff5AC036),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 10),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset("assets/images/camera.png",
+                                          height: 80, width: 80),
+                                      Text(
+                                        "Product photography".tr,
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff111727),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12),
+                                      ),
+                                      3.spaceY,
+                                      Text(
+                                        "Available upon request".tr,
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff5AC036),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 10),
+                                      ),
+                                    ],
+                                  ),
+                                  // SvgPicture.asset(
+                                  //         "assets/svgs/product_photography.svg",
+                                  //   height: 175,
+                                  //   width: 175,
+                                  //       ),
+                                ],
+                              )
+                            : Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset("assets/images/product1.png",
+                                          height: 80, width: 80),
+                                      Text(
+                                        "500 products".tr,
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff111727),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12),
+                                      ),
+                                      3.spaceY,
+                                      Text(
+                                        "Per 12 months".tr,
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff5AC036),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 10),
+                                      ),
+                                    ],
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Image.asset("assets/images/product2.png",
+                                          height: 80, width: 80),
+                                      Text(
+                                        "Product photography".tr,
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff111727),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 12),
+                                      ),
+                                      3.spaceY,
+                                      Text(
+                                        "Available upon request".tr,
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff5AC036),
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 10),
+                                      ),
+                                    ],
+                                  ),
+                                  // SvgPicture.asset(
+                                  //         "assets/svgs/product_photography.svg",
+                                  //   height: 175,
+                                  //   width: 175,
+                                  //       ),
+                                ],
+                              ),
                         30.spaceY,
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Image.asset("assets/images/product3.png",height: 80, width: 80),
+                            Image.asset("assets/images/product3.png",
+                                height: 80, width: 80),
                             Text(
                               "Receive payments".tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xff111727), fontWeight: FontWeight.w500, fontSize: 12),
+                                  color: const Color(0xff111727),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 12),
                             ),
                             3.spaceY,
                             Text(
                               "Never allowed".tr,
                               textAlign: TextAlign.center,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xffEB4335), fontWeight: FontWeight.w500, fontSize: 10),
+                                  color: const Color(0xffEB4335),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10),
                             ),
                           ],
                         ),
@@ -493,10 +608,14 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                         //       "assets/images/p1_new.png",
                         //     )),
                         Center(
-                            child: profileController.selectedLAnguage.value == "English"
-                            ?Image.asset("assets/images/plan1.png",)
-                            :Image.asset("assets/images/showcasecloudspace.png",)
-                        ),
+                            child: profileController.selectedLAnguage.value ==
+                                    "English"
+                                ? Image.asset(
+                                    "assets/images/plan1.png",
+                                  )
+                                : Image.asset(
+                                    "assets/images/showcasecloudspace.png",
+                                  )),
                       ],
                     )),
               ],
@@ -504,7 +623,7 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                 height: 20,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   setState(() {
                     _selectedOption = 2;
                     profileController.selectedPlan = '2';
@@ -512,8 +631,12 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                 },
                 child: Container(
                   width: Get.width,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey.shade200,
-                    border: _selectedOption == 2 ? Border.all(color: const Color(0xff0D5877)) : const Border(),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.grey.shade200,
+                    border: _selectedOption == 2
+                        ? Border.all(color: const Color(0xff0D5877))
+                        : const Border(),
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -526,13 +649,17 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                             Text(
                               'Cloud office space'.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xff0D5877), fontWeight: FontWeight.w600, fontSize: 16),
+                                  color: const Color(0xff0D5877),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
                             ),
                             5.spaceY,
                             Text(
                               'Small businesses & startups '.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xff111727), fontWeight: FontWeight.w400, fontSize: 13),
+                                  color: const Color(0xff111727),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 13),
                             ),
                           ],
                         ),
@@ -558,14 +685,17 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                 Container(
                     padding: const EdgeInsets.all(10),
                     width: Get.width,
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10), boxShadow: const [
-                      BoxShadow(
-                          offset: Offset(1, 1),
-                          color: Colors.grey,
-                          blurRadius: 1,
-                          blurStyle: BlurStyle.outer,
-                          spreadRadius: 1)
-                    ]),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(
+                              offset: Offset(1, 1),
+                              color: Colors.grey,
+                              blurRadius: 1,
+                              blurStyle: BlurStyle.outer,
+                              spreadRadius: 1)
+                        ]),
                     child: Column(
                       children: [
                         // Text(
@@ -583,7 +713,9 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                                 Text(
                                   "Cloud description  ".tr,
                                   style: GoogleFonts.poppins(
-                                      color: AppTheme.buttonColor, fontWeight: FontWeight.w500, fontSize: 18),
+                                      color: AppTheme.buttonColor,
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 18),
                                 ),
                                 const SizedBox(
                                   height: 3,
@@ -591,28 +723,44 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                                 Text(
                                   "Small businesses & start ups  ".tr,
                                   style: GoogleFonts.poppins(
-                                      color: const Color(0xff111727), fontWeight: FontWeight.w600, fontSize: 10),
+                                      color: const Color(0xff111727),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 10),
                                 ),
                               ],
                             ),
-                            profileController.selectedLAnguage.value == "English"
-                            ?Image.asset('assets/images/monthtrail.png',width: 80,)
-                            :Image.asset('assets/images/cloudspace.png',width: 80,),
+                            profileController.selectedLAnguage.value ==
+                                    "English"
+                                ? Image.asset(
+                                    'assets/images/monthtrail.png',
+                                    width: 80,
+                                  )
+                                : Image.asset(
+                                    'assets/images/cloudspace.png',
+                                    width: 80,
+                                  ),
                           ],
                         ),
                         Text(
-                          "For businesses that are working on getting the required official document to be recognized as an official company".tr,
+                          "For businesses that are working on getting the required official document to be recognized as an official company"
+                              .tr,
                           style: GoogleFonts.poppins(
-                              color: const Color(0xff111727), fontWeight: FontWeight.w400, fontSize: 10),
+                              color: const Color(0xff111727),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 10),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         Center(
-                            child: profileController.selectedLAnguage.value =="English"
-                            ?Image.asset("assets/images/p2_new.png",)
-                            :Image.asset("assets/images/cloudspace2.png",)
-                        ),
+                            child: profileController.selectedLAnguage.value ==
+                                    "English"
+                                ? Image.asset(
+                                    "assets/images/p2_new.png",
+                                  )
+                                : Image.asset(
+                                    "assets/images/cloudspace2.png",
+                                  )),
                         const SizedBox(
                           height: 10,
                         ),
@@ -622,7 +770,9 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.shade300,
-                                offset: const Offset(.1, .1,
+                                offset: const Offset(
+                                  .1,
+                                  .1,
                                 ),
                                 blurRadius: 20.0,
                                 spreadRadius: 1.0,
@@ -630,10 +780,14 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                             ],
                           ),
                           child: Center(
-                              child: profileController.selectedLAnguage.value == "English"
-                              ?Image.asset("assets/images/plan2.png",)
-                              :Image.asset("assets/images/officecloudspace.png",)
-                          ),
+                              child: profileController.selectedLAnguage.value ==
+                                      "English"
+                                  ? Image.asset(
+                                      "assets/images/plan_3.png",
+                                    )
+                                  : Image.asset(
+                                      "assets/images/officecloudspace.png",
+                                    )),
                         ),
                       ],
                     )),
@@ -642,7 +796,7 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                 height: 20,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   setState(() {
                     _selectedOption = 3;
                     profileController.selectedPlan = '3';
@@ -650,8 +804,12 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                 },
                 child: Container(
                   width: Get.width,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(10), color: Colors.grey.shade200,
-                    border: _selectedOption == 3 ? Border.all(color: const Color(0xff0D5877)) : const Border()),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      color: Colors.grey.shade200,
+                      border: _selectedOption == 3
+                          ? Border.all(color: const Color(0xff0D5877))
+                          : const Border()),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -663,13 +821,17 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                             Text(
                               'Enterprise cloud space'.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xff0D5877), fontWeight: FontWeight.w600, fontSize: 16),
+                                  color: const Color(0xff0D5877),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 16),
                             ),
                             5.spaceY,
                             Text(
                               'Established official businesses '.tr,
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xff111727), fontWeight: FontWeight.w400, fontSize: 13),
+                                  color: const Color(0xff111727),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 13),
                             ),
                           ],
                         ),
@@ -695,14 +857,17 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                 Container(
                     padding: const EdgeInsets.all(10),
                     width: Get.width,
-                    decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10), boxShadow: const[
-                       BoxShadow(
-                          offset: Offset(1, 1),
-                          color: Colors.grey,
-                          blurRadius: 1,
-                          blurStyle: BlurStyle.outer,
-                          spreadRadius: 1)
-                    ]),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
+                        boxShadow: const [
+                          BoxShadow(
+                              offset: Offset(1, 1),
+                              color: Colors.grey,
+                              blurRadius: 1,
+                              blurStyle: BlurStyle.outer,
+                              spreadRadius: 1)
+                        ]),
                     child: Column(
                       children: [
                         // Text(
@@ -713,7 +878,6 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
                             Expanded(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.start,
@@ -722,7 +886,9 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                                   Text(
                                     "Cloud description  ".tr,
                                     style: GoogleFonts.poppins(
-                                        color: AppTheme.buttonColor, fontWeight: FontWeight.w500, fontSize: 18),
+                                        color: AppTheme.buttonColor,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 18),
                                   ),
                                   const SizedBox(
                                     height: 3,
@@ -730,32 +896,44 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                                   Text(
                                     "Official businesses  ".tr,
                                     style: GoogleFonts.poppins(
-                                        color: const Color(0xff111727), fontWeight: FontWeight.w500, fontSize: 16),
+                                        color: const Color(0xff111727),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16),
                                   ),
                                   const SizedBox(
                                     height: 3,
                                   ),
                                   Text(
-                                    "This cloud is suitable for any official business that has already been established with a corporate bank account".tr,
+                                    "This cloud is suitable for any official business that has already been established with a corporate bank account"
+                                        .tr,
                                     style: GoogleFonts.poppins(
-                                        color: const Color(0xff514949), fontWeight: FontWeight.w400, fontSize: 11),
+                                        color: const Color(0xff514949),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 11),
                                   ),
                                 ],
                               ),
                             ),
-                            profileController.selectedLAnguage.value == "English"
-                            ?Image.asset('assets/images/monthtrail.png',width: 80)
-                            :Image.asset('assets/images/cloudspace.png',width: 80),
+                            profileController.selectedLAnguage.value ==
+                                    "English"
+                                ? Image.asset('assets/images/monthtrail.png',
+                                    width: 80)
+                                : Image.asset('assets/images/cloudspace.png',
+                                    width: 80),
                           ],
                         ),
                         const SizedBox(
                           height: 14,
                         ),
                         Center(
-                            child:profileController.selectedLAnguage.value == "English"
-                            ?Image.asset("assets/images/p3_new.png",)
-                            :Image.asset("assets/images/cloudspace3.png",)
-                        ),
+                            child: profileController.selectedLAnguage.value ==
+                                    "English"
+                                ? Image.asset(
+                                    "assets/images/p3_new.png",
+                                  )
+                                : Image.asset(
+                                    "assets/images/cloudspace3.png",
+                                  )),
                         const SizedBox(
                           height: 10,
                         ),
@@ -765,7 +943,9 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                             boxShadow: [
                               BoxShadow(
                                 color: Colors.grey.shade300,
-                                offset: const Offset(.1, .1,
+                                offset: const Offset(
+                                  .1,
+                                  .1,
                                 ),
                                 blurRadius: 20.0,
                                 spreadRadius: 1.0,
@@ -773,10 +953,14 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                             ],
                           ),
                           child: Center(
-                              child: profileController.selectedLAnguage.value == "English"
-                                  ?Image.asset("assets/images/plan2.png",)
-                                  :Image.asset("assets/images/officecloudspace.png",)
-                          ),
+                              child: profileController.selectedLAnguage.value ==
+                                      "English"
+                                  ? Image.asset(
+                                      "assets/images/plan_3.png",
+                                    )
+                                  : Image.asset(
+                                      "assets/images/officecloudspace.png",
+                                    )),
                         ),
                       ],
                     )),
@@ -788,7 +972,10 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                 alignment: Alignment.center,
                 child: Text(
                   'Clouds comparison'.tr,
-                  style: GoogleFonts.poppins(color: const Color(0xff014E70), fontWeight: FontWeight.w500, fontSize: 24),
+                  style: GoogleFonts.poppins(
+                      color: const Color(0xff014E70),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 24),
                 ),
               ),
               const SizedBox(
@@ -1027,13 +1214,13 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
               Container(
                   key: _cloudComparisonKey,
                   child: profileController.selectedLAnguage.value == "English"
-              ?Image.asset('assets/images/table.png')
-              :Image.asset('assets/images/table1.png')),
+                      ? Image.asset('assets/images/table.png')
+                      : Image.asset('assets/images/table1.png')),
               const SizedBox(
                 height: 10,
               ),
               GestureDetector(
-                onTap: (){
+                onTap: () {
                   launchUrlString("tel://+965 6555 6490");
                 },
                 child: Align(
@@ -1062,7 +1249,6 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                     ),
                   ),
                 ),
-
               ),
               const SizedBox(
                 height: 10,
@@ -1072,14 +1258,17 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                   Transform.translate(
                     offset: const Offset(-6, 0),
                     child: Checkbox(
-                        visualDensity: const VisualDensity(horizontal: -1, vertical: -3),
+                        visualDensity:
+                            const VisualDensity(horizontal: -1, vertical: -3),
                         materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),
                         value: _isValue,
                         side: BorderSide(
-                          color: showValidation == false ? const Color(0xff0D5877) : Colors.red,
+                          color: showValidation == false
+                              ? const Color(0xff0D5877)
+                              : Colors.red,
                         ),
                         onChanged: (bool? value) {
                           setState(() {
@@ -1089,13 +1278,16 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                   ),
                   Expanded(
                     child: GestureDetector(
-                      onTap: (){
-                        Get.to(()=> const TermConditionScreen());
+                      onTap: () {
+                        Get.to(() => const TermConditionScreen());
                       },
                       child: Text(
-                        'I agree to DIRISE terms & condition, privacy policy and DIRISE free program*'.tr,
+                        'I agree to DIRISE terms & condition, privacy policy and DIRISE free program*'
+                            .tr,
                         style: GoogleFonts.poppins(
-                            color: const Color(0xff7B7D7C), fontWeight: FontWeight.w400, fontSize: 13),
+                            color: const Color(0xff7B7D7C),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 13),
                       ),
                     ),
                   ),
@@ -1118,8 +1310,9 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                     ),
                     borderRadius: BorderRadius.circular(2), // Border radius
                   ),
-                  padding: const EdgeInsets.all(10), // Padding inside the container
-                  child:   Center(
+                  padding:
+                      const EdgeInsets.all(10), // Padding inside the container
+                  child: Center(
                     child: Text(
                       'Next'.tr,
                       style: const TextStyle(
