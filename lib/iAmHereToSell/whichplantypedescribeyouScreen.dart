@@ -631,7 +631,7 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                           ),
                           child: Center(
                               child: profileController.selectedLAnguage.value == "English"
-                              ?Image.asset("assets/images/plan2.png",)
+                              ?Image.asset("assets/images/plan2a.png",)
                               :Image.asset("assets/images/officecloudspace.png",)
                           ),
                         ),
@@ -774,7 +774,7 @@ class _WhichplantypedescribeyouScreenState extends State<Whichplantypedescribeyo
                           ),
                           child: Center(
                               child: profileController.selectedLAnguage.value == "English"
-                                  ?Image.asset("assets/images/plan2.png",)
+                                  ?Image.asset("assets/images/plan3a.png",)
                                   :Image.asset("assets/images/officecloudspace.png",)
                           ),
                         ),

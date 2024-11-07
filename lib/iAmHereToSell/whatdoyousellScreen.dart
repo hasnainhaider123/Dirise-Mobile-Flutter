@@ -159,8 +159,11 @@ class _WhatdoyousellScreenState extends State<WhatdoyousellScreen> {
   Map<String, dynamic> tempMap = {};
 
   verifyOtp() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    String? token1 = await FirebaseMessaging.instance.getToken();
+    
+  var _firebaseMessaging = FirebaseMessaging.instance;
+  String?  token = (Platform.isIOS
+        ? await _firebaseMessaging.getAPNSToken()
+        : await _firebaseMessaging.getToken());
     if (_otpController.text.trim().isEmpty) {
       showToast("Please enter otp".tr);
       return;
@@ -173,7 +176,7 @@ class _WhatdoyousellScreenState extends State<WhatdoyousellScreen> {
     Map<String, dynamic> map = {};
     map['email'] = storeEmail.text.trim();
     map['otp'] = _otpController.text.trim();
-    map['fcm_token'] = Platform.isAndroid ? token.toString() : token1.toString();
+    map['fcm_token'] = token;
     map['key'] = 'forget';
     repositories.postApi(url: ApiUrls.verifyOtpEmail, context: context, mapData: map).then((value) async {
       LoginModal response = LoginModal.fromJson(jsonDecode(value));
