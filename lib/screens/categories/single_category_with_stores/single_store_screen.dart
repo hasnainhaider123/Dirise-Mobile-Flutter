@@ -6,6 +6,7 @@ import 'package:dirise/utils/helper.dart';
 import 'package:dirise/utils/styles.dart';
 import 'package:dirise/widgets/common_colour.dart';
 import 'package:dirise/widgets/loading_animation.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -38,8 +39,9 @@ class SingleStoreScreen extends StatefulWidget {
   const SingleStoreScreen({
     super.key,
     required this.storeDetails,
+    this.category,
   });
-
+  final String? category;
   final VendorStoreData storeDetails;
 
   @override
@@ -301,6 +303,8 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
   Widget build(BuildContext context) {
     print("Url: ${storeUrl.toString()}");
     print('Item Count : ${productCount.toString()}');
+    print('Store Screen : ${widget.category}');
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
@@ -1218,123 +1222,65 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                   if (modelProductsList.vendorProducts!.data != null &&
                       controller.isFilter.value == false)
                     isDataLoading.value
-                        ? Obx(() {
-                            // final showcaseProducts = modelProductsList.vendorProducts!.data!
-                            //     .where((e) => e.showcaseProduct == true)
-                            //     .toList();
-                            // if(showcaseProducts.isNotEmpty){
-                            //   return SliverGrid.builder(
-                            //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            //       crossAxisCount: 1,
-                            //       crossAxisSpacing: 10,
-                            //       mainAxisSpacing: 10,
-                            //       childAspectRatio: .99,
-                            //     ),
-                            //     itemCount: paginationLoading.value ?
-                            //     modelProductsList.vendorProducts!.data!.length :
-                            //     modelProductsList.vendorProducts!.data!.length,
-                            //     itemBuilder: (BuildContext context, int index) {
-                            //       final item = modelProductsList.vendorProducts!.data![index];
-                            //       log('index is::::$index');
-                            //       log('index Api is::::${modelProductsList.vendorProducts!.data!.length}');
-                            //       if (index == modelProductsList.vendorProducts!.data!.length - 1) {
-                            //         return Column(
-                            //           children: [
-                            //             ProductUI(
-                            //               isSingle: true,
-                            //               productElement: item,
-                            //               onLiked: (value) {
-                            //                 modelProductsList.vendorProducts!.data![index].inWishlist = value;
-                            //               },
-                            //             ),
-                            //             if (paginationLoading.value == true)
-                            //               const SizedBox(
-                            //                   width: 12,
-                            //                   height: 12,
-                            //                   child: CircularProgressIndicator()),
-                            //           ],
-                            //         );
-                            //       } else {
-                            //         return Padding(
-                            //           padding: const EdgeInsets.symmetric(horizontal: 12),
-                            //           child: ProductUI(
-                            //             isSingle: true,
-                            //             productElement: item,
-                            //             onLiked: (value) {
-                            //               modelProductsList.vendorProducts!.data![index].inWishlist = value;
-                            //             },
-                            //           ),
-                            //         );
-                            //       }
-                            //     },
-                            //   );
-                            // }
-                            if (modelProductsList
-                                        .vendorProducts!.data!.length !=
-                                    1 &&
-                                modelProductsList
-                                        .vendorProducts!.data!.length ==
-                                    9) {
-                              return SliverGrid.builder(
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 1,
-                                  crossAxisSpacing: 10,
-                                  mainAxisSpacing: 10,
-                                  childAspectRatio: .63,
-                                ),
-                                itemCount: paginationLoading.value
-                                    ? modelProductsList
-                                        .vendorProducts!.data!.length
-                                    : modelProductsList
-                                        .vendorProducts!.data!.length,
-                                itemBuilder: (BuildContext context, int index) {
-                                  final item = modelProductsList
-                                      .vendorProducts!.data![index];
-                                  log('index is::::$index');
-                                  log('index Api is::::${modelProductsList.vendorProducts!.data!.length}');
-                                  if (index ==
-                                      modelProductsList
-                                              .vendorProducts!.data!.length -
-                                          1) {
-                                    return Column(
-                                      children: [
-                                        ProductUI(
-                                          isSingle: true,
-                                          productElement: item,
-                                          onLiked: (value) {
-                                            modelProductsList
-                                                .vendorProducts!
-                                                .data![index]
-                                                .inWishlist = value;
-                                          },
-                                        ),
-                                        if (paginationLoading.value == true)
-                                          const SizedBox(
-                                              width: 12,
-                                              height: 12,
-                                              child:
-                                                  CircularProgressIndicator()),
-                                      ],
-                                    );
-                                  } else {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12),
-                                      child: ProductUI(
-                                        isSingle: true,
-                                        productElement: item,
-                                        onLiked: (value) {
-                                          modelProductsList.vendorProducts!
-                                              .data![index].inWishlist = value;
-                                        },
-                                      ),
-                                    );
-                                  }
-                                },
-                              );
-                            } else {
-                              return SliverGrid.builder(
+                        ? Obx(
+                            () {
+                              // final showcaseProducts = modelProductsList.vendorProducts!.data!
+                              //     .where((e) => e.showcaseProduct == true)
+                              //     .toList();
+                              // if(showcaseProducts.isNotEmpty){
+                              //   return SliverGrid.builder(
+                              //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              //       crossAxisCount: 1,
+                              //       crossAxisSpacing: 10,
+                              //       mainAxisSpacing: 10,
+                              //       childAspectRatio: .99,
+                              //     ),
+                              //     itemCount: paginationLoading.value ?
+                              //     modelProductsList.vendorProducts!.data!.length :
+                              //     modelProductsList.vendorProducts!.data!.length,
+                              //     itemBuilder: (BuildContext context, int index) {
+                              //       final item = modelProductsList.vendorProducts!.data![index];
+                              //       log('index is::::$index');
+                              //       log('index Api is::::${modelProductsList.vendorProducts!.data!.length}');
+                              //       if (index == modelProductsList.vendorProducts!.data!.length - 1) {
+                              //         return Column(
+                              //           children: [
+                              //             ProductUI(
+                              //               isSingle: true,
+                              //               productElement: item,
+                              //               onLiked: (value) {
+                              //                 modelProductsList.vendorProducts!.data![index].inWishlist = value;
+                              //               },
+                              //             ),
+                              //             if (paginationLoading.value == true)
+                              //               const SizedBox(
+                              //                   width: 12,
+                              //                   height: 12,
+                              //                   child: CircularProgressIndicator()),
+                              //           ],
+                              //         );
+                              //       } else {
+                              //         return Padding(
+                              //           padding: const EdgeInsets.symmetric(horizontal: 12),
+                              //           child: ProductUI(
+                              //             isSingle: true,
+                              //             productElement: item,
+                              //             onLiked: (value) {
+                              //               modelProductsList.vendorProducts!.data![index].inWishlist = value;
+                              //             },
+                              //           ),
+                              //         );
+                              //       }
+                              //     },
+                              //   );
+                              // }
+                              if (modelProductsList
+                                          .vendorProducts!.data!.length !=
+                                      1 &&
+                                  modelProductsList
+                                          .vendorProducts!.data!.length ==
+                                      9) {
+                                return SliverGrid.builder(
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
                                     crossAxisCount: 1,
@@ -1353,21 +1299,92 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                                         .vendorProducts!.data![index];
                                     log('index is::::$index');
                                     log('index Api is::::${modelProductsList.vendorProducts!.data!.length}');
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 12),
-                                      child: ProductUI(
-                                        isSingle: true,
-                                        productElement: item,
-                                        onLiked: (value) {
-                                          modelProductsList.vendorProducts!
-                                              .data![index].inWishlist = value;
-                                        },
-                                      ),
-                                    );
-                                  });
-                            }
-                          })
+                                    if (index ==
+                                        modelProductsList
+                                                .vendorProducts!.data!.length -
+                                            1) {
+                                      return Column(
+                                        children: [
+                                          ProductUI(
+                                            isSingle: true,
+                                            productElement: item,
+                                            onLiked: (value) {
+                                              modelProductsList
+                                                  .vendorProducts!
+                                                  .data![index]
+                                                  .inWishlist = value;
+                                            },
+                                          ),
+                                          if (paginationLoading.value == true)
+                                            const SizedBox(
+                                                width: 12,
+                                                height: 12,
+                                                child:
+                                                    CircularProgressIndicator()),
+                                        ],
+                                      );
+                                    } else {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12),
+                                        child: ProductUI(
+                                          isSingle: true,
+                                          productElement: item,
+                                          onLiked: (value) {
+                                            modelProductsList
+                                                .vendorProducts!
+                                                .data![index]
+                                                .inWishlist = value;
+                                          },
+                                        ),
+                                      );
+                                    }
+                                  },
+                                );
+                              } else {
+                                double size = widget.category == 'Cars' ||
+                                        widget.category == 'Real Estate'
+                                    ? 1.2
+                                    : 0.63;
+
+                                return SliverGrid.builder(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 1,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                      childAspectRatio: size,
+                                    ),
+                                    itemCount: paginationLoading.value
+                                        ? modelProductsList
+                                            .vendorProducts!.data!.length
+                                        : modelProductsList
+                                            .vendorProducts!.data!.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final item = modelProductsList
+                                          .vendorProducts!.data![index];
+                                      log('index is::::$index');
+                                      log('index Api is::::${modelProductsList.vendorProducts!.data!.length}');
+                                      log('Item Type is::::${item.itemType}');
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12),
+                                        child: ProductUI(
+                                          isSingle: true,
+                                          productElement: item,
+                                          onLiked: (value) {
+                                            modelProductsList
+                                                .vendorProducts!
+                                                .data![index]
+                                                .inWishlist = value;
+                                          },
+                                        ),
+                                      );
+                                    });
+                              }
+                            },
+                          )
                         : const SliverToBoxAdapter(
                             child: Center(
                               // child: Text('Store is empty'.tr),

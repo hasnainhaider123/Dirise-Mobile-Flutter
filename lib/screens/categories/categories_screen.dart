@@ -27,7 +27,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar:  PreferredSize(
+      appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60),
         child: AppBar(
           backgroundColor: Colors.white,
@@ -35,8 +35,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           title: Padding(
             padding: const EdgeInsets.only(left: 0),
             child: Text(
-                'Categories'.tr,
-              style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 18),
+              'Categories'.tr,
+              style: GoogleFonts.poppins(
+                  color: Colors.black,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 18),
             ),
           ),
           actions: const [
@@ -72,7 +75,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         ),
                         Text(
                           "What are you looking for ... We got you!".tr,
-                          style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w500, fontSize: 18),
+                          style: GoogleFonts.poppins(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 18),
                         ),
                         const SizedBox(
                           height: 20,
@@ -81,11 +87,17 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           shrinkWrap: true,
                           padding: const EdgeInsets.only(bottom: 25),
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: homeController.vendorCategory.usphone!.length,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2, crossAxisSpacing: 15, mainAxisSpacing: 10, mainAxisExtent: 80),
+                          itemCount:
+                              homeController.vendorCategory.usphone!.length,
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  crossAxisSpacing: 15,
+                                  mainAxisSpacing: 10,
+                                  mainAxisExtent: 80),
                           itemBuilder: (BuildContext context, int index) {
-                            final item = homeController.vendorCategory.usphone![index];
+                            final item =
+                                homeController.vendorCategory.usphone![index];
                             return InkWell(
                               onTap: () {
                                 Get.to(() => SingleCategories(
@@ -96,7 +108,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
-                                    color: const Color(0xffEBF1F4).withOpacity(.5)),
+                                    color: const Color(0xffEBF1F4)
+                                        .withOpacity(.5)),
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -109,7 +122,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                           color: Colors.transparent,
                                           surfaceTintColor: Colors.transparent,
                                           child: CachedNetworkImage(
-                                            imageUrl: item.bannerProfile.toString(),
+                                            imageUrl:
+                                                item.bannerProfile.toString(),
                                             height: 180,
                                           ),
                                         ),
@@ -121,18 +135,27 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                     Expanded(
                                       child: AutoSizeText(
                                         wrapWords: false,
-                                        profileController.selectedLAnguage.value == 'English' ?  item.name.toString() : item.arabName.toString(),
+                                        profileController
+                                                    .selectedLAnguage.value ==
+                                                'English'
+                                            ? item.name.toString()
+                                            : item.arabName.toString(),
                                         maxLines: 3,
                                         softWrap: true,
                                         overflow: TextOverflow.ellipsis,
                                         style: GoogleFonts.poppins(
-                                            fontSize: 11, fontWeight: FontWeight.w500, color: const Color(0xff014E70)),
+                                            fontSize: 11,
+                                            fontWeight: FontWeight.w500,
+                                            color: const Color(0xff014E70)),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                            ).animate(delay: Duration(milliseconds: index * 80)).scale(duration: 500.ms);
+                            )
+                                .animate(
+                                    delay: Duration(milliseconds: index * 80))
+                                .scale(duration: 500.ms);
                           },
                         ),
                         const SizedBox(
