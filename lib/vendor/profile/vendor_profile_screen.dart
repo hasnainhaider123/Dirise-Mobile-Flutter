@@ -169,80 +169,96 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
   VendorUser get vendorInfo => vendorProfileController.model.user!;
   String code12 = '';
   String code = '';
-  updateControllers() {
-    if (valuesLoaded) return;
-    if (widget.selectedPlan != null) {
-      getPaymentGateWays();
-    }
-    if (vendorProfileController.model.user == null) return;
-    if (widget.selectedPlan == null) {
-      selectedPlan = PlansType.values.firstWhere(
+updateControllers() {
+  if (valuesLoaded) return;
+
+  if (widget.selectedPlan != null) {
+    getPaymentGateWays();
+  }
+
+  if (vendorProfileController.model.user == null) return;
+
+  // Set selected plan based on conditions
+  selectedPlan = widget.selectedPlan ??
+      PlansType.values.firstWhere(
           (element) =>
               element.name.toString() == vendorInfo.vendorType.toString(),
           orElse: () => PlansType.personal);
-    } else {
-      selectedPlan = widget.selectedPlan!;
-    }
-    firstName.text = vendorInfo.firstName ?? "";
-    lastName.text = vendorInfo.lastName ?? "";
-    storeName.text = vendorInfo.storeName ?? "";
-    homeAddress.text = vendorInfo.address ?? "";
-    phoneNumber.text = vendorInfo.phone ?? "";
-    emailAddress.text = vendorInfo.email ?? "";
-    profileController.code = profileController.model.user!.phoneCountryCode;
-    profileController.code1 = vendorInfo.countryCode;
-    log(':::::::::::::::::${profileController.code}');
-    getCategoryFilter();
-    if (vendorInfo.vendorProfile != null) {
-      businessNumber.text = vendorInfo.vendorProfile!.businessNumber ?? "";
-      homeAddress.text = vendorInfo.vendorProfile!.home_address ?? "";
-      storeUrl.text = vendorInfo.storeUrl ?? "";
-      vendorWallet.text = (vendorInfo.vendorWallet ?? "").toString();
-      additionalNotes.text = vendorInfo.vendorProfile!.label1 ?? "";
-      additionalNotes2.text = vendorInfo.vendorProfile!.label2 ?? "";
-      partnersName.text = vendorInfo.vendorProfile!.partnersName ?? "";
-      storeName2.text = vendorInfo.storeName ?? "";
-      storePhone.text = (vendorInfo.storePhone ?? "").toString();
-      categoryController.text = vendorInfo.venderCategory!.isNotEmpty
-          ? (vendorInfo.venderCategory![0].name ?? "").toString()
-          : "";
-      bankId = vendorInfo.vendorProfile!.bankName ?? "";
-      accountNumber.text =
-          (vendorInfo.vendorProfile!.accountNumber ?? "").toString();
-      ibnNumber.text = vendorInfo.vendorProfile!.ibnNumber ?? "";
-      accountHolderName.text =
-          vendorInfo.vendorProfile!.accountHolderName ?? "";
-      ceoName.text = (vendorInfo.vendorProfile!.ceoName ?? "").toString();
-      partnerCount.text = (vendorInfo.vendorProfile!.partners ?? "").toString();
-      paymentReceiptCertificate =
-          File((vendorInfo.vendorProfile!.paymentCertificate ?? "").toString());
-      companyName.text =
-          (vendorInfo.vendorProfile!.companyName ?? "").toString();
-      workAddress.text =
-          (vendorInfo.vendorProfile!.workAddress ?? "").toString();
-      workEmail.text = (vendorInfo.vendorProfile!.workEmail ?? "").toString();
-      idProof = File((vendorInfo.vendorProfile!.idProof ?? "").toString());
-      storeLogo = File((vendorInfo.storeLogo ?? "").toString());
-      storeBanner = File((vendorInfo.bannerProfile ?? "").toString());
-      description.text = (vendorInfo.storeBannerDesccription ?? "").toString();
-      // businessNumber.text = (vendorInfo.vendorProfile. ?? "").toString();
-      taxNumber.text = (vendorInfo.vendorProfile!.taxNumber ?? "").toString();
-      memorandumAssociation = File(
-          (vendorInfo.vendorProfile!.memorandumOfAssociation ?? "").toString());
-      commercialLicense =
-          File((vendorInfo.vendorProfile!.commercialLicense ?? "").toString());
-      signatureApproval =
-          File((vendorInfo.vendorProfile!.signatureApproval ?? "").toString());
-      ministryCommerce =
-          File((vendorInfo.vendorProfile!.ministyOfCommerce ?? "").toString());
-      originalCivilInformation = File(
-          (vendorInfo.vendorProfile!.originalCivilInformation ?? "")
-              .toString());
-      companyBankAccount =
-          File((vendorInfo.vendorProfile!.companyBankAccount ?? "").toString());
-    }
-    valuesLoaded = true;
+
+  // Validate and assign values with empty string fallback
+  firstName.text = vendorInfo.firstName ?? "";
+  lastName.text = vendorInfo.lastName ?? "";
+  storeName.text = vendorInfo.storeName ?? "";
+  homeAddress.text = vendorInfo.address ?? "";
+  phoneNumber.text = vendorInfo.phone ?? "";
+  emailAddress.text = vendorInfo.email ?? "";
+
+  profileController.code = profileController.model.user?.phoneCountryCode ?? "";
+  profileController.code1 = vendorInfo.countryCode ?? "";
+
+  getCategoryFilter();
+
+  if (vendorInfo.vendorProfile != null) {
+    // Validate and assign with fallback values
+    businessNumber.text = vendorInfo.vendorProfile!.businessNumber ?? "";
+    homeAddress.text = vendorInfo.vendorProfile!.home_address ?? "";
+    storeUrl.text = vendorInfo.storeUrl ?? "";
+    vendorWallet.text = (vendorInfo.vendorWallet ?? "").toString();
+    additionalNotes.text = vendorInfo.vendorProfile!.label1 ?? "";
+    additionalNotes2.text = vendorInfo.vendorProfile!.label2 ?? "";
+    partnersName.text = vendorInfo.vendorProfile!.partnersName ?? "";
+    storeName2.text = vendorInfo.storeName ?? "";
+    storePhone.text = (vendorInfo.storePhone ?? "").toString();
+    categoryController.text = vendorInfo.venderCategory?.isNotEmpty == true
+        ? (vendorInfo.venderCategory![0].name ?? "")
+        : "";
+    bankId = vendorInfo.vendorProfile!.bankName ?? "";
+    accountNumber.text = (vendorInfo.vendorProfile!.accountNumber ?? "").toString();
+    ibnNumber.text = vendorInfo.vendorProfile!.ibnNumber ?? "";
+    accountHolderName.text = vendorInfo.vendorProfile!.accountHolderName ?? "";
+    ceoName.text = (vendorInfo.vendorProfile!.ceoName ?? "").toString();
+    partnerCount.text = (vendorInfo.vendorProfile!.partners ?? "").toString();
+
+    // File objects: Check if the path is non-empty before assigning
+    paymentReceiptCertificate = vendorInfo.vendorProfile!.paymentCertificate != null
+        ? File(vendorInfo.vendorProfile!.paymentCertificate!)
+        : File("");
+    idProof = vendorInfo.vendorProfile!.idProof != null
+        ? File(vendorInfo.vendorProfile!.idProof!)
+        : File("");
+    storeLogo = vendorInfo.storeLogo != null
+        ? File(vendorInfo.storeLogo!)
+        : File("");
+    storeBanner = vendorInfo.bannerProfile != null
+        ? File(vendorInfo.bannerProfile!)
+        : File("");
+
+    description.text = vendorInfo.storeBannerDesccription ?? "";
+    taxNumber.text = vendorInfo.vendorProfile!.taxNumber ?? "";
+
+    // More files with validation
+    memorandumAssociation = vendorInfo.vendorProfile!.memorandumOfAssociation != null
+        ? File(vendorInfo.vendorProfile!.memorandumOfAssociation!)
+        : File("");
+    commercialLicense = vendorInfo.vendorProfile!.commercialLicense != null
+        ? File(vendorInfo.vendorProfile!.commercialLicense!)
+        : File("");
+    signatureApproval = vendorInfo.vendorProfile!.signatureApproval != null
+        ? File(vendorInfo.vendorProfile!.signatureApproval!)
+        : File("");
+    ministryCommerce = vendorInfo.vendorProfile!.ministyOfCommerce != null
+        ? File(vendorInfo.vendorProfile!.ministyOfCommerce!)
+        : File("");
+    originalCivilInformation = vendorInfo.vendorProfile!.originalCivilInformation != null
+        ? File(vendorInfo.vendorProfile!.originalCivilInformation!)
+        : File("");
+    companyBankAccount = vendorInfo.vendorProfile!.companyBankAccount != null
+        ? File(vendorInfo.vendorProfile!.companyBankAccount!)
+        : File("");
   }
+  
+  valuesLoaded = true;
+}
 
   bool get planUpdate => widget.selectedPlan != null;
 
@@ -654,12 +670,11 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
 
   @override
   void initState() {
-
     super.initState();
-      _loadCategories();
-    getBankList();
-    getVendorCategories();
-  
+    //   _loadCategories();
+    // getBankList();
+    // getVendorCategories();
+
     // getCountryList();
   }
 
@@ -1296,7 +1311,7 @@ class _VendorProfileScreenState extends State<VendorProfileScreen> {
                                               },
                                               onChanged: (phone) {
                                                 code12 = phone.countryCode;
-                                                print(phone.countryCode);
+                                                print(phone.countryCode.toString());
                                                 print(
                                                     'fdsfdsfdsffs${phone.countryISOCode.toString()}');
                                                 // print(profileController.code.toString());
