@@ -22,25 +22,27 @@ class ProfileController extends GetxController {
 
   checkLanguage() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+
     if (sharedPreferences.getString("app_language") == null ||
         sharedPreferences.getString("app_language") == "English") {
+      // log("English");
       Get.updateLocale(const Locale('en', 'US'));
-     selectedLAnguage.value = "English";
+      selectedLAnguage.value = "English";
     } else {
       Get.updateLocale(const Locale('ar', 'Ar'));
       selectedLAnguage.value = 'عربي';
     }
   }
-   String featuredImage = '';
+
+  String featuredImage = '';
   // File featuredImage = File("");
   Rx<ModelProductDetails> productDetailsModel = ModelProductDetails().obs;
   getVendorCategories(id) {
     repositories.getApi(url: ApiUrls.getProductDetailsUrl + id).then((value) {
-      productDetailsModel.value = ModelProductDetails.fromJson(jsonDecode(value));
+      productDetailsModel.value =
+          ModelProductDetails.fromJson(jsonDecode(value));
     });
   }
-
-
 
   ProfileModel model = ProfileModel();
   final Repositories repositories = Repositories();
@@ -67,6 +69,7 @@ class ProfileController extends GetxController {
       aboutusModal.value = AboutUsmodel.fromJson(jsonDecode(value));
     });
   }
+
   ModelStateList? modelStateList;
   CountryState? selectedState;
 
@@ -74,24 +77,23 @@ class ProfileController extends GetxController {
   City? selectedCity;
 
   Rx<ModelVendorDetails> modelVendorProfile = ModelVendorDetails().obs;
-  getVendorDetails()  {
+  getVendorDetails() {
     repositories.getApi(url: ApiUrls.getVendorDetailUrl).then((value) {
       modelVendorProfile.value = ModelVendorDetails.fromJson(jsonDecode(value));
       log('proooooooo${modelVendorProfile.value.toJson()}');
-
     });
   }
 
   getCountryList() {
-    if(modelCountryList != null)return;
+    if (modelCountryList != null) return;
     repositories.getApi(url: ApiUrls.allCountriesUrl).then((value) {
       modelCountryList = ModelCountryList.fromString(value);
     });
   }
 
   RxInt stateRefresh = 2.obs;
-  Future getStateList({required String countryId,bool? reset}) async {
-    if(reset == true) {
+  Future getStateList({required String countryId, bool? reset}) async {
+    if (reset == true) {
       modelStateList = null;
       selectedState = null;
       modelCityList = null;
@@ -99,26 +101,30 @@ class ProfileController extends GetxController {
     }
     stateRefresh.value = -5;
     final map = {'country_id': countryId};
-    await repositories.postApi(url: ApiUrls.allStatesUrl, mapData: map).then((value) {
+    await repositories
+        .postApi(url: ApiUrls.allStatesUrl, mapData: map)
+        .then((value) {
       modelStateList = ModelStateList.fromJson(jsonDecode(value));
       stateRefresh.value = DateTime.now().millisecondsSinceEpoch;
-    }).catchError((e){
+    }).catchError((e) {
       stateRefresh.value = DateTime.now().millisecondsSinceEpoch;
     });
   }
 
   RxInt cityRefresh = 2.obs;
-  Future getCityList({required String stateId,bool? reset}) async {
-    if(reset == true) {
+  Future getCityList({required String stateId, bool? reset}) async {
+    if (reset == true) {
       modelCityList = null;
       selectedCity = null;
     }
     cityRefresh.value = -5;
     final map = {'state_id': stateId};
-    await repositories.postApi(url: ApiUrls.allCityUrl, mapData: map).then((value) {
+    await repositories
+        .postApi(url: ApiUrls.allCityUrl, mapData: map)
+        .then((value) {
       modelCityList = ModelCityList.fromJson(jsonDecode(value));
       cityRefresh.value = DateTime.now().millisecondsSinceEpoch;
-    }).catchError((e){
+    }).catchError((e) {
       cityRefresh.value = DateTime.now().millisecondsSinceEpoch;
     });
   }
@@ -162,9 +168,11 @@ class ProfileController extends GetxController {
     }
   }
 }
-class CommonAddressRelatedClass{
+
+class CommonAddressRelatedClass {
   final String title;
   final String addressId;
   final String? flagUrl;
-  CommonAddressRelatedClass({required this.title, required this.addressId,this.flagUrl});
+  CommonAddressRelatedClass(
+      {required this.title, required this.addressId, this.flagUrl});
 }
