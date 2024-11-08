@@ -780,14 +780,15 @@ class _WhichplantypedescribeyouScreenState
                             ],
                           ),
                           child: Center(
-                              child: profileController.selectedLAnguage.value ==
-                                      "English"
-                                  ? Image.asset(
-                                      "assets/images/plan_3.png",
-                                    )
-                                  : Image.asset(
-                                      "assets/images/officecloudspace.png",
-                                    )),
+                            child: profileController.selectedLAnguage.value ==
+                                    "English"
+                                ? Image.asset(
+                                    "assets/images/plan_03.png",
+                                  )
+                                : Image.asset(
+                                    "assets/images/officecloudspace.png",
+                                  ),
+                          ),
                         ),
                       ],
                     )),
@@ -956,7 +957,7 @@ class _WhichplantypedescribeyouScreenState
                               child: profileController.selectedLAnguage.value ==
                                       "English"
                                   ? Image.asset(
-                                      "assets/images/plan_3.png",
+                                      "assets/images/plan_03.png",
                                     )
                                   : Image.asset(
                                       "assets/images/officecloudspace.png",

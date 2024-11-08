@@ -31,7 +31,8 @@ class RequiredDocumentsScreen extends StatefulWidget {
   const RequiredDocumentsScreen({super.key});
 
   @override
-  State<RequiredDocumentsScreen> createState() => _RequiredDocumentsScreenState();
+  State<RequiredDocumentsScreen> createState() =>
+      _RequiredDocumentsScreenState();
 }
 
 class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
@@ -43,13 +44,14 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
       return false;
     }
   }
+
   final controller = Get.put(AddProductController());
   final profileController = Get.put(ProfileController());
 
   File payment_certificate = File("");
   File commercial_license = File("");
   File memorandum_of_association = File("");
-  File commercialLicense  = File("");
+  File commercialLicense = File("");
   File original_civil_information = File("");
   File authorizedSignature = File("");
   File company_bank_account = File("");
@@ -62,11 +64,10 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
     images["id_card_front"] = idCardFront;
     // images["commercial_license"] = commercial_license;
     images["id_card_back"] = idCardBack;
-    images["commercial_license"] = commercialLicense ;
+    images["commercial_license"] = commercialLicense;
     images["original_civil_information"] = original_civil_information;
     images["signature_approval"] = authorizedSignature;
     images["company_bank_account"] = company_bank_account;
-
 
     // images["payment_certificate"] = payment_certificate;
     // images["commercial_license"] = commercial_license;
@@ -78,17 +79,14 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
 
     repositories
         .multiPartApi(
-        mapData: map,
-        images: images,
-        context: context,
-        url: ApiUrls.editVendorDetailsUrl,
-        onProgress: (int bytes, int totalBytes) {
-
-        })
+            mapData: map,
+            images: images,
+            context: context,
+            url: ApiUrls.editVendorDetailsUrl,
+            onProgress: (int bytes, int totalBytes) {})
         .then((value) {
       showToast('Documents added successfully'.tr);
       Get.to(const VerificationOptionScreen());
-
     });
   }
 
@@ -110,24 +108,24 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
         surfaceTintColor: Colors.white,
         elevation: 0,
         leading: GestureDetector(
-          onTap: (){
+          onTap: () {
             Get.back();
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              profileController.selectedLAnguage.value != 'English' ?
-              Image.asset(
-                'assets/images/forward_icon.png',
-                height: 19,
-                width: 19,
-              ) :
-              Image.asset(
-                'assets/images/back_icon_new.png',
-                height: 19,
-                width: 19,
-              ),
+              profileController.selectedLAnguage.value != 'English'
+                  ? Image.asset(
+                      'assets/images/forward_icon.png',
+                      height: 19,
+                      width: 19,
+                    )
+                  : Image.asset(
+                      'assets/images/back_icon_new.png',
+                      height: 19,
+                      width: 19,
+                    ),
             ],
           ),
         ),
@@ -137,7 +135,10 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
           children: [
             Text(
               'Required Documents'.tr,
-              style: GoogleFonts.poppins(color: const Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 20),
+              style: GoogleFonts.poppins(
+                  color: const Color(0xff292F45),
+                  fontWeight: FontWeight.w600,
+                  fontSize: 20),
             ),
           ],
         ),
@@ -148,8 +149,12 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
           child: Column(
             children: [
               Text(
-                'You can set later, but your experience will be limited untill you submit all'.tr,
-                style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w400, fontSize: 13),
+                'You can set later, but your experience will be limited untill you submit all'
+                    .tr,
+                style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 13),
               ),
               // profileController.selectedPlan == '1' ?
               // Column(
@@ -217,7 +222,8 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                     // key: paymentReceiptCertificateKey,
                     title: "Id Card Front".tr,
                     file: idCardFront,
-                    validation: checkValidation(showValidation.value,idCardFront.path.isEmpty),
+                    validation: checkValidation(
+                        showValidation.value, idCardFront.path.isEmpty),
                     filePicked: (File g) {
                       idCardFront = g;
                     },
@@ -226,7 +232,8 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                     // key: paymentReceiptCertificateKey,
                     title: "Id Card Back".tr,
                     file: idCardBack,
-                    validation: checkValidation(showValidation.value, idCardBack.path.isEmpty),
+                    validation: checkValidation(
+                        showValidation.value, idCardBack.path.isEmpty),
                     filePicked: (File g) {
                       memorandum_of_association = g;
                     },
@@ -234,17 +241,19 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                   ImageWidget(
                     // key: paymentReceiptCertificateKey,
                     title: "Commercial License ".tr,
-                    file: commercialLicense ,
-                    validation: checkValidation(showValidation.value, commercialLicense .path.isEmpty),
+                    file: commercialLicense,
+                    validation: checkValidation(
+                        showValidation.value, commercialLicense.path.isEmpty),
                     filePicked: (File g) {
-                      commercialLicense  = g;
+                      commercialLicense = g;
                     },
                   ),
                   ImageWidget(
                     // key: paymentReceiptCertificateKey,
                     title: "Original civil information ".tr,
                     file: original_civil_information,
-                    validation: checkValidation(showValidation.value, original_civil_information.path.isEmpty),
+                    validation: checkValidation(showValidation.value,
+                        original_civil_information.path.isEmpty),
                     filePicked: (File g) {
                       original_civil_information = g;
                     },
@@ -253,7 +262,8 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                     // key: paymentReceiptCertificateKey,
                     title: "Authorized Signatory".tr,
                     file: authorizedSignature,
-                    validation: checkValidation(showValidation.value, authorizedSignature.path.isEmpty),
+                    validation: checkValidation(
+                        showValidation.value, authorizedSignature.path.isEmpty),
                     filePicked: (File g) {
                       authorizedSignature = g;
                     },
@@ -262,12 +272,12 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                     // key: paymentReceiptCertificateKey,
                     title: "Company bank account".tr,
                     file: company_bank_account,
-                    validation: checkValidation(showValidation.value, company_bank_account.path.isEmpty),
+                    validation: checkValidation(showValidation.value,
+                        company_bank_account.path.isEmpty),
                     filePicked: (File g) {
                       company_bank_account = g;
                     },
                   ),
-
                 ],
               ),
               // profileController.selectedPlan == '2' ?
@@ -307,7 +317,6 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                   // {
                   //   updateProfile();
                   // }
-
                 },
               ),
               const SizedBox(
@@ -315,7 +324,6 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
               ),
               GestureDetector(
                 onTap: () {
-
                   Get.to(const VerificationOptionScreen());
                 },
                 child: Container(
@@ -328,8 +336,9 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                     ),
                     borderRadius: BorderRadius.circular(2), // Border radius
                   ),
-                  padding: const EdgeInsets.all(10), // Padding inside the container
-                  child:  Center(
+                  padding:
+                      const EdgeInsets.all(10), // Padding inside the container
+                  child: Center(
                     child: Text(
                       'I will set later'.tr,
                       style: const TextStyle(
@@ -341,6 +350,7 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                   ),
                 ),
               ),
+
               const SizedBox(
                 height: 40,
               ),
@@ -357,12 +367,15 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
       builder: (BuildContext context) => CupertinoActionSheet(
         title: const Text(
           'Select Picture from',
-          style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
+          style: TextStyle(
+              color: Colors.black, fontSize: 18, fontWeight: FontWeight.w600),
         ),
         actions: <CupertinoActionSheetAction>[
           CupertinoActionSheetAction(
             onPressed: () {
-              Helpers.addImagePicker(imageSource: ImageSource.camera, imageQuality: 50).then((value) async {
+              Helpers.addImagePicker(
+                      imageSource: ImageSource.camera, imageQuality: 50)
+                  .then((value) async {
                 CroppedFile? croppedFile = await ImageCropper().cropImage(
                   sourcePath: value.path,
                   // aspectRatioPresets: [
@@ -379,7 +392,8 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                         toolbarWidgetColor: Colors.white,
                         initAspectRatio: CropAspectRatioPreset.ratio4x3,
                         lockAspectRatio: true),
-                    IOSUiSettings(title: 'Cropper', aspectRatioLockEnabled: true),
+                    IOSUiSettings(
+                        title: 'Cropper', aspectRatioLockEnabled: true),
                     WebUiSettings(
                       context: context,
                     ),
@@ -397,7 +411,9 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
           ),
           CupertinoActionSheetAction(
             onPressed: () {
-              Helpers.addImagePicker(imageSource: ImageSource.gallery, imageQuality: 75).then((value) async {
+              Helpers.addImagePicker(
+                      imageSource: ImageSource.gallery, imageQuality: 75)
+                  .then((value) async {
                 CroppedFile? croppedFile = await ImageCropper().cropImage(
                   sourcePath: value.path,
                   // aspectRatioPresets: [
@@ -459,7 +475,8 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
         color: Colors.grey.shade500,
         strokeWidth: 1,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: AddSize.padding16, vertical: AddSize.padding16),
+          padding: EdgeInsets.symmetric(
+              horizontal: AddSize.padding16, vertical: AddSize.padding16),
           width: AddSize.screenWidth,
           decoration: BoxDecoration(
             color: Colors.grey.shade50,
@@ -467,36 +484,39 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
           ),
           child: controller.productImage.path.isNotEmpty
               ? Container(
-            constraints: BoxConstraints(minHeight: 0, maxHeight: context.getSize.width * .36),
-            child: Image.file(
-              controller.productImage,
-              errorBuilder: (_, __, ___) => Image.network(
-                controller.productImage.path,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
-              ),
-            ),
-          )
+                  constraints: BoxConstraints(
+                      minHeight: 0, maxHeight: context.getSize.width * .36),
+                  child: Image.file(
+                    controller.productImage,
+                    errorBuilder: (_, __, ___) => Image.network(
+                      controller.productImage.path,
+                      errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                    ),
+                  ),
+                )
               : Column(
-            children: [
-              const Image(
-                height: 30,
-                image: AssetImage(
-                  'assets/icons/pdfdownload.png',
+                  children: [
+                    const Image(
+                      height: 30,
+                      image: AssetImage(
+                        'assets/icons/pdfdownload.png',
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text(
+                      "Upload Product image".tr,
+                      style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.w300,
+                          color: const Color(0xff463B57),
+                          fontSize: AddSize.font14),
+                    ),
+                    SizedBox(
+                      height: height * .01,
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              Text(
-                "Upload Product image".tr,
-                style: GoogleFonts.poppins(
-                    fontWeight: FontWeight.w300, color: const Color(0xff463B57), fontSize: AddSize.font14),
-              ),
-              SizedBox(
-                height: height * .01,
-              ),
-            ],
-          ),
         ),
       ),
     );
