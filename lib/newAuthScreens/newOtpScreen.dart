@@ -41,8 +41,10 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
   String email = "";
   Map<String, dynamic> tempMap = {};
   verifyOtp() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    String? token1 = await FirebaseMessaging.instance.getToken();
+        var _firebaseMessaging = FirebaseMessaging.instance;
+   String? token = (Platform.isIOS
+        ? await _firebaseMessaging.getAPNSToken()
+        : await _firebaseMessaging.getToken());
     if (_otpController.text.trim().isEmpty) {
       showToast("Please enter OTP".tr);
       return;
@@ -56,7 +58,7 @@ class _NewOtpScreenState extends State<NewOtpScreen> {
     map['email'] = email;
     map['otp'] = _otpController.text.trim();
     map['fcm_token'] =
-        Platform.isAndroid ? token.toString() : token1.toString();
+        token;
     map['key'] = 'forget';
     repositories
         .postApi(

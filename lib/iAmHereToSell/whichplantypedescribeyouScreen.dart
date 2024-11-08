@@ -764,27 +764,28 @@ class _WhichplantypedescribeyouScreenState
                         const SizedBox(
                           height: 10,
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.shade300,
-                                offset: const Offset(
-                                  .1,
-                                  .1,
+                        profileController.selectedLAnguage.value == "English"
+                            ? ProductCard()
+                            : Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade300,
+                                      offset: const Offset(
+                                        .1,
+                                        .1,
+                                      ),
+                                      blurRadius: 20.0,
+                                      spreadRadius: 1.0,
+                                    ),
+                                  ],
                                 ),
-                                blurRadius: 20.0,
-                                spreadRadius: 1.0,
+                                child: Center(
+                                    child: Image.asset(
+                                  "assets/images/officecloudspace.png",
+                                )),
                               ),
-                            ],
-                          ),
-                          child: Center(
-                              child: profileController.selectedLAnguage.value == "English"
-                              ?Image.asset("assets/images/plan2a.png",)
-                              :Image.asset("assets/images/officecloudspace.png",)
-                          ),
-                        ),
                       ],
                     )),
               ],
@@ -933,27 +934,28 @@ class _WhichplantypedescribeyouScreenState
                         const SizedBox(
                           height: 10,
                         ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.shade300,
-                                offset: const Offset(
-                                  .1,
-                                  .1,
+                        profileController.selectedLAnguage.value == "English"
+                            ? ProductCard()
+                            : Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.shade300,
+                                      offset: const Offset(
+                                        .1,
+                                        .1,
+                                      ),
+                                      blurRadius: 20.0,
+                                      spreadRadius: 1.0,
+                                    ),
+                                  ],
                                 ),
-                                blurRadius: 20.0,
-                                spreadRadius: 1.0,
+                                child: Center(
+                                    child: Image.asset(
+                                  "assets/images/officecloudspace.png",
+                                )),
                               ),
-                            ],
-                          ),
-                          child: Center(
-                            child: profileController.selectedLAnguage.value == "English"
-                                  ?Image.asset("assets/images/plan3a.png",)
-                                  :Image.asset("assets/images/officecloudspace.png",)
-                          ),
-                        ),
                       ],
                     )),
               ],
@@ -1321,6 +1323,379 @@ class _WhichplantypedescribeyouScreenState
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class ProductCard extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.only(top: 4), // Optional: space above shadow
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+      
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1), // Shadow color
+            blurRadius: 8, // Spread of shadow
+            offset: const Offset(0, 0), // Only show shadow on top
+          ),
+        ],
+      ),
+      child: Card(
+        elevation: 4,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            // Header Section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(),
+                Container(),
+                Container(),
+                Text(
+                  "Orangetica",
+                  style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: Colors.black,
+                  ),
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 4, horizontal: 0),
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/profrec.png'),
+                        fit: BoxFit.fitWidth),
+                    // color: Colors.lightBlue[100],
+                    //  borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    "    Listing View  ",
+                    style:
+                        GoogleFonts.poppins(fontSize: 12, color: Colors.white),
+                  ),
+                ),
+              ],
+            ),
+
+            // Sale Tag
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.red,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      "SALE 20%",
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const Icon(
+                    Icons.favorite_border,
+                    color: Colors.red,
+                  ),
+                ],
+              ),
+            ),
+
+            // Product Image
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/images/profimage.png', // Replace with actual image URL
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+
+            // Product Description
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: RichText(
+                text: TextSpan(
+                  style:
+                      GoogleFonts.poppins(fontSize: 14, color: Colors.black87),
+                  children: [
+                    const TextSpan(
+                      text:
+                          "Elegant and fancy orange leather sofa, engineered in house with the highest quality material.. ",
+                    ),
+                    TextSpan(
+                      text: "Read",
+                      style: GoogleFonts.poppins(
+                        color: Colors.blue,
+                        fontSize: 14,
+                        decoration: TextDecoration.underline,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Pricing
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  // Original Price
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "1000",
+                            style: GoogleFonts.poppins(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                                decoration: TextDecoration.lineThrough,
+                                decorationColor: Colors.red,
+                                decorationThickness: 2.5),
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                ".000",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 10,
+                                  fontWeight:FontWeight.w600,
+                                  color: Colors.grey,
+                                  // decoration: TextDecoration.lineThrough,
+                                  // decorationColor: Colors.red,
+                                  // decorationThickness: 3.5,
+                                ),
+                              ),
+                              Text(
+                                "KWD",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 10,
+                                  fontWeight:FontWeight.w600,
+                                  // decoration: TextDecoration.lineThrough,
+                                  // decorationColor: Colors.red,
+                                  // decorationThickness: 2.5,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 16),
+                  // Discounted Price
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(
+                            "800",
+                            style: GoogleFonts.poppins(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black,
+                            ),
+                          ),
+                          Column(
+                            children: [
+                              Text(
+                                ".000",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 10,
+                                  // fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Text(
+                                "KWD",
+                                style: GoogleFonts.poppins(
+                                  fontSize: 10,
+                                  //  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+
+            // Rating and Reviews
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                children: [
+                  const Icon(Icons.star, color: Colors.amber, size: 20),
+                  const Icon(Icons.star, color: Colors.amber, size: 20),
+                  const Icon(Icons.star, color: Colors.amber, size: 20),
+                  const Icon(Icons.star, color: Colors.amber, size: 20),
+                  const Icon(Icons.star, color: Colors.amber, size: 20),
+                  const SizedBox(width: 8),
+                  Text(
+                    "100 VRLs",
+                    style: GoogleFonts.poppins(
+                      color: const Color(0xff0D5877),
+                      fontSize: 12,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  const Spacer(),
+                  Row(
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.remove, color: Colors.blue),
+                        onPressed: () {},
+                      ),
+                      Text("1", style: GoogleFonts.poppins(fontSize: 16)),
+                      IconButton(
+                        icon: const Icon(Icons.add, color: Colors.blue),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // Shipping and Arrival
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                "Free shipping &",
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black87,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: "estimated arrival by ",
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: Colors.black87,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Text(
+                "tomorrow",
+                style: GoogleFonts.poppins(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 5,
+            ),
+
+            // Quantity Selector and Buttons
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // Quantity Selector
+
+                  // Buttons
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xffFF0000),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "Buy Now",
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xff014E70),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                      ),
+                      onPressed: () {},
+                      child: Text(
+                        "ADD TO CART",
+                        style: GoogleFonts.poppins(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            )
+          ],
         ),
       ),
     );
