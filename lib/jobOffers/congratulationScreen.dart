@@ -72,6 +72,7 @@ class _CongratulationScreenState extends State<CongratulationScreen> {
             children: [
               Image.asset('assets/images/new_logo.png',height: 200,width: 200,),
               Text('Your job profile has been published successfully'.tr,
+              textAlign: TextAlign.center,
                 style: GoogleFonts.poppins(color: const Color(0xff0D5877), fontWeight: FontWeight.w600, fontSize: 30),
               ),
               SizedBox(height: 10,),

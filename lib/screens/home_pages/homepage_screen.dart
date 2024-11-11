@@ -111,9 +111,10 @@ class _HomePageState extends State<HomePage> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text(
-              'Location services are disabled. Please enable the services')));
+      showToast('Location services are disabled. Please enable the services');
+      // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text(
+      //         'Location services are disabled. Please enable the services')));
       return false;
     }
 
@@ -594,6 +595,7 @@ class _HomePageState extends State<HomePage> {
                 InkWell(
                   onTap: () {
                     bottomController.scaffoldKey.currentState!.openDrawer();
+                    
 
                     // bottomController.updateIndexValue(3);
                   },

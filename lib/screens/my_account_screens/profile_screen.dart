@@ -78,27 +78,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Stack(
                               alignment: Alignment.center,
                               children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: profileCircleColor, width: 1.2)),
-                                  height: 140,
-                                  width: 140,
-                                ).animate().scale(
-                                    duration: const Duration(seconds: 1),
-                                    begin: const Offset(0.6, 0.6),
-                                    end: const Offset(1, 1)),
-                                // if(false)
-                                Container(
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      border: Border.all(color: profileCircleColor, width: 1.2)),
-                                  height: 125,
-                                  width: 125,
-                                ).animate(delay: const Duration(milliseconds: 800)).fade(delay: 200.ms).then().scale(
-                                    duration: const Duration(milliseconds: 600),
-                                    begin: const Offset(1.12, 1.12),
-                                    end: const Offset(1, 1)),
+                                // Container(
+                                //   decoration: BoxDecoration(
+                                //       shape: BoxShape.circle,
+                                //       border: Border.all(color: profileCircleColor, width: 1.2)),
+                                //   height: 140,
+                                //   width: 140,
+                                // ).animate().scale(
+                                //     duration: const Duration(seconds: 1),
+                                //     begin: const Offset(0.6, 0.6),
+                                //     end: const Offset(1, 1)),
+                                // // if(false)
+                                // Container(
+                                //   decoration: BoxDecoration(
+                                //       shape: BoxShape.circle,
+                                //       border: Border.all(color: profileCircleColor, width: 1.2)),
+                                //   height: 125,
+                                //   width: 125,
+                                // ).animate(delay: const Duration(milliseconds: 800)).fade(delay: 200.ms).then().scale(
+                                //     duration: const Duration(milliseconds: 600),
+                                //     begin: const Offset(1.12, 1.12),
+                                //     end: const Offset(1, 1)),
                                 // if(false)
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(10000),

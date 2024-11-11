@@ -59,7 +59,7 @@ class _AuthorScreenState extends State<AuthorScreen> {
                   ? Padding(
                       padding: const EdgeInsets.fromLTRB(0, 20, 0, 18),
                       child: SizedBox(
-                          height: size.height * 0.29,
+                          height: size.height * 0.20,
                           child: ListView.builder(
                             itemCount: homeController
                                 .getFeaturedModel.value.data!.length,

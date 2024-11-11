@@ -668,8 +668,8 @@ class LocaleString extends Translations {
           'Category' : 'Category',
           'I will set later' : 'I will set later',
           'Credit card' : 'Credit card',
-          'We ask you for your credit card to make sure that you are not a robot, helps us reduce fraud and theft.  Any charges, will be refunded. No auto-charge after free trial ends' :
-              'We ask you for your credit card to make sure that you are not a robot, helps us reduce fraud and theft.  Any charges, will be refunded. No auto-charge after free trial ends',
+          'We ask you for your credit card to make sure that you are not a robot, helps us reduce fraud and theft. Any charges, will be refunded. No auto-charge after free trial ends' :
+              'We ask you for your credit card to make sure that you are not a robot, helps us reduce fraud and theft. Any charges, will be refunded. No auto-charge after free trial ends',
           'Virtual Meeting' : 'Virtual Meeting',
           'Schedule a time for the verification' : 'Schedule a time for the verification',
           'Voice Call' : 'Voice Call',
@@ -798,7 +798,7 @@ class LocaleString extends Translations {
        // 'Voice Call' : 'مكالمة صوتية',
        // 'Schedule a time for the verification' : 'حدد موعدًا للتحقق',
        // 'Virtual Meeting' : 'اجتماع افتراضي',
-       //   'We ask you for your credit card to make sure that you are not a robot, helps us reduce fraud and theft.  Any charges, will be refunded. No auto-charge after free trial ends' : 'نطلب منك بطاقة الائتمان الخاصة بك للتأكد من أنك لست روبوتًا، فهذا يساعدنا على تقليل عمليات الاحتيال والسرقة.  أي رسوم، سيتم ردها. لا توجد رسوم تلقائية بعد انتهاء النسخة التجريبية المجانية',
+       //   'We ask you for your credit card to make sure that you are not a robot, helps us reduce fraud and theft. Any charges, will be refunded. No auto-charge after free trial ends' : 'نطلب منك بطاقة الائتمان الخاصة بك للتأكد من أنك لست روبوتًا، فهذا يساعدنا على تقليل عمليات الاحتيال والسرقة. أي رسوم، سيتم ردها. لا توجد رسوم تلقائية بعد انتهاء النسخة التجريبية المجانية',
        // 'Credit card' : 'بطاقة إئتمان',
        // 'I will set later' : 'سأضع لاحقا',
        // 'Category' : 'فئة',
@@ -2458,7 +2458,7 @@ class LocaleString extends Translations {
        'policy description' : 'وصف السياسة',
        'Select return shipping fees' : 'حدد رسوم إعادة الشحن',
        'Who will pay the shipping' : 'من سيدفع الشحن',
-       'I will pay the shipping ' : 'سأدفع الشحن',
+       'I will pay the shipping' : 'سأدفع الشحن',
        'Customer' : 'عميل',
        'Choose Delivery According To Package Size' : 'اختر التسليم حسب حجم الحزمة',
        'Select who will pay the shipping' : 'حدد من سيدفع الشحن',

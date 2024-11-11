@@ -1,4 +1,4 @@
- import 'dart:convert';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:dirise/language/app_strings.dart';
@@ -38,7 +38,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.acceptHeader: "application/json",
     };
-    final response = await http.post(Uri.parse(ApiUrls.forgotPasswordUrl), body: jsonEncode(map), headers: header);
+    final response = await http.post(Uri.parse(ApiUrls.forgotPasswordUrl),
+        body: jsonEncode(map), headers: header);
     if (response.statusCode == 200 || response.statusCode == 400) {
       log(response.body);
       Helpers.hideLoader(loader);
@@ -48,6 +49,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       throw Exception(response.body);
     }
   }
+
   final profileController = Get.put(ProfileController());
   @override
   Widget build(BuildContext context) {
@@ -59,17 +61,17 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
           surfaceTintColor: Colors.white,
           elevation: 0,
           leading: IconButton(
-            icon: profileController.selectedLAnguage.value != 'English' ?
-            Image.asset(
-              'assets/images/forward_icon.png',
-              height: 19,
-              width: 19,
-            ) :
-            Image.asset(
-              'assets/images/back_icon_new.png',
-              height: 19,
-              width: 19,
-            ),
+            icon: profileController.selectedLAnguage.value != 'English'
+                ? Image.asset(
+                    'assets/images/forward_icon.png',
+                    height: 19,
+                    width: 19,
+                  )
+                : Image.asset(
+                    'assets/images/back_icon_new.png',
+                    height: 19,
+                    width: 19,
+                  ),
             onPressed: () => Navigator.of(context).pop(),
           ),
           titleSpacing: 0,
@@ -77,8 +79,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-               AppStrings.forgotPassword.tr,
-                style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 22),
+                AppStrings.forgotPassword.tr,
+                style: GoogleFonts.poppins(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 22),
               ),
             ],
           ),
@@ -90,10 +95,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                 padding: const EdgeInsets.only(left: 13, right: 13),
                 child: Column(children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0, right: 8, top: 10),
+                    padding:
+                        const EdgeInsets.only(left: 8.0, right: 8, top: 10),
                     child: Text(
                       AppStrings.associatedAccount.tr,
-                      style: GoogleFonts.poppins(color: AppTheme.buttonColor, fontSize: 18),
+                      style: GoogleFonts.poppins(
+                          color: AppTheme.buttonColor, fontSize: 18),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -103,7 +110,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   CommonTextField(
                       controller: emailController,
                       validator: MultiValidator([
-                        RequiredValidator(errorText: AppStrings.emailRequired.tr),
+                        RequiredValidator(
+                            errorText: AppStrings.emailRequired.tr),
                         EmailValidator(errorText: AppStrings.validEmail.tr),
                       ]),
                       obSecure: false,
@@ -115,17 +123,24 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     title: AppStrings.sendOtp.tr,
                     onPressed: () {
                       if (!formKey.currentState!.validate()) return;
-                      forgotPasswordRepo(email: emailController.text, context: context).then((value) {
+                      forgotPasswordRepo(
+                              email: emailController.text, context: context)
+                          .then((value) {
                         if (value.status == true) {
                           profileController.selectedLAnguage.value == "English"
-                          ?showToast(value.message.toString())
-                          :showToast("تم إرسال مكتب المدعي العام بنجاح إلى عنوان البريد الإلكتروني للمستخدم");
-                          print("value.message.toString()");
+                              ? showToast(value.message.toString())
+                              : showToast(
+                                  "تم إرسال مكتب المدعي العام بنجاح إلى عنوان البريد الإلكتروني للمستخدم");
+                          print(
+                              "value.message.toString() ${value.message.toString()}");
                           var map = <String, dynamic>{};
                           map['email'] = emailController.text.trim();
-                          Get.toNamed(OtpScreen.route, arguments: [emailController.text, false, map]);
+                          Get.toNamed(OtpScreen.route,
+                              arguments: [emailController.text, false, map]);
                         } else {
-                          showToast(value.message.toString());
+                          profileController.selectedLAnguage.value == "English"
+                              ? showToast(value.message.toString())
+                              : showToast("البريد الإلكتروني المحدد غير صالح");
                         }
                       });
                     },

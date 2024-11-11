@@ -1199,6 +1199,7 @@ class _SingleCategoriesState extends State<SingleCategories> {
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: InkWell(
               onTap: () {
+              
                 Get.to(
                   () => SingleStoreScreen(
                       category: widget.vendorCategories.name,
