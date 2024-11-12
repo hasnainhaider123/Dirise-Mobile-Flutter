@@ -87,7 +87,7 @@ class _VerificationOptionScreenState extends State<VerificationOptionScreen> {
             Stack(
               children: [
                 Container(
-                  height: 200,
+                  height: MediaQuery.of(context).size.height*0.27,
                   margin: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 15),
                   padding: const EdgeInsets.only(left: 15, right: 15, top: 20),
                   decoration: BoxDecoration(
@@ -126,14 +126,20 @@ class _VerificationOptionScreenState extends State<VerificationOptionScreen> {
                       ),
                       Flexible(
                         child: Text(
-                          'We ask you for your credit card to make sure that you are not a robot, helps us reduce fraud and theft.  Any charges, will be refunded. No auto-charge after free trial ends'.tr,
+                          'We ask you for your credit card to make sure that you are not a robot, helps us reduce fraud and theft.  Any charges, will be refunded. No auto-charge after free trial ends.'.tr,
                           style: GoogleFonts.poppins(fontWeight: FontWeight.w400, fontSize: 14, color: Colors.black),
                         ),
+                      ),
+                       const SizedBox(
+                        height: 10,
                       ),
                       Text(
                         'Not available in your region'.tr,
                         style: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 16, color: Colors.black),
-                      )
+                      ),
+                       const SizedBox(
+                        height: 5,
+                      ),
                     ],
                   ),
                 ),

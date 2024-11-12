@@ -47,7 +47,7 @@ TextEditingController phoneController = TextEditingController();
   String selectedRadio = '';
   String code = '';
   void _validateAndProceed() {
-    if(date.text.isEmpty){showToast("Please select date");}
+    if(date.text.isEmpty){showToast("Please select date by clicking on icon");}
   else  if (selectedRadio == "email" && emailController.text.isEmpty) {
       showToast("Please enter email");
     } else if (selectedRadio == "phone" && phoneController.text.isEmpty) {

@@ -264,7 +264,11 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
     //   map["variation"] = selectedVariant!.id.toString();
     // }
     repositories
-        .postApi(url: ApiUrls.addToCartUrl, mapData: map, context: context,showResponse: true)
+        .postApi(
+            url: ApiUrls.addToCartUrl,
+            mapData: map,
+            context: context,
+            showResponse: true)
         .then((value) {
       ModelCommonResponse response =
           ModelCommonResponse.fromJson(jsonDecode(value));
@@ -515,20 +519,20 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
             const SizedBox(
               width: 13,
             ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  search.value = !search.value;
-                });
-              },
-              child: SvgPicture.asset(
-                'assets/svgs/search_icon_new.svg',
-                width: 28,
-                height: 28,
-                // color: Colors.white,
-              ),
-              // child : Image.asset('assets/images/search_icon_new.png')
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     setState(() {
+            //       search.value = !search.value;
+            //     });
+            //   },
+            //   child: SvgPicture.asset(
+            //     'assets/svgs/search_icon_new.svg',
+            //     width: 28,
+            //     height: 28,
+            //     // color: Colors.white,
+            //   ),
+            //   // child : Image.asset('assets/images/search_icon_new.png')
+            // ),
           ],
         ),
         actions: const [
@@ -1619,7 +1623,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                             ),
                             Expanded(
                               child: Text(
-                                maxLines: 1,
+                                //maxLines: 1,
                                 "${locationController.addressListModel.value.defaultAddress!.city ?? ''},"
                                 " ${locationController.addressListModel.value.defaultAddress!.state ?? ''},"
                                 " ${locationController.addressListModel.value.defaultAddress!.country ?? ''}",
@@ -1812,30 +1816,63 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                             // Image.asset("assets/svgs/pak.png"),
 
                             Text(
+                              'Country:',
+                              style: GoogleFonts.poppins(
+                                  // color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Text(
                               modelSingleProduct
                                   .value.simpleProduct!.storemeta!.storeLocation
                                   .toString(),
                               style: GoogleFonts.poppins(
-                                  color: Colors.grey,
+                                  // color: Colors.grey,
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w600),
+                                  fontWeight: FontWeight.w400),
+                            ),
+                            // Text(
+                            //   modelSingleProduct
+                            //       .value.simpleProduct!.storemeta!.storeCategory
+                            //       .toString(),
+                            //   style: GoogleFonts.poppins(
+                            //       color: Colors.grey,
+                            //       fontSize: 14,
+                            //       fontWeight: FontWeight.w500),
+                            // ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 13,
+                        ),
+                        Row(
+                          children: [
+                            // Image.asset("assets/svgs/pak.png"),
+
+                            Text(
+                              'Category:',
+                              style: GoogleFonts.poppins(
+                                  // color: Colors.grey,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700),
                             ),
                             const SizedBox(
-                              width: 30,
+                              width: 10,
                             ),
+
                             Text(
                               modelSingleProduct
                                   .value.simpleProduct!.storemeta!.storeCategory
                                   .toString(),
                               style: GoogleFonts.poppins(
-                                  color: Colors.grey,
+                                  // color: Colors.grey,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w500),
                             ),
                           ],
-                        ),
-                        const SizedBox(
-                          height: 13,
                         ),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -195,7 +195,7 @@ class _InternationalshippingdetailsScreenState extends State<Internationalshippi
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Item Weight & Dimensions'.tr,
+              'Item Weight & Dimensionss'.tr,
               style: GoogleFonts.poppins(color: const Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 20),
             ),
           ],
@@ -211,7 +211,7 @@ class _InternationalshippingdetailsScreenState extends State<Internationalshippi
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'We use this information to estimate your shipping prices. If you plan to ship internationally or your item is bigger than 5kg or 0.05 CBM then you must fill all the details below.'.tr,
+                  'We use thisss information to estimate your shipping prices. If you plan to ship internationally or your item is bigger than 5kg or 0.05 CBM then you must fill all the details below.'.tr,
                   style: GoogleFonts.poppins(color: const Color(0xff292F45), fontWeight: FontWeight.w500, fontSize: 18),
                 ),
                 SizedBox(

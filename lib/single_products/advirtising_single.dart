@@ -1004,9 +1004,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+
                         // Row(
                         //   children: [
                         //     Icon(Icons.circle,color: Colors.grey,size: 10,),
@@ -1034,9 +1032,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                         //
                         //   ],
                         // ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+
                         // Row(
                         //   children: [
                         //
@@ -1070,9 +1066,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                         //
                         //   ],
                         // ),
-                        const SizedBox(
-                          height: 20,
-                        ),
+
                         // SizedBox(
                         //   height: 20,
                         // ),
@@ -1214,7 +1208,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                         ),
 
                         const SizedBox(
-                          height: 20,
+                          height: 10,
                         ),
 
                         Text(
@@ -1224,9 +1218,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                               fontSize: 20,
                               fontWeight: FontWeight.w500),
                         ),
-                        const SizedBox(
-                          height: 16,
-                        ),
+
                         Row(
                           children: [
                             Text(
@@ -1247,23 +1239,26 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                             const SizedBox(
                               width: 7,
                             ),
-                            Obx(() {
-                              return Text(
-                                "${locationController.addressListModel.value.defaultAddress!.city ?? ''},"
-                                " ${locationController.addressListModel.value.defaultAddress!.state ?? ''},"
-                                " ${locationController.addressListModel.value.defaultAddress!.country ?? ''}",
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                                // locationController.addressListModel.value
-                                //         .defaultAddress!.city ??
-                                //     '',
-                                style: GoogleFonts.poppins(
-                                  color: const Color(0xFF014E70),
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              );
-                            })
+                            Expanded(
+                              child: Obx(() {
+                                return Text(
+                                  "${locationController.addressListModel.value.defaultAddress!.city ?? ''},"
+                                  " ${locationController.addressListModel.value.defaultAddress!.state ?? ''},"
+                                  "\n ${locationController.addressListModel.value.defaultAddress!.country ?? ''}",
+
+                                  softWrap: true,
+
+                                  // locationController.addressListModel.value
+                                  //         .defaultAddress!.city ??
+                                  //     '',
+                                  style: GoogleFonts.poppins(
+                                    color: const Color(0xFF014E70),
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                );
+                              }),
+                            )
                             // Text(
                             //   locationController.city.toString(),
                             //   style: GoogleFonts.poppins(
@@ -1302,9 +1297,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                         //     ),
                         //   ],
                         // ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+
                         // Row(
                         //   // mainAxisAlignment: MainAxisAlignment.start,
                         //   // crossAxisAlignment: CrossAxisAlignment.start,
@@ -1542,7 +1535,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                                       fontWeight: FontWeight.w400),
                                 ),
                               ),
-                      const  SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         const SizedBox(

@@ -77,9 +77,9 @@ class _SinglePInternationalshippingdetailsScreenState extends State<SinglePInter
   String selectNumberOfPackages = '1';
   List<String> selectNumberOfPackagesList = List.generate(30, (index) => (index + 1).toString());
 
-  String selectTypeMaterial = 'Select Material';
+  String selectTypeMaterial = 'Select material';
   List<String> selectTypeMaterialList = [
-    'Select Material',
+    'Select material',
     'Paper',
     'Plastic',
     'Glass',
@@ -211,7 +211,7 @@ class _SinglePInternationalshippingdetailsScreenState extends State<SinglePInter
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Item Weight & Dimensions'.tr,
+              'Item weight & dimensions'.tr,
               style: GoogleFonts.poppins(color: const Color(0xff292F45), fontWeight: FontWeight.w600, fontSize: 20),
             ),
           ],
@@ -378,7 +378,7 @@ class _SinglePInternationalshippingdetailsScreenState extends State<SinglePInter
                   ),
                   validator: (value) {
                     if (value!.trim().isEmpty) {
-                      return 'Number of Package is required'.tr;
+                      return 'Number of package is required'.tr;
                     }
                     return null; // Return null if validation passes
                   },
@@ -426,7 +426,7 @@ class _SinglePInternationalshippingdetailsScreenState extends State<SinglePInter
                       borderSide: BorderSide(color: AppTheme.secondaryColor),
                     ),
                   ),
-                  hint: Text("Select Material".tr),
+                  hint: Text("Select material".tr),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please select an item'.tr;
@@ -568,7 +568,7 @@ class _SinglePInternationalshippingdetailsScreenState extends State<SinglePInter
                       borderSide: BorderSide(color: AppTheme.secondaryColor),
                     ),
                   ),
-                  hint: Text("Select Type".tr,
+                  hint: Text("Select type".tr,
                   style: TextStyle(fontWeight: FontWeight.w600),),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
