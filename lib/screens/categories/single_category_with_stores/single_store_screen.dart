@@ -1344,8 +1344,8 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                               } else {
                                 double size = widget.category == 'Cars' ||
                                         widget.category == 'Real Estate'
-                                    ? 1.2
-                                    : 0.63;
+                                    ? 1.3
+                                    : 0.76;
 
                                 return SliverGrid.builder(
                                     gridDelegate:

@@ -77,7 +77,7 @@ class _HomeAddEditAddressLoginState extends State<HomeAddEditAddressLogin> {
           ModelCommonResponse.fromJson(jsonDecode(value));
       if (response.status == true) {
         profileController.selectedLAnguage.value == "English"
-            ? showToast(response.message)
+            ? showToast('Default address saved successfully')
             : showToast("تم تسجيل الدخول إلى حسابك بنجاح");
         print("Toast---: ${response.message}");
         locationController.getAddress();
