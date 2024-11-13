@@ -240,15 +240,15 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                       commercialLicense  = g;
                     },
                   ),
-                  ImageWidget(
-                    // key: paymentReceiptCertificateKey,
-                    title: "Original civil information ".tr,
-                    file: original_civil_information,
-                    validation: checkValidation(showValidation.value, original_civil_information.path.isEmpty),
-                    filePicked: (File g) {
-                      original_civil_information = g;
-                    },
-                  ),
+                  // ImageWidget(
+                  //   // key: paymentReceiptCertificateKey,
+                  //   title: "Original civil information ".tr,
+                  //   file: original_civil_information,
+                  //   validation: checkValidation(showValidation.value, original_civil_information.path.isEmpty),
+                  //   filePicked: (File g) {
+                  //     original_civil_information = g;
+                  //   },
+                  // ),
                   ImageWidget(
                     // key: paymentReceiptCertificateKey,
                     title: "Authorized Signatory".tr,
@@ -260,7 +260,7 @@ class _RequiredDocumentsScreenState extends State<RequiredDocumentsScreen> {
                   ),
                   ImageWidget(
                     // key: paymentReceiptCertificateKey,
-                    title: "Company bank account".tr,
+                    title: "Corporate Bank Account Name".tr,
                     file: company_bank_account,
                     validation: checkValidation(showValidation.value, company_bank_account.path.isEmpty),
                     filePicked: (File g) {

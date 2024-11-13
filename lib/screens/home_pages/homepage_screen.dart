@@ -111,7 +111,10 @@ class _HomePageState extends State<HomePage> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      showToast('Location services are disabled. Please enable the services');
+      profileController.selectedLAnguage.value == "English"
+          ? showToast(
+              'Location services are disabled. Please enable the services')
+          : showToast('خدمات الموقع غير مفعلّة. يرجى تفعيل الخدمات');
       // ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
       //     content: Text(
       //         'Location services are disabled. Please enable the services')));
@@ -595,7 +598,6 @@ class _HomePageState extends State<HomePage> {
                 InkWell(
                   onTap: () {
                     bottomController.scaffoldKey.currentState!.openDrawer();
-                    
 
                     // bottomController.updateIndexValue(3);
                   },

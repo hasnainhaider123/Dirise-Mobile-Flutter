@@ -1622,20 +1622,24 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                               width: 7,
                             ),
                             Expanded(
-                              child: Text(
-                                //maxLines: 1,
-                                "${locationController.addressListModel.value.defaultAddress!.city ?? ''},"
-                                " ${locationController.addressListModel.value.defaultAddress!.state ?? ''},"
-                                " ${locationController.addressListModel.value.defaultAddress!.country ?? ''}",
-                                overflow: TextOverflow.ellipsis,
-                                softWrap: true,
-                                // overflow: TextOverflow.ellipsis,
-                                // '${locationController.countryName.toString()} ${locationController.state.toString()} ${locationController.city.toString()}',
-                                style: GoogleFonts.poppins(
+                              child: Obx(() {
+                                // Ensure defaultAddress is not null before accessing its fields
+                                final defaultAddress = locationController
+                                    .addressListModel.value.defaultAddress;
+
+                                return Text(
+                                  defaultAddress != null
+                                      ? "${defaultAddress.city ?? ''}, ${defaultAddress.state ?? ''}, ${defaultAddress.country ?? ''}"
+                                      : 'No address available', // Fallback text if defaultAddress is null
+                                  overflow: TextOverflow.ellipsis,
+                                  softWrap: true,
+                                  style: GoogleFonts.poppins(
                                     color: const Color(0xFF014E70),
                                     fontSize: 14,
-                                    fontWeight: FontWeight.w500),
-                              ),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                );
+                              }),
                             ),
                           ],
                         ),

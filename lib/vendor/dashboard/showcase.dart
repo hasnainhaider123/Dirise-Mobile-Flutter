@@ -682,9 +682,11 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                       ),
                                     )
                                   : Positioned(
-                                      left: 0,
-                                      top: 0,
+                                       left: 0,
+                                      bottom: 0,
                                       child: Container(
+                                        height: 40,
+                                        width: 60,
                                         decoration: BoxDecoration(
                                             boxShadow: [
                                               const BoxShadow(
@@ -702,6 +704,7 @@ class _ShowCaseProductsState extends State<ShowCaseProducts> {
                                                 .withOpacity(0.6)),
                                         child: Text(
                                           " Showcase ".tr,
+                                          textAlign: TextAlign.center,
                                           style: GoogleFonts.poppins(
                                               fontSize: 20,
                                               fontWeight: FontWeight.w400,

@@ -485,20 +485,20 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
             const SizedBox(
               width: 20,
             ),
-            InkWell(
-              onTap: () {
-                // setState(() {
-                //   search.value = !search.value;
-                // });
-              },
-              child: SvgPicture.asset(
-                'assets/svgs/search_icon_new.svg',
-                width: 28,
-                height: 28,
-                // color: Colors.white,
-              ),
-              // child : Image.asset('assets/images/search_icon_new.png')
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     // setState(() {
+            //     //   search.value = !search.value;
+            //     // });
+            //   },
+            //   child: SvgPicture.asset(
+            //     'assets/svgs/search_icon_new.svg',
+            //     width: 28,
+            //     height: 28,
+            //     // color: Colors.white,
+            //   ),
+            //   // child : Image.asset('assets/images/search_icon_new.png')
+            // ),
           ],
         ),
         actions: [
@@ -1402,174 +1402,57 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                         Row(
                           children: [
                             // Image.asset("assets/svgs/pak.png"),
-
                             Text(
-                              modelSingleProduct.value.advertisingProduct!
-                                  .storemeta!.storeLocation
-                                  .toString(),
+                              'Country:',
                               style: GoogleFonts.poppins(
-                                  color: Colors.grey,
+                                  color: Colors.black,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(
                               width: 16,
                             ),
+
                             Text(
                               modelSingleProduct.value.advertisingProduct!
-                                  .storemeta!.storeCategory
+                                  .storemeta!.storeLocation
                                   .toString(),
                               style: GoogleFonts.poppins(
-                                  color: Colors.grey,
+                                //  color: Colors.grey,
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.w400),
                             ),
+
+                            
                           ],
                         ),
                         const SizedBox(
                           height: 13,
-                        ),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     Column(
-                        //       mainAxisAlignment: MainAxisAlignment.start,
-                        //       crossAxisAlignment: CrossAxisAlignment.start,
-                        //       children: [
-                        //
-                        //         Text(
-                        //           'Store rating',
-                        //           style: GoogleFonts.poppins(
-                        //
-                        //               color: Colors.grey,
-                        //               fontSize: 12,
-                        //               fontWeight: FontWeight.w400),
-                        //         ),
-                        //       ],
-                        //
-                        //     ),
-                        //
-                        //   ],
-                        // ),
-
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Divider(
-                          color: Colors.grey.withOpacity(.5),
-                          thickness: 1,
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          'Seller documents'.tr,
-                          style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-
-                        modelSingleProduct.value.advertisingProduct!.storemeta!
-                                    .commercialLicense !=
-                                ""
-                            ? Center(
-                                child: CachedNetworkImage(
-                                  imageUrl: modelSingleProduct
-                                      .value
-                                      .advertisingProduct!
-                                      .storemeta!
-                                      .commercialLicense
-                                      .toString(),
-                                  height: 180,
-                                  fit: BoxFit.cover,
-                                  // errorWidget: (_, __, ___) => Image.asset('assets/images/new_logo.png')
-                                ),
-                              )
-                            : Center(
-                                child: Text(
-                                  'No documents were uploaded by vendor '.tr,
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                        // Center(child: Image.asset("assets/svgs/licence.png")),
-
-                        const SizedBox(
-                          height: 25,
-                        ),
-                        Text(
-                          'Seller translated documents'.tr,
-                          style: GoogleFonts.poppins(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        modelSingleProduct.value.advertisingProduct!.storemeta!
-                                    .document2 !=
-                                ""
-                            ? Center(
-                                child: CachedNetworkImage(
-                                  imageUrl: modelSingleProduct.value
-                                      .advertisingProduct!.storemeta!.document2
-                                      .toString(),
-                                  height: 180,
-                                  fit: BoxFit.cover,
-                                  // errorWidget: (_, __, ___) => Image.asset('assets/images/new_logo.png')
-                                ),
-                              )
-                            : Center(
-                                child: Text(
-                                  'No documents were uploaded by vendor '.tr,
-                                  style: GoogleFonts.poppins(
-                                      color: Colors.black,
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w400),
-                                ),
-                              ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const SizedBox(
-                          height: 15,
                         ),
                         Row(
                           children: [
                             // Image.asset("assets/svgs/pak.png"),
-
                             Text(
-                              modelSingleProduct.value.advertisingProduct!
-                                  .storemeta!.storeLocation
-                                  .toString(),
+                              'Category:',
                               style: GoogleFonts.poppins(
-                                  color: Colors.grey,
+                                  color: Colors.black,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w600),
                             ),
                             const SizedBox(
                               width: 16,
                             ),
+
                             Text(
                               modelSingleProduct.value.advertisingProduct!
                                   .storemeta!.storeCategory
                                   .toString(),
                               style: GoogleFonts.poppins(
-                                  color: Colors.grey,
+                                 // color: Colors.grey,
                                   fontSize: 14,
-                                  fontWeight: FontWeight.w500),
+                                  fontWeight: FontWeight.w400),
                             ),
                           ],
-                        ),
-                        const SizedBox(
-                          height: 13,
                         ),
                         // Row(
                         //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -1601,6 +1484,33 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                           color: Colors.grey.withOpacity(.5),
                           thickness: 1,
                         ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Column(
+                        //       mainAxisAlignment: MainAxisAlignment.start,
+                        //       crossAxisAlignment: CrossAxisAlignment.start,
+                        //       children: [
+                        //
+                        //         Text(
+                        //           'Store rating',
+                        //           style: GoogleFonts.poppins(
+                        //
+                        //               color: Colors.grey,
+                        //               fontSize: 12,
+                        //               fontWeight: FontWeight.w400),
+                        //         ),
+                        //       ],
+                        //
+                        //     ),
+                        //
+                        //   ],
+                        // ),
+
                         const SizedBox(
                           height: 10,
                         ),
