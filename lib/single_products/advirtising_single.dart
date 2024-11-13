@@ -1241,16 +1241,16 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                             ),
                             Expanded(
                               child: Obx(() {
+                                // Ensure defaultAddress is not null before accessing its fields
+                                final defaultAddress = locationController
+                                    .addressListModel.value.defaultAddress;
+
                                 return Text(
-                                  "${locationController.addressListModel.value.defaultAddress!.city ?? ''},"
-                                  " ${locationController.addressListModel.value.defaultAddress!.state ?? ''},"
-                                  "\n ${locationController.addressListModel.value.defaultAddress!.country ?? ''}",
-
+                                  defaultAddress != null
+                                      ? "${defaultAddress.city ?? ''}, ${defaultAddress.state ?? ''}, ${defaultAddress.country ?? ''}"
+                                      : 'No address available', // Fallback text if defaultAddress is null
+                                  overflow: TextOverflow.ellipsis,
                                   softWrap: true,
-
-                                  // locationController.addressListModel.value
-                                  //         .defaultAddress!.city ??
-                                  //     '',
                                   style: GoogleFonts.poppins(
                                     color: const Color(0xFF014E70),
                                     fontSize: 14,
@@ -1258,7 +1258,8 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                                   ),
                                 );
                               }),
-                            )
+                            ),
+
                             // Text(
                             //   locationController.city.toString(),
                             //   style: GoogleFonts.poppins(
@@ -1418,12 +1419,10 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                                   .storemeta!.storeLocation
                                   .toString(),
                               style: GoogleFonts.poppins(
-                                //  color: Colors.grey,
+                                  //  color: Colors.grey,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400),
                             ),
-
-                            
                           ],
                         ),
                         const SizedBox(
@@ -1448,7 +1447,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                                   .storemeta!.storeCategory
                                   .toString(),
                               style: GoogleFonts.poppins(
-                                 // color: Colors.grey,
+                                  // color: Colors.grey,
                                   fontSize: 14,
                                   fontWeight: FontWeight.w400),
                             ),
