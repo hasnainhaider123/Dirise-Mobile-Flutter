@@ -577,7 +577,8 @@ class _ProductUIState extends State<ProductUI> {
                     ),
                     Text(
                       widget.productElement.pName.toString(),
-                      maxLines: 2,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                       style: GoogleFonts.poppins(
                           fontSize: 12,
                           fontWeight: FontWeight.w500,
