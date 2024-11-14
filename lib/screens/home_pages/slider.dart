@@ -98,7 +98,7 @@ class _SliderWidgetState extends State<SliderWidget> {
                     autoplayDelay: 5000,
                     autoplayDisableOnInteraction: false,
                     onTap: (index) {
-                      print('valueee:::::::${homeController.homeModal.value.home!.slider![index].id.toString()}');
+                      print('valueee:::::::${homeController.homeModal.value.home!.slider![index].bannerMobile.toString()}');
                       Get.to(() =>
                           SingleCategories(
                             vendorCategories:  VendorCategoriesData(id: homeController.homeModal.value.home!.slider![index].id.toString(),

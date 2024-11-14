@@ -495,7 +495,7 @@ class _ProductUIState extends State<ProductUI> {
                       children: [
                         widget.productElement.discountOff != '0.00'
                             ? Container(
-                                padding: const EdgeInsets.all(4),
+                                padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                     color: const Color(0xFFFF6868),
                                     borderRadius: BorderRadius.circular(10)),
