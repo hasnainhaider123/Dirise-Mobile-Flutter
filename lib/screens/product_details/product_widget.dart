@@ -2463,7 +2463,7 @@ class _ProductUIState extends State<ProductUI> {
                       profileController.selectedLAnguage.value == "English"
                           ? Positioned(
                               right: 0,
-                              top: 0,
+                              bottom: 0,
                               child: Container(
                                 decoration: BoxDecoration(
                                     boxShadow: [
@@ -2475,7 +2475,7 @@ class _ProductUIState extends State<ProductUI> {
                                       )
                                     ],
                                     borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(8)),
+                                        topLeft: Radius.circular(8)),
                                     color: const Color(0xFF27D6FF)
                                         .withOpacity(0.6)),
                                 child: Text(
@@ -2489,7 +2489,7 @@ class _ProductUIState extends State<ProductUI> {
                             )
                           : Positioned(
                               left: 0,
-                              top: 0,
+                              bottom: 0,
                               child: Container(
                                 decoration: BoxDecoration(
                                     boxShadow: [

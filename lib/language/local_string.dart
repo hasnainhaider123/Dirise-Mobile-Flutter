@@ -2625,6 +2625,7 @@ class LocaleString extends Translations {
            : ' السحابة هي المساحة التي تستأجرها من ديرايز لمدة 12 شهرًا لعملك',
        'S-space': 'مساحة-S',
        'Cloud office space': 'مساحة مكتبية سحابية',
+       'Small businesses & startups':'الأعمال الصغيرة والشركات الناشئة',
        'C-space': 'مساحة-C',
        'Enterprise cloud space': 'الشركات السحابية',
        'E-space': 'مساحة-E',

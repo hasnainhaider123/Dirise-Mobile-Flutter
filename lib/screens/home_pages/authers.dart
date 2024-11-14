@@ -67,7 +67,7 @@ class _AuthorScreenState extends State<AuthorScreen> {
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
                               return Padding(
-                                padding: const EdgeInsets.all(12),
+                                padding: const EdgeInsets.all(8),
                                 child: InkWell(
                                   onTap: () {
                                     Get.to(() => SingleStoreScreen(
@@ -82,8 +82,9 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                         ));
                                   },
                                   child: Container(
+                                   
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8.0, vertical: 13),
+                                        horizontal: 5.0, vertical: 6),
                                     decoration: BoxDecoration(
                                         color: Colors.white,
                                         boxShadow: [
@@ -126,9 +127,9 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                     .user!
                                                     .storeLogoApp
                                                     .toString(),
-                                            height: 145,
+                                            height: 155,
                                             width: 145,
-                                            fit: BoxFit.fitWidth,
+                                            fit: BoxFit.cover,
                                             errorWidget: (_, __, ___) =>
                                                 Image.asset(
                                               'assets/images/new_logo.png',

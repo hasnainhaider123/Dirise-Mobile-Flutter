@@ -1347,14 +1347,14 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                                     ? 1.3
                                     : 0.76;
 
-                                return SliverGrid.builder(
-                                    gridDelegate:
-                                        SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 1,
-                                      crossAxisSpacing: 10,
-                                      mainAxisSpacing: 10,
-                                      childAspectRatio: size,
-                                    ),
+                                return SliverList.builder(
+                                    // gridDelegate:
+                                    //     SliverGridDelegateWithFixedCrossAxisCount(
+                                    //   crossAxisCount: 1,
+                                    //   crossAxisSpacing: 10,
+                                    //   mainAxisSpacing: 10,
+                                    //   childAspectRatio: size,
+                                    // ),
                                     itemCount: paginationLoading.value
                                         ? modelProductsList
                                             .vendorProducts!.data!.length
@@ -1369,7 +1369,7 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                                       log('Item Type is::::${item.itemType}');
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 12),
+                                            horizontal: 12,vertical: 10),
                                         child: ProductUI(
                                           isSingle: true,
                                           productElement: item,
