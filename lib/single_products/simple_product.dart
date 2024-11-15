@@ -1601,7 +1601,8 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                         const SizedBox(
                           height: 16,
                         ),
-                        Row(
+                      Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Your Location :'.tr,
@@ -1631,7 +1632,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                   defaultAddress != null
                                       ? "${defaultAddress.city ?? ''}, ${defaultAddress.state ?? ''}, ${defaultAddress.country ?? ''}"
                                       : 'No address available', // Fallback text if defaultAddress is null
-                                  overflow: TextOverflow.ellipsis,
+                                  // overflow: TextOverflow.ellipsis,
                                   softWrap: true,
                                   style: GoogleFonts.poppins(
                                     color: const Color(0xFF014E70),
@@ -1643,7 +1644,8 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                             ),
                           ],
                         ),
-                        const SizedBox(
+                      
+                         const SizedBox(
                           height: 10,
                         ),
                         Row(
