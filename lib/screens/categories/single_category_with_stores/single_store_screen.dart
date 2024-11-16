@@ -1344,17 +1344,17 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                               } else {
                                 double size = widget.category == 'Cars' ||
                                         widget.category == 'Real Estate'
-                                    ? 1.3
-                                    : 0.76;
+                                    ? 1.1
+                                    : 0.71;
 
-                                return SliverList.builder(
-                                    // gridDelegate:
-                                    //     SliverGridDelegateWithFixedCrossAxisCount(
-                                    //   crossAxisCount: 1,
-                                    //   crossAxisSpacing: 10,
-                                    //   mainAxisSpacing: 10,
-                                    //   childAspectRatio: size,
-                                    // ),
+                                return SliverGrid.builder(
+                                    gridDelegate:
+                                        SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 1,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                      childAspectRatio: size,
+                                    ),
                                     itemCount: paginationLoading.value
                                         ? modelProductsList
                                             .vendorProducts!.data!.length
