@@ -1219,7 +1219,8 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                               fontWeight: FontWeight.w500),
                         ),
 
-                        Row(
+                         Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
                               'Your Location :'.tr,
@@ -1229,7 +1230,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                                   fontWeight: FontWeight.w500),
                             ),
                             const SizedBox(
-                              width: 7,
+                              width: 10,
                             ),
                             // const Icon(
                             //   Icons.circle,
@@ -1249,7 +1250,7 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                                   defaultAddress != null
                                       ? "${defaultAddress.city ?? ''}, ${defaultAddress.state ?? ''}, ${defaultAddress.country ?? ''}"
                                       : 'No address available', // Fallback text if defaultAddress is null
-                                  overflow: TextOverflow.ellipsis,
+                                  // overflow: TextOverflow.ellipsis,
                                   softWrap: true,
                                   style: GoogleFonts.poppins(
                                     color: const Color(0xFF014E70),
@@ -1259,17 +1260,10 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                                 );
                               }),
                             ),
-
-                            // Text(
-                            //   locationController.city.toString(),
-                            //   style: GoogleFonts.poppins(
-                            //       color: const Color(0xFF014E70),
-                            //       fontSize: 14,
-                            //       fontWeight: FontWeight.w500),
-                            // ),
                           ],
                         ),
-                        const SizedBox(
+                      
+                       const SizedBox(
                           height: 10,
                         ),
                         // Row(
@@ -1339,6 +1333,8 @@ class _AdvirtismentProductScreenState extends State<AdvirtismentProductScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+
+
 
                         Row(
                           children: [

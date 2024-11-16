@@ -1320,12 +1320,15 @@ class _ProductReviewPublicScreenState extends State<ProductReviewPublicScreen> {
                   ),
                 ),
                 if (optionalClassification.value == true)
+                
                   Stack(
                     children: [
                       Container(
+                        
                         width: Get.width,
+                        margin: const EdgeInsets.only(top:20),
                         padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: Colors.grey.shade200),
+                        decoration: BoxDecoration(color: Colors.grey.shade200,borderRadius: BorderRadius.circular(12)),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1342,7 +1345,7 @@ class _ProductReviewPublicScreenState extends State<ProductReviewPublicScreen> {
                       profileController.selectedLAnguage.value == "English"
                       ?Positioned(
                           right: 10,
-                          top: 10,
+                          top: 30,
                           child: GestureDetector(
                               onTap: () {
                                 Get.to(OptionalClassificationScreen(
