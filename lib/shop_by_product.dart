@@ -1751,11 +1751,20 @@ class _ShopProductScreenState extends State<ShopProductScreen> {
                           child: GridView.builder(
                           // controller: scrollController,
                           gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 1, // 2 images per row
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
-                            childAspectRatio: .68,
+                            // childAspectRatio: .74,
+                            childAspectRatio: modelCategoryStores
+                                        .value.product!.data
+                                        ?.any((item) =>
+                                            item.isShowcase != true &&
+                                            item.showcaseProduct != true &&
+                                            item.itemType == 'giveaway') ==
+                                    true
+                                ? 0.816
+                                : 0.71,
                           ),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -1832,7 +1841,8 @@ class _ShopProductScreenState extends State<ShopProductScreen> {
                                     // }
                                   },
                                   child:
-                                      item.itemType != 'giveaway' &&
+                                      item.itemType != 'giveaway'
+                                       &&
                                               item.isShowcase != true &&
                                               item.showcaseProduct != true
                                           ? Padding(
@@ -4551,7 +4561,10 @@ class _ShopProductScreenState extends State<ShopProductScreen> {
                                                                 )
                                                               ],
                                                             ),
-                                                            30.spaceY,
+                                                            // 30.spaceY,
+                                                            SizedBox(
+                                                              height: 30,
+                                                            ),
                                                             Row(
                                                               children: [
                                                                 Expanded(

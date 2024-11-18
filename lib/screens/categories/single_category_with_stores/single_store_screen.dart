@@ -1190,12 +1190,16 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                     filterModel.value.product!.isNotEmpty
                         ? SliverGrid.builder(
                             gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                 SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount:
                                   1, // Set crossAxisCount to 1 to show one item per row
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
-                              childAspectRatio: .63,
+                              // childAspectRatio: .7,
+                                childAspectRatio:  widget.category == 'Cars' ||
+                                        widget.category == 'Real Estate'
+                                    ? 1.1
+                                    : 0.72
                             ),
                             itemCount: filterModel.value.product!.length,
                             itemBuilder: (BuildContext context, int index) {

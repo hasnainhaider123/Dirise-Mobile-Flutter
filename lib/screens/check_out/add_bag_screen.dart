@@ -538,10 +538,16 @@ class _BagsScreenState extends State<BagsScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Image.asset(
-                            'assets/images/cart_img.png',
-                            width: 173,
-                            height: 200,
+                          // SvgPicture.asset(
+                          //   'assets/svg/crt.svg',
+                          //   width: 173,
+                          //   height: 200,
+                          // ),
+
+                          Icon(
+                            Icons.shopping_cart_outlined,
+                            size: 122,
+                            color: AppTheme.buttonColor,
                           ),
                           Center(
                             child: Text(
