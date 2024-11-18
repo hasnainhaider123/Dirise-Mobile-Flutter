@@ -1743,6 +1743,7 @@ class _ShopProductScreenState extends State<ShopProductScreen> {
                 ),
               SliverToBoxAdapter(
                 child: Obx(() {
+                  var itemsize= modelCategoryStores.value.product!.data!;
                   return modelCategoryStores.value.product!.data != null &&
                           modelCategoryStores.value.product!.data!.isNotEmpty
                       ? SizedBox(
@@ -1755,7 +1756,7 @@ class _ShopProductScreenState extends State<ShopProductScreen> {
                             crossAxisCount: 1, // 2 images per row
                             crossAxisSpacing: 10,
                             mainAxisSpacing: 10,
-                            childAspectRatio: .68,
+                            childAspectRatio: .71,
                           ),
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
@@ -1764,8 +1765,10 @@ class _ShopProductScreenState extends State<ShopProductScreen> {
                               ? modelCategoryStores.value.product!.data!.length
                               : modelCategoryStores.value.product!.data!.length,
                           itemBuilder: (BuildContext context, int index) {
+
                             var item =
                                 modelCategoryStores.value.product!.data![index];
+                                
                             if (index ==
                                 modelCategoryStores
                                         .value.product!.data!.length -
@@ -1779,7 +1782,7 @@ class _ShopProductScreenState extends State<ShopProductScreen> {
                               } else {
                                 return InkWell(
                                   onTap: () {
-                                    print(item.id);
+                                    print('item type is ${item.itemType}');
                                     if (item.itemType == 'giveaway') {
                                       Get.to(() => const GiveAwayProduct(),
                                           arguments: item.id.toString());
@@ -1839,6 +1842,7 @@ class _ShopProductScreenState extends State<ShopProductScreen> {
                                               padding:
                                                   const EdgeInsets.all(12.0),
                                               child: Container(
+                                                
                                                 padding:
                                                     const EdgeInsets.all(8),
                                                 decoration: const BoxDecoration(
@@ -2638,6 +2642,7 @@ class _ShopProductScreenState extends State<ShopProductScreen> {
                                                   padding: const EdgeInsets.all(
                                                       12.0),
                                                   child: Container(
+                                                  
                                                     // margin: widget.isSingle == false ? EdgeInsets.zero :const EdgeInsets.only(right: 9),
                                                     // padding: widget.isSingle == false ? EdgeInsets.zero :const EdgeInsets.all(8),
                                                     decoration:
