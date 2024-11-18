@@ -2545,7 +2545,7 @@ class _MyAccountScreenState extends State<MyAccountScreen> {
                       width: 17,
                     )
                   : Image.asset(
-                      'assets/images/drop_icon.png',
+                      'assets/images/forward_icon.png',
                       height: 17,
                       width: 17,
                     ),

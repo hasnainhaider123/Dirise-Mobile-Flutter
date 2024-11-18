@@ -204,11 +204,17 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                         launchURLl(
                                                             'mailto:${homeController.getFeaturedModel.value.data![index].user!.email.toString()}');
                                                       },
-                                                      child: Image.asset(
-                                                        "assets/svgs/mg.png",
-                                                        height: 28,
-                                                        width: 28,
-                                                      ),
+                                                      child: 
+                                                      
+                                                      
+                                                        
+                                                         Icon(Icons.message,size: 38,color: Colors.blue.shade800,),
+                                                        // child: SvgPicture.asset(
+                                                        //   "assets/svgs/message.svg",
+                                                        //   // height: 30,
+                                                        //   // width: 30,
+                                                        // ),
+                                                      
                                                     ),
                                                   if (homeController
                                                           .getFeaturedModel
@@ -222,10 +228,11 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                         launchURLl(
                                                             'tel:${homeController.getFeaturedModel.value.data![index].user!.storePhone.toString()}');
                                                       },
-                                                      child: Image.asset(
-                                                        "assets/svgs/cl.png",
-                                                        height: 28,
-                                                        width: 28,
+                                                      child:  SvgPicture.asset(
+                                                        "assets/svgs/cla.svg",
+                                                        color: Color(0xFF45BC1B),
+                                                        height: 30,
+                                                        width: 30,
                                                       ),
                                                     ),
                                                   if (homeController

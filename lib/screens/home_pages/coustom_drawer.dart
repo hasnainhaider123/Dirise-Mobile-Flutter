@@ -2615,10 +2615,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                                             .grey.shade500),
                                                   ),
                                                 ),
-                                              const Icon(
-                                                Icons.arrow_forward_ios_rounded,
-                                                size: 14,
-                                              )
+                                            profileController.selectedLAnguage
+                                                          .value ==
+                                                      'English'
+                                                  ? Image.asset(
+                                                      'assets/images/forward_icon.png',
+                                                      height: 14,
+                                                      width: 14,
+                                                    )
+                                                  : Image.asset(
+                                                      'assets/images/back_icon_new.png',
+                                                      height: 14,
+                                                      width: 14,
+                                                    ),
                                             ],
                                           ),
                                         ),
