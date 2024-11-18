@@ -1190,16 +1190,13 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                     filterModel.value.product!.isNotEmpty
                         ? SliverGrid.builder(
                             gridDelegate:
-                                 SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount:
-                                  1, // Set crossAxisCount to 1 to show one item per row
+
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 1,
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 10,
-                              // childAspectRatio: .7,
-                                childAspectRatio:  widget.category == 'Cars' ||
-                                        widget.category == 'Real Estate'
-                                    ? 1.1
-                                    : 0.72
+                              childAspectRatio:0.71,
+
                             ),
                             itemCount: filterModel.value.product!.length,
                             itemBuilder: (BuildContext context, int index) {
@@ -1299,6 +1296,7 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                                           .vendorProducts!.data!.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
+                                          log('calling issue');
                                     final item = modelProductsList
                                         .vendorProducts!.data![index];
                                     log('index is::::$index');
@@ -1345,11 +1343,50 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                                     }
                                   },
                                 );
+                              } else if (widget.category == 'Cars' ||
+                                  widget.category == 'Real Estate') {
+                                return SliverList.builder(
+                                    // gridDelegate:
+                                    //     SliverGridDelegateWithFixedCrossAxisCount(
+                                    //   crossAxisCount: 1,
+                                    //   crossAxisSpacing: 10,
+                                    //   mainAxisSpacing: 10,
+                                    //   childAspectRatio: size,
+                                    // ),
+                                    itemCount: paginationLoading.value
+                                        ? modelProductsList
+                                            .vendorProducts!.data!.length
+                                        : modelProductsList
+                                            .vendorProducts!.data!.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      final item = modelProductsList
+                                          .vendorProducts!.data![index];
+                                      log('index is1::::$index');
+                                      log('index Api is::::${modelProductsList.vendorProducts!.data!.length}');
+                                      log('Item Type is::::${item.itemType}');
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 10),
+                                        child: ProductUI(
+                                          isSingle: true,
+                                          productElement: item,
+                                          onLiked: (value) {
+                                            modelProductsList
+                                                .vendorProducts!
+                                                .data![index]
+                                                .inWishlist = value;
+                                          },
+                                        ),
+                                      );
+                                    });
                               } else {
                                 double size = widget.category == 'Cars' ||
                                         widget.category == 'Real Estate'
                                     ? 1.1
-                                    : 0.71;
+                                    : 0.66;
+
+                                log('calling issue');
 
                                 return SliverGrid.builder(
                                     gridDelegate:
@@ -1357,7 +1394,7 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                                       crossAxisCount: 1,
                                       crossAxisSpacing: 10,
                                       mainAxisSpacing: 10,
-                                      childAspectRatio: size,
+                                 childAspectRatio: size,
                                     ),
                                     itemCount: paginationLoading.value
                                         ? modelProductsList
@@ -1373,7 +1410,7 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
                                       log('Item Type is::::${item.itemType}');
                                       return Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 12,vertical: 10),
+                                            horizontal: 12, vertical: 10),
                                         child: ProductUI(
                                           isSingle: true,
                                           productElement: item,

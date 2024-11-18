@@ -29,7 +29,8 @@ class OrderDetails extends StatefulWidget {
   final String orderId;
   String? orderId2;
 
-  OrderDetails({Key? key, required this.orderId, this.orderId2}) : super(key: key);
+  OrderDetails({Key? key, required this.orderId, this.orderId2})
+      : super(key: key);
 
   @override
   State<OrderDetails> createState() => _OrderDetailsState();
@@ -74,59 +75,58 @@ class _OrderDetailsState extends State<OrderDetails> {
   //     setState(() {});
   //   });
   // }
-bool orderExist = false;
+  bool orderExist = false;
   Future getOrderDetails() async {
-   
-  await repositories.postApi(url: ApiUrls.orderDetailsUrl, mapData: {
-    "order_id": widget.orderId,
-  }).then((value) async {
-    singleOrder = ModelSingleOrderResponse.fromJson(jsonDecode(value));
-    log('Response: ${singleOrder.toJson()}');
+    await repositories.postApi(url: ApiUrls.orderDetailsUrl, mapData: {
+      "order_id": widget.orderId,
+    }).then((value) async {
+      singleOrder = ModelSingleOrderResponse.fromJson(jsonDecode(value));
+      log('Response: ${singleOrder.toJson()}');
 
-    if (singleOrder.status == false && singleOrder.message == "Invaild Order ID") {
-      // If the order ID is invalid, try again with orderId2
-   
-      await repositories.postApi(url: ApiUrls.orderDetailsUrl, mapData: {
-        "order_id": widget.orderId2,
-      }).then((secondValue) {
-        singleOrder = ModelSingleOrderResponse.fromJson(jsonDecode(secondValue));
-        log('Second attempt response: ${singleOrder.toJson()}');
+      if (singleOrder.status == false &&
+          singleOrder.message == "Invaild Order ID") {
+        // If the order ID is invalid, try again with orderId2
 
-        if (singleOrder.status == false) {
-          // If it's still invalid
-          setState(() {
-            orderExist = false;
-            isLoading = false;
-          });
-        } else {
-          // Valid response on the second attempt
-          setState(() {
-            orderExist = true;
-          });
-        }
-      });
-    } else if (singleOrder.status == false) {
-          log('orderid 2 is given by ${widget.orderId2}');
-      // If the first attempt fails and the message is not "Invalid Order ID"
-      setState(() {
-        orderExist = false;
-        isLoading = false;
-      });
-    } else {
-      // Successful response on the first attempt
-      setState(() {
-        orderExist = true;
-      });
-    }
+        await repositories.postApi(url: ApiUrls.orderDetailsUrl, mapData: {
+          "order_id": widget.orderId2,
+        }).then((secondValue) {
+          singleOrder =
+              ModelSingleOrderResponse.fromJson(jsonDecode(secondValue));
+          log('Second attempt response: ${singleOrder.toJson()}');
 
-    statusValue = order.status;
-    print('Order Status: ${statusValue.toString()}');
-    setState(() {});
-  });
-}
+          if (singleOrder.status == false) {
+            // If it's still invalid
+            setState(() {
+              orderExist = false;
+              isLoading = false;
+            });
+          } else {
+            // Valid response on the second attempt
+            setState(() {
+              orderExist = true;
+            });
+          }
+        });
+      } else if (singleOrder.status == false) {
+        log('orderid 2 is given by ${widget.orderId2}');
+        // If the first attempt fails and the message is not "Invalid Order ID"
+        setState(() {
+          orderExist = false;
+          isLoading = false;
+        });
+      } else {
+        // Successful response on the first attempt
+        setState(() {
+          orderExist = true;
+        });
+      }
 
+      statusValue = order.status;
+      print('Order Status: ${statusValue.toString()}');
+      setState(() {});
+    });
+  }
 
-  
   bool isLoading = true;
   _makingPhoneCall(call) async {
     var url = Uri.parse(call);
@@ -1289,7 +1289,7 @@ bool orderExist = false;
                                                                         child: ElevatedButton(
                                                                             onPressed: () {
                                                                               // createShipment(orderId);
-                                                                
+
                                                                               createShipment12121(widget.orderId);
                                                                             },
                                                                             style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
@@ -1322,14 +1322,17 @@ bool orderExist = false;
                                                                               print(containerShow.value);
                                                                             },
                                                                             style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
-                                                                            child: Text(
-                                                                              "Edit Shipment".tr,
-                                                                              style: GoogleFonts.poppins(
-                                                                                color: Colors.white,
-                                                                                fontWeight: FontWeight.w600,
-                                                                                fontSize: 16,
+                                                                            child: FittedBox(
+                                                                              fit: BoxFit.scaleDown,
+                                                                              child: Text(
+                                                                                "Edit Shipment".tr,
+                                                                                style: GoogleFonts.poppins(
+                                                                                  color: Colors.white,
+                                                                                  fontWeight: FontWeight.w600,
+                                                                                  fontSize: 16,
+                                                                                ),
+                                                                                textAlign: TextAlign.center,
                                                                               ),
-                                                                              textAlign: TextAlign.center,
                                                                             )),
                                                                       ),
                                                                     ],

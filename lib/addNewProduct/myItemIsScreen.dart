@@ -131,21 +131,7 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Expanded(
-              //   child: GridView.builder(
-              //     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              //       crossAxisCount: 2,
-              //       crossAxisSpacing: 5,
-              //       mainAxisSpacing: 5,
-              //       mainAxisExtent: 200,
-              //       childAspectRatio: 2, // Aspect ratio can be adjusted
-              //     ),
-              //     itemCount: itemTexts.length, // Number of grid items
-              //     itemBuilder: (BuildContext context, int index) {
-              //       return buildStack(itemTexts[index]);
-              //     },
-              //   ),
-              // ),
+            
               20.spaceY,
               Center(
                 child: Text(
@@ -198,7 +184,7 @@ class _MyItemISScreenState extends State<MyItemISScreen> {
                     setState(() {});
                   },
                   child: profileController.selectedLAnguage.value == "English"
-                      ? Image.asset('assets/images/giveaway_img.png')
+                      ? Image.asset('assets/images/giveaway_img.png',)
                       : Image.asset('assets/images/giveawayarabic.png')),
               15.spaceY,
               GestureDetector(
