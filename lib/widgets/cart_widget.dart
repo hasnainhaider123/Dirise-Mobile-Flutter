@@ -52,13 +52,17 @@ class _CartBagCardState extends State<CartBagCard> {
             bottom: 0,
             left:  totalProducts.length != 1 ?  15 : 13,
             top: totalProducts.length != 1 ? 15 : 15,
-            child: Center(
-              child: Text(
-                key: ValueKey(DateTime.now().millisecondsSinceEpoch),
-                  cartController.cartModel.cart == null ? '0' :   cartController.cartModel.totalProducts.toString(),
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(color: widget.isBlackTheme == true ? Colors.white :Colors.white, fontSize: 8),
-              ).animate().scale(duration: 200.ms),
+            child: Padding(
+              padding: const EdgeInsets.all(4.0),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  key: ValueKey(DateTime.now().millisecondsSinceEpoch),
+                    cartController.cartModel.cart == null ? '0' :   cartController.cartModel.totalProducts.toString(),
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(color: widget.isBlackTheme == true ? Colors.white :Colors.white, fontSize: 9),
+                ).animate().scale(duration: 200.ms),
+              ),
             ),
           )
               : const SizedBox(),]),
