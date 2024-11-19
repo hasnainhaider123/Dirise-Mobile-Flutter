@@ -489,7 +489,6 @@ class _ProductUIState extends State<ProductUI> {
                 // color: Colors.red,
                 margin: const EdgeInsets.symmetric(horizontal: 2),
                 child: Column(
-                
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
@@ -558,13 +557,13 @@ class _ProductUIState extends State<ProductUI> {
                               alignment: Alignment.center,
                               child: Center(
                                 child: CachedNetworkImage(
-                                    imageUrl: widget
-                                        .productElement.featuredImage
-                                        .toString(),
-                                    height: 200,
-                                    fit: BoxFit.contain,
-                                    errorWidget: (_, __, ___) => Image.asset(
-                                        'assets/images/new_logo.png')),
+                                  imageUrl: widget.productElement.featuredImage
+                                      .toString(),
+                                  height: 200,
+                                  fit: BoxFit.contain,
+                                  errorWidget: (_, __, ___) =>
+                                      Image.asset('assets/images/new_logo.png'),
+                                ),
                               ),
                             ),
                           ),
@@ -2432,8 +2431,9 @@ class _ProductUIState extends State<ProductUI> {
                                               Get.to(
                                                   () =>
                                                       const AdvirtismentProductScreen(),
-                                                  arguments:
-                                                      widget.productElement.id.toString());
+                                                  arguments: widget
+                                                      .productElement.id
+                                                      .toString());
                                               // You can use Navigator or Get.to() for navigation
                                             },
                                         ),
@@ -2538,7 +2538,6 @@ class _ProductUIState extends State<ProductUI> {
                               bottom: 0,
                               child: Container(
                                 decoration: BoxDecoration(
-                                  
                                     borderRadius: const BorderRadius.only(
                                         topRight: Radius.circular(8)),
                                     color: const Color(0xFF27D6FF)

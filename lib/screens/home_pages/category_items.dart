@@ -31,31 +31,34 @@ class _CategoryItemsState extends State<CategoryItems> {
       if (homeController.updateCate.value > 0) {}
       return homeController.updateCate.value != 0
           ? Container(
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                blurStyle: BlurStyle.outer,
-                offset: Offset(1,1),
-                color: Colors.black12,
-                blurRadius:1,
-              )
-            ]
-        ),
-            child: GridView.builder(
+              padding: EdgeInsets.all(8),
+              decoration: BoxDecoration(color: Colors.white, boxShadow: [
+                BoxShadow(
+                  blurStyle: BlurStyle.outer,
+                  offset: Offset(1, 1),
+                  color: Colors.black12,
+                  blurRadius: 1,
+                )
+              ]),
+              child: GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: min(homeController.vendorCategory.usphone!.length + 1,4),
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20).copyWith(top: 0),
-                gridDelegate:  SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: Get.width*.230,
+                itemCount:
+                    min(homeController.vendorCategory.usphone!.length + 1, 4),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 15, vertical: 20)
+                        .copyWith(top: 0),
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: Get.width * .230,
                   childAspectRatio: .55,
                   crossAxisSpacing: 14,
                   mainAxisSpacing: 16,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  if (index ==  min(homeController.vendorCategory.usphone!.length + 1,4)-1) {
+                  if (index ==
+                      min(homeController.vendorCategory.usphone!.length + 1,
+                              4) -
+                          1) {
                     return Column(
                       children: [
                         const SizedBox(
@@ -68,16 +71,16 @@ class _CategoryItemsState extends State<CategoryItems> {
                               bottomController.pageIndex.value = 1;
                             },
                             child: Container(
-
                                 height: 70,
                                 padding: EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  // shape: BoxShape.circle,
+                                    // shape: BoxShape.circle,
                                     color: Color(0xFFF0EEEE),
                                     borderRadius: BorderRadius.circular(12)
-                                  // border: Border.all(color: Color(0xFFCCCCCC))
-                                ),
-                                child: Image.asset("assets/images/morebutton.png")),
+                                    // border: Border.all(color: Color(0xFFCCCCCC))
+                                    ),
+                                child: Image.asset(
+                                    "assets/images/morebutton.png")),
                           ),
                         ),
                         // ignore: prefer_const_constructors
@@ -86,24 +89,26 @@ class _CategoryItemsState extends State<CategoryItems> {
                         ),
                         Expanded(
                           child: Text(
-                           AppStrings.more.tr,
-                            style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 12, color: AppTheme.buttonColor),
+                            AppStrings.more.tr,
+                            style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 12,
+                                color: AppTheme.buttonColor),
                           ),
                         )
                       ],
                     )
                         .animate(delay: Duration(milliseconds: index * 200))
                         .scale(duration: 500.ms);
-                  }
-                  else {
+                  } else {
                     final item = homeController.vendorCategory.usphone![index];
                     return InkWell(
-                      key: ValueKey(index * DateTime.now().millisecondsSinceEpoch),
+                      key: ValueKey(
+                          index * DateTime.now().millisecondsSinceEpoch),
                       onTap: () {
                         Get.to(() => SingleCategories(
                               vendorCategories: item,
-                            )
-                        );
+                            ));
                       },
                       child: Column(
                         children: [
@@ -119,19 +124,24 @@ class _CategoryItemsState extends State<CategoryItems> {
                                   color: Color(0xFFF0EEEE),
                                   borderRadius: BorderRadius.circular(12)
                                   // border: Border.all(color: Color(0xFFCCCCCC))
-                              ),
+                                  ),
                               child: Hero(
                                 tag: item.bannerProfile.toString(),
                                 child: Material(
                                   color: Colors.transparent,
                                   surfaceTintColor: Colors.transparent,
                                   child: CachedNetworkImage(
-                                      imageUrl: item.bannerProfile.toString(),
-                                      // height: 80,
-                                      // width: 100,
-                                      // fit: BoxFit.cover,
-                                      placeholder: (context, url) => const SizedBox(width: 100,),
-                                      errorWidget: (context, url, error) => const SizedBox()),
+                                    imageUrl: item.bannerProfile.toString(),
+                                    // height: 80,
+                                    // width: 100,
+                                    // fit: BoxFit.cover,
+                                    placeholder: (context, url) =>
+                                        const SizedBox(
+                                      width: 100,
+                                    ),
+                                    errorWidget: (_, __, ___) => Image.asset(
+                                        'assets/images/new_logo.png'),
+                                  ),
                                 ),
                               ),
                             ),
@@ -141,7 +151,8 @@ class _CategoryItemsState extends State<CategoryItems> {
                           ),
                           Expanded(
                             child: Text(
-                              profileController.selectedLAnguage.value == 'English'
+                              profileController.selectedLAnguage.value ==
+                                      'English'
                                   ? item.name.toString()
                                   : item.arabName.toString(),
                               maxLines: 2,
@@ -161,7 +172,7 @@ class _CategoryItemsState extends State<CategoryItems> {
                   }
                 },
               ),
-          )
+            )
           : const SizedBox.shrink();
     });
   }

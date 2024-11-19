@@ -125,6 +125,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                             imageUrl:
                                                 item.bannerProfile.toString(),
                                             height: 180,
+                                            errorWidget: (_, __, ___) =>
+                                                Image.asset(
+                                                    'assets/images/new_logo.png'),
                                           ),
                                         ),
                                       ),

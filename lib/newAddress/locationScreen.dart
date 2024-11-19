@@ -8,6 +8,7 @@ import 'dart:ffi';
 import 'dart:ffi';
 import 'dart:ui' as ui;
 import 'package:dirise/newAddress/pickUpAddressScreen.dart';
+import 'package:dirise/utils/api_constant.dart';
 import 'package:flutter/animation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -40,7 +41,6 @@ class ChooseAddress extends StatefulWidget {
 }
 
 class _ChooseAddressState extends State<ChooseAddress> {
-
   Position? _currentPosition;
   final serviceController = Get.put(ServiceController());
   final controllerMap = Get.put(ControllerMap());
@@ -50,9 +50,12 @@ class _ChooseAddressState extends State<ChooseAddress> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Location services are disabled. Please enable the services')),
-      );
+      profileController.selectedLAnguage.value == "English"
+          ? showToast(
+              'Location services are disabled. Please enable the services')
+          : showToast( 'تم تعطيل خدمات الموقع. يرجى تفعيل الخدمات.');
+      
+
       return false;
     }
     permission = await Geolocator.checkPermission();
@@ -68,7 +71,8 @@ class _ChooseAddressState extends State<ChooseAddress> {
     if (permission == LocationPermission.deniedForever) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-          content: Text('Location permissions are permanently denied, we cannot request permissions.'),
+          content: Text(
+              'Location permissions are permanently denied, we cannot request permissions.'),
         ),
       );
       return false;
@@ -80,13 +84,21 @@ class _ChooseAddressState extends State<ChooseAddress> {
     final hasPermission = await _handleLocationPermission();
 
     if (!hasPermission) return;
-    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high).then((Position position) {
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
       setState(() => _currentPosition = position);
-      controllerMap.getAddressFromLatLng(LatLng(_currentPosition!.latitude, _currentPosition!.longitude), "current location");
+      controllerMap.getAddressFromLatLng(
+          LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+          "current location");
       controllerMap.mapController!.animateCamera(CameraUpdate.newCameraPosition(
-        CameraPosition(target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude), zoom: 15),
+        CameraPosition(
+            target:
+                LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+            zoom: 15),
       ));
-      _onAddMarkerButtonPressed(LatLng(_currentPosition!.latitude, _currentPosition!.longitude), "current location");
+      _onAddMarkerButtonPressed(
+          LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+          "current location");
       setState(() {});
     }).catchError((e) {
       debugPrint(e);
@@ -120,13 +132,18 @@ class _ChooseAddressState extends State<ChooseAddress> {
   final profileController = Get.put(ProfileController());
   Future<Uint8List> getBytesFromAsset(String path, int width) async {
     ByteData data = await rootBundle.load(path);
-    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+    ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+        targetWidth: width);
     ui.FrameInfo fi = await codec.getNextFrame();
-    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+    return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+        .buffer
+        .asUint8List();
   }
 
-  Future<void> _onAddMarkerButtonPressed(LatLng lastMapPosition, markerTitle, {allowZoomIn = true}) async {
-    final Uint8List markerIcon = await getBytesFromAsset('assets/icons/location.png', 140);
+  Future<void> _onAddMarkerButtonPressed(LatLng lastMapPosition, markerTitle,
+      {allowZoomIn = true}) async {
+    final Uint8List markerIcon =
+        await getBytesFromAsset('assets/icons/location.png', 140);
 
     redPinMarker = Marker(
       markerId: MarkerId('redPin'),
@@ -135,7 +152,7 @@ class _ChooseAddressState extends State<ChooseAddress> {
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
 
-    if ( controllerMap.googleMapController.isCompleted) {
+    if (controllerMap.googleMapController.isCompleted) {
       controllerMap.mapController!.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(target: lastMapPosition, zoom: allowZoomIn ? 13 : 10),
@@ -163,7 +180,7 @@ class _ChooseAddressState extends State<ChooseAddress> {
         child: Scaffold(
             body: Stack(
           children: [
-             GoogleMap(
+            GoogleMap(
               zoomGesturesEnabled: true,
               initialCameraPosition: const CameraPosition(
                 target: LatLng(0, 0),
@@ -180,12 +197,15 @@ class _ChooseAddressState extends State<ChooseAddress> {
               onCameraMove: (CameraPosition cameraPositions) {
                 if (isMarkerDraggable && redPinMarker != null) {
                   setState(() {
-                    redPinMarker = redPinMarker!.copyWith(positionParam: cameraPositions.target);
+                    redPinMarker = redPinMarker!
+                        .copyWith(positionParam: cameraPositions.target);
                   });
-                }},
+                }
+              },
               onCameraIdle: () async {
                 if (redPinMarker != null) {
-                  await  controllerMap.getAddressFromLatLng(redPinMarker!.position, "current location");
+                  await controllerMap.getAddressFromLatLng(
+                      redPinMarker!.position, "current location");
                 }
               },
             ),
@@ -207,11 +227,13 @@ class _ChooseAddressState extends State<ChooseAddress> {
                           });
                       if (place != null) {
                         setState(() {
-                          controllerMap.address.value = place.description.toString();
+                          controllerMap.address.value =
+                              place.description.toString();
                         });
                         final plist = GoogleMapsPlaces(
                           apiKey: googleApikey,
-                          apiHeaders: await const GoogleApiHeaders().getHeaders(),
+                          apiHeaders:
+                              await const GoogleApiHeaders().getHeaders(),
                         );
                         print(plist);
                         String placeid = place.placeId ?? "0";
@@ -221,11 +243,14 @@ class _ChooseAddressState extends State<ChooseAddress> {
                         final lang = geometry.location.lng;
                         var newlatlang = LatLng(lat, lang);
                         setState(() {
-                          controllerMap.address.value = place.description.toString();
-                          _onAddMarkerButtonPressed(LatLng(lat, lang), place.description);
+                          controllerMap.address.value =
+                              place.description.toString();
+                          _onAddMarkerButtonPressed(
+                              LatLng(lat, lang), place.description);
                         });
                         controllerMap.mapController?.animateCamera(
-                            CameraUpdate.newCameraPosition(CameraPosition(target: newlatlang, zoom: 17)));
+                            CameraUpdate.newCameraPosition(
+                                CameraPosition(target: newlatlang, zoom: 17)));
                         setState(() {});
                       }
                     },
@@ -234,35 +259,41 @@ class _ChooseAddressState extends State<ChooseAddress> {
                       child: Card(
                         child: Row(
                           children: [
-                            SizedBox(width: 15,),
+                            SizedBox(
+                              width: 15,
+                            ),
                             GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 Get.back();
                               },
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  profileController.selectedLAnguage.value != 'English' ?
-                                  Image.asset(
-                                    'assets/images/forward_icon.png',
-                                    height: 19,
-                                    width: 19,
-                                  ) :
-                                  Image.asset(
-                                    'assets/images/back_icon_new.png',
-                                    height: 19,
-                                    width: 19,
-                                  ),
+                                  profileController.selectedLAnguage.value !=
+                                          'English'
+                                      ? Image.asset(
+                                          'assets/images/forward_icon.png',
+                                          height: 19,
+                                          width: 19,
+                                        )
+                                      : Image.asset(
+                                          'assets/images/back_icon_new.png',
+                                          height: 19,
+                                          width: 19,
+                                        ),
                                 ],
                               ),
                             ),
                             Container(
-                                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(10)),
+                                decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(10)),
                                 padding: const EdgeInsets.all(0),
                                 width: MediaQuery.of(context).size.width - 80,
                                 child: ListTile(
-                                  leading: Icon(Icons.location_on_outlined, color: AppTheme.primaryColor),
+                                  leading: Icon(Icons.location_on_outlined,
+                                      color: AppTheme.primaryColor),
                                   title: Text(
                                     controllerMap.address.value.toString(),
                                     style: TextStyle(fontSize: AddSize.font14),
@@ -281,7 +312,9 @@ class _ChooseAddressState extends State<ChooseAddress> {
                   width: MediaQuery.of(context).size.width,
                   decoration: const BoxDecoration(
                       color: Colors.transparent,
-                      borderRadius: BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          topRight: Radius.circular(20))),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                       horizontal: AddSize.padding16,
@@ -314,7 +347,9 @@ class _ChooseAddressState extends State<ChooseAddress> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .headlineSmall!
-                                        .copyWith(fontWeight: FontWeight.w500, fontSize: AddSize.font16),
+                                        .copyWith(
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: AddSize.font16),
                                   ),
                                 ),
                                 SizedBox(
@@ -370,14 +405,14 @@ class _ChooseAddressState extends State<ChooseAddress> {
                             title: "Confirm Your Location".tr,
                             borderRadius: 11,
                             onPressed: () {
-                              Get.to( PickUpAddressScreen(
-                                    street:  controllerMap.street.value,
-                                    city: controllerMap.city.value,
-                                state:controllerMap. state.value,
+                              Get.to(PickUpAddressScreen(
+                                street: controllerMap.street.value,
+                                city: controllerMap.city.value,
+                                state: controllerMap.state.value,
                                 country: controllerMap.country.value,
                                 town: controllerMap.town.value,
-                                zipcode:controllerMap. zipcode.value,
-                                shortCode:controllerMap.countryCode.value ,
+                                zipcode: controllerMap.zipcode.value,
+                                shortCode: controllerMap.countryCode.value,
                               ));
                             },
                           ),
@@ -394,5 +429,4 @@ class _ChooseAddressState extends State<ChooseAddress> {
       ),
     );
   }
-
 }

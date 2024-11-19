@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 class ModelSearch {
   dynamic status;
   dynamic message;
@@ -341,6 +342,11 @@ class Items {
     data['discount_off'] = discountOff;
     data['discount_price'] = discountPrice;
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'Items(id: $id, vendorId: $vendorId, catId: $catId, catId2: $catId2, catId3: $catId3, brandSlug: $brandSlug, slug: $slug, pname: $pname, prodectImage: $prodectImage, prodectName: $prodectName, prodectSku: $prodectSku, views: $views, code: $code, bookingProductType: $bookingProductType, prodectPrice: $prodectPrice, prodectMinQty: $prodectMinQty, prodectMixQty: $prodectMixQty, prodectDescription: $prodectDescription, image: $image, arabPname: $arabPname, productType: $productType, virtualProductType: $virtualProductType, skuId: $skuId, pPrice: $pPrice, sPrice: $sPrice, commission: $commission, bestSaller: $bestSaller, featured: $featured, taxApply: $taxApply, taxType: $taxType, shortDescription: $shortDescription, arabShortDescription: $arabShortDescription, longDescription: $longDescription, arabLongDescription: $arabLongDescription, featuredImage: $featuredImage, galleryImage: $galleryImage, virtualProductFile: $virtualProductFile, virtualProductFileType: $virtualProductFileType, virtualProductFileLanguage: $virtualProductFileLanguage, featureImageApp: $featureImageApp, featureImageWeb: $featureImageWeb, inStock: $inStock, weight: $weight, weightUnit: $weightUnit, time: $time, timePeriod: $timePeriod, stockAlert: $stockAlert, discountPercentage: $discountPercentage, shippingType: $shippingType, shippingCharge: $shippingCharge, avgRating: $avgRating, metaTitle: $metaTitle, metaKeyword: $metaKeyword, metaDescription: $metaDescription, parentId: $parentId, serviceStartTime: $serviceStartTime, serviceEndTime: $serviceEndTime, serviceDuration: $serviceDuration, createdAt: $createdAt, updatedAt: $updatedAt, topHunderd: $topHunderd, limitedTimeDeal: $limitedTimeDeal, returnDays: $returnDays, isPublish: $isPublish, inOffer: $inOffer, forAuction: $forAuction, returnPolicyDesc: $returnPolicyDesc, discountOff: $discountOff, discountPrice: $discountPrice, itemType: $itemType)';
   }
 }
 

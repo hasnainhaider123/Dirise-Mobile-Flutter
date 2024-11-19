@@ -623,7 +623,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                     .value.simpleProduct!.discountOff !=
                                 '0.00')
                               Container(
-                                padding: const EdgeInsets.all(4),
+                                padding: profileController.selectedLAnguage.value == "English"? const EdgeInsets.all(4):const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                     color: const Color(0xFFFF6868),
                                     borderRadius: BorderRadius.circular(10)),
@@ -632,7 +632,7 @@ class _SimpleProductScreenState extends State<SimpleProductScreen> {
                                     Text(
                                       " SALE".tr,
                                       style: GoogleFonts.poppins(
-                                          fontSize: 12,
+                                          fontSize:profileController.selectedLAnguage.value == "English"? 12:10,
                                           fontWeight: FontWeight.w700,
                                           color: const Color(0xFFFFDF33)),
                                     ),
