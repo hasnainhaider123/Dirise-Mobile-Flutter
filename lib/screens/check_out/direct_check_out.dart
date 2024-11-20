@@ -466,6 +466,11 @@ class _DirectCheckOutScreenState extends State<DirectCheckOutScreen> {
                                                         groupValue:
                                                         cartController.directOrderResponse.value.shippingOption.value,
                                                         visualDensity: const VisualDensity(horizontal: -4.0),
+                                                            fillColor: cartController.directOrderResponse.value
+                                                                            .fedexShippingOption.value.isEmpty
+                                                                            ? MaterialStateProperty.all(Color(0xff014E70))
+                                                                            : null,
+
                                                         onChanged: (value) {
                                                           setState(() {
                                                             // directOrderResponse.fedexShippingOption.value = value.toString();
@@ -641,7 +646,7 @@ class _DirectCheckOutScreenState extends State<DirectCheckOutScreen> {
                                                                         visualDensity: const VisualDensity(horizontal: -4.0),
                                                                         fillColor: cartController.directOrderResponse.value
                                                                             .fedexShippingOption.value.isEmpty
-                                                                            ? MaterialStateProperty.all(Colors.red)
+                                                                            ? MaterialStateProperty.all(Color(0xff014E70))
                                                                             : null,
                                                                         onChanged: (value) {
                                                                           log("which is selected + $value");
@@ -810,7 +815,7 @@ class _DirectCheckOutScreenState extends State<DirectCheckOutScreen> {
                                           border: Border.all(color: Colors.grey),
                                           borderRadius: BorderRadius.circular(6)
                                         ),
-                                        width: MediaQuery.of(context).size.width * 0.52,
+                                        width: MediaQuery.of(context).size.width * 0.5,
                                         margin: EdgeInsets.only(right:12),
                                         child: Column(
                                           children: [
@@ -835,9 +840,14 @@ class _DirectCheckOutScreenState extends State<DirectCheckOutScreen> {
                                                         value: product.methodId.toString(),
                                                         groupValue: cartController.directOrderResponse.value.fedexShippingOption.value,
                                                         visualDensity: const VisualDensity(horizontal: -4.0),
-                                                        fillColor: cartController.directOrderResponse.value.fedexShippingOption.value.isEmpty
-                                                            ? MaterialStateProperty.all(Colors.red)
-                                                            : null,
+                                                        // fillColor: cartController.directOrderResponse.value.fedexShippingOption.value.isEmpty
+                                                        //     ? MaterialStateProperty.all(Colors.red)
+                                                        //     : null,
+
+                                                            fillColor: cartController.directOrderResponse.value
+                                                                            .fedexShippingOption.value.isEmpty
+                                                                            ? MaterialStateProperty.all(Color(0xff014E70))
+                                                                            : null,
                                                         onChanged: (value) {
                                                           setState(() {
                                                             shippingType.value = "icarry_shipping";
