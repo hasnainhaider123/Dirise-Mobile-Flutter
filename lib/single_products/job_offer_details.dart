@@ -20,10 +20,12 @@ class JobOfferDetailsSingleScreen extends StatefulWidget {
   const JobOfferDetailsSingleScreen({super.key});
 
   @override
-  State<JobOfferDetailsSingleScreen> createState() => _JobOfferDetailsSingleScreenState();
+  State<JobOfferDetailsSingleScreen> createState() =>
+      _JobOfferDetailsSingleScreenState();
 }
 
-class _JobOfferDetailsSingleScreenState extends State<JobOfferDetailsSingleScreen> {
+class _JobOfferDetailsSingleScreenState
+    extends State<JobOfferDetailsSingleScreen> {
   final profileController = Get.put(ProfileController());
   Rx<JobProductModel> getJobModel = JobProductModel().obs;
   final Repositories repositories = Repositories();
@@ -36,12 +38,18 @@ class _JobOfferDetailsSingleScreenState extends State<JobOfferDetailsSingleScree
       throw 'Could not launch $url';
     }
   }
+
   jobTypeApi(id) {
-    repositories.getApi(url: ApiUrls.singleJobList + id, ).then((value) {
+    repositories
+        .getApi(
+      url: ApiUrls.singleJobList + id,
+    )
+        .then((value) {
       getJobModel.value = JobProductModel.fromJson(jsonDecode(value));
       log('dada${getJobModel.value.toJson()}');
     });
   }
+
   void launchLinkedIn(String profileUrl) async {
     final Uri url = Uri.parse(profileUrl);
     if (await canLaunchUrl(url)) {
@@ -50,6 +58,7 @@ class _JobOfferDetailsSingleScreenState extends State<JobOfferDetailsSingleScree
       throw 'Could not launch $url';
     }
   }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -62,218 +71,298 @@ class _JobOfferDetailsSingleScreenState extends State<JobOfferDetailsSingleScree
     return Scaffold(
       backgroundColor: AppTheme.newPrimaryColor,
       appBar: customAppBar(title: "Job Details".tr),
-
       body: SingleChildScrollView(
         child: Obx(() {
-          return  getJobModel.value.singleJobProduct!= null ?
-          Column(
-            children: [
-              SizedBox(height: 30,),
-              Container(
-                height: MediaQuery.of(context).size.height,
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30),)
-                ),
+          return getJobModel.value.singleJobProduct != null
+              ? Column(
+                  children: [
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    Container(
+                      height: MediaQuery.of(context).size.height,
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(30),
+                            topRight: Radius.circular(30),
+                          )),
+                      child: SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    imageUrl: getJobModel
+                                        .value.singleJobProduct!.featuredImage
+                                        .toString(),
+                                    height: 50,
+                                    width: 50,
+                                    fit: BoxFit.contain,
+                                    errorWidget: (_, __, ___) =>
+                                        Image.asset("assets/images/eoxy.png"),
+                                  ),
+                                ),
 
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(height: 20,),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: CachedNetworkImage(
-                              imageUrl: getJobModel.value.singleJobProduct!.featuredImage.toString(),
-                              height: 50,
-                              width: 50,
-                              fit: BoxFit.contain,
-                              errorWidget: (_, __, ___) => Image.asset("assets/images/eoxy.png"),),
-                          ),
-                  
-                          SizedBox(width: 20,),
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(getJobModel.value.singleJobProduct!.pname.toString(),
-                                style: GoogleFonts.poppins(
-                                    color: Color(0xFF1F1F1F), fontWeight: FontWeight.w500, fontSize: 15),),
-                  
-                              Row(
-                                children: [
-                                  Icon(Icons.location_on_outlined, color: Color(0xFF545454), size: 15,),
-                                  Text(getJobModel.value.singleJobProduct!.jobCityId.toString(),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      getJobModel.value.singleJobProduct!.pname
+                                          .toString(),
+                                      style: GoogleFonts.poppins(
+                                          color: const Color(0xFF1F1F1F),
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 15),
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.location_on_outlined,
+                                          color: Color(0xFF545454),
+                                          size: 15,
+                                        ),
+                                        Text(
+                                          getJobModel
+                                              .value.singleJobProduct!.jobCityId
+                                              .toString(),
+                                          style: GoogleFonts.poppins(
+                                              color: const Color(0xFF545454),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                                // Spacer(),
+                                // Icon(Icons.star, color: Color(0xFF545454), size: 15,),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 25,
+                            ),
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFE5E9EE),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Text(
+                                    getJobModel
+                                        .value.singleJobProduct!.experience
+                                        .toString(),
                                     style: GoogleFonts.poppins(
-                                        color: Color(0xFF545454), fontWeight: FontWeight.w500, fontSize: 15),),
-                                ],
+                                        color: const Color(0xFF545454),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 11),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFE5E9EE),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Text(
+                                    getJobModel.value.singleJobProduct!.jobModel
+                                        .toString(),
+                                    style: GoogleFonts.poppins(
+                                        color: const Color(0xFF545454),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 11),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 20,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(10),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFE5E9EE),
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: Text(
+                                    getJobModel.value.singleJobProduct!.jobType
+                                        .toString(),
+                                    style: GoogleFonts.poppins(
+                                        color: const Color(0xFF545454),
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 11),
+                                  ),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  getJobModel.value.singleJobProduct!.salary
+                                      .toString(),
+                                  style: GoogleFonts.poppins(
+                                      color: const Color(0xFF014E70),
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 12),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Divider(
+                              color: Colors.grey.shade200,
+                              thickness: 1,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              "Job Description",
+                              style: GoogleFonts.poppins(
+                                  color: const Color(0xFF1F1F1F),
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 14),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            SizedBox(
+                              height: 35,
+                              child: ListView.builder(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                itemCount: getJobModel
+                                    .value.singleJobProduct!.jobCat!.length,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return Container(
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xFFE5E9EE),
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    child: Text(
+                                      getJobModel.value.singleJobProduct!
+                                          .jobCat![index].title
+                                          .toString(),
+                                      style: GoogleFonts.poppins(
+                                          color: const Color(0xFF545454),
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: 11),
+                                    ),
+                                  );
+                                },
                               ),
-                  
-                            ],
-                          ),
-                          // Spacer(),
-                          // Icon(Icons.star, color: Color(0xFF545454), size: 15,),
-                        ],
-                      ),
-                  
-                      SizedBox(height: 25,),
-                      Row(
-                        children: [
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE5E9EE),
-                              borderRadius: BorderRadius.circular(30),
-                  
                             ),
-                            child: Text(
-                              getJobModel.value.singleJobProduct!.experience.toString(), style: GoogleFonts.poppins(
-                                color: Color(0xFF545454), fontWeight: FontWeight.w400, fontSize: 11),),
-                  
-                  
-                          ),
-                          SizedBox(width: 20,),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE5E9EE),
-                              borderRadius: BorderRadius.circular(30),
-                  
+                            const SizedBox(
+                              height: 20,
                             ),
-                            child: Text(
-                              getJobModel.value.singleJobProduct!.jobModel.toString(), style: GoogleFonts.poppins(
-                                color: Color(0xFF545454), fontWeight: FontWeight.w400, fontSize: 11),),
-                  
-                  
-                          ),
-                          SizedBox(width: 20,),
-                          Container(
-                            padding: EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                              color: Color(0xFFE5E9EE),
-                              borderRadius: BorderRadius.circular(30),
-                  
-                            ),
-                            child: Text(
-                              getJobModel.value.singleJobProduct!.jobType.toString(), style: GoogleFonts.poppins(
-                                color: Color(0xFF545454), fontWeight: FontWeight.w400, fontSize: 11),),
-                  
-                  
-                          ),
-                          Spacer(),
-                          Text(
-                            getJobModel.value.singleJobProduct!.salary.toString(), style: GoogleFonts.poppins(
-                              color: Color(0xFF014E70), fontWeight: FontWeight.w600, fontSize: 12),),
-                  
-                  
-                        ],
-                      ),
-                      SizedBox(height: 20,),
-                      Divider(
-                        color: Colors.grey.shade200,
-                        thickness: 1,
-                      ),
-                      SizedBox(height: 20,),
-                  
-                      Text("Job Description",
-                        style: GoogleFonts.poppins(color: Color(0xFF1F1F1F), fontWeight: FontWeight.w500, fontSize: 14),),
-                      SizedBox(height: 20,),
-                  
-                  
-                      SizedBox(
-                        height: 35,
-                        child: ListView.builder(
-                          physics: AlwaysScrollableScrollPhysics(),
-                          itemCount: getJobModel.value.singleJobProduct!.jobCat!.length ,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                  
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              padding: EdgeInsets.all(10),
-                              decoration: BoxDecoration(
-                                color: Color(0xFFE5E9EE),
-                                borderRadius: BorderRadius.circular(30),
-                  
-                              ),
+                            InkWell(
+                              onTap: () {
+                                launchLinkedIn(
+                                  getJobModel.value.singleJobProduct!.linkdinUrl
+                                      .toString(),
+                                );
+                              },
                               child: Text(
-                                getJobModel.value.singleJobProduct!.jobCat![index].title.toString(), style: GoogleFonts.poppins(
-                                  color: Color(0xFF545454), fontWeight: FontWeight.w400, fontSize: 11),),
-                  
-                  
-                            );
-                          },
-                  
-                        ),
-                      ),
-                  
-                      SizedBox(height: 20,),
-                      InkWell(
-                        onTap: (){
-                          launchLinkedIn( getJobModel.value.singleJobProduct!.linkdinUrl.toString(),);
-                        },
-                        child: Text(
-                          getJobModel.value.singleJobProduct!.linkdinUrl.toString(),
-                          style: GoogleFonts.poppins(color: Color(0xFF014E70), fontWeight: FontWeight.w300, fontSize: 13,decoration: TextDecoration.underline),),
-                      ),
-                      SizedBox(height: 20,),
-                      Text(
-                        getJobModel.value.singleJobProduct!.aboutYourself.toString(),
-                        style: GoogleFonts.poppins(color: Color(0xFF545454), fontWeight: FontWeight.w300, fontSize: 13),),
-                      SizedBox(height: 20,),
-                      Center(
-                        child: SizedBox(
-                          height: 170,
-                          child: Stack(
-                            children:[ ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: CachedNetworkImage(
-                                imageUrl: getJobModel.value.singleJobProduct!.uploadCv.toString(),
-                                height: 150,
-                                width: 150,
-                                fit: BoxFit.contain,
-                                errorWidget: (_, __, ___) => Image.asset("assets/svgs/resume.png"),),
+                                getJobModel.value.singleJobProduct!.linkdinUrl
+                                    .toString(),
+                                style: GoogleFonts.poppins(
+                                    color: const Color(0xFF014E70),
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 13,
+                                    decoration: TextDecoration.underline),
+                              ),
                             ),
-                                             Positioned(
-                  top: 50,
-                                               left: 25,
-                  
-                                               child: InkWell(
-                                                 onTap: (){
-                                                   downloadCV(getJobModel.value.singleJobProduct!.uploadCv.toString(),);
-                                                 },
-                                                 child: Container(
-                                                   height: 40,
-                                                                          width: 100,
-                                                                          padding: EdgeInsets.all(10),
-                                                                          decoration: BoxDecoration(
-                                                                            color: Colors.white,
-                                                                            borderRadius: BorderRadius.circular(30),
-                                                                          ),
-                                                                          child:  Text(
-                                                                           "Download",
-                                                                            style: GoogleFonts.poppins(color: Color(0xFF014E70), fontWeight: FontWeight.w600, fontSize: 16,),
-                                                 ),
-                  
-                                                 ),
-                                               ),
-                                             )] ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Text(
+                              getJobModel.value.singleJobProduct!.aboutYourself
+                                  .toString(),
+                              style: GoogleFonts.poppins(
+                                  color: const Color(0xFF545454),
+                                  fontWeight: FontWeight.w300,
+                                  fontSize: 13),
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            Center(
+                              child: SizedBox(
+                                height: 170,
+                                child: Stack(children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: CachedNetworkImage(
+                                      imageUrl: getJobModel
+                                          .value.singleJobProduct!.uploadCv
+                                          .toString(),
+                                      height: 150,
+                                      width: 150,
+                                      fit: BoxFit.contain,
+                                      errorWidget: (_, __, ___) =>
+                                          Image.asset("assets/svgs/resume.png"),
+                                    ),
+                                  ),
+                                  Positioned(
+                                    top: 50,
+                                    left: 25,
+                                    child: InkWell(
+                                      onTap: () {
+                                        downloadCV(
+                                          getJobModel
+                                              .value.singleJobProduct!.uploadCv
+                                              .toString(),
+                                        );
+                                      },
+                                      child: Container(
+                                        height: 40,
+                                        width: 100,
+                                        padding: const EdgeInsets.all(10),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(30),
+                                        ),
+                                        child: Text(
+                                          "Download",
+                                          style: GoogleFonts.poppins(
+                                            color: const Color(0xFF014E70),
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 16,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ]),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 110,
+                            )
+                          ],
                         ),
                       ),
-                  
-                  
-                      SizedBox(height: 110,)
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ):Center(child: CircularProgressIndicator());
+                    )
+                  ],
+                )
+              : const Center(child: CircularProgressIndicator());
         }),
       ),
     );
@@ -292,17 +381,17 @@ class _JobOfferDetailsSingleScreenState extends State<JobOfferDetailsSingleScree
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            profileController.selectedLAnguage.value != 'English' ?
-            Image.asset(
-              'assets/images/forward_icon.png',
-              height: 19,
-              width: 19,
-            ) :
-            Image.asset(
-              'assets/images/back_icon_new.png',
-              height: 19,
-              width: 19,
-            ),
+            profileController.selectedLAnguage.value != 'English'
+                ? Image.asset(
+                    'assets/images/forward_icon.png',
+                    height: 19,
+                    width: 19,
+                  )
+                : Image.asset(
+                    'assets/images/back_icon_new.png',
+                    height: 19,
+                    width: 19,
+                  ),
           ],
         ),
       ),
@@ -312,7 +401,8 @@ class _JobOfferDetailsSingleScreenState extends State<JobOfferDetailsSingleScree
         children: [
           Text(
             title.tr,
-            style: GoogleFonts.poppins(color: Colors.black, fontWeight: FontWeight.w600, fontSize: 22),
+            style: GoogleFonts.poppins(
+                color: Colors.black, fontWeight: FontWeight.w600, fontSize: 22),
           ),
         ],
       ),
