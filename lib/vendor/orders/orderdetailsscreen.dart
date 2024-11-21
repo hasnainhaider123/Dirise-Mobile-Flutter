@@ -1292,18 +1292,15 @@ class _OrderDetailsState extends State<OrderDetails> {
 
                                                                               createShipment12121(widget.orderId);
                                                                             },
-                                                                            style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
-                                                                            child: FittedBox(
-                                                                              fit: BoxFit.scaleDown,
-                                                                              child: Text(
-                                                                                "Create Shipment".tr,
-                                                                                style: GoogleFonts.poppins(
-                                                                                  color: Colors.white,
-                                                                                  fontWeight: FontWeight.w600,
-                                                                                  fontSize: 16,
-                                                                                ),
-                                                                                textAlign: TextAlign.center,
+                                                                            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
+                                                                            child: Text(
+                                                                              "Create Shipment".tr,
+                                                                              style: GoogleFonts.poppins(
+                                                                                color: Colors.white,
+                                                                                //  fontWeight: FontWeight.w600,
+                                                                                fontSize: 12,
                                                                               ),
+                                                                              textAlign: TextAlign.center,
                                                                             )),
                                                                       ),
                                                                       SizedBox(
@@ -1321,18 +1318,15 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                                               });
                                                                               print(containerShow.value);
                                                                             },
-                                                                            style: ElevatedButton.styleFrom(minimumSize: const Size(double.maxFinite, 50), backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
-                                                                            child: FittedBox(
-                                                                              fit: BoxFit.scaleDown,
-                                                                              child: Text(
-                                                                                "Edit Shipment".tr,
-                                                                                style: GoogleFonts.poppins(
-                                                                                  color: Colors.white,
-                                                                                  fontWeight: FontWeight.w600,
-                                                                                  fontSize: 16,
-                                                                                ),
-                                                                                textAlign: TextAlign.center,
+                                                                            style: ElevatedButton.styleFrom(backgroundColor: AppTheme.buttonColor, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AddSize.size10)), textStyle: GoogleFonts.poppins(fontSize: AddSize.font20, fontWeight: FontWeight.w600)),
+                                                                            child: Text(
+                                                                              "Edit Shipment".tr,
+                                                                              style: GoogleFonts.poppins(
+                                                                                color: Colors.white,
+                                                                                fontWeight: FontWeight.w600,
+                                                                                fontSize: 12,
                                                                               ),
+                                                                              textAlign: TextAlign.center,
                                                                             )),
                                                                       ),
                                                                     ],
@@ -1576,8 +1570,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                 // containerShow1.value == false;
                                               },
                                               style: ElevatedButton.styleFrom(
-                                                  minimumSize: const Size(
-                                                      double.maxFinite, 50),
                                                   backgroundColor:
                                                       AppTheme.buttonColor,
                                                   elevation: 0,
@@ -1595,8 +1587,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                 "Create Shipment".tr,
                                                 style: GoogleFonts.poppins(
                                                   color: Colors.white,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 16,
+                                                  //  fontWeight: FontWeight.w600,
+                                                  fontSize: 12,
                                                 ),
                                               ))
                                           : SizedBox.shrink(),
@@ -1606,29 +1598,31 @@ class _OrderDetailsState extends State<OrderDetails> {
                             const SizedBox(
                               height: 20,
                             ),
-                            ElevatedButton(
-                                onPressed: () {
-                                  updateStatus(orderId, statusValue);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    minimumSize:
-                                        const Size(double.maxFinite, 60),
-                                    backgroundColor: AppTheme.buttonColor,
-                                    elevation: 0,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            AddSize.size10)),
-                                    textStyle: GoogleFonts.poppins(
-                                        fontSize: AddSize.font20,
-                                        fontWeight: FontWeight.w600)),
-                                child: Text(
-                                  "Update Status".tr,
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.white,
+                            Center(
+                              child: ElevatedButton(
+                                  onPressed: () {
+                                    updateStatus(orderId, statusValue);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: AppTheme.buttonColor,
+                                      elevation: 0,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              AddSize.size10)),
+                                      textStyle: GoogleFonts.poppins(
+                                          fontSize: AddSize.font20,
+                                          fontWeight: FontWeight.w600),
+                                      minimumSize:
+                                          const Size(double.infinity, 40)),
+                                  child: Text(
+                                    "Update Status".tr,
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.white,
                                     fontWeight: FontWeight.w600,
-                                    fontSize: 16,
-                                  ),
-                                )),
+                                      fontSize: 16,
+                                    ),
+                                  )),
+                            ),
                           ]
                               .animate(interval: 80.ms, autoPlay: true)
                               .fade(duration: 160.ms)),
