@@ -26,7 +26,6 @@ class ProductElement {
   dynamic bestSaller;
   dynamic featured;
   dynamic showcaseProduct;
-
   dynamic taxApply;
   dynamic taxType;
   dynamic shortDescription;

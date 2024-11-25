@@ -130,12 +130,12 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                             height: 155,
                                             width: 145,
                                             fit: BoxFit.cover,
-                                            errorWidget: (_, __, ___) =>
-                                                Image.asset(
-                                              'assets/images/new_logo.png',
-                                              height: 50,
-                                              width: 50,
-                                            ),
+                                            // errorWidget: (_, __, ___) =>
+                                            //     Image.asset(
+                                            //   'assets/images/new_logo.png',
+                                            //   height: 50,
+                                            //   width: 50,
+                                            // ),
                                             placeholder: (context, url) =>
                                                 Image.asset(
                                               'assets/images/new_logo.png',
