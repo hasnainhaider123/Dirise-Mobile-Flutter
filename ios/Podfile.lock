@@ -137,6 +137,13 @@ PODS:
     - Flutter
   - flutter_exit_app (1.1.4):
     - Flutter
+  - flutter_inappwebview_ios (0.0.1):
+    - Flutter
+    - flutter_inappwebview_ios/Core (= 0.0.1)
+    - OrderedSet (~> 5.0)
+  - flutter_inappwebview_ios/Core (0.0.1):
+    - Flutter
+    - OrderedSet (~> 5.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
   - fluttertoast (0.0.2):
@@ -243,6 +250,7 @@ PODS:
   - nanopb/encode (3.30910.0)
   - open_filex (0.0.2):
     - Flutter
+  - OrderedSet (5.0.0)
   - package_info_plus (0.4.5):
     - Flutter
   - path_provider_foundation (0.0.1):
@@ -302,6 +310,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_exif_rotation (from `.symlinks/plugins/flutter_exif_rotation/ios`)
   - flutter_exit_app (from `.symlinks/plugins/flutter_exit_app/ios`)
+  - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
@@ -350,6 +359,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - HLSCachingReverseProxyServer
     - nanopb
+    - OrderedSet
     - PINCache
     - PINOperation
     - PromisesObjC
@@ -385,6 +395,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_exif_rotation/ios"
   flutter_exit_app:
     :path: ".symlinks/plugins/flutter_exit_app/ios"
+  flutter_inappwebview_ios:
+    :path: ".symlinks/plugins/flutter_inappwebview_ios/ios"
   flutter_local_notifications:
     :path: ".symlinks/plugins/flutter_local_notifications/ios"
   fluttertoast:
@@ -453,6 +465,7 @@ SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_exif_rotation: de6b54e8bd54a687f28d6397d1a890391de41111
   flutter_exit_app: 452eaaeeda718095eeebcb45c9fe2e7e37f212b4
+  flutter_inappwebview_ios: 97215cf7d4677db55df76782dbd2930c5e1c1ea0
   flutter_local_notifications: 4cde75091f6327eb8517fa068a0a5950212d2086
   fluttertoast: e9a18c7be5413da53898f660530c56f35edfba9c
   GCDWebServer: 2c156a56c8226e2d5c0c3f208a3621ccffbe3ce4
@@ -473,6 +486,7 @@ SPEC CHECKSUMS:
   image_picker_ios: c560581cceedb403a6ff17f2f816d7fea1421fc1
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   open_filex: 6e26e659846ec990262224a12ef1c528bb4edbe4
+  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   package_info_plus: 115f4ad11e0698c8c1c5d8a689390df880f47e85
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   PINCache: d9a87a0ff397acffe9e2f0db972ac14680441158
@@ -492,7 +506,7 @@ SPEC CHECKSUMS:
   url_launcher_ios: 5334b05cef931de560670eeae103fd3e431ac3fe
   video_player_avfoundation: 7c6c11d8470e1675df7397027218274b6d2360b3
   wakelock_plus: 8b09852c8876491e4b6d179e17dfe2a0b5f60d47
-  webview_flutter_wkwebview: 2a23822e9039b7b1bc52e5add778e5d89ad488d1
+  webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
 PODFILE CHECKSUM: 541b51edaaf9f28b9099e0cc751984c7a06b5437
 

@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:math' as math;
 import 'package:client_information/client_information.dart';
+import 'package:dirise/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -59,9 +60,13 @@ class Repositories {
       if (model.token != null)
         HttpHeaders.authorizationHeader: 'Bearer ${model.token}'
     };
+
     mapData ??= {};
 
+  
+
     if (kDebugMode) {
+      log('my token is ${model.token}');
       log("API Url.....  $url");
       log("API mapData.....  $mapData}");
       if (true) {

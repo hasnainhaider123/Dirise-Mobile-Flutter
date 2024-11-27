@@ -140,7 +140,8 @@ class _LoginScreenState extends State<LoginScreen> {
         print('messageForEmail ${messageForPass}');
         // showToast(response.message.toString());
         if (response.status == true) {
-          Get.offAllNamed(BottomNavbar.route);
+           Get.offAllNamed(BottomNavbar.route);
+          
         }
       });
     }
