@@ -82,7 +82,6 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                         ));
                                   },
                                   child: Container(
-                                   
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 5.0, vertical: 6),
                                     decoration: BoxDecoration(
@@ -201,20 +200,22 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                       '')
                                                     GestureDetector(
                                                       onTap: () {
+                                                        print(
+                                                            'path is ${homeController.getFeaturedModel.value.data![index].user!.storeLogoApp.toString()}');
                                                         launchURLl(
                                                             'mailto:${homeController.getFeaturedModel.value.data![index].user!.email.toString()}');
                                                       },
-                                                      child: 
-                                                      
-                                                      
-                                                        
-                                                         Icon(Icons.message,size: 38,color: Colors.blue.shade800,),
-                                                        // child: SvgPicture.asset(
-                                                        //   "assets/svgs/message.svg",
-                                                        //   // height: 30,
-                                                        //   // width: 30,
-                                                        // ),
-                                                      
+                                                      child: Icon(
+                                                        Icons.message,
+                                                        size: 38,
+                                                        color: Colors
+                                                            .blue.shade800,
+                                                      ),
+                                                      // child: SvgPicture.asset(
+                                                      //   "assets/svgs/message.svg",
+                                                      //   // height: 30,
+                                                      //   // width: 30,
+                                                      // ),
                                                     ),
                                                   if (homeController
                                                           .getFeaturedModel
@@ -228,9 +229,10 @@ class _AuthorScreenState extends State<AuthorScreen> {
                                                         launchURLl(
                                                             'tel:${homeController.getFeaturedModel.value.data![index].user!.storePhone.toString()}');
                                                       },
-                                                      child:  SvgPicture.asset(
+                                                      child: SvgPicture.asset(
                                                         "assets/svgs/cla.svg",
-                                                        color: Color(0xFF45BC1B),
+                                                        color:
+                                                            Color(0xFF45BC1B),
                                                         height: 30,
                                                         width: 30,
                                                       ),

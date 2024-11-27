@@ -355,6 +355,7 @@ class _HomePageState extends State<HomePage> {
     'Bank Details',
     'Earnings'
   ];
+  
   var vendorRoutes = [
     VendorDashBoardScreen.route,
     VendorOrderList.route,
@@ -474,7 +475,7 @@ class _HomePageState extends State<HomePage> {
                       },
                       child: Platform.isAndroid
                           ? Text("Exit App".tr)
-                          : Text("Do not allow".tr)),
+                          : Text("".tr)),
                   TextButton(
                     onPressed: () async {
                       await preferences.setBool('hasShownDialog', true);
