@@ -118,7 +118,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
                       Navigator.of(context).pop();
                       locationController.checkGps(context);
                     },
-                    child: Text("Allow".tr),
+                    child: Text("Next".tr),
                   ),
                 ],
               ),

@@ -254,7 +254,7 @@ class _SingleStoreScreenState extends State<SingleStoreScreen> {
       storeUrl = response.user!.storeUrl.toString();
       gg = VendorStoreData.fromJson(response.user!.toJson());
       log('vendorrrrrr${gg.toJson()}');
-      print('Store Logo------:::::${storeLogo}');
+      print('Store Logo------:::::${bannerString}');
       log('vendorrrrr ulr${storeUrl.toString()}');
       ee = SocialLinks.fromJson(response.toJson());
       ss = ModelCategoryStores.fromJson(response.user!.toJson());

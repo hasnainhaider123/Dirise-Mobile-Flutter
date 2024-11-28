@@ -85,6 +85,7 @@ class _TrendingProductsState extends State<TrendingProducts> {
                         shrinkWrap: true,
                         itemBuilder: (BuildContext context, int index) {
                           final item = homeController.trendingModel.value.product!.product![index];
+                          print("${item.featureImageApp} image trending");
                           return ProductUI(
                             isSingle: false,
                             productElement: item,

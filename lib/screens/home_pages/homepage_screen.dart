@@ -490,7 +490,7 @@ class _HomePageState extends State<HomePage> {
                       });
                       log('valueee clickk...${hasShownDialog.toString()}');
                     },
-                    child: Text("Allow".tr),
+                    child: Text("Next".tr),
                   ),
                 ],
               ),
